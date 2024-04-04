@@ -1,17 +1,21 @@
-import Image from "next/image";
+
+import { Box, Typography } from "@mui/material";
 import styles from "../styles/page.module.css";
+import Navbar from "@/components/Navbar";
+import MainPoster from "@/components/MainPoster";
+import UserCount from "@/components/UserCount";
+import Information from "@/components/Information";
+
+
 
 const Home = () => {
+  
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-      </div>
-
-    </main>
+  <>
+  <MainPoster/>
+ <UserCount/>
+ <Information/>
+  </>
   );
 };
 
