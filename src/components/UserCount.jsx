@@ -33,9 +33,9 @@ const UserCount=()=>{
   alignItems="center" justifyContent="center" direction="row" spacing={10}>
   
     {
-      analyticsArray.map((element)=>{
+      analyticsArray.map((element,index)=>{
         return (
-          <Grid item sx={{ width: 250, height: 250 }}>
+          <Grid item sx={{ width: 250, height: 250 }} key={index}>
 <Grid container  direction='column'  justifyContent='center'  alignItems='center' >
    <Grid item>
    <IconButton sx={{ color: '#627B8F' }} >
