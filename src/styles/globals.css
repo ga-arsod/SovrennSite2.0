@@ -28,8 +28,8 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
-}
+} */
