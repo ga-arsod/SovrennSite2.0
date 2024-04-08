@@ -3,9 +3,9 @@ import React from "react";
 import { Box } from "@mui/system";
 import styled from '@emotion/styled';
 import { Typography,Grid } from "@mui/material";
-import CustomerCard from "./CustomerCard";
+import CustomerCard from "./Cards/CustomerCard";
 import Marquee from "react-fast-marquee";
-
+import { customerArray } from "@/app/utils/Data";
 
 const StyledTypography = styled(Typography)`
 font-weight:600;
@@ -42,21 +42,18 @@ const CustomerVerdict = () => {
      <Grid container spacing={4} padding={2} >
      
      <Marquee>
-          <Grid item >
-        <CustomerCard/>
-      </Grid>
-      <Grid item>
-        <CustomerCard/>
-      </Grid>
-      <Grid item>
-        <CustomerCard/>
-      </Grid>
-      <Grid item>
-        <CustomerCard/>
-      </Grid>
-      <Grid item>
-        <CustomerCard/>
-      </Grid>
+      {
+      customerArray.map((element,index)=>{
+        return(
+          <Grid item key={index}  >
+          <CustomerCard element={element}/>
+        </Grid>
+
+        )
+      })
+      }
+         
+      
       
       </Marquee>
         

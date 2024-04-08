@@ -1,3 +1,5 @@
+"use client"
+import styled from "@emotion/styled";
 import {
   Grid,
   Card,
@@ -22,6 +24,33 @@ const headingsArray = [
     h2: "High-Potential Stocks",
   },
 ];
+
+const StyledButton1 = styled(Button)`
+border-color:#1DA098;
+ color: #1DA098;
+ font-weight:600;
+ font-size:18px;
+ line-height:35px;
+ :hover {
+  background-color: #1DA098;
+  color:white;
+  border-color:#1DA098;
+  outline:#1DA098;
+};
+
+`;
+
+const StyledButton2= styled(Button)`
+color: white;
+font-wight:600;
+font-size:"16px";
+background-color:#1DA098;
+line-height:35px;
+:hover {
+  background-color:#1DA098;
+ 
+};
+`;
 
 const MainPoster = () => {
   return (
@@ -67,10 +96,10 @@ const MainPoster = () => {
         </Typography>
         <Grid container spacing={2} sx={{paddingTop:"12px"}}>
         <Grid item>
-        <Button variant="outlined"  sx={{ borderColor:"#1DA098", color: '#1DA098',fontWeight:"600",fontSize:"18px",lineHeight:"35px" }}>Buy Trial for 2 months @ ₹400</Button>
+        <StyledButton1 variant="outlined">Buy Trial for 2 months @ ₹400</StyledButton1>
         </Grid>
         <Grid item>
-        <Button variant="contained"  sx={{ color: 'white',fontWeight:"600",fontSize:"16px" ,backgroundColor:"#1DA098",lineHeight:"35px" }}>Buy Full Access @ ₹5000/yr</Button>
+        <StyledButton2 variant="contained" >Buy Full Access @ ₹5000/yr</StyledButton2>
         </Grid>
         </Grid>
       </Grid>
