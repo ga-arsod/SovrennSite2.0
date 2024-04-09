@@ -16,10 +16,31 @@ const StyledListItemText = styled(ListItemText)`
 color:#667085;
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton1 = styled(Button)`
 font-weight:600;
 font-size:14px;
-line-height:17px
+line-height:24px;
+text-transform:none;
+:hover {
+  background-color: #20365B;
+  color:white;
+  border-color:#20365B;
+  outline:#1DA098;
+};
+ 
+`;
+
+const StyledButton2 = styled(Button)`
+color: white;
+background-color:#1DA098;
+line-height:24px;
+text-transform:none;
+:hover {
+  background-color:#1DA098;
+ 
+  border-color:#1DA098;
+  outline:#1DA098
+};
  
 `;
 
@@ -100,10 +121,10 @@ const Offer=()=>{
                <Grid item>
                 <Grid container spacing={2} my={2}>
                   <Grid item >
-                  <StyledButton variant="outlined"  sx={{ borderColor:"#20365B", color: '#20365B',padding:"6px"}}>{element.button.first}</StyledButton>
+                  <StyledButton1 variant="outlined"  sx={{ borderColor:"#20365B", color: '#20365B',padding:"6px"}}>{element.button.first}</StyledButton1>
                     </Grid>
                     <Grid item>
-                    <StyledButton variant="contained"  sx={{ color: 'white',backgroundColor:"#1DA098",lineHeight:"35px" }}>{element.button.second}</StyledButton>
+                    <StyledButton2 variant="contained"  >{element.button.second}</StyledButton2>
                     </Grid>
                 </Grid>
               
