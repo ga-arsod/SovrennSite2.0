@@ -3,7 +3,7 @@ import React from "react";
 import PlanCard from "./PlanCard";
 import {Box,Grid,Typography} from "@mui/material";
 import styled from '@emotion/styled';
-import { planData } from "./Data";
+import { planData } from "../app/utils/Data";
 
 
 
@@ -13,7 +13,7 @@ font-size:34px;
 line-height:40px;
 `;
 
-console.log(planData,"jj")
+
 const PlanInfo=()=>{
   return(
 <Box >

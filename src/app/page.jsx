@@ -9,9 +9,14 @@ import Information from "@/components/Information";
 import Offer from "@/components/Offer";
 import CustomerVerdict from "@/components/CustomerVerdict";
 import FoundersInfo from "@/components/FoundersInfo";
-import FoundersCard from "@/components/FoundersCard";
+import FoundersCard from "@/components/Cards/FoundersCard";
 import PlanCard from "@/components/PlanCard";
 import PlanInfo from "@/components/PlanInfo";
+import Faq from "@/components/Faq";
+import AppInfo from "@/components/AppInfo";
+import Footer from "@/components/Footer";
+import TrialCard from "@/components/Cards/TrialCard";
+
 
 
 
@@ -28,7 +33,11 @@ const Home = () => {
  <CustomerVerdict/>
  <FoundersInfo/>
 <PlanInfo/>
+ <Faq/>
  
+ <AppInfo/>
+ <TrialCard/>
+<Footer/>
   </>
   );
 };
