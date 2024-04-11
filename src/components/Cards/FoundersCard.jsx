@@ -2,21 +2,26 @@ import { Grid, Avatar, Typography, IconButton } from "@mui/material";
 import React from "react";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import Image from "next/image";
 
 const FoundersCard = ({ item }) => {
   return (
-    <Grid item padding={4}>
+    <Grid item padding={4} xs={12} md={6} sx={{position:'relative'}}>
       <Grid
         container
         direction="column"
         alignItems="center"
-        sx={{ height: "auto", width: "40vw" }}
+        justifyContent='center'
+        paddingX={3}
+       
       >
-        <Grid item>
-          <Avatar
+        <Grid item  sx={{ borderRadius: "50%",overflow:'hidden'}}>
+          <Image
+          width={110}
+          height={110}
             alt="Rounded Image"
             src={item.imagePath}
-            sx={{ borderRadius: "50%", width: "110px", height: "110px" }}
+           layout="responsive"
           />
         </Grid>
         <Grid item marginTop="12px">
@@ -37,17 +42,19 @@ const FoundersCard = ({ item }) => {
             {item.position}
           </Typography>
 
-          <Grid item height='125px'>
+          <Grid item paddingY={2}>
             <Typography
               component="div"
               justifyContent="center"
               color="#4D5E7C"
-              sx={{ fontWeight: "400", fontSize: "16px", lineHeight: "19px" }}
+              textAlign="justify"
+              sx={{ fontWeight: "400", fontSize: "16px", lineHeight: "19px",textJustify:'center' }}
+              
             >
              {item.description}
             </Typography>
           </Grid>
-          <Grid container justifyContent="center" >
+          <Grid container justifyContent="center" alignItems='center' sx={{position:'absolute',bottom:'4px'}} width="80%" >
             <Grid item component="span">
               <IconButton sx={{ color: "#98A2B3" }}>
                 <TwitterIcon />

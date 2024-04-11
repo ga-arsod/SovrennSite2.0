@@ -1,6 +1,8 @@
+"use client"
 import React from "react";
-import { Box,Grid, Typography,IconButton ,Paper} from "@mui/material";
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import { Grid, Typography,IconButton ,Paper} from "@mui/material";
+import styled from "@emotion/styled";
+
 import ImportContactsOutlinedIcon from '@mui/icons-material/ImportContactsOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
@@ -27,16 +29,31 @@ const UserCount=()=>{
 
   ];
 
+  const StyledTypography1=styled(Typography)`
+  font-size:23px;
+  font-weight:600;
+  line-height:28px
+
+
+@media (max-width:700px)
+{
+  font-size:19px;
+      
+}
+
+
+`;
+
   return(
 
 <Grid container 
-  alignItems="center" justifyContent="center" direction="row" spacing={10} >
+  alignItems="center" justifyContent="center"   direction="row" paddingX={{xs:6,lg:12}} paddingY={3} >
   
     {
       analyticsArray.map((element,index)=>{
         return (
-          <Grid item sx={{ width: 250, height: 250 }} key={index} marginTop={3}>
-<Grid container  direction='column'  justifyContent='center'  alignItems='center' >
+          <Grid item xs={12} sm={3} key={index}>
+<Grid container  direction='column'   alignItems='center' height="20vh" >
    <Grid item>
    <IconButton sx={{ color: '#627B8F' }} >
       {element.icon}

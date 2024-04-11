@@ -1,29 +1,38 @@
-import { Grid, Typography, Avatar } from "@mui/material";
+import { Grid, Typography ,Box} from "@mui/material";
 import React from "react";
-
+import Image from "next/image";
 const CustomerCard = ({ element }) => {
   return (
     <Grid
       container
       bgcolor="#E8F6F5"
-      sx={{ height: "auto", width: "25vw", margin: "5px", borderRadius: "6px" }}
+      sx={{ height: "auto", width:{xs:"70vw",sm:"50vw",md:"25vw"}, margin: "5px", borderRadius: "6px" }}
     >
       <Grid item padding={2}>
         <Grid container>
           <Grid item>
-            <img src="/quotation.png" alt="..." />
+            <Image src="/quotation.png" alt="main-poster"
+            width={75}
+            height={47}
+            />
+           
             <Typography variant="body1" color="#0D1726">
              {
               element.description
              }
             </Typography>
-            <Grid container spacing={3} marginTop={0}>
-              <Grid item spacing={3}>
-                <Avatar
+            <Grid container spacing={3} marginTop={0} alignItems='center'>
+              <Grid item spacing={3} >
+                <Box display="flex" justifyContent='center' alignItems='center' sx={{ borderRadius:"50%",overflow:'hidden',width:'80px',height:'80px',backgroundColor:'white' }}>
+                <Image
                   alt="Rounded Image"
+                  width={80}
+                  height={80}
                   src={element.imagePath}
-                  sx={{ borderRadius: "50%" }}
+                sx={{padding:"10px"}}
                 />
+                </Box>
+                
               </Grid>
               <Grid item>
                 <Grid container>

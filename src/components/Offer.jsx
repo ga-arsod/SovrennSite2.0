@@ -6,11 +6,32 @@ import CheckIcon from '@mui/icons-material/Check';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Image from "next/image";
 
-const StyledTypography = styled(Typography)`
+const StyledTypography1 = styled(Typography)`
 font-weight:600;
 font-size:34px;
 line-height:40px;
+@media (max-width:700px)
+{
+  font-weight:600;
+font-size:23px;
+line-height:28px;
+}
+
+`;
+
+const StyledTypography2 = styled(Typography)`
+font-weight:400;
+font-size:20px;
+line-height:24px;
+@media (max-width:700px)
+{
+  font-weight:400;
+font-size:12px;
+line-height:14px;
+}
+
 `;
 const StyledListItemText = styled(ListItemText)`
 color:#667085;
@@ -70,36 +91,49 @@ const Offer=()=>{
     slidesToScroll: 1,
   };
   return(
-    <Box sx={{backgroundImage: `url('/rectangle.png')`,
+    <Box marginTop={3} sx={{backgroundImage: `url('/rectangle.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',}}>
-      <Grid container spacing={2} direction="column" justifyContent='center' alignItems='center'>
+      <Grid container spacing={2} direction="column" justifyContent='center' alignItems='center' >
         <Grid item> 
-       <StyledTypography component="span" color="#0D1726" marginRight={1} >This is What we offer</StyledTypography>
-       <Typography component="span" color="#1DA098" sx={{fontWeight:"600",fontSize:"34px",lineHeight:"40px"}}>You</Typography>
+        <Typography sx={{textAlign:'center'}}>
+        <StyledTypography1 component="span" color="#0D1726" marginRight={1} >This is What we offer</StyledTypography1>
+       <StyledTypography1 component="span" color="#1DA098" >You</StyledTypography1>
+
+        </Typography>
+      
         </Grid>
         
-        <Grid item> 
-       <Typography component="div" color="#627B8F"  sx={{fontWeight:"400",fontSize:"20px",lineHeight:"24px"}}>Here is everything that you will get from Sovrenn</Typography>
+        <Grid item paddingX={2}> 
+       <StyledTypography2 component="div" color="#627B8F">Here is everything that you will get from Sovrenn</StyledTypography2>
         </Grid>
         {
-          sovreenOfferArray.map((element)=>{
+          sovreenOfferArray.map((element,index)=>{
             return(
-              <Grid container paddingTop={6} spacing={8} justifyContent="center">
-              <Grid item>
-              <img src={element.imagePath} alt="..." />
+              <Grid container paddingTop={4} justifyContent="center" key={index} >
+              <Grid item xs={12} md={6} >
+                <Box  paddingLeft={3} >
+                <Image src={element.imagePath} alt="..." 
+              width={560}
+              height={392}
+              layout="responsive"
+              />
+                </Box>
+             
               </Grid>
-              <Grid item marginTop={3}> 
-               <StyledTypography color="#0D1726">
+              <Grid item marginTop={1}> 
+              <Grid container justifyContent='center' alignItems='center'>
+                <Grid item>
+                <StyledTypography1 color="#0D1726">
                 {element.Info.heading}
-               </StyledTypography>
+               </StyledTypography1>
                <Grid container direction='column'>
                <Grid item>
                <List>
                 {
-                  element.Info.listItems.map((item)=>{
+                  element.Info.listItems.map((item,index)=>{
                     return(
-<ListItem>
+<ListItem key={index}>
                 <ListItemIcon>
                
               <CheckIcon fontSize="large" sx={{color:"#1DA098",backgroundColor: '#B9E2DF', // Background color
@@ -119,10 +153,10 @@ const Offer=()=>{
         </List>
                </Grid>
                <Grid item>
-                <Grid container spacing={2} my={2}>
-                  <Grid item >
+                <Grid container my={2}>
+                  {/* <Grid item >
                   <StyledButton1 variant="outlined"  sx={{ borderColor:"#20365B", color: '#20365B',padding:"6px"}}>{element.button.first}</StyledButton1>
-                    </Grid>
+                    </Grid> */}
                     <Grid item>
                     <StyledButton2 variant="contained"  >{element.button.second}</StyledButton2>
                     </Grid>
@@ -131,6 +165,10 @@ const Offer=()=>{
               
                 </Grid>
                </Grid>
+
+                </Grid>
+              </Grid>
+              
                
               </Grid>
     
