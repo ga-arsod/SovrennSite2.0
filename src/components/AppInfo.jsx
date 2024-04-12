@@ -3,27 +3,45 @@ import { Grid ,Box,Typography,Button} from "@mui/material";
 import React from "react";
 import styled from '@emotion/styled';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import Image from "next/image";
 
-const StyledTypography = styled(Typography)`
+const StyledTypography1 = styled(Typography)`
 font-weight:600;
 font-size:34px;
 line-height:40px;
-width=100%;
+@media (max-width:700px)
+{
+  font-weight:600;
+font-size:23px;
+line-height:28px;
+}
+
+`;
+
+const StyledTypography2 = styled(Typography)`
+font-weight:400;
+font-size:20px;
+line-height:24px;
+@media (max-width:700px)
+{
+  font-weight:400;
+font-size:12px;
+line-height:14px;
+}
+
 `;
 const AppInfo=()=>{
   return(
-    <Box backgroundColor="#F3FAFB"  >
- <Grid container direction='column' spacing={10} paddingBottom={13} >
-  <Grid item>
-    <Grid container spacing={4} direction='column' alignItems='center' paddingTop={10}>
-    <Grid item> 
-       <StyledTypography component="span" color="#0D1726" marginRight={1}>Still have questions?</StyledTypography>
-      
+    <Box backgroundColor="#F3FAFB" width="100%" >
+ <Grid container direction="column"  spacing={10} paddingBottom={13} justifyContent='center' >
+  <Grid item >
+    <Grid container spacing={3} direction='column' alignItems='center' paddingTop={10}>
+    <Grid item > 
+       <StyledTypography1  textAlign='center' component="div" color="#0D1726" marginRight={1} gutterBottom>Still have questions?</StyledTypography1>
+       <StyledTypography2 textAlign='center' component="div" color="#627B8F"  sx={{fontWeight:"400",fontSize:"20px",lineHeight:"24px"}}>Your Questions Matter, and We&apos;re Here to Help!</StyledTypography2>
         </Grid>
         
-        <Grid item> 
-       <Typography component="div" color="#627B8F"  sx={{fontWeight:"400",fontSize:"20px",lineHeight:"24px"}}>Your Questions Matter, and We're Here to Help!</Typography>
-        </Grid>
+       
        
         <Grid item>
         <Button variant="contained"  startIcon={<MailOutlineIcon />} sx={{ color: 'white',fontWeight:"600",textTransform:'none',fontSize:"16px" ,backgroundColor:'#20365B',lineHeight:"35px" }}>Write to Us</Button>
@@ -32,18 +50,24 @@ const AppInfo=()=>{
     </Grid>
   </Grid>
      <Grid item>
-      <Grid container justifyContent='space-between' paddingX={20} alignItems='center'>
+      <Grid container spacing={3} justifyContent='space-evenly'  alignItems='center'>
         <Grid item>
-        <Typography component="div" color='#0D1726' sx={{fontWeight:'600',fontSize:'23px',lineHeight:"28px"}} gutterBottom>Experience the ease of Sovrenn with our mobile app</Typography>
-        <Typography component="div" color='#627B8F' sx={{fontWeight:'400',fontSize:'16px',lineHeight:"19px"}}>simplify your investment journey and start investing at your fingertips!</Typography>
+        <Typography textAlign='center' component="div" color='#0D1726' sx={{fontWeight:'600',fontSize:'23px',lineHeight:"28px"}} gutterBottom>Experience the ease of Sovrenn with our mobile app</Typography>
+        <Typography  textAlign='center' component="div" color='#627B8F' sx={{fontWeight:'400',fontSize:{xs:"17px",sm:"16px"},lineHeight:"19px"}}>simplify your investment journey and start investing at your fingertips!</Typography>
         </Grid>
         <Grid item>
-          <Grid container direction='column'>
+          <Grid container spacing={1} direction={{xs:"row",sm:"column"}}>
          <Grid item>
-         <img    src="/playStore.png" alt="..."/>
+         <Image    src="/playStore.png"
+         width={148}
+         height={44}
+         alt="play-store"/>
          </Grid>
          <Grid item>
-         <img   src="/appStore.png" alt="..." />
+         <Image   src="/appStore.png" 
+          width={148}
+          height={44}
+         alt="app-store" />
          </Grid>
           </Grid>
        
