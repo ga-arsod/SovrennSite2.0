@@ -1,4 +1,5 @@
 "use client"
+
 import React from "react";
 import styled from "@emotion/styled";
 import { Box,Grid,Typography,Button } from "@mui/material";
@@ -7,23 +8,53 @@ const StyledGrid = styled(Box)`
 
 position:relative;
 z-index:10;
-width:100%;
+width:80%;
 bottom:5rem;
-left:15%
+left:10%
+
 `;
+
+const StyledTypography1=styled(Typography)`
+font-weight:700;
+font-size:28px;
+line-height:34px;    
+
+@media (max-width:700px)
+{
+  font-weight:600;
+font-size:25px;
+line-height:28px;  
+}
+
+
+`;
+
+const StyledTypography2 = styled(Typography)`
+font-weight:400;
+font-size:20px;
+line-height:24px;
+@media (max-width:700px)
+{
+  font-weight:400;
+font-size:13px;
+line-height:19px;
+}
+
+`;
+
 const TrialCard=()=>{
   return(
     <>
-    <Box sx={{position:'absolute'}}>
+    <Box sx={{position:'absolute'}} width="100vw" >
       <StyledGrid container justifyContent='center' >
 <Grid item  sx={{background: "linear-gradient(to right, #0C4340, #4AB3AD)",borderRadius:'8px',}}>
-<Grid container alignItems='center' justifyContent='space-between' paddingY={6} paddingX={9}>
+<Grid container  direction={{xs:"column",sm:'row'}}  spacing={2} alignItems='center' justifyContent='space-between' paddingY={6} paddingX={{xs:1,sm:4}} >
         <Grid item  width="70%">
-        <Typography color='#F3FAFB' sx={{fontWeigt:'700',fontSize:'28px',lineHeight:"34px"}} gutterBottom>Begin your 2-month trial for only ₹400 today!</Typography>
-        <Typography  sx={{color:"#F4F3F3",fontWeigt:'400',fontSize:'20px',lineHeight:"24px"}}>Unlock two months of financial insight with Sovrenn. Empower your investing journey today!</Typography>
+        <StyledTypography1 color='#F3FAFB'  gutterBottom>Begin your 2-month trial for only ₹400 today!</StyledTypography1>
+        <StyledTypography2 color="#F4F3F3" >Unlock two months of financial insight with Sovrenn. Empower your investing journey today!</StyledTypography2>
         </Grid>
         <Grid item >
-        <Button variant="contained"  sx={{ color: '#1DA098',fontWeight:"600",fontSize:"18px" ,backgroundColor:"white",lineHeight:"21px" ,textTransform:'none'}}>Buy Trial Now</Button>
+        <Button variant="contained"  sx={{ color: '#1DA098',fontWeight:"600",fontSize:{xs:"16px",sm:"18px"} ,backgroundColor:"white",lineHeight:"21px" ,textTransform:'none'}}>Buy Trial Now</Button>
         </Grid>
         </Grid>
 

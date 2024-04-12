@@ -1,8 +1,17 @@
+"use client"
+import { Box ,AppBar,Typography,ToolBar} from "@mui/material"
+import React from "react";
 
 const Navbar = () => {
   return (
-    <div>Navbar</div>
+  
+  <>
+  
+     {/* <Typography>Header</Typography> */}
+   
+  </>
+   
   )
 }
 
-export default Navbar
+export default Navbar;

@@ -10,7 +10,14 @@ const StyledTypography = styled(Typography)`
 font-weight:400;
 font-size:18px;
 line-height:21px;
-color:#667085
+color:#667085;
+@media (min-width: 701px) and (max-width: 900px) 
+{
+  font-weight:400;
+font-size:15px;
+line-height:16px;
+color:#667085;
+}
 `;
 
 const StyledButton = styled(Button)`
@@ -21,6 +28,13 @@ const StyledButton = styled(Button)`
   line-height:24px;
   box-shadow: 0px 1px 2px 0px #1018280D;
   text-transform:none;
+  @media (min-width: 701px) and (max-width: 900px) 
+{
+  font-weight:400;
+font-size:13px;
+line-height:16px;
+color:#667085;
+}
   
 `;
 const StyledGrid = styled(Grid)`
@@ -31,10 +45,10 @@ border-radius:6px;
 
 const PlanCard=({element})=>{
   return(
-    <StyledGrid container margin={5} height='auto'>
+    <StyledGrid container marginY={5} height='85%' justifyContent='center' alignItem="center" paddingX={2}>
      
-<Grid item padding={3} >
-        <Grid container direction='column' spacing={6}>
+<Grid item paddingY={3} >
+        <Grid container direction='column' spacing={4} paddingX={2}>
 
         <Grid item>
         <Grid container direction='column' spacing={2}>
@@ -48,7 +62,7 @@ const PlanCard=({element})=>{
              <Grid item sx={{visibility:element.popular?"":"hidden"}}>
               
               <Box backgroundColor="#E8F6F5" borderRadius="20px">
-               <Typography color="#15726C" padding={1} sx={{fontWeight:'500',fontSize:'14px',lineHeight:'20px'}}>
+               <Typography color="#15726C" padding={1} sx={{fontWeight:'500',fontSize:{xs:"14px",sm:"11px",md:"14px"},lineHeight:'20px'}}>
                  Popular
                </Typography>
               </Box>
@@ -60,23 +74,30 @@ const PlanCard=({element})=>{
            
           </Grid>
           <Grid item>
-          
-           <Typography  component="span" color="#101828" sx={{ fontSize:"60px",fontWeight:"600px",lineHeight:"72px"}} >
+            <Grid container>
+              <Grid item direction={{xs:"row",sm:"column",md:'row'}}>
+              <Typography   color="#101828" sx={{ fontSize:{xs:"60px",sm:"38px",md:"60px"},fontWeight:"600px",lineHeight:"72px"}} >
           {` ₹${element.price}`}
         </Typography>
-        <Typography  component="span"  color="#597082" sx={{ fontSize:"16px",fontWeight:"600",lineHeight:"19px"}} >
+        <Typography  color="#597082" sx={{ fontSize:"16px",fontWeight:"600",lineHeight:"19px"}} >
        { `for ${element.validity}` }
         </Typography>
+
+              </Grid>
+
+            </Grid>
+          
+          
           
           </Grid>
           <Grid item>
-           <Typography color="#597082" sx={{ fontSize:"16px",fontWeight:"400px",lineHeight:"24px"}}>
+           <Typography color="#597082" sx={{ fontSize:{xs:"16px",sm:"14px",md:"16px"},fontWeight:"400px",lineHeight:"24px"}}>
           {element.planDescription}
            </Typography>
            
           </Grid>
            <Grid item sx={{visibility:element.applicable?"":"hidden"}}>
-            <Typography color="#96A7B4" sx={{ fontSize:"16px",fontWeight:"400px",lineHeight:"24px"}}>
+            <Typography color="#96A7B4" sx={{ fontSize:{xs:"16px",sm:"14px",md:"16px"},fontWeight:"400px",lineHeight:"24px"}}>
             *(Applicable only once)
             </Typography>
             
@@ -91,7 +112,7 @@ const PlanCard=({element})=>{
              <Grid container direction='column' spacing={1}>
              <Grid item>
           
-        <Button  fullWidth variant="contained"   sx={{backgroundColor:'#1DA098',fontWeight:"500",fontSize:"18px",lineHeight:"21px",color:'white',textTransform:"none"}}>Buy Now</Button>
+        <Button  fullWidth variant="contained"   sx={{backgroundColor:'#1DA098',fontWeight:"500",fontSize:{xs:"18px",sm:"16px",md:"18px"},lineHeight:"21px",color:'white',textTransform:"none"}}>Buy Now</Button>
        
        
         </Grid>
@@ -105,9 +126,9 @@ const PlanCard=({element})=>{
             <Grid container>
               <Grid item paddingX={3}>
                 {
-                  element.features.map((item)=>{
+                  element.features.map((item,index)=>{
                     return(
-<Grid container spacing={1} alignItems='center' wrap="nowrap">
+<Grid container spacing={1} alignItems='center' wrap="nowrap" key={index}>
                 
                 <Grid item>
                   <IconButton>
@@ -123,7 +144,7 @@ const PlanCard=({element})=>{
                   </IconButton>
                 </Grid>
                 <Grid item>
-                 <Typography color='#667085' sx={{fontWeight:"400",fontSize:'16px',lineHeight:"24px"}}>
+                 <Typography color='#667085' sx={{fontWeight:"400",fontSize:{xs:"16px",sm:"13px",md:"16px"},lineHeight:{xs:"24px",sm:"16px",md:"24px"}}}>
                 {item.description}
                  </Typography>
                 </Grid>

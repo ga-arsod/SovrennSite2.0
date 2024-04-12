@@ -3,12 +3,34 @@ import React from "react";
 import { Typography,Box,Grid} from "@mui/material";
 import styled from '@emotion/styled';
 import FoundersCard from "./Cards/FoundersCard";
-import { foundersArray } from "@/app/utils/Data";
+import { foundersArray } from "@/utils/Data";
 
-const StyledTypography = styled(Typography)`
+
+
+const StyledTypography1 = styled(Typography)`
 font-weight:600;
 font-size:34px;
 line-height:40px;
+@media (max-width:700px)
+{
+  font-weight:600;
+font-size:23px;
+line-height:28px;
+}
+
+`;
+
+const StyledTypography2 = styled(Typography)`
+font-weight:400;
+font-size:20px;
+line-height:24px;
+@media (max-width:700px)
+{
+  font-weight:400;
+font-size:12px;
+line-height:14px;
+}
+
 `;
 
 const FoundersInfo=()=>{
@@ -18,12 +40,15 @@ const FoundersInfo=()=>{
     backgroundPosition: 'center',}}>
       <Grid container spacing={1} direction="column" justifyContent='center' alignItems='center' paddingTop={4}>
         <Grid item> 
-       <StyledTypography component="span" color="#0D1726" marginRight={1} >Meet Our</StyledTypography>
-       <Typography component="span" color="#1DA098" sx={{fontWeight:"600",fontSize:"34px",lineHeight:"40px"}}>Founders</Typography>
+        <Typography textAlign="center">
+        <StyledTypography1 component="span" color="#0D1726" marginRight={1} >Meet Our</StyledTypography1>
+       <StyledTypography1 component="span" color="#1DA098" >Founders</StyledTypography1>
+        </Typography>
+      
         </Grid>
         
         <Grid item> 
-       <Typography component="div" color="#627B8F"  sx={{fontWeight:"400",fontSize:"20px",lineHeight:"24px"}}>Get to Know the Minds Behind Sovrenn</Typography>
+       <StyledTypography2 textAlign='center' component="div" color="#627B8F">Get to Know the Minds Behind Sovrenn</StyledTypography2>
         </Grid>
        
        

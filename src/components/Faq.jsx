@@ -6,10 +6,30 @@ import styled from '@emotion/styled';
 
 
 
-const StyledTypography = styled(Typography)`
+const StyledTypography1 = styled(Typography)`
 font-weight:600;
 font-size:34px;
 line-height:40px;
+@media (max-width:700px)
+{
+  font-weight:600;
+font-size:23px;
+line-height:28px;
+}
+
+`;
+
+const StyledTypography2 = styled(Typography)`
+font-weight:400;
+font-size:20px;
+line-height:24px;
+@media (max-width:700px)
+{
+  font-weight:400;
+font-size:12px;
+line-height:14px;
+}
+
 `;
 
 const StyledAccordion = styled(Accordion)`
@@ -26,12 +46,12 @@ const StyledAccordion = styled(Accordion)`
 `;
 const StyledAccordionSummary = styled(AccordionSummary)`
   && {
-    padding: 0; /* Set padding to zero */
+    padding: 0; 
   }
 `;
 const StyledAccordionDetails = styled(AccordionDetails)`
   && {
-    padding: 0; /* Set padding to zero */
+    padding: 0;
   }
 `;
 const HorizontalLine = styled.hr`
@@ -42,7 +62,7 @@ const HorizontalLine = styled.hr`
   display: inline-block
 `;
 const faqs = [
-  { question: 'What will I get in the 2 months trial plan?', answer: 'Lorem Ipsum, sometimes referred to as "lipsum", is the placeholder text used in design when creating content.' },
+  { question: 'What will I get in the 2 months trial plan?', answer: 'Lorem Ipsum, sometimes referred to as lipsum", is the placeholder text used in design when creating content.' },
   { question: 'What will I get in the 2 months trial plan?', answer: 'Lorem Ipsum, sometimes referred to as "lipsum", is the placeholder text used in design when creating content.' },
   { question: 'What will I get in the 2 months trial plan?', answer: 'Lorem Ipsum, sometimes referred to as "lipsum", is the placeholder text used in design when creating content.' },
   
@@ -55,24 +75,25 @@ const Faq=()=>{
   };
   return(
     
-<Box sx={{backgroundImage: `url('/rectangle.png')`,
+<Box width="100%" sx={{backgroundImage: `url('/rectangle.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',}}>
       <Grid container spacing={1} direction="column" justifyContent='center' alignItems='center' paddingTop={4}>
         <Grid item> 
-       <StyledTypography component="span" color="#0D1726" marginRight={1} >Frequently asked</StyledTypography>
-       <Typography component="span" color="#1DA098" sx={{fontWeight:"600",fontSize:"34px",lineHeight:"40px"}}>questions</Typography>
+        <Typography textAlign='center'>
+        <StyledTypography1 component="span" color="#0D1726" marginRight={1} >Frequently asked</StyledTypography1>
+       <StyledTypography1 component="span" color="#1DA098" >questions</StyledTypography1>
+
+        </Typography>
+      
         </Grid>
         
         <Grid item> 
-       <Typography component="div" color="#627B8F"  sx={{fontWeight:"400",fontSize:"20px",lineHeight:"24px"}}>Everything you need to know about the product and billing.</Typography>
+       <StyledTypography2 component="div" textAlign='center' color="#627B8F"  sx={{fontWeight:"400",fontSize:"20px",lineHeight:"24px"}}>Everything you need to know about the product and billing.</StyledTypography2>
         </Grid>
-       
-       
-
-      </Grid>
-     <Grid container marginTop={6} justifyContent='center' >
-     <Grid item >
+       <Grid item>
+       <Grid container  marginTop={6} justifyContent='center' >
+     <Grid item paddingX={{xs:4}}>
      {faqs.map((faq, index) => (
       <>
         <StyledAccordion key={index} expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)}>
@@ -95,6 +116,11 @@ const Faq=()=>{
 
      </Grid>
      </Grid>
+       </Grid>
+       
+
+      </Grid>
+    
 
       </Box>
   )
