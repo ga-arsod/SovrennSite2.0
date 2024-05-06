@@ -1,5 +1,5 @@
 
-
+"suse client"
 
 import Navbar from "@/components/Home/Navbar";
 import MainPoster from "@/components/Home/MainPoster";
@@ -26,28 +26,26 @@ import LiveSessionSteps from "@/components/Home2/LiveSessionSteps";
 
 
 
+
 const Home = () => {
   
   return (
   <>
+  
   <Navbar/>
-  <MainPoster/>
- <MainHeading/>
+   <MainPoster/>
+  {/* <MainHeading/> */}
  <UserCount/>
- <Information/>
- {/* <TutorialSection/>
- <LiveSession/>
- <LiveSessionInfo/>
- <ExpertInfo/>
- <LiveSessionSteps/> */}
+  <Information/>
+ 
  <Offer/>
  <CustomerVerdict/>
  <FoundersInfo/>
-<PlanInfo/>
+<PlanInfo/>   
  <Faq/>
  
  <AppInfo/>
- <TrialCard/>
+  <TrialCard/>
 <Footer/>
 
  

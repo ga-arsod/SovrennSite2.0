@@ -2,11 +2,13 @@
 import React from "react";
 import { Grid, Typography, IconButton, Paper,Avatar } from "@mui/material";
 import styled from "@emotion/styled";
+import  Image  from "next/image";
 
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
 import PersonOutlineSharpIcon from "@mui/icons-material/PersonOutlineSharp";
+
 
 const UserCount = () => {
   const analyticsArray = [
@@ -31,7 +33,8 @@ const UserCount = () => {
   const StyledTypography1 = styled(Typography)`
     font-size: 23px;
     font-weight: 600;
-    line-height: 28px @media (max-width: 700px) {
+    line-height: 28px;
+     @media (max-width: 700px) {
       font-size: 19px;
     }
   `;
@@ -42,30 +45,38 @@ const UserCount = () => {
       alignItems="center"
       justifyContent="center"
       direction="row"
-      paddingX={{ xs: 6, lg: 12 }}
+      paddingX={{ xs: 6, lg: 10 }}
       paddingY={3}
+      spacing={4}
     >
       {analyticsArray.map((element, index) => {
         return (
-          <Grid item xs={12} sm={3} key={index}>
+          <Grid item xs={12} sm={3} key={index} >
             <Grid
               container
               direction="column"
               alignItems="center"
-              height="20vh"
+              justifyContent="center"
+             
+               
             >
               <Grid item>
-               
+              <Image
+      src={element.icon}
+      width={40}
+      height={40}
+      alt={`icon${index}`}
+    />
                 
               </Grid>
               <Grid item>
-                <Typography
+                <StyledTypography1
                   color="#0D1726"
                   align="center"
                   sx={{ fontSize: "18px", fontWeight: 600, lineHeight: "28px" }}
                 >
                   {element.heading}
-                </Typography>
+                </StyledTypography1>
               </Grid>
             </Grid>
           </Grid>

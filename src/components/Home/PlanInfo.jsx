@@ -54,7 +54,7 @@ const PlanInfo=()=>{
        
 
       </Grid>
-     <Grid  container  spacing={2} justifyContent='center' paddingX={{xs:2,sm:0,md:8}}>
+     <Grid  container  spacing={2} justifyContent='center' paddingX={{xs:2,sm:2,md:8}}>
       {
    planData.map((element,index)=>{
     return(
