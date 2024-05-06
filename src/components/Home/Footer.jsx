@@ -60,7 +60,7 @@ const StyledBox = styled(Box)`
 
 const Footer=()=>{
   return(
-    <Box bgcolor='#0D1726' height='70vh' sx={{position:"relative"}}>
+    <Box bgcolor='#0D1726' height='75vh' sx={{position:"relative"}}>
       <StyledBox>
       <Grid container  justifyContent='space-between'  sx={{position:"absolute",bottom:'6rem'}} paddingX={18}>
 

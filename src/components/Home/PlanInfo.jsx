@@ -1,9 +1,9 @@
 "use client"
 import React from "react";
-import PlanCard from "./Cards/PlanCard";
+import PlanCard from "../Cards/PlanCard";
 import {Box,Grid,Typography} from "@mui/material";
 import styled from '@emotion/styled';
-import { planData } from "../utils/Data";
+import { planData } from "../../utils/Data";
 
 
 
