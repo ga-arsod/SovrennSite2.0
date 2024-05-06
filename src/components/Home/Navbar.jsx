@@ -2,7 +2,7 @@
 import { Box ,AppBar,Typography,Toolbar,Button,SwipeableDrawer,List,ListItem,Grid,ListItemText,InputBase,IconButton,Drawer} from "@mui/material"
 import React from "react";
 import Image from "next/image";
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import styled from "@emotion/styled";
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
@@ -98,10 +98,14 @@ const SearchInput = styled(InputBase)`
 `;
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-
+  const [isLoaded,setIsLoaded]=useState(false)
+  useEffect(()=>{
+    setIsLoaded(true)
+  },[])
+  if(!isLoaded) return null;
   
 
-  console.log(open,"open")
+  
   return (
   
   <>
@@ -164,7 +168,7 @@ const Navbar = () => {
               />
 
           </StyledGrid2>
-          <StyledGrid1 item width="35%">
+          <StyledGrid1 item width="32%">
             
         <SearchContainer>
         <SearchIconWrapper>
