@@ -14,12 +14,12 @@ import Faq from "@/components/Home/Faq";
 import AppInfo from "@/components/Home/AppInfo";
 import Footer from "@/components/Home/Footer";
 import TrialCard from "@/components/Cards/TrialCard";
-import MainHeading from "@/components/Home2/MainHeading";
-import TutorialSection from "@/components/Home2/TutorialSection";
-import LiveSession from "@/components/Home2/LiveSession";
-import LiveSessionInfo from "@/components/Home2/LiveSessionInfo";
-import ExpertInfo from "@/components/Home2/ExpertInfo";
-import LiveSessionSteps from "@/components/Home2/LiveSessionSteps";
+import MainHeading from "@/components/Education/MainHeading";
+import TutorialSection from "@/components/Education/TutorialSection";
+import LiveSession from "@/components/Education/LiveSession";
+import LiveSessionInfo from "@/components/Education/LiveSessionInfo";
+import ExpertInfo from "@/components/Education/ExpertInfo";
+import LiveSessionSteps from "@/components/Education/LiveSessionSteps";
 
 
 

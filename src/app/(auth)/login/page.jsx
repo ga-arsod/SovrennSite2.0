@@ -3,17 +3,7 @@ import React, { useState } from "react";
 import {
   Box,
   Grid,
-  Typography,
-  Avatar,
-  InputLabel,
-  TextField,
-  Button,
-  IconButton,
-  InputAdornment,
-  FormControl,
-  Select,
-  MenuItem,
-  Stack,
+  
   useMediaQuery,
 } from "@mui/material";
 import styled from "@emotion/styled";
@@ -23,55 +13,8 @@ import { useTheme } from "@mui/material/styles";
 import SignInCard from "@/components/Cards/SignInCard";
 import SignUpCard from "@/components/Cards/SignUpCard";
 import Login from "@/components/Auth/Login";
-import BasicInfo from "@/components/Auth/BasicInfo";
 
-const inputsFieldsArray = [
-  {
-    inputLabel: "Name",
-    placeholder: "Enter your full name",
-    type: "text",
-    id: "name",
-    htmlFor: "name",
-    signIn: false,
-    signUp: true,
-  },
-  {
-    inputLabel: "Enter Email or Phone no.",
-    placeholder: "Enter your email or Phone no.",
-    type: "email",
-    id: "email",
-    htmlFor: "email",
-    signIn: true,
-    signUp: true,
-  },
-  {
-    inputLabel: "Enter Password",
-    placeholder: "Enter your password",
-    type: "password",
-    id: "password",
-    htmlFor: "password",
-    signIn: true,
-    signUp: false,
-  },
-  {
-    inputLabel: "Create Password",
-    placeholder: "Enter at least 6 characters",
-    type: "password",
-    id: "createPassword",
-    htmlFor: "createPassword",
-    signIn: false,
-    signUp: true,
-  },
-  {
-    inputLabel: "Confirm Password",
-    placeholder: "Re-enter your password",
-    type: "password",
-    id: "confirmPassword",
-    htmlFor: "confirmPassword",
-    signIn: false,
-    signUp: true,
-  },
-];
+
 
 const StyledGrid = styled(Grid)`
   @media (max-width: 700px) {
@@ -85,7 +28,7 @@ const StyledGrid2 = styled(Grid)`
   }
   display: none;
 `;
-const login = () => {
+const Auth = () => {
   const [showPassword, setShowPassword] = useState({
     password: false,
     createPassword: false,
@@ -131,4 +74,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Auth;

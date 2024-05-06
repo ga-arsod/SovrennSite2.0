@@ -22,7 +22,7 @@ color:white;
 const SignInCard = () => {
   return (
     <>
-   <Box sx={{background:"linear-gradient(to right, #0C4340, #4AB3AD)",height:"100vh"} }>
+   <Box sx={{background:"linear-gradient(to right, #0C4340, #4AB3AD)",height:"50vh"} }>
     <Grid container paddingY={4} paddingX={6} justifyContent="center">
         <Grid item>
             <StyledTypography1 textAlign="center" gutterBottom>
