@@ -2,7 +2,7 @@
 import React from "react";
 import { Typography,Box,Grid} from "@mui/material";
 import styled from '@emotion/styled';
-import FoundersCard from "./Cards/FoundersCard";
+import FoundersCard from "../Cards/FoundersCard";
 import { foundersArray } from "@/utils/Data";
 
 
@@ -33,39 +33,38 @@ line-height:14px;
 
 `;
 
-const FoundersInfo=()=>{
-  return(
-<Box sx={{backgroundImage: `url('/rectangle.png')`,
+const ExpertInfo=()=>{
+    return(
+        <>
+        <Box sx={{backgroundImage: `url('/rectangle.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',}}>
       <Grid container spacing={1} direction="column" justifyContent='center' alignItems='center' paddingTop={4}>
         <Grid item> 
         <Typography textAlign="center">
-        <StyledTypography1 component="span" color="#0D1726" marginRight={1} >Meet Our</StyledTypography1>
-       <StyledTypography1 component="span" color="#1DA098" >Founders</StyledTypography1>
+        <StyledTypography1 component="span" color="#0D1726" marginRight={1} >Meet the</StyledTypography1>
+       <StyledTypography1 component="span" color="#1DA098" >Expert</StyledTypography1>
         </Typography>
       
         </Grid>
         
         <Grid item> 
-       <StyledTypography2 textAlign='center' component="div" color="#627B8F">Get to Know the Minds Behind Sovrenn</StyledTypography2>
+       <StyledTypography2 textAlign='center' component="div" color="#627B8F">Gain a learning experience from our expert.</StyledTypography2>
         </Grid>
        
        
 
       </Grid>
       <Grid container justifyContent='center'>
-        {
-foundersArray.map((item,index)=>{
-  return(
-    <FoundersCard key={index} item={item}/>
-  )
-})
-        }
+       
+    <FoundersCard  item={foundersArray[0]}/>
+
+        
 
       </Grid>
 
       </Box>
-  )
+        </>
+    )
 }
-export default FoundersInfo;
+export default ExpertInfo;

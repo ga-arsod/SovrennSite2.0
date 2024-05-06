@@ -1,19 +1,25 @@
 
 
 
-import Navbar from "@/components/Navbar";
-import MainPoster from "@/components/MainPoster";
-import UserCount from "@/components/UserCount";
-import Information from "@/components/Information";
-import Offer from "@/components/Offer";
-import CustomerVerdict from "@/components/CustomerVerdict";
-import FoundersInfo from "@/components/FoundersInfo";
+import Navbar from "@/components/Home/Navbar";
+import MainPoster from "@/components/Home/MainPoster";
+import UserCount from "@/components/Home/UserCount";
+import Information from "@/components/Home/Information";
+import Offer from "@/components/Home/Offer";
+import CustomerVerdict from "@/components/Home/CustomerVerdict";
+import FoundersInfo from "@/components/Home/FoundersInfo";
 
-import PlanInfo from "@/components/PlanInfo";
-import Faq from "@/components/Faq";
-import AppInfo from "@/components/AppInfo";
-import Footer from "@/components/Footer";
+import PlanInfo from "@/components/Home/PlanInfo";
+import Faq from "@/components/Home/Faq";
+import AppInfo from "@/components/Home/AppInfo";
+import Footer from "@/components/Home/Footer";
 import TrialCard from "@/components/Cards/TrialCard";
+import MainHeading from "@/components/Home2/MainHeading";
+import TutorialSection from "@/components/Home2/TutorialSection";
+import LiveSession from "@/components/Home2/LiveSession";
+import LiveSessionInfo from "@/components/Home2/LiveSessionInfo";
+import ExpertInfo from "@/components/Home2/ExpertInfo";
+import LiveSessionSteps from "@/components/Home2/LiveSessionSteps";
 
 
 
@@ -24,10 +30,16 @@ const Home = () => {
   
   return (
   <>
-  {/* <Navbar/> */}
+  <Navbar/>
   <MainPoster/>
+ <MainHeading/>
  <UserCount/>
  <Information/>
+ {/* <TutorialSection/>
+ <LiveSession/>
+ <LiveSessionInfo/>
+ <ExpertInfo/>
+ <LiveSessionSteps/> */}
  <Offer/>
  <CustomerVerdict/>
  <FoundersInfo/>

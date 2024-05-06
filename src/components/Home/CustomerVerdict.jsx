@@ -3,7 +3,7 @@ import React from "react";
 import { Box } from "@mui/system";
 import styled from '@emotion/styled';
 import { Typography,Grid } from "@mui/material";
-import CustomerCard from "./Cards/CustomerCard";
+import CustomerCard from "../Cards/CustomerCard";
 import Marquee from "react-fast-marquee";
 import { customerArray } from "@/utils/Data";
 

@@ -103,3 +103,35 @@ export const customerArray=[
     date:"24  Oct, 2023",
   }
 ]
+
+export const LiveSessionInfoArray=[{
+  h1:"Identifying Potential Multibaggers",
+  listItems:[
+    "Identifying if a stock is good with high probability & Exit Strategy.",
+    "How to start Microcap investing.",
+  "Understanding the basics of Valuation.",
+    "Basics of Special situations such as rights, preferential allotment etc, Bulk deals and SHP.",
+    "Check list for finding a great stock.",
+    "Understanding importance of information and basic market psychology."
+
+  ]
+
+},
+{
+h1:"Price Targets, Valuation and Float Analysis",
+listItems:[
+  "Calculate a fair price of stock after 1 year.",
+
+
+
+
+  "Understand retail float and its role in investing.",
+  
+  "Calculate PE of SME and Non-SME stocks.",
+  "Identifying if a stock is undervalued, overvalued and fairly valued.",
+  "Understand in-depth special situations such as preferential, large order and capacity expansion."
+]
+
+},
+
+]
