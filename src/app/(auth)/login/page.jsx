@@ -49,9 +49,9 @@ const Auth = () => {
       <Grid
         container
         height={{ lg: "100vh" }}
-        direction={{ xs: "column", lg: "row" }}
+        direction={{ xs: "column", sm: "row" }}
       >
-        <StyledGrid item xs={12} lg={6} order={{ xs: 2, lg: 1 }}>
+        <StyledGrid item xs={12} lg={6} order={{ xs: 2, lg: 1 }} sx={{flexGrow:1}}>
           {isTablet && isSignIn ? <SignInCard /> : <SignUpCard />}
         </StyledGrid>
         <Grid
@@ -64,7 +64,7 @@ const Auth = () => {
             justifyContent: "center",
             alignItems: "center",
             height: "100%",
-            paddingY: "4rem",
+            paddingY: "14vh",
           }}
         >
           <Login isSignIn={isSignIn} setIsSignIn={setIsSignIn} />

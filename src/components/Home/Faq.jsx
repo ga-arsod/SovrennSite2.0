@@ -78,7 +78,7 @@ const Faq=()=>{
 <Box width="100%" sx={{backgroundImage: `url('/rectangle.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',}}>
-      <Grid container spacing={1} direction="column" justifyContent='center' alignItems='center' paddingTop={4}>
+      <Grid container paddingX={4} spacing={1} direction="column" justifyContent='center' alignItems='center' paddingTop={4}>
         <Grid item> 
         <Typography textAlign='center'>
         <StyledTypography1 component="span" color="#0D1726" marginRight={1} >Frequently asked</StyledTypography1>

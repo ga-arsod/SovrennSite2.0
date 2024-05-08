@@ -24,9 +24,10 @@ const StyledButton1 = styled(Button)`
   border-color:  ${(props) => props.theme.palette.primary.main};
   color: #1da098;
   font-weight: 600;
-  font-size: 17px;
-  line-height: 35px;
+  font-size: 16px;
+  line-height: 30px;
   text-transform: none;
+  background-color:white;
   width: 100%;
   :hover {
     background-color: ${(props) => props.theme.palette.primary.main};
@@ -35,27 +36,27 @@ const StyledButton1 = styled(Button)`
     outline:${(props) => props.theme.palette.primary.main};
   }
   @media (max-width: 700px) {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 21px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 26px;
   }
 `;
 
 const StyledButton2 = styled(Button)`
   color: white;
   font-weight: 600;
-  font-size: 17px;
+  font-size: 16px;
   background-color:${(props) => props.theme.palette.primary.main};
   text-transform: none;
-  line-height: 35px;
+  line-height: 29px;
   width: 100%;
   :hover {
     background-color: #1da098;
   }
   @media (max-width: 700px) {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 21px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 26px;
   }
 `;
 
@@ -64,8 +65,9 @@ const StyledTypography1 = styled(Typography)`
   margin-right: 8px;
 
   @media (max-width: 700px) {
-    font-size: 21px;
+    font-size: 23px;
     font-weight: 600;
+    line-height:28px;
   }
   @media (min-width: 701px) and (max-width: 1120px) {
     font-size: 48px;
@@ -79,8 +81,9 @@ const StyledTypography1 = styled(Typography)`
 
 const StyledTyography2 = styled(Typography)`
   @media (max-width: 700px) {
-    font-size: 21px;
+    font-size: 23px;
     font-weight: 600;
+    line-height:28px;
   }
   @media (min-width: 701px) and (max-width: 1120px) {
     font-size: 34px;
@@ -108,21 +111,22 @@ const MainPoster = () => {
         backgroundSize: "cover",
       }}
     >
-      <Grid container paddingX={7} spacing={6}>
-        <Grid item lg={6} xs={12} sx={{ marginTop: "100px" }}>
+      <Grid container paddingX={3} justifyContent="space-between">
+        <Grid item lg={6} xs={12} sx={{ marginTop: {xs:"40px",md:"70px",lg:"100px"} }}>
           <Grid container justifyContent="center" alignItems="center">
             <Grid item>
-              <StyledTyography3>
+              <StyledTyography3 gutterBottom>
                 <Typography
                   component="span"
                   sx={{
                     fontSize: "16px",
                     fontWeight: "400",
                     marginRight: "3px",
+                    lineHeight:"19px",
                     color: "#0D1726",
                   }}
                 >
-                  Sovreen helps
+                  Sovrenn helps
                 </Typography>
                 <Typography
                   component="span"
@@ -147,7 +151,7 @@ const MainPoster = () => {
                 {headingsArray.map((element, index) => {
                   return (
                     <Box key={index}>
-                      <StyledTyography3>
+                      <StyledTyography3 marginTop={{xs:1,sm:0}}>
                         <StyledTypography1 variant="h6" component="span">
                           {element.h1}
                         </StyledTypography1>
@@ -159,19 +163,25 @@ const MainPoster = () => {
                   );
                 })}
               </Box>
-              <StyledTyography3
-                textAlign="center"
+              <Box sx={{textAlign:{xs:"center",lg:"start"}}} marginTop={1}>
+              <Typography
+            align="justify"
+            wrap="wrap"
+         
                 component="span"
                 sx={{
                   fontSize: { xs: "12px", sm: "14px" },
                   color: "#0D1726",
                   fontWeight: 400,
-                  lineHeight: { xs: "17px", sm: "14px" },
+                  lineHeight: { xs: "14px", sm: "14px" },
                 }}
               >
                 So you can take informed investing decisions to build a secure
                 financial future.
-              </StyledTyography3>
+              </Typography>
+
+              </Box>
+           
               <Grid
                 container
                 direction={{ xs: "column", sm: "row" }}

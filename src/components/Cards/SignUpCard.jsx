@@ -2,8 +2,15 @@ import { Grid ,Box,Avatar,Typography,Stack} from '@mui/material';
 import React from 'react'
 
 import { useTheme } from '@mui/material/styles';
+import styled from '@emotion/styled';
 
 
+const StyledGrid=styled(Grid)`
+@media (min-width: 640px) and (max-width: 1024px) {
+ height:40vh
+}
+height:100vh
+`;
 const infoObj = {
     h1: "Start your investing journey.",
     h2: "Create a free account and get access to all free features of Sovrenn to equip yourself with financial Knowledge.",
@@ -11,16 +18,19 @@ const infoObj = {
     users: "20,000+",
   };
 
+
+
 const SignUpCard = () => {
     const theme=useTheme();
   return (
-    <Grid
+    <StyledGrid
             container
             height="100%"
             sx={{
               background: "linear-gradient(to right, #0C4340, #4AB3AD)",
               display: "flex",
               alignItems: "center",
+           
             }}
           >
             <Grid
@@ -101,7 +111,7 @@ const SignUpCard = () => {
       </Grid>
     </Grid>
             </Grid>
-          </Grid> 
+          </StyledGrid> 
   )
 }
 

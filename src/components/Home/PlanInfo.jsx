@@ -36,9 +36,9 @@ line-height:14px;
 
 const PlanInfo=()=>{
   return(
-<Box width="100%" >
-      <Grid container spacing={1} direction="column" justifyContent='center' alignItems='center' paddingTop={4} >
-        <Grid item> 
+<Box width="100%" paddingY={4} >
+      <Grid container spacing={1} direction="column" justifyContent='center' alignItems='center'  >
+        <Grid item paddingX={2}> 
         <Typography textAlign='center'>
         <StyledTypography1 component="span" color="#0D1726" marginRight={1}>Choose a Plan that&apos;s Best for</StyledTypography1>
        <StyledTypography1 component="span" color="#1DA098" >You</StyledTypography1>
@@ -48,13 +48,13 @@ const PlanInfo=()=>{
         </Grid>
         
         <Grid item> 
-       <StyledTypography2 component="div" color="#627B8F" textAlign="center" sx={{fontWeight:"400",fontSize:"20px",lineHeight:"24px"}}>We have curated best plans as per your requirement</StyledTypography2>
+       <StyledTypography2 component="div" marginBottom={3} color="#627B8F" textAlign="center" sx={{fontWeight:"400",fontSize:"20px",lineHeight:"24px"}}>We have curated best plans as per your requirement</StyledTypography2>
         </Grid>
        
        
 
       </Grid>
-     <Grid  container  spacing={2} justifyContent='center' paddingX={{xs:2,sm:2,md:8}}>
+     <Grid  container width="100vw"  spacing={2} justifyContent='center' paddingX={{xs:2,sm:4,lg:8}}>
       {
    planData.map((element,index)=>{
     return(

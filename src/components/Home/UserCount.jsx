@@ -46,12 +46,12 @@ const UserCount = () => {
       justifyContent="center"
       direction="row"
       paddingX={{ xs: 6, lg: 10 }}
-      paddingY={3}
+      paddingY={8}
       spacing={4}
     >
       {analyticsArray.map((element, index) => {
         return (
-          <Grid item xs={12} sm={3} key={index} >
+          <Grid item xs={12} sm={3} key={index}  height={{sm:"8vh",lg:"20vh"}}>
             <Grid
               container
               direction="column"

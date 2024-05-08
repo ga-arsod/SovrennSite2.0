@@ -22,8 +22,8 @@ color:white;
 const SignInCard = () => {
   return (
     <>
-   <Box sx={{background:"linear-gradient(to right, #0C4340, #4AB3AD)",height:"50vh"} }>
-    <Grid container paddingY={4} paddingX={6} justifyContent="center">
+   <Box sx={{background:"linear-gradient(to right, #0C4340, #4AB3AD)",height:"30vh",position:"absolute",bottom:0} } display="flex" alignItems="center">
+    <Grid container  paddingX={6} justifyContent="center" alignItems="center">
         <Grid item>
             <StyledTypography1 textAlign="center" gutterBottom>
             “Sovrenn is best, they give really good information regarding investing...”
