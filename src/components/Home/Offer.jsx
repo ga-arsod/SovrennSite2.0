@@ -33,8 +33,24 @@ line-height:14px;
 }
 
 `;
+const StyledTypography3 = styled(Typography)`
+font-weight:400;
+font-size:18px;
+line-height:28px;
+color:#667085;
+}
+
+
+`;
 const StyledListItemText = styled(ListItemText)`
 color:#667085;
+font-size:12px;
+@media (max-width:700px)
+{
+  font-weight:400;
+
+line-height:14px;
+}
 `;
 
 const StyledButton1 = styled(Button)`
@@ -71,7 +87,7 @@ const sovreenOfferArray=[
   {
     imagePath:"/content.svg",
     Info:{
-      heading:"Sovreen discovery",
+      heading:"Sovrenn discovery",
       listItems:["Daily updates on","Daily updates on","Daily updates on"],
       
     },
@@ -91,10 +107,10 @@ const Offer=()=>{
     slidesToScroll: 1,
   };
   return(
-    <Box marginTop={3} sx={{backgroundImage: `url('/rectangle.png')`,
+    <Box sx={{backgroundImage: `url('/rectangle.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',}}>
-      <Grid container spacing={2} direction="column" justifyContent='center' alignItems='center' >
+      <Grid container paddingY={3} spacing={2} direction="column" justifyContent='center' alignItems='center' >
         <Grid item> 
         <Typography sx={{textAlign:'center'}}>
         <StyledTypography1 component="span" color="#0D1726" marginRight={1} >This is What we offer</StyledTypography1>
@@ -110,12 +126,12 @@ const Offer=()=>{
         {
           sovreenOfferArray.map((element,index)=>{
             return(
-              <Grid container paddingTop={4} justifyContent="center" key={index} >
+              <Grid container paddingTop={4} justifyContent="space-evenly" key={index} >
               <Grid item xs={12} md={6} >
-                <Box  paddingLeft={3} >
+                <Box  paddingLeft={8} >
                 <Image src={element.imagePath} alt="..." 
-              width={560}
-              height={392}
+              width={540}
+              height={412}
               layout="responsive"
               />
                 </Box>
@@ -136,13 +152,13 @@ const Offer=()=>{
 <ListItem key={index}>
                 <ListItemIcon>
                
-              <CheckIcon fontSize="large" sx={{color:"#1DA098",backgroundColor: '#B9E2DF', // Background color
+              <CheckIcon fontSize="medium" sx={{color:"#1DA098",backgroundColor: '#B9E2DF', // Background color
             borderRadius: '50%', 
-            padding: '8px' }}/>
+            padding: '4px' }}/>
            
                 </ListItemIcon>
             
-            <StyledListItemText id="" primary={item} />
+           <StyledTypography3>{item}</StyledTypography3>
             
           </ListItem>
                     )

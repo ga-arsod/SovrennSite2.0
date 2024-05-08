@@ -110,7 +110,7 @@ const Navbar = () => {
   
   <>
   
-   <AppBar sx={{ backgroundColor: '#F4F6F8',boxShadow:"none",position:"relative",zIndex:10}}>
+   <AppBar sx={{ backgroundColor: 'white',boxShadow:"none",position:"relative",zIndex:10}}>
    
       <Toolbar>
 
@@ -168,7 +168,7 @@ const Navbar = () => {
               />
 
           </StyledGrid2>
-          <StyledGrid1 item width="32%">
+          <StyledGrid1 item width="30%">
             
         <SearchContainer>
         <SearchIconWrapper>

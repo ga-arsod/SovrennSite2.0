@@ -60,11 +60,11 @@ const StyledBox = styled(Box)`
 
 const Footer=()=>{
   return(
-    <Box bgcolor='#0D1726' height='75vh' sx={{position:"relative"}}>
+    <Box bgcolor='#0D1726' height={{xs:"52vh",md:"40vh",lg:"80vh"}} sx={{position:"relative"}}>
       <StyledBox>
-      <Grid container  justifyContent='space-between'  sx={{position:"absolute",bottom:'6rem'}} paddingX={18}>
+      <Grid container    justifyContent='space-between'  sx={{position:"absolute",bottom:'6rem'}} paddingX={{xs:4,md:18}}>
 
-<Grid item  >
+<Grid item order={1}  >
 
 <List
 
@@ -100,7 +100,7 @@ listArray[0].products.map((item,index)=>{
 
 </List>
 </Grid>
-<Grid item  >
+<Grid item order={2} >
 
 <List
 
@@ -133,7 +133,7 @@ listArray[1].company.map((item,index)=>{
 
 </List>
 </Grid>
-<Grid item  >
+<Grid item order={{xs:4,md:3}} >
 
 <List
 
@@ -166,7 +166,7 @@ listArray[2].legal.map((item,index)=>{
 
 </List>
 </Grid>
-<Grid item>
+<Grid item  order={{xs:3,md:4}}>
   <Grid container color='white' direction='column' spacing={1}>
     <Grid item>
      <Typography sx={{fontWeight:'600',fontSize:'14px',lineHeight:'17px'}}>Get the app</Typography>
@@ -189,7 +189,7 @@ listArray[2].legal.map((item,index)=>{
 </Grid>
 
 </Grid>
-<Grid container justifyContent='space-between' paddingX={18} alignItems='center' sx={{position:"absolute",bottom:'2rem'}}>
+<Grid container justifyContent='space-between' paddingX={{xs:4,md:18}} alignItems='center' sx={{position:"absolute",bottom:'2rem'}}>
 <Grid item>
 <Typography color='#8195A5' sx={{fontWeight:'600',fontSize:'16px',lineHeight:'19px'}}>
 © 2023 by Sovrenn Financial Technologies Pvt Ltd
