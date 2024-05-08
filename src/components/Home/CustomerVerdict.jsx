@@ -3,7 +3,7 @@ import React from "react";
 import { Box } from "@mui/system";
 import styled from '@emotion/styled';
 import { Typography,Grid } from "@mui/material";
-import CustomerCard from "./Cards/CustomerCard";
+import CustomerCard from "../Cards/CustomerCard";
 import Marquee from "react-fast-marquee";
 import { customerArray } from "@/utils/Data";
 
@@ -17,7 +17,7 @@ line-height:40px;
 @media (max-width:700px)
 {
   font-weight:600;
-font-size:26px;
+font-size:23px;
 line-height:28px;
 }
 
@@ -44,7 +44,7 @@ const CustomerVerdict = () => {
   return (
     <StyledBox>
       <Grid container justifyContent='center' py={3} sx={{position:"relative"}}>
-        <Grid item>
+        <Grid item paddingX={5}>
           <StyledTypography1 component="div" color="white" textAlign='center' gutterBottom>
             What Our Customers Say About Us
           </StyledTypography1>
@@ -52,6 +52,7 @@ const CustomerVerdict = () => {
             component="div"
             color="#FCFBFB"
             textAlign="center"
+            marginBottom={1}
             
           >
             Words of our customer matters to us
@@ -66,7 +67,7 @@ const CustomerVerdict = () => {
       {
       customerArray.map((element,index)=>{
         return(
-          <Grid item key={index} xs={8} md={4} >
+          <Grid item key={index} xs={8} md={4} marginRight={1} marginBottom={2}>
           <CustomerCard element={element}/>
         </Grid>
 

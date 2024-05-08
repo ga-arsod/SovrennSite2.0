@@ -13,7 +13,8 @@
 }
 
 html {
-  width:100vw;
+  overflow-y: overlay;
+  overflow-x: hidden;
 }
 
 body {
@@ -27,6 +28,11 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.MuiListItemText-primary {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+}
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

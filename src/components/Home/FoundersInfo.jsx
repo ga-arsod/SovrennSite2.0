@@ -2,7 +2,7 @@
 import React from "react";
 import { Typography,Box,Grid} from "@mui/material";
 import styled from '@emotion/styled';
-import FoundersCard from "./Cards/FoundersCard";
+import FoundersCard from "../Cards/FoundersCard";
 import { foundersArray } from "@/utils/Data";
 
 
