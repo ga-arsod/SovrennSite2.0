@@ -54,14 +54,16 @@ const StyledSubheader = styled(ListSubheader)`
 const StyledBox = styled(Box)`
 @media (max-width:700px)
 {
-  visibility:hidden;
+  display:none;
 }
 `;
 
 const Footer=()=>{
   return(
-    <Box bgcolor='#0D1726' height={{xs:"52vh",md:"40vh",lg:"80vh"}} sx={{position:"relative"}}>
-      <StyledBox>
+    <>
+   
+    <StyledBox bgcolor='#0D1726' marginTop={3} height={{xs:"52vh",md:"40vh",lg:"80vh"}} sx={{position:"relative"}}>
+     
       <Grid container    justifyContent='space-between'  sx={{position:"absolute",bottom:'6rem'}} paddingX={{xs:4,md:18}}>
 
 <Grid item order={1}  >
@@ -218,11 +220,12 @@ listArray[2].legal.map((item,index)=>{
 
 </Grid>
 
-      </StyledBox>
+   
       
    
 
-  </Box>
+  </StyledBox>
+  </>
 
   )
   

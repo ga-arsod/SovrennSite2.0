@@ -126,15 +126,15 @@ const Offer=()=>{
         {
           sovreenOfferArray.map((element,index)=>{
             return(
-              <Grid container paddingTop={4} justifyContent="space-evenly" key={index} >
-              <Grid item xs={12} md={6} >
-                <Box  paddingLeft={8} >
+              <Grid container paddingTop={4} justifyContent="space-evenly" alignItems="center" key={index} >
+              <Grid item xs={12} lg={6} sx={{display:"flex" ,justifyContent:"center"}} paddingLeft={6} width="100vw">
+               
                 <Image src={element.imagePath} alt="..." 
-              width={540}
-              height={412}
+              width={500}
+              height={400}
               layout="responsive"
               />
-                </Box>
+              
              
               </Grid>
               <Grid item marginTop={1}> 
