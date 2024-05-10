@@ -111,7 +111,7 @@ const MainPoster = () => {
         backgroundSize: "cover",
       }}
     >
-      <Grid container paddingX={3} justifyContent="space-between">
+      <Grid container paddingX={2} justifyContent="space-between">
         <Grid item lg={6} xs={12} sx={{ marginTop: {xs:"40px",md:"70px",lg:"100px"} }}>
           <Grid container justifyContent="center" alignItems="center">
             <Grid item>

@@ -12,7 +12,7 @@ const FoundersCard = ({ item }) => {
         direction="column"
         alignItems="center"
         justifyContent='center'
-        paddingX={3}
+        paddingX={{xs:1,sm:3}}
        
       >
         <Grid item  sx={{ borderRadius: "50%",overflow:'hidden'}}>

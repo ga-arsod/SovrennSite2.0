@@ -33,7 +33,7 @@ line-height:14px;
 const AppInfo=()=>{
   return(
     <Box backgroundColor="#F3FAFB" width="100%" >
- <Grid container direction="column"  spacing={10} paddingBottom={13} justifyContent='center' >
+ <Grid container direction="column"  spacing={10} paddingBottom={{xs:3,sm:13}} justifyContent='center' paddingX={2} >
   <Grid item >
     <Grid container spacing={3} direction='column' alignItems='center' paddingTop={10}>
     <Grid item > 
@@ -59,13 +59,13 @@ const AppInfo=()=>{
           <Grid container spacing={1} direction={{xs:"row",sm:"column"}}>
          <Grid item>
          <Image    src="/playStore.png"
-         width={148}
+         width={138}
          height={44}
          alt="play-store"/>
          </Grid>
          <Grid item>
          <Image   src="/appStore.png" 
-          width={148}
+          width={138}
           height={44}
          alt="app-store" />
          </Grid>
