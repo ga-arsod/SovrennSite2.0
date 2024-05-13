@@ -1,0 +1,23 @@
+export const colors={
+    GreenFifty:'#e8f6f5',
+    GreenHundred:'#b9e2df',
+    TwoHundrd:'#97d3d0',
+    ThreeHundred:'#68bfba',
+    greenFourHundred:'#4ab3ad',
+    themeGreen:'#1da098',
+    greenSixHundred:'#1a928a',
+    greenSevenHundred:'#15726c',
+    greenEightHundred:'#105854',
+    greenNineHundredL:'#0c4340',
+    greyBlueFifty:'#eff2f4',
+    greyBlue100:'#ced6dc',
+    greyBlue200:'#b7c2cb',
+    greyBlue300:'#96a7b4',
+    greyBlue400:'#8195a5',
+    greyBlue500:'#627b8f',
+    greyBlue600:'#597082',
+    greyBlue700:'#465766',
+    greyBlue800:'#36444f',
+    greyBlue900:'#29343c',
+
+}

@@ -21,7 +21,7 @@ const FoundersCard = ({ item }) => {
           height={110}
             alt="Rounded Image"
             src={item.imagePath}
-           layout="responsive"
+         
           />
         </Grid>
         <Grid item marginTop="12px">

@@ -61,7 +61,7 @@ const CustomerVerdict = () => {
      
        
       </Grid>
-     <Grid container spacing={4} padding={2} >
+     <Grid container spacing={4} paddingY={2} >
      
      <Marquee>
       {
