@@ -28,6 +28,8 @@ const StyledButton = styled(Button)`
   font-weight:500;
   font-size:16px;
   line-height:24px;
+  padding-top:10px;
+  padding-bottom:10px;
   box-shadow: 0px 1px 2px 0px #1018280D;
   text-transform:none;
   @media (min-width: 701px) and (max-width: 900px) 
@@ -115,7 +117,7 @@ const PlanCard=({element})=>{
              <Grid container direction='column' spacing={1}>
              <Grid item>
           
-        <Button  fullWidth variant="contained"   sx={{backgroundColor:'#1DA098',fontWeight:"500",fontSize:{xs:"18px",sm:"16px",md:"18px"},lineHeight:"24px",color:'white',textTransform:"none"}}>Buy Now</Button>
+        <Button  fullWidth variant="contained"   sx={{paddingY:"8px",backgroundColor:'#1DA098',fontWeight:"600",fontSize:{xs:"18px",sm:"16px",md:"18px"},lineHeight:"21px",color:'white',textTransform:"none",paddingY:"12px"}}>Buy Now</Button>
        
        
         </Grid>

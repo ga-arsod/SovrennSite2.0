@@ -9,5 +9,10 @@ export const theme=createTheme({
         placeholder: {
             main: "#64748B", 
           },
+    },
+    typography:{
+        fontFamily: 'Inter, sans-serif',
+        
     }
+   
 })
