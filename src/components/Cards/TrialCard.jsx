@@ -17,13 +17,18 @@ left:10%
 const StyledTypography1=styled(Typography)`
 font-weight:700;
 font-size:26px;
-line-height:34px;    
+line-height:34px; 
+letter-spacing: -0.02em;  
 
 @media (max-width:700px)
 {
+  font-family: 'Inter', sans-serif;
+ 
   font-weight:600;
-font-size:20px;
-line-height:28px;  
+font-size:23px;
+line-height:28px;
+letter-spacing: -0.02em;
+
 }
 
 
@@ -35,34 +40,43 @@ font-size:18px;
 line-height:24px;
 @media (max-width:700px)
 {
+  font-family: 'Inter', sans-serif;
   font-weight:400;
 font-size:12px;
-line-height:19px;
+line-height:14px;
 }
 
 `;
 
+const StyledButton=styled(Button)`
+color: ${(props) => props.theme.palette.primary.main};
+font-weight:600;
+border-color: ${(props) => props.theme.palette.primary.main};
+outline:${(props) => props.theme.palette.primary.main};
+box-shadow:none;
+
+`;
 const TrialCard=()=>{
   return(
     <>
 
     <Box sx={{position:'absolute'}} bgcolor={{xs:'#0D1726',sm:""}}  width="100vw"  >
-      <StyledGrid container justifyContent='center' paddingTop={{xs:15,sm:0}} >
-<Grid item  sx={{background: "linear-gradient(to right, #0C4340, #4AB3AD)",borderRadius:'8px',}}>
-<Grid container direction={{xs:"column",sm:"row"}}   spacing={2} alignItems='center' justifyContent='space-between' paddingY={{xs:2,md:6}} paddingX={{xs:2,sm:4}} >
-        <Grid item  width={{xs:"90",sm:"70%"}}>
-        <StyledTypography1 color='#F3FAFB'  gutterBottom>Begin your 2-month trial for only ₹400 today!</StyledTypography1>
-        <StyledTypography2 color="#F4F3F3" textAlign="justify" >Unlock two months of financial insight with Sovrenn. Empower your investing journey today!</StyledTypography2>
+      <StyledGrid container justifyContent='center' paddingTop={{xs:16,sm:0}} >
+<Grid item  sx={{background: "linear-gradient(45deg, #0C4340, #4AB3AD)", boxShadow: '0px 8px 8px -4px #1018280A, 0px 20px 24px -4px #1018281A',borderRadius:'8px',}}>
+<Grid container direction={{xs:"column",sm:"row"}}   spacing={0} alignItems='center' justifyContent='space-between' paddingY={{xs:1,md:6}} paddingX={{xs:1,sm:4}} >
+        <Grid item  width={{xs:"100%",sm:"70%"}}>
+        <StyledTypography1 color='#F3FAFB' textAlign={{xs:"center",sm:"start"}}  gutterBottom>Begin your 2-month trial for only ₹400 today!</StyledTypography1>
+        <StyledTypography2 color="#F4F3F3" textAlign={{xs:"center",sm:"start"}} gutterBottom marginBottom={3} >Unlock two months of financial insight with Sovrenn. Empower your investing journey today!</StyledTypography2>
         </Grid>
         <Grid item >
-        <Button variant="contained"  sx={{ color: '#1DA098',fontWeight:"600",fontSize:{xs:"16px",sm:"16px"} ,backgroundColor:"white",lineHeight:"21px" ,textTransform:'none'}}>Buy Trial Now</Button>
+        <StyledButton variant="contained"  sx={{fontSize:{xs:"16px",sm:"16px"} ,backgroundColor:"white",paddingY:"8px",lineHeight:"19px" ,textTransform:'none',paddingY:"8px"}}>Buy Trial Now</StyledButton>
         </Grid>
         </Grid>
 
 </Grid>
       </StyledGrid>
       
-
+     
       
 
     </Box>
