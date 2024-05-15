@@ -4,6 +4,7 @@ import { Typography,Box,Grid} from "@mui/material";
 import styled from '@emotion/styled';
 import FoundersCard from "../Cards/FoundersCard";
 import { foundersArray } from "@/utils/Data";
+import { colors } from "../Constants/colors";
 
 
 
@@ -42,7 +43,7 @@ const FoundersInfo=()=>{
         <Grid item> 
         <Typography textAlign="center">
         <StyledTypography1 component="span" color="#0D1726" marginRight={1} >Meet Our</StyledTypography1>
-       <StyledTypography1 component="span" color="#1DA098" >Founders</StyledTypography1>
+       <StyledTypography1 component="span" color={colors.themeGreen} >Founders</StyledTypography1>
         </Typography>
       
         </Grid>
@@ -54,7 +55,7 @@ const FoundersInfo=()=>{
        
 
       </Grid>
-      <Grid container justifyContent='center'>
+      <Grid container justifyContent='center'  >
         {
 foundersArray.map((item,index)=>{
   return(

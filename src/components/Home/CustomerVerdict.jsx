@@ -6,6 +6,7 @@ import { Typography,Grid } from "@mui/material";
 import CustomerCard from "../Cards/CustomerCard";
 import Marquee from "react-fast-marquee";
 import { customerArray } from "@/utils/Data";
+import { gradientColors } from "../Constants/colors";
 
 
 
@@ -36,7 +37,7 @@ line-height:24px;
 
 `;
 const StyledBox = styled(Box)`
-background: linear-gradient(to right, #0C4340, #4AB3AD);
+background:linear-gradient(45deg, ${gradientColors.c1},${gradientColors.c2});
 `;
 const CustomerVerdict = () => {
   

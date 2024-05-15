@@ -4,7 +4,7 @@ import { createTheme } from "@mui/material"
 export const theme=createTheme({
     palette:{
         primary:{
-            main:"#1da098",
+            main:"#06A77D",
         },
         placeholder: {
             main: "#64748B", 
@@ -13,6 +13,23 @@ export const theme=createTheme({
     typography:{
         fontFamily: 'Inter, sans-serif',
         
-    }
-   
+    },
+    breakpoints: {
+        values: {
+          xs: 0, 
+          sm: 640, 
+          md: 1025, 
+          lg: 1280, 
+          xl: 1920, 
+        },
+      },
+      components: {
+        MuiButton: {
+          styleOverrides: {
+            root: {
+              boxShadow: 'none', 
+            },
+          },
+        },
+      },
 })

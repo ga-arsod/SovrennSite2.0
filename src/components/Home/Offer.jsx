@@ -16,6 +16,7 @@ import Slider from "@ant-design/react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
+import { colors } from "../Constants/colors";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -78,16 +79,18 @@ const StyledButton1 = styled(Button)`
 
 const StyledButton2 = styled(Button)`
   color: white;
-  background-color: #1da098;
+  background-color: ${colors.themeGreen};
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
   text-transform: none;
+  padding-top: 8px;
+    padding-bottom: 8px;
   :hover {
-    background-color: #1da098;
+    background-color: ${colors.themeButtonHover};
 
-    border-color: #1da098;
-    outline: #1da098;
+    border-color: ${colors.themeButtonHover};
+    outline: ${colors.themeButtonHover};
   }
   @media (max-width: 620px) {
     font-size: 16px;
@@ -140,7 +143,7 @@ const Offer = () => {
             <StyledTypography1 component="span" color="#0D1726" marginRight={1}>
               This is What we offer
             </StyledTypography1>
-            <StyledTypography1 component="span" color="#1DA098">
+            <StyledTypography1 component="span" color={colors.themeGreen}>
               You
             </StyledTypography1>
           </Typography>
@@ -193,7 +196,7 @@ const Offer = () => {
                                   <CheckIcon
                                     fontSize="medium"
                                     sx={{
-                                      color: "#1DA098",
+                                      color: colors.themeGreen,
                                       backgroundColor: "#B9E2DF", // Background color
                                       borderRadius: "50%",
                                       padding: "4px",
