@@ -4,6 +4,7 @@ import PlanCard from "../Cards/PlanCard";
 import {Box,Grid,Typography} from "@mui/material";
 import styled from '@emotion/styled';
 import { planData } from "../../utils/Data";
+import { colors } from "../Constants/colors";
 
 
 
@@ -11,11 +12,12 @@ const StyledTypography1 = styled(Typography)`
 font-weight:600;
 font-size:34px;
 line-height:40px;
-@media (max-width:700px)
+@media (max-width:639px)
 {
   font-weight:600;
 font-size:23px;
 line-height:28px;
+letter-spacing:0.02em
 }
 
 `;
@@ -38,10 +40,10 @@ const PlanInfo=()=>{
   return(
 <Box width="100%" paddingY={4} >
       <Grid container spacing={1} direction="column" justifyContent='center' alignItems='center'  >
-        <Grid item paddingX={2}> 
-        <Typography textAlign='center'>
+        <Grid item > 
+        <Typography textAlign='center' paddingX={2}>
         <StyledTypography1 component="span" color="#0D1726" marginRight={1}>Choose a Plan that&apos;s Best for</StyledTypography1>
-       <StyledTypography1 component="span" color="#1DA098" >You</StyledTypography1>
+       <StyledTypography1 component="span" color={colors.themeGreen} >You</StyledTypography1>
 
         </Typography>
        

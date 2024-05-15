@@ -2,6 +2,7 @@ import { Grid, Typography, Box } from "@mui/material";
 import React from "react";
 import Image from "next/image";
 import styled from "@emotion/styled";
+import { colors } from "../Constants/colors";
 
 const StyledTypography1 = styled(Typography)`
   @media (max-width: 639px) {
@@ -37,10 +38,10 @@ const CustomerCard = ({ element }) => {
   return (
     <Grid
       container
-      bgcolor="#E8F6F5"
+      bgcolor={colors.green50}
       sx={{
         height: "auto",
-        width: { xs: "70vw", sm: "50vw", md: "25vw" },
+        width: { xs: "70vw", sm: "40vw", md: "25vw" },
         margin: "5px",
         borderRadius: "6px",
       }}

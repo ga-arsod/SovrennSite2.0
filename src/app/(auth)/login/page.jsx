@@ -48,8 +48,10 @@ const Auth = () => {
     <Box>
       <Grid
         container
-        height={{ lg: "100vh" }}
+        height={{ md: "100vh" }}
         direction={{ xs: "column", sm: "row" }}
+        marginTop={{xs:0,md:8}}
+        
       >
         <StyledGrid item xs={12} lg={6} order={{ xs: 2, lg: 1 }} sx={{flexGrow:1}}>
           {isTablet && isSignIn ? <SignInCard /> : <SignUpCard />}

@@ -22,7 +22,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-
+import { colors } from "../Constants/colors";
 const navItems = [
   "Education",
   "Times",
@@ -87,7 +87,7 @@ const StyledButton1 = styled(Button)`
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
-  background-color: #1da098;
+  background-color: ${colors.themeGreen};
   color: white;
 `;
 const StyledButton2 = styled(Button)`
@@ -115,10 +115,11 @@ const Navbar = () => {
     <>
       <AppBar
         sx={{
-          backgroundColor: "white",
+          backgroundColor: "#F4F6F8",
           boxShadow: "none",
           position: "fixed",
           zIndex: 10,
+        
         }}
       >
         <Toolbar>
