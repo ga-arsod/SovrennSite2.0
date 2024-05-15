@@ -3,6 +3,7 @@ import React,{useState} from "react";
 import { Box ,Grid,Typography, Accordion, AccordionSummary, AccordionDetails,} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import styled from '@emotion/styled';
+import { colors } from "../Constants/colors";
 
 
 
@@ -78,11 +79,11 @@ const Faq=()=>{
 <Box width="100%" sx={{backgroundImage: `url('/rectangle.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',}}>
-      <Grid container paddingX={4} spacing={1} direction="column" justifyContent='center' alignItems='center' paddingTop={4}>
+      <Grid container paddingX={2} spacing={1} direction="column" justifyContent='center' alignItems='center' paddingTop={4}>
         <Grid item> 
         <Typography textAlign='center'>
         <StyledTypography1 component="span" color="#0D1726" marginRight={1} >Frequently asked</StyledTypography1>
-       <StyledTypography1 component="span" color="#1DA098" >questions</StyledTypography1>
+       <StyledTypography1 component="span" color={colors.themeGreen} >questions</StyledTypography1>
 
         </Typography>
       

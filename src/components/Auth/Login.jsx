@@ -7,11 +7,14 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  InputLabel,
+  InputLabel
 } from "@mui/material";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { colors } from "../Constants/colors";
+import Image from "next/image";
 
 const inputsFieldsArray = [
   {
@@ -64,7 +67,7 @@ const StyledInputLabel = styled(InputLabel)`
   font-weight: 400;
   font-size: 17px;
   line-height: 21px;
-  color: #121e32;
+  color:#010C15;
 `;
 const StyledTypography = styled(Typography)`
   font-weight: 600;
@@ -72,16 +75,19 @@ const StyledTypography = styled(Typography)`
   line-height: 17px;
 `;
 const StyledButton1 = styled(Button)`
-  border-color: #1da098;
+  border-color: ${colors.themeGreen};
   color: white;
   font-weight: 600;
   font-size: 17px;
   line-height: 30px;
   text-transform: none;
   width: 100%;
-  background-color: #1da098;
+  padding-top:10px;
+  padding-bottom:10px;
+
+  background-color: ${colors.themeGreen};
   :hover {
-    background-color: #1da098;
+    background-color: ${colors.themeButtonHover};
   }
 `;
 
@@ -92,6 +98,8 @@ const StyledButton2 = styled(Button)`
   line-height: 30px;
   text-transform: none;
   width: 100%;
+  padding-top:10px;
+  padding-bottom:10px;
 
   border: 1px solid #20365b;
 `;
@@ -108,19 +116,30 @@ const Login = ({ isSignIn, setIsSignIn }) => {
       width={{ xs: "90%", sm: "50%", lg: "70%" }}
       justifyContent="center"
       alignItems="center"
+     
     >
       <Grid
         item
         width="100%"
-        sx={{ display: "flex", flexDirection: "column", gap: "14px" }}
+        sx={{ display: "flex",justifyContent:"space-between",alignItems:"center"}}
+        marginBottom={3}
       >
+        <IconButton sx={{padding:0,visibility:{xs:"",sm:"hidden"}}}>
+          <ArrowBackIcon sx={{ color:"#011627"}}/>
+        </IconButton>
+
         <Typography
           textAlign="center"
-          color="#1DA098"
+          color={colors.themeGreen}
           sx={{ fontWeight: "600", fontSize: "33px", lineHeight: "40px" }}
+          
         >
           {isSignIn ? "Sign In" : "Sign Up"}
         </Typography>
+        <Typography ></Typography>
+        
+      </Grid>
+      <Grid item   width="100%">
         <form>
           <Grid container direction="column">
             {isSignIn
@@ -238,7 +257,7 @@ const Login = ({ isSignIn, setIsSignIn }) => {
                             <Button
                               disableElevation
                               sx={{
-                                color: "#1DA098",
+                                color: colors.themeGreen,
                                 fontWeight: "400",
                                 fontSize: "13px",
                                 lineHeight: "17px",
@@ -255,7 +274,7 @@ const Login = ({ isSignIn, setIsSignIn }) => {
                 })}
           </Grid>
         </form>
-      </Grid>
+        </Grid>
       <Grid item width="100%">
         <Grid container width="100%" rowSpacing={2}>
           <Grid item width="100%">
@@ -281,10 +300,11 @@ const Login = ({ isSignIn, setIsSignIn }) => {
             <StyledButton2
               variant="outlined"
               startIcon={
-                <img
+                <Image
                   src="/google.svg"
                   alt="My Image"
-                  style={{ width: 20, height: 20 }}
+                width={20}
+                height={20}
                 />
               }
             >
@@ -298,7 +318,7 @@ const Login = ({ isSignIn, setIsSignIn }) => {
               </StyledTypography>
               <StyledTypography
                 component="span"
-                color="#1DA098"
+                color={colors.themeGreen}
                 onClick={() => {
                   setIsSignIn(!isSignIn);
                 }}

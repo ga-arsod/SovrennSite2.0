@@ -4,12 +4,14 @@ import { Typography, Box, Grid } from "@mui/material";
 import Image from "next/image";
 import styled from "@emotion/styled";
 import { useTheme } from "@mui/material/styles";
+import { colors } from "../Constants/colors";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 34px;
   line-height: 40px;
   text-align: center;
+  letter-spacing:-0.04em;
   @media (max-width: 700px) {
     font-weight: 600;
     font-size: 23px;
@@ -42,11 +44,11 @@ const Information = () => {
           justifyContent="center"
           alignItems="center"
           spacing={1}
-          paddingX={2}
-          paddingY={4}
+          paddingX={{xs:2,sm:3,md:2}}
+          paddingY={6}
         >
           <Grid item>
-            <Typography sx={{ textAlign: "center" }} gutterBottom>
+            <Typography sx={{ textAlign: "center" }} gutterBottom >
               <StyledTypography1
                 component="span"
                 marginRight={1}
@@ -56,13 +58,13 @@ const Information = () => {
               </StyledTypography1>
               <StyledTypography1
                 component="span"
-                color={theme.palette.primary.main}
+                color={colors.themeGreen}
               >
                 Sovrenn
               </StyledTypography1>
             </Typography>
           </Grid>
-          <Grid item sx={{ textAlign: "center" }}>
+          <Grid item sx={{ textAlign: "center" }} marginBottom={2}>
             <StyledTypography2
               component="span"
               justifyContent="center"

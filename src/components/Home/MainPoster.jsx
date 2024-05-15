@@ -5,6 +5,7 @@ import React from "react";
 import Image from "next/image";
 import { useTheme } from '@mui/material/styles';
 
+import { colors } from "../Constants/colors";
 const headingsArray = [
   {
     h1: "MASTER",
@@ -21,8 +22,8 @@ const headingsArray = [
 ];
 
 const StyledButton1 = styled(Button)`
-  border-color:  ${(props) => props.theme.palette.primary.main};
-  color: #1da098;
+  border-color: ${colors.themeGreen};
+  color: ${colors.themeGreen};
   font-weight: 600;
   font-size: 18px;
   line-height: 21px;
@@ -32,15 +33,15 @@ const StyledButton1 = styled(Button)`
   background-color:white;
   width: 100%;
   :hover {
-    background-color: #68BFBA;
+    background-color:${colors.themeButtonHover};
     color: white;
-    border-color: ${(props) => props.theme.palette.primary.main};
-    outline:${(props) => props.theme.palette.primary.main};
+    border-color:${colors.themeButtonHover};
+    outline:${colors.themeButtonHover};
   }
-  @media (max-width: 700px) {
+  @media (max-width: 639px) {
     font-size: 16px;
     font-weight: 600;
-    line-height: 19px;
+    line-height: 20px;
     padding-top:12px;
   padding-bottom:12px;
   }
@@ -53,12 +54,12 @@ const StyledButton2 = styled(Button)`
   line-height: 21px;
   padding-top:12px;
   padding-bottom:12px;
-  background-color:${(props) => props.theme.palette.primary.main};
+  background-color:${colors.themeGreen};
   text-transform: none;
  
   width: 100%;
   :hover {
-    background-color:#68BFBA;
+    background-color:${colors.themeButtonHover};
   }
   @media (max-width: 700px) {
     font-size: 16px;
@@ -70,7 +71,7 @@ const StyledButton2 = styled(Button)`
 `;
 
 const StyledTypography1 = styled(Typography)`
-  color: ${(props) => props.theme.palette.primary.main};
+  color:${colors.themeGreen};
   margin-right: 8px;
 
   @media (max-width: 700px) {
@@ -126,7 +127,7 @@ const MainPoster = () => {
         backgroundSize: "cover",
       }}
     >
-      <Grid container paddingX={2} justifyContent="space-between" paddingTop={{xs:5,lg:0}}>
+      <Grid container paddingX={2} justifyContent="space-between" paddingTop={{xs:7,sm:10,lg:0}}>
         <Grid item lg={6} xs={12} sx={{ marginTop: {xs:"40px",md:"70px",lg:"100px"} }}>
           <Grid container justifyContent="center" alignItems="center">
             <Grid item>
@@ -147,7 +148,7 @@ const MainPoster = () => {
                   component="span"
                   sx={{
                     fontSize: "16px",
-                    color: theme.palette.primary.main,
+                    color: colors.themeGreen,
                     fontWeight: "400",
                     marginRight: "3px",
                   }}

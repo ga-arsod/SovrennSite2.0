@@ -4,6 +4,7 @@ import React from "react";
 import styled from '@emotion/styled';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import { colors } from "../Constants/colors";
 
 
 const StyledTypography = styled(Typography)`
@@ -39,6 +40,15 @@ const StyledButton = styled(Button)`
 font-size:13px;
 line-height:16px;
 color:#667085;
+}
+  
+`;
+const StyledButton2 = styled(Button)`
+:hover {
+  background-color:${colors.themeButtonHover};
+  
+  border-color:${colors.themeButtonHover};
+  outline:${colors.themeButtonHover};
 }
   
 `;
@@ -114,10 +124,10 @@ const PlanCard=({element})=>{
       </Grid>
            
            <Grid item>
-             <Grid container direction='column' spacing={1}>
+             <Grid container direction='column' spacing={2}>
              <Grid item>
           
-        <Button  fullWidth variant="contained"   sx={{paddingY:"8px",backgroundColor:'#1DA098',fontWeight:"600",fontSize:{xs:"18px",sm:"16px",md:"18px"},lineHeight:"21px",color:'white',textTransform:"none",paddingY:"12px"}}>Buy Now</Button>
+        <StyledButton2  fullWidth variant="contained"   sx={{paddingY:"10px",backgroundColor:colors.themeGreen,fontWeight:"600",fontSize:{xs:"18px",sm:"16px",md:"18px"},lineHeight:"21px",color:'white',textTransform:"none",paddingY:"12px"}}>Buy Now</StyledButton2>
        
        
         </Grid>
@@ -138,7 +148,7 @@ const PlanCard=({element})=>{
                 <Grid item>
                   <IconButton>
                     {
-                      item.accessibility ? <CheckIcon fontSize="medium" sx={{color:"#1DA098",backgroundColor: '#B9E2DF', 
+                      item.accessibility ? <CheckIcon fontSize="medium" sx={{color:colors.themeGreen,backgroundColor: '#B9E2DF', 
                       borderRadius: '50%', 
                       padding: '4px' }}/> :<CloseIcon fontSize="medium" sx={{color:"#FB8E8E",backgroundColor: '#B9E2DF', 
                       borderRadius: '50%', 

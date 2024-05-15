@@ -2,6 +2,8 @@
 import React from 'react'
 import { Box,Grid,Typography,Stack,Rating } from '@mui/material'
 import styled from '@emotion/styled'
+import { colors ,gradientColors} from '../Constants/colors'
+
 
 const StyledTypography1=styled(Typography)`
 font-weight:400;
@@ -22,7 +24,7 @@ color:white;
 const SignInCard = () => {
   return (
     <>
-   <Box sx={{background:"linear-gradient(to right, #0C4340, #4AB3AD)",height:"30vh",position:"absolute",bottom:0} } display="flex" alignItems="center">
+   <Box sx={{background:`linear-gradient(45deg, ${gradientColors.c1}, ${gradientColors.c2})`,height:"30vh",position:"absolute",bottom:0} } display="flex" alignItems="center">
     <Grid container  paddingX={6} justifyContent="center" alignItems="center">
         <Grid item>
             <StyledTypography1 textAlign="center" gutterBottom>

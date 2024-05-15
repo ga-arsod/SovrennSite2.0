@@ -3,11 +3,12 @@ import React from 'react'
 
 import { useTheme } from '@mui/material/styles';
 import styled from '@emotion/styled';
+import { gradientColors } from '../Constants/colors';
 
 
 const StyledGrid=styled(Grid)`
 @media (min-width: 640px) and (max-width: 1024px) {
- height:40vh
+ height:30vh
 }
 height:100vh
 `;
@@ -18,7 +19,18 @@ const infoObj = {
     users: "20,000+",
   };
 
-
+const StyledTypography1=styled(Typography)`
+font-weight:600;
+font-size:55px;
+line-height:55px;
+letter-spacing: -0.04em;
+@media (min-width: 640px) and (max-width: 1024px) {
+  font-size: 34px;
+  font-weight: 600;
+  line-height:40px;
+  letter-spacing: -0.04em;
+}
+`
 
 const SignUpCard = () => {
     const theme=useTheme();
@@ -26,20 +38,23 @@ const SignUpCard = () => {
     <StyledGrid
             container
             height="100%"
+            
             sx={{
-              background: "linear-gradient(to right, #0C4340, #4AB3AD)",
+              background: `linear-gradient(45deg, ${gradientColors.c1}, ${gradientColors.c2})`,
               display: "flex",
               alignItems: "center",
+              justifyContent:"center"
+              
            
             }}
           >
             <Grid
               item
               paddingX={7}
-              paddingY="3rem"
+             
               sx={{ display: "flex", flexDirection: "column", gap: "10px" }}
             >
-              <Box display="flex" justifyContent={{xs:"center",lg:"flex-start"}}>
+              <Box display="flex" justifyContent={{xs:"center",lg:"flex-start"}} sx={{display:{xs:"none",sm:"none",md:"block"}}}>
               <Avatar alt="star" src="/stars.svg" />
               </Box>
              
@@ -48,26 +63,27 @@ const SignUpCard = () => {
             
              
 
-              <Typography
+              <StyledTypography1
                 color="#E4E7EC"
-                textAlign={{xs:"center",lg:"start"}}
-                sx={{ fontWeight: "600", fontSize: "50px", lineHeight: "52px" }}
+                textAlign={{xs:"center",md:"start"}}
+               
               >
                 {infoObj.h1}
-              </Typography>
+              </StyledTypography1>
               <Typography
                 variant="body1"
                 gutterBottom
-                textAlign={{xs:"center",lg:"start"}}
-                color="#E4E7EC"
+                textAlign={{xs:"center",md:"start"}}
+                color="#F6F5F5"
+                paddingX={{sm:5,md:0}}
                 sx={{ fontWeight: "400", fontSize: "20px", lineHeight: "24px" }}
               >
                 {infoObj.h2}
               </Typography>
               <Typography
                 variant="body1"
-                color="#E4E7EC"
-                textAlign={{xs:"center",lg:"start"}}
+                color="#F8F7F7"
+                textAlign={{xs:"center",md:"start"}}
                 sx={{ fontWeight: "600", fontSize: "19px", lineHeight: "23px" }}
               >
                 {infoObj.h3}
@@ -95,7 +111,7 @@ const SignUpCard = () => {
       </Grid>
       <Grid item sx={{ pl: 6.5 }}>
         <Typography
-          color="#E4E7EC"
+          color="#F6F5F5"
           sx={{
             fontWeight: '400',
             fontSize: '14px',

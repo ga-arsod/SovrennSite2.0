@@ -3,16 +3,17 @@ import React from "react";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import Image from "next/image";
+import { colors } from "../Constants/colors";
 
 const FoundersCard = ({ item }) => {
   return (
-    <Grid item padding={4} xs={12} md={6} sx={{position:'relative'}}>
+    <Grid item paddingY={4} paddingX={{xs:4,sm:2,md:4}} xs={12} sm={6} sx={{position:'relative'}}>
       <Grid
         container
         direction="column"
         alignItems="center"
         justifyContent='center'
-        paddingX={{xs:1,sm:3}}
+        paddingX={{xs:1,sm:2,md:3}}
        
       >
         <Grid item  sx={{ borderRadius: "50%",overflow:'hidden'}}>
@@ -35,7 +36,7 @@ const FoundersCard = ({ item }) => {
           <Typography
             textAlign="center"
             component="div"
-            color="#105854"
+            color={colors.green800}
             sx={{ fontWeight: "400", fontSize: "18px", lineHeight: "21px" }}
             gutterBottom
           >

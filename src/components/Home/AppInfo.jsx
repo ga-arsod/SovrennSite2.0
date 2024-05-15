@@ -4,6 +4,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import Image from "next/image";
+import { colors } from "../Constants/colors";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -15,7 +16,14 @@ const StyledTypography1 = styled(Typography)`
     line-height: 28px;
   }
 `;
-
+const StyledButton=styled(Button)`
+:hover {
+  background-color:${colors.blueButtonHover};
+  
+  border-color:${colors.blueButtonHover};
+  outline:${colors.blueButtonHover};
+}
+`;
 const StyledTypography2 = styled(Typography)`
   font-weight: 400;
   font-size: 20px;
@@ -33,9 +41,9 @@ const AppInfo = () => {
         container
         direction="column"
         spacing={10}
-        paddingBottom={{ xs: 3, sm: 13 }}
+        paddingBottom={{ xs: 3, sm: 17,md:13 }}
         justifyContent="center"
-        paddingX={2}
+        paddingX={{xs:2,sm:1,md:2}}
       >
         <Grid item>
           <Grid
@@ -66,7 +74,7 @@ const AppInfo = () => {
             </Grid>
 
             <Grid item>
-              <Button
+              <StyledButton
                 variant="contained"
                 startIcon={<MailOutlineIcon />}
                 sx={{
@@ -74,12 +82,12 @@ const AppInfo = () => {
                   fontWeight: "600",
                   textTransform: "none",
                   fontSize: "16px",
-                  backgroundColor: "#20365B",
+                  backgroundColor: colors.navyBlue500,
                   lineHeight: "35px",
                 }}
               >
                 Write to Us
-              </Button>
+              </StyledButton>
             </Grid>
           </Grid>
         </Grid>
