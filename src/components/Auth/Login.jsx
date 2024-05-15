@@ -14,6 +14,7 @@ import Link from "next/link";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { colors } from "../Constants/colors";
+import Image from "next/image";
 
 const inputsFieldsArray = [
   {
@@ -299,10 +300,11 @@ const Login = ({ isSignIn, setIsSignIn }) => {
             <StyledButton2
               variant="outlined"
               startIcon={
-                <img
+                <Image
                   src="/google.svg"
                   alt="My Image"
-                  style={{ width: 20, height: 20 }}
+                width={20}
+                height={20}
                 />
               }
             >
