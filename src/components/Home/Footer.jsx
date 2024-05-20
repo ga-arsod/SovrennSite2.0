@@ -17,6 +17,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const listArray = [
   {
@@ -71,20 +72,25 @@ const StyledBox = styled(Box)`
 `;
 
 const Footer = () => {
+  const pathname = usePathname();
   return (
     <>
       <StyledBox
         bgcolor="#0D1726"
-       
-        height={{ xs: "50vh",sm:"60vh", md: "40vh", lg: "90vh" }}
+        height={{
+          xs: "50vh",
+          sm: pathname === "/" ? "60vh" : "53vh",
+          md: pathname === "/" ? "40vh" : "58vh",
+          lg: pathname === "/" ? "90vh" : "60vh",
+        }}
         sx={{ position: "relative" }}
       >
         <Grid
           container
           justifyContent="space-between"
-          width={{xs:"100%",sm:"80%",md:"100%"}}
+          width={{ xs: "100%", sm: "80%", md: "100%" }}
           sx={{ position: "absolute", bottom: "6rem" }}
-          paddingX={{ xs: 4,sm:6, md: 8 }}
+          paddingX={{ xs: 4, sm: 6, md: 8 }}
         >
           <Grid item order={1}>
             <List
@@ -164,7 +170,15 @@ const Footer = () => {
               })}
             </List>
           </Grid>
-          <Grid item order={{ xs: 4, md: 3 }} sm={12} xs={3} md={3} lg={3} marginTop={{xs:0,sm:3,md:0}}>
+          <Grid
+            item
+            order={{ xs: 4, md: 3 }}
+            sm={12}
+            xs={3}
+            md={3}
+            lg={3}
+            marginTop={{ xs: 0, sm: 3, md: 0 }}
+          >
             <List
               subheader={
                 <StyledSubheader component="div" id="nested-list-subheader">

@@ -21,7 +21,12 @@ export const colors={
     greyBlue800:'#36444f',
     greyBlue900:'#29343c',
     navyBlue500:'#011627',
+    navyBlue400:'#344552',
     blueButtonHover:'#55636E',
+    headingColor:'#101828',
+    white:'#FFFFFF',
+    black:'#000000',
+    navyBlue900:'#000910',
 }
 
 export const gradientColors={

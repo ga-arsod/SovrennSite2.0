@@ -13,14 +13,19 @@ import {
 import { LiveSessionInfoArray } from "@/utils/Data";
 import styled from "@emotion/styled";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { colors } from "../Constants/colors";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 34px;
-  line-height: 40px @media (max-width: 700px) {
+  line-height: 40px;
+  letter-spacing:0.04em;
+ 
+  @media (max-width: 639px) {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 23px;
     line-height: 28px;
+    letter-spacing:0.02em;
   }
 `;
 
@@ -29,17 +34,18 @@ const StyledTypography2 = styled(Typography)`
   font-size: 20px;
   line-height: 24px;
   text-align: center;
-  @media (max-width: 700px) {
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 14px;
-    text-align: center;
-  }
+ color:${colors.greyBlue500}
 `;
 const StyledTypography3 = styled(Typography)`
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
+  @media (max-width: 639px) {
+    font-size: 23px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing:-0.02em;
+  }
 `;
 const StyledListItemText = styled(ListItemText)`
   font-weight: 400;
@@ -47,21 +53,20 @@ const StyledListItemText = styled(ListItemText)`
   line-height: 24px;
 `;
 const StyledButton2 = styled(Button)`
-  color: white;
+  color: ${colors.white};
   font-weight: 600;
-  font-size: 17px;
-  background-color: ${(props) => props.theme.palette.primary.main};
+  font-size: 18px;
+  background-color: ${colors.themeGreen};
   text-transform: none;
+  padding-top:14px;
+  padding-bottom:14px;
   line-height: 21px;
 
   :hover {
-    background-color: ${(props) => props.theme.palette.primary.main};
+    background-color: ${colors.themeButtonHover};
+   
   }
-  @media (max-width: 700px) {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 21px;
-  }
+ 
 `;
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
@@ -77,41 +82,44 @@ const LiveSessionInfo = () => {
   return (
     <>
       <Box>
-        <Grid container width="100%" spacing={8} paddingX={14} paddingY={5}>
-          <Grid item xs={12}>
-            <Typography sx={{ textAlign: "center" }} gutterBottom>
+        <Grid container width="100%">
+          <Grid item xs={12} marginY={6} paddingX={3}>
+            <Typography sx={{ textAlign: "center" }} marginBottom={2}>
               <StyledTypography1
                 component="span"
                 marginRight={1}
-                color="#0D1726"
+                color={colors.headingColor}
               >
                 Discover the Benefits of Enrolling in Our Live
               </StyledTypography1>
-              <StyledTypography1 component="span" color="#1DA098">
+              <StyledTypography1 component="span" color={colors.themeGreen}>
                 Session
               </StyledTypography1>
             </Typography>
-            <StyledTypography2 gutterBottom textAlign="center" color="#627B8F">
+            <StyledTypography2 gutterBottom textAlign="center">
               Elevate Your Investing Journey with Expert Knowledge and Practical
               Insights
             </StyledTypography2>
           </Grid>
-          {LiveSessionInfoArray.map((element, index) => {
+          <Grid item>
+            <Grid container direction={{xs:"column",sm:"row"}} gap={3}  justifyContent="center" paddingX={2} paddingBottom={4} >
+            {LiveSessionInfoArray.map((element, index) => {
             return (
-              <Grid item md={6} key={index}>
+              <Grid item xs={5.9} sm={5.6} md={5} key={index} sx={{border: "1px solid #E4E7EC",borderRadius:"8px"}} padding={2} >
                 <List
                   sx={{
                     width: "100%",
                     listStyleType: "disc",
                     padding: 0,
-                    height: "46vh",
+                    height: {xs:"45vh",sm:"35vh",md:"45vh"},
                   }}
                 >
                   <StyledTypography3
                     variant="h6"
                     component="h2"
                     gutterBottom
-                    color="#101828"
+                    color={colors.headingColor}
+                    textAlign={{xs:"center",sm:"start"}}
                   >
                     {element.h1}
                   </StyledTypography3>
@@ -124,7 +132,7 @@ const LiveSessionInfo = () => {
                               fontWeight: "400",
                               color: "#667085",
                               fontSize: "16px",
-                              lineHeight: "19px",
+                              lineHeight: "24px",
                             },
                           }}
                           primary={item}
@@ -138,10 +146,12 @@ const LiveSessionInfo = () => {
                   alignItems="center"
                   direction="column"
                   spacing={3}
+                  marginTop={{xs:4,sm:-2}}
                 >
                   <Grid item>
+                    <Typography textAlign="center">
                     <Typography
-                      color="#667085"
+                      color={colors.navyBlue400}
                       marginRight={0.5}
                       component="span"
                       sx={{
@@ -153,7 +163,7 @@ const LiveSessionInfo = () => {
                       Upcoming Session:
                     </Typography>
                     <Typography
-                      color="#101828"
+                      color={colors.headingColor}
                       component="span"
                       sx={{
                         fontWeight: "600",
@@ -163,6 +173,9 @@ const LiveSessionInfo = () => {
                     >
                       25th Dec 23 at 2:30 P.M.
                     </Typography>
+
+                    </Typography>
+                   
                   </Grid>
                   <Grid item>
                     <StyledButton2 variant="contained">
@@ -173,6 +186,12 @@ const LiveSessionInfo = () => {
               </Grid>
             );
           })}
+
+            </Grid>
+
+
+          </Grid>
+         
         </Grid>
       </Box>
     </>
