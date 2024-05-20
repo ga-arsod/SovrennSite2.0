@@ -4,6 +4,8 @@ import { Box ,Grid,Typography, Accordion, AccordionSummary, AccordionDetails,} f
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import styled from '@emotion/styled';
 import { colors } from "../Constants/colors";
+import { usePathname } from "next/navigation";
+import { educationFaqArray,faqDescription } from "@/utils/Data";
 
 
 
@@ -69,6 +71,7 @@ const faqs = [
   
 ];
 const Faq=()=>{
+  const pathname=usePathname();
   const [expanded, setExpanded] = useState(null);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -82,7 +85,7 @@ const Faq=()=>{
       <Grid container paddingX={2} spacing={1} direction="column" justifyContent='center' alignItems='center' paddingTop={4}>
         <Grid item> 
         <Typography textAlign='center'>
-        <StyledTypography1 component="span" color="#0D1726" marginRight={1} >Frequently asked</StyledTypography1>
+        <StyledTypography1 component="span" color={colors.navyBlue900} marginRight={1} >Frequently asked</StyledTypography1>
        <StyledTypography1 component="span" color={colors.themeGreen} >questions</StyledTypography1>
 
         </Typography>
@@ -90,20 +93,20 @@ const Faq=()=>{
         </Grid>
         
         <Grid item> 
-       <StyledTypography2 component="div" textAlign='center' color="#627B8F"  sx={{fontWeight:"400",fontSize:"20px",lineHeight:"24px"}}>Everything you need to know about the product and billing.</StyledTypography2>
+       <StyledTypography2 component="div" textAlign='center' color={colors.greyBlue500}  sx={{fontWeight:"400",fontSize:"20px",lineHeight:"24px"}}>{pathname ==="/" ? faqDescription.home :faqDescription.education}</StyledTypography2>
         </Grid>
        <Grid item>
        <Grid container  marginTop={6} justifyContent='center' >
-     <Grid item paddingX={{xs:4}}>
-     {faqs.map((faq, index) => (
+     <Grid item paddingX={{xs:2}}>
+     {(pathname==="/" ? faqs : educationFaqArray).map((faq, index) => (
       <>
         <StyledAccordion key={index} expanded={expanded === `panel${index}`} onChange={handleChange(`panel${index}`)}>
           <StyledAccordionSummary
-            expandIcon={<ExpandMoreIcon sx={{color:'#1DA098'}} />}
+            expandIcon={<ExpandMoreIcon sx={{color:colors.themeGreen}} />}
             aria-controls={`panel${index}bh-content`}
             id={`panel${index}bh-header`}
           >
-            <Typography color='#0D1726' sx={{fontWeight:'600',fontSize:'20px',lineHeight:"24px"}}> {faq.question}</Typography>
+            <Typography color={colors.greyBlue900} sx={{fontWeight:'600',fontSize:'20px',lineHeight:"24px"}}> {faq.question}</Typography>
           </StyledAccordionSummary>
           <StyledAccordionDetails>
             <Typography color="#627B8F" sx={{ fontSize:"16px",fontWeight:"400px",lineHeight:"24px"}}>{faq.answer}</Typography>
