@@ -135,3 +135,25 @@ listItems:[
 },
 
 ]
+
+export const expertDataArray={
+  foundersH1:"Meet Our",
+  expertH1:"Meet the",
+  foundersH2:"Founders",
+  expertH2:"Expert",
+  foundersDescription:"Get to Know the Minds Behind Sovrenn",
+  expertDescription:"Gain a learning experience from our expert."
+
+}
+
+export const educationFaqArray=[
+  { question: 'When will I receive the live zoom call link?', answer: 'Lorem Ipsum, sometimes referred to as lipsum", is the placeholder text used in design when creating content.' },
+  { question: 'Can beginners join this session?', answer: 'Lorem Ipsum, sometimes referred to as "lipsum", is the placeholder text used in design when creating content.' },
+  { question: 'Can beginners join this session?', answer: 'Lorem Ipsum, sometimes referred to as "lipsum", is the placeholder text used in design when creating content.' },
+  
+]
+
+export const faqDescription={
+  home:"Everything you need to know about the product and billing.",
+  education:"Everything you need to know about the session booking."
+}

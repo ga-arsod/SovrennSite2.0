@@ -2,6 +2,7 @@
 import React from "react";
 import { Typography, Box, Grid } from "@mui/material";
 import styled from "@emotion/styled";
+import { colors } from "../Constants/colors";
 
 const stepsArray = [
   {
@@ -23,10 +24,12 @@ const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 34px;
   line-height: 40px;
-  @media (max-width: 700px) {
+  letter-spacing:-0.04em;
+  @media (max-width: 639px) {
     font-weight: 600;
     font-size: 23px;
     line-height: 28px;
+    letter-spacing:-0.02em;
   }
 `;
 
@@ -34,17 +37,20 @@ const StyledTypography2 = styled(Typography)`
   font-weight: 400;
   font-size: 20px;
   line-height: 24px;
-  @media (max-width: 700px) {
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 14px;
-  }
+ 
 `;
 
 const StyledTypography3 = styled(Typography)`
   font-weight: 500;
   font-size: 20px;
   line-height: 30px;
+  color:${colors.black};
+  @media (max-width: 639px) {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    
+  }
 `;
 
 const LiveSessionSteps = () => {
@@ -59,13 +65,13 @@ const LiveSessionSteps = () => {
           alignItems="center"
           paddingTop={4}
           paddingY={8}
-          paddingX={12}
+          paddingX={{xs:3,sm:6}}
         >
           <Grid item>
             <StyledTypography1
               textAlign="center"
               component="span"
-              color="#101828"
+              color={colors.headingColor}
               marginRight={1}
             >
               How this Works?
@@ -76,19 +82,19 @@ const LiveSessionSteps = () => {
             <StyledTypography2
               textAlign="center"
               component="div"
-              color="#627B8F"
+              color={colors.greyBlue500}
             >
               This is how this live session booking process works.
             </StyledTypography2>
           </Grid>
-          <Grid item>
-            <Grid container spacing={5} marginTop={2}>
+          <Grid item marginTop={4}>
+            <Grid container spacing={{xs:1,sm:4}} marginTop={2}>
               {stepsArray.map((element, index) => {
                 return (
                   <Grid
                     item
                     key={index}
-                    xs={12}
+                    xs={4}
                     sm={4}
                     sx={{
                       display: "flex",
@@ -96,13 +102,18 @@ const LiveSessionSteps = () => {
                       gap: "6px",
                       alignItems: "center",
                     }}
+                  
                   >
                     <Box
                       sx={{
-                        bgcolor: "#E8F6F5",
-                        borderRadius: "50%",
-                        paddingX: "12px",
-                        paddingY: "4px",
+                        bgcolor:colors.green50,
+                        borderRadius: '24px',
+                        width:'48px',
+                        height:'48px',
+                        display:"flex",
+                        justifyContent:"center",
+                        alignItems:"center"
+                        
                       }}
                     >
                       <StyledTypography3>{element.serial}</StyledTypography3>
