@@ -18,6 +18,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { colors } from "../Constants/colors";
 
 const listArray = [
   {
@@ -76,7 +77,7 @@ const Footer = () => {
   return (
     <>
       <StyledBox
-        bgcolor="#0D1726"
+        bgcolor={colors.navyBlue900}
         height={{
           xs: "50vh",
           sm: pathname === "/" ? "60vh" : "53vh",

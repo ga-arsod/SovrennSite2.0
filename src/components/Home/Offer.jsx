@@ -7,16 +7,23 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Button,
+  Button,IconButton,
+  useTheme
 } from "@mui/material";
-import React from "react";
+import React,{useState} from "react";
 import styled from "@emotion/styled";
 import CheckIcon from "@mui/icons-material/Check";
-import Slider from "@ant-design/react-slick";
+import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
 import { colors } from "../Constants/colors";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CircleIcon from '@mui/icons-material/Circle';
+
+
+
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -112,16 +119,38 @@ const sovreenOfferArray = [
       second: "Buy Full Access @ ₹5000/yr",
     },
   },
+  {
+    imagePath: "/content.svg",
+    Info: {
+      heading: "Sovrenn education",
+      listItems: ["Daily updates on", "Daily updates on", "Daily updates on"],
+    },
+    button: {
+      first: "Read Free Unlimited Articles",
+      second: "Buy Full Access @ ₹5000/yr",
+    },
+  },
  
 ];
 const Offer = () => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
+  const theme=useTheme();
+  const [currentIndex, setCurrentIndex] = useState(0);
+ 
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % sovreenOfferArray.length);
   };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? sovreenOfferArray.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+  };
+
   return (
     <Box
       sx={{
@@ -136,7 +165,7 @@ const Offer = () => {
         spacing={2}
         direction="column"
         justifyContent="center"
-        alignItems="center"
+     
       >
         <Grid item>
           <Typography sx={{ textAlign: "center" }}>
@@ -150,37 +179,106 @@ const Offer = () => {
         </Grid>
 
         <Grid item paddingX={2}>
-          <StyledTypography2 component="div" color="#627B8F">
+          <StyledTypography2 component="div" color="#627B8F" textAlign="center">
             Here is everything that you will get from Sovrenn
           </StyledTypography2>
         </Grid>
-
-        {sovreenOfferArray.map((element, index) => {
+        <Box
+         sx={{
+          position: "relative",
+          overflowX: "auto",
+          width: "100%",
+        }}
+        >
+ <Box sx={{display:{xs:"flex",sm:"none",md:"none"},justifyContent:'center'}} marginTop={3}>
+        <IconButton
+                  onClick={prevSlide}
+                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",right:"1vw"}} >
+                  <ArrowBackIcon sx={{color:colors.navyBlue500}}/>
+                </IconButton>
+                <IconButton
+                 onClick={nextSlide}
+                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",left:"1vw"}} >
+                  <ArrowForwardIcon sx={{color:colors.navyBlue500}}/>
+                </IconButton>
+        </Box>
+       
+       <Box sx={{display:"flex",transition: 'transform 0.5s ease-in-out',
+          transform: `translateX(-${currentIndex * 100}%)`,}}>
+       {sovreenOfferArray.map((element, index) => {
           return (
+            <>
+            <Box
+             sx={{
+              minWidth: "100%",
+              boxSizing: "border-box",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            key={index}
+            display={index===currentIndex?"block":"none"}
+            >
+
+          
             <Grid
               container
               paddingTop={4}
-              justifyContent="space-evenly"
+              justifyContent="center"
               alignItems="center"
-              key={index}
+            
+              direction={{xs:"column",sm:"row"}}
+             width="100vw"
             >
               <Grid
                 item
-                xs={12}
-                lg={6}
-                sx={{ display: "flex", justifyContent: "center" }}
-                paddingLeft={6}
-                width="100vw"
+                xs={5}
+               sm={5.5}
+                sx={{ display: "flex", justifyContent: "space-between",alignItems:"center" }}
+              
+             marginLeft={{xs:4,sm:4,md:0}}
               >
+               
+                <IconButton
+                  onClick={prevSlide}
+                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",right:"1vw",display:{xs:"none",md:"block"}}} >
+                  <ArrowBackIcon sx={{color:colors.navyBlue500}}/>
+                </IconButton>
+               
+               
                 <Image
                   src={element.imagePath}
                   alt="..."
-                  width={500}
-                  height={400}
+                  width={300}
+                  height={300}
+
                   layout="responsive"
                 />
               </Grid>
-              <Grid item marginTop={1}>
+              <Grid item>
+              <Box sx={{ width: '100%', display: {xs:"flex",sm:"none"}, justifyContent: 'center'  }} marginBottom={3}>
+        {sovreenOfferArray.map((_, index) => (
+          <IconButton
+            key={index}
+            onClick={() => goToSlide(index)}
+            sx={{
+              padding: theme.spacing(0.5),
+              color: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
+            }}
+          >
+            <Box
+              sx={{
+                width: '10px',
+                height: '10px',
+                borderRadius: '50%',
+                backgroundColor: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
+              }}
+            ></Box>
+          </IconButton>
+        ))}
+      </Box>
+              </Grid>
+              <Grid item marginTop={1}  sm={5.5} sx={{display:"flex",alignItems:"center"}}>
                 <Grid container justifyContent="center" alignItems="center">
                   <Grid item>
                     <StyledTypography1 color="#0D1726">
@@ -225,10 +323,55 @@ const Offer = () => {
                     </Grid>
                   </Grid>
                 </Grid>
+                <IconButton
+                 onClick={nextSlide}
+                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",left:"1vw",display:{xs:"none",md:"block"}}} >
+                  <ArrowForwardIcon sx={{color:colors.navyBlue500}}/>
+                </IconButton>
               </Grid>
             </Grid>
+            </Box>
+            </>
           );
         })}
+
+       </Box>
+       </Box>
+       <Grid item>
+        <Box sx={{display:{xs:"none",sm:"flex",md:"none"},justifyContent:'center'}} marginBottom={2}>
+        <IconButton
+                  onClick={prevSlide}
+                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",right:"1vw"}} >
+                  <ArrowBackIcon sx={{color:colors.navyBlue500}}/>
+                </IconButton>
+                <IconButton
+                 onClick={nextSlide}
+                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",left:"1vw"}} >
+                  <ArrowForwardIcon sx={{color:colors.navyBlue500}}/>
+                </IconButton>
+        </Box>
+       <Box sx={{ width: '100%', display: {xs:"none",sm:"flex"}, justifyContent: 'center',position:"relative",bottom:"8px"  }}>
+        {sovreenOfferArray.map((_, index) => (
+          <IconButton
+            key={index}
+            onClick={() => goToSlide(index)}
+            sx={{
+              padding: theme.spacing(0.5),
+              color: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
+            }}
+          >
+            <Box
+              sx={{
+                width: '10px',
+                height: '10px',
+                borderRadius: '50%',
+                backgroundColor: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
+              }}
+            ></Box>
+          </IconButton>
+        ))}
+      </Box>
+       </Grid>
       </Grid>
     </Box>
   );

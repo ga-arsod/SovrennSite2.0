@@ -35,12 +35,16 @@ const navItems = [
 ];
 
 const StyledListItemText = styled(ListItemText)`
-  && {
-    color: #0d1726;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 17px;
-  }
+ 
+&& .MuiTypography-root {
+  color: #0d1726;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+}
+    
+  
 `;
 const SearchContainer = styled.div`
   position: relative;
@@ -110,7 +114,10 @@ const Navbar = () => {
     setIsLoaded(true);
   }, []);
   if (!isLoaded) return null;
-
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+console.log(open,"open")
   return (
     <>
       <AppBar
@@ -118,7 +125,7 @@ const Navbar = () => {
           backgroundColor: "#F4F6F8",
           boxShadow: "none",
           position: "fixed",
-          zIndex: 10,
+          zIndex: 11200,
         
         }}
       >
@@ -135,11 +142,7 @@ const Navbar = () => {
               <Image src="/logo.svg" width={146} height={30} alt="logo" />
             </StyledGrid1>
             <StyledGrid3 item>
-              <IconButton
-                onClick={() => {
-                  setOpen(!open);
-                }}
-              >
+            <IconButton onClick={toggleDrawer}>
                 {open ? <CloseIcon /> : <MenuIcon />}
               </IconButton>
             </StyledGrid3>
@@ -164,6 +167,7 @@ const Navbar = () => {
                         }}
                       >
                         <StyledListItemText primary={item}></StyledListItemText>
+                       
                       </ListItem>
                     );
                   })}
@@ -207,35 +211,39 @@ const Navbar = () => {
               </IconButton>
             </StyledGrid1>
             <StyledGrid3 item>
+           
               <IconButton>
                 <SearchIcon />
               </IconButton>
               <StyledButton1 variant="contained">Sign Up</StyledButton1>
               <StyledButton2 variant="contained" disableElevation>
                 Login
+               
               </StyledButton2>
             </StyledGrid3>
             <StyledGrid4 item>
               <IconButton>
                 <SearchIcon />
               </IconButton>
-              <IconButton
-                onClick={() => {
-                  setOpen(!open);
-                }}
-              >
-                {open ? <CloseIcon /> : <MenuIcon />}
+              <IconButton onClick={toggleDrawer}>
+                {open ? <CloseIcon sx={{color:"black"}} /> : <MenuIcon />}
               </IconButton>
             </StyledGrid4>
           </Grid>
         </Toolbar>
       </AppBar>
       <Drawer
-        ModalProps={{ hideBackdrop: true }}
+        ModalProps={{
+          keepMounted: true, 
+          BackdropProps: {
+            style: { 
+              backgroundColor: '#1C1C1C80',
+             
+            },
+          },
+          hideBackdrop: false }}
         open={open}
-        onClose={() => {
-          setOpen(false);
-        }}
+        onClose={toggleDrawer}
         anchor="top"
         sx={{
           "& .MuiDrawer-paper": {
@@ -268,11 +276,11 @@ const Navbar = () => {
                     textOverflow: "ellipsis",
                     cursor: "pointer",
                   }}
-                  onClick={() => {
-                    setOpen(false);
-                  }}
+                  onClick={toggleDrawer}
                 >
                   <StyledListItemText primary={item}></StyledListItemText>
+                 
+                
                 </ListItem>
               );
             })}

@@ -40,7 +40,7 @@ const AppInfo = () => {
       <Grid
         container
         direction="column"
-        spacing={10}
+       
         paddingBottom={{ xs: 3, sm: 17,md:13 }}
         justifyContent="center"
         paddingX={{xs:2,sm:1,md:2}}
@@ -68,12 +68,13 @@ const AppInfo = () => {
                 component="div"
                 color="#627B8F"
                 sx={{ fontWeight: "400", fontSize: "20px", lineHeight: "24px" }}
+                marginBottom={4}
               >
                 Your Questions Matter, and We&apos;re Here to Help!
               </StyledTypography2>
             </Grid>
 
-            <Grid item>
+            <Grid item marginBottom={8}>
               <StyledButton
                 variant="contained"
                 startIcon={<MailOutlineIcon />}

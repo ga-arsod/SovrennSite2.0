@@ -81,7 +81,10 @@ const Faq=()=>{
     
 <Box width="100%" sx={{backgroundImage: `url('/rectangle.png')`,
     backgroundSize: 'cover',
-    backgroundPosition: 'center',}}>
+    backgroundPosition:'center'
+    
+    
+  }}>
       <Grid container paddingX={2} spacing={1} direction="column" justifyContent='center' alignItems='center' paddingTop={4}>
         <Grid item> 
         <Typography textAlign='center'>
