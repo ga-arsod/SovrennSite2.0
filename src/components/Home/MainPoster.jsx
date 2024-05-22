@@ -126,9 +126,10 @@ const MainPoster = () => {
         backgroundImage: `url('/rectangle.png')`,
         backgroundSize: "cover",
       }}
+      marginTop={6}
     >
       <Grid container paddingX={2} justifyContent="space-between" paddingTop={{xs:7,sm:10,lg:0}}>
-        <Grid item lg={6} xs={12} sx={{ marginTop: {xs:"40px",md:"70px",lg:"100px"} }}>
+        <Grid item lg={6} xs={12} sx={{ display:"flex",alignItems:"center" }}>
           <Grid container justifyContent="center" alignItems="center">
             <Grid item>
               <StyledTyography3 gutterBottom>
@@ -218,19 +219,19 @@ const MainPoster = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item lg={6} xs={12}>
+        <Grid item md={6} xs={12}>
           <Grid
             container
             justifyContent="center"
             paddingTop={6}
             alignItems="center"
-            sx={{
-              display: "inline-block",
-              overflow: "hidden",
-              position: "relative",
-            }}
+           sx={{
+            display:"flex",
+           
+            position:"relative",
+           }}
           >
-            <Grid item>
+            <Grid item  >
               <Image
                 src="/hero.svg"
                 width={500}
@@ -238,6 +239,7 @@ const MainPoster = () => {
                 alt="poster"
                 layout="responsive"
               />
+              
             </Grid>
           </Grid>
         </Grid>

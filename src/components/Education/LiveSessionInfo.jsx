@@ -19,7 +19,7 @@ const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 34px;
   line-height: 40px;
-  letter-spacing:0.04em;
+  letter-spacing:-0.04em;
  
   @media (max-width: 639px) {
     font-weight: 600;

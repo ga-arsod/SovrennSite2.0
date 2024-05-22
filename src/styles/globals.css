@@ -16,7 +16,12 @@ html {
   overflow-y: overlay;
   overflow-x: hidden;
 }
-
+*{
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
 body {
   width:100vw;
   color: rgb(var(--foreground-rgb));
