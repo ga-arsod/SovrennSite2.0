@@ -18,8 +18,8 @@ const tutorialArray = [
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
-  font-size: 48px;
-  line-height: 56px;
+  font-size: 34px;
+  line-height: 40px;
   letter-spacing: -0.04em;
   @media (max-width: 700px) {
     font-size: 23px;

@@ -29,6 +29,12 @@ const StyledButton1 = styled(Button)`
     border-color: ${colors.themeButtonHover};
     outline: ${colors.themeButtonHover};
   }
+  @media (max-width: 639px) {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 22px;
+   
+  }
 `;
 
 const StyledButton2 = styled(Button)`
@@ -49,14 +55,20 @@ const StyledButton2 = styled(Button)`
     border-color: ${colors.themeButtonHover};
     outline: ${colors.themeButtonHover};
   }
+  @media (max-width: 639px) {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 22px;
+   
+  }
 `;
 const LanguageModal = () => {
   return (
     <Box
       bgcolor={colors.white}
-      width={{xs:"95vw",sm:"60vw",md:"40vw"}}
+      width={{xs:"100vw",sm:"60vw",md:"40vw"}}
       height={{sm:"19vh",md:"32vh"}}
-     marginX={3}
+   
       sx={{
         boxShadow: " 0px 12px 24px 0px #0000001A",
         position: "relative",

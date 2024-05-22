@@ -45,7 +45,7 @@ const FoundersCard = ({ item }) => {
             {item.position}
           </Typography>
 
-          <Grid item paddingY={2}>
+          <Grid item  marginBottom={4}>
             <Typography
               component="div"
               justifyContent="center"
@@ -57,7 +57,7 @@ const FoundersCard = ({ item }) => {
              {item.description}
             </Typography>
           </Grid>
-          <Grid container justifyContent="center" alignItems='center' sx={{position:'absolute',bottom:'4px'}} width={pathname==="/" ? "80%" : "90%"} >
+          <Grid container justifyContent="center" alignItems='center' sx={{position:'absolute',bottom:'24px'}} width={pathname==="/" ? "80%" : "90%"} >
             <Grid item component="span">
               <IconButton sx={{ color: "#98A2B3" }}>
                 <TwitterIcon />

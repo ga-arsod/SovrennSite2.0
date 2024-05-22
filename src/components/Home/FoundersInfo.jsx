@@ -48,7 +48,8 @@ const FoundersInfo = () => {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        paddingTop={4}
+        paddingTop={3}
+        
       >
         <Grid item>
           <Typography textAlign="center">
