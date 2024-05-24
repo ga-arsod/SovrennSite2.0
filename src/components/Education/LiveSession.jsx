@@ -47,14 +47,14 @@ const LiveSession = ({button}) => {
   return (
     <>
       <Box
-        height={{xs:"42vh",sm:"25vh",md:"30vh"}}
+        height={{xs:"42vh",sm:"25vh",md:"33vh"}}
         display="flex"
         alignItems="center"
         justifyContent="center"
         sx={{ background:  `linear-gradient(45deg, ${gradientColors.c1}, ${gradientColors.c2})`}}
-        marginTop={3}
+       
       >
-        <Grid container width="100%" alignItems="center">
+        <Grid container width="100%" alignItems="center" >
           <Grid item width="100%" sx={{display:"flex",alignItems:"center",flexDirection:"column"}}>
             <StyledTypography1 component="h2" textAlign="center" gutterBottom  paddingX={2} >
               Book a live session

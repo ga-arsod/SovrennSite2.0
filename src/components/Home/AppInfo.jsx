@@ -1,10 +1,11 @@
 "use client";
 import { Grid, Box, Typography, Button } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import Image from "next/image";
 import { colors } from "../Constants/colors";
+import { Fade } from "@mui/material";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -16,13 +17,13 @@ const StyledTypography1 = styled(Typography)`
     line-height: 28px;
   }
 `;
-const StyledButton=styled(Button)`
-:hover {
-  background-color:${colors.blueButtonHover};
-  
-  border-color:${colors.blueButtonHover};
-  outline:${colors.blueButtonHover};
-}
+const StyledButton = styled(Button)`
+  :hover {
+    background-color: ${colors.blueButtonHover};
+
+    border-color: ${colors.blueButtonHover};
+    outline: ${colors.blueButtonHover};
+  }
 `;
 const StyledTypography2 = styled(Typography)`
   font-weight: 400;
@@ -34,120 +35,183 @@ const StyledTypography2 = styled(Typography)`
     line-height: 14px;
   }
 `;
+const FadeInBox = styled(Box)(({ theme }) => ({
+  opacity: 0,
+  transform: "translateY(30px)",
+  transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+  "&.visible": {
+    opacity: 1,
+    transform: "translateY(0)",
+  },
+}));
 const AppInfo = () => {
+  const [inView, setInView] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.unobserve(ref.current);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+  const [isVisible, setVisible] = useState(false);
+  const domRef = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => setVisible(entry.isIntersecting));
+    });
+    if (domRef.current) {
+      observer.observe(domRef.current);
+    }
+    return () => {
+      if (domRef.current) {
+        observer.unobserve(domRef.current);
+      }
+    };
+  }, []);
+
   return (
     <Box backgroundColor="#F3FAFB" width="100%">
       <Grid
         container
         direction="column"
-       
-        paddingBottom={{ xs: 3, sm: 17,md:13 }}
+        paddingBottom={{ xs: 3, sm: 17, md: 13 }}
         justifyContent="center"
-        paddingX={{xs:2,sm:1,md:2}}
+        paddingX={{ xs: 2, sm: 1, md: 2 }}
       >
         <Grid item>
-          <Grid
-            container
-            spacing={3}
-            direction="column"
-            alignItems="center"
-            paddingTop={8}
-          >
-            <Grid item>
-              <StyledTypography1
-                textAlign="center"
-                component="div"
-                color="#0D1726"
-                marginRight={1}
-                gutterBottom
-              >
-                Still have questions?
-              </StyledTypography1>
-              <StyledTypography2
-                textAlign="center"
-                component="div"
-                color="#627B8F"
-                sx={{ fontWeight: "400", fontSize: "20px", lineHeight: "24px" }}
-                marginBottom={4}
-              >
-                Your Questions Matter, and We&apos;re Here to Help!
-              </StyledTypography2>
-            </Grid>
+          <FadeInBox ref={domRef} className={isVisible ? "visible" : ""}>
+            <Grid
+              container
+              spacing={3}
+              direction="column"
+              alignItems="center"
+              paddingTop={8}
+            >
+              <Grid item>
+                <StyledTypography1
+                  textAlign="center"
+                  component="div"
+                  color="#0D1726"
+                  marginRight={1}
+                  gutterBottom
+                >
+                  Still have questions?
+                </StyledTypography1>
+                <StyledTypography2
+                  textAlign="center"
+                  component="div"
+                  color="#627B8F"
+                  sx={{
+                    fontWeight: "400",
+                    fontSize: "20px",
+                    lineHeight: "24px",
+                  }}
+                  marginBottom={1}
+                >
+                  Your Questions Matter, and We&apos;re Here to Help!
+                </StyledTypography2>
+              </Grid>
 
-            <Grid item marginBottom={8}>
-              <StyledButton
-                variant="contained"
-                startIcon={<MailOutlineIcon />}
-                sx={{
-                  color: "white",
-                  fontWeight: "600",
-                  textTransform: "none",
-                  fontSize: "16px",
-                  backgroundColor: colors.navyBlue500,
-                  lineHeight: "35px",
-                }}
-              >
-                Write to Us
-              </StyledButton>
+              <Grid item marginBottom={8}>
+                <StyledButton
+                  variant="contained"
+                  startIcon={<MailOutlineIcon />}
+                  sx={{
+                    color: "white",
+                    fontWeight: "600",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    backgroundColor: colors.navyBlue500,
+                    lineHeight: "35px",
+                  }}
+                >
+                  Write to Us
+                </StyledButton>
+              </Grid>
             </Grid>
-          </Grid>
+          </FadeInBox>
         </Grid>
         <Grid item>
-          <Grid
-            container
-            spacing={5}
-            justifyContent="space-evenly"
-            alignItems="center"
-          >
-            <Grid item>
-              <Typography
-                textAlign={{ xs: "center", sm: "start" }}
-                component="div"
-                color="#0D1726"
-                sx={{ fontWeight: "600", fontSize: "23px", lineHeight: "28px" }}
-                gutterBottom
-              >
-                Experience the ease of Sovrenn with our mobile app
-              </Typography>
-              <Typography
-                textAlign={{ xs: "center", sm: "start" }}
-                component="div"
-                color="#627B8F"
-                sx={{
-                  fontWeight: "400",
-                  fontSize: { xs: "12px", sm: "16px" },
-                  lineHeight: { xs: "14px", sm: "19px" },
-                }}
-              >
-                simplify your investment journey and start investing at your
-                fingertips!
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Grid
-                container
-                spacing={1}
-                direction={{ xs: "row", sm: "column" }}
-              >
-                <Grid item>
-                  <Image
-                    src="/playStore.png"
-                    width={132}
-                    height={44}
-                    alt="play-store"
-                  />
-                </Grid>
-                <Grid item>
-                  <Image
-                    src="/appStore.png"
-                    width={132}
-                    height={44}
-                    alt="app-store"
-                  />
+          <Fade in={inView} timeout={1000}>
+            <Grid
+              container
+              spacing={5}
+              justifyContent="space-evenly"
+              alignItems="center"
+              ref={ref}
+              sx={{ opacity: inView ? 1 : 0 }}
+            >
+              <Grid item>
+                <Typography
+                  textAlign={{ xs: "center", sm: "start" }}
+                  component="div"
+                  color="#0D1726"
+                  sx={{
+                    fontWeight: "600",
+                    fontSize: "23px",
+                    lineHeight: "28px",
+                  }}
+                  gutterBottom
+                >
+                  Experience the ease of Sovrenn with our mobile app
+                </Typography>
+                <Typography
+                  textAlign={{ xs: "center", sm: "start" }}
+                  component="div"
+                  color="#627B8F"
+                  sx={{
+                    fontWeight: "400",
+                    fontSize: { xs: "12px", sm: "16px" },
+                    lineHeight: { xs: "14px", sm: "19px" },
+                  }}
+                >
+                  simplify your investment journey and start investing at your
+                  fingertips!
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Grid
+                  container
+                  spacing={1}
+                  direction={{ xs: "row", sm: "column" }}
+                >
+                  <Grid item>
+                    <Image
+                      src="/playStore.png"
+                      width={132}
+                      height={44}
+                      alt="play-store"
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Image
+                      src="/appStore.png"
+                      width={132}
+                      height={44}
+                      alt="app-store"
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          </Fade>
         </Grid>
       </Grid>
     </Box>

@@ -10,7 +10,7 @@ import {
   Button,IconButton,
   useTheme
 } from "@mui/material";
-import React,{useState} from "react";
+import React,{useState,useEffect,useRef} from "react";
 import styled from "@emotion/styled";
 import CheckIcon from "@mui/icons-material/Check";
 import Slider from "react-slick";
@@ -21,6 +21,7 @@ import { colors } from "../Constants/colors";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CircleIcon from '@mui/icons-material/Circle';
+import { Fade } from "@mui/material";
 
 
 
@@ -71,10 +72,12 @@ const StyledButton1 = styled(Button)`
   line-height: 17px;
   text-transform: none;
   :hover {
-    background-color: #20365b;
-    color: white;
-    border-color: #20365b;
-    outline: #1da098;
+    background-color: ${colors.blueButtonHover};
+
+    border-color: ${colors.blueButtonHover};
+    color: ${colors.white};
+    outline: ${colors.blueButtonHover};
+
   }
   @media (max-width: 620px) {
     font-size: 16px;
@@ -130,8 +133,39 @@ const sovreenOfferArray = [
       second: "Buy Full Access @ ₹5000/yr",
     },
   },
+  {
+    imagePath: "/content.svg",
+    Info: {
+      heading: "Sovrenn discovery",
+      listItems: ["Daily updates on", "Daily updates on", "Daily updates on"],
+    },
+    button: {
+      first: "Read Free Unlimited Articles",
+      second: "Buy Full Access @ ₹5000/yr",
+    },
+  },
+  {
+    imagePath: "/content.svg",
+    Info: {
+      heading: "Sovrenn education",
+      listItems: ["Daily updates on", "Daily updates on", "Daily updates on"],
+    },
+    button: {
+      first: "Read Free Unlimited Articles",
+      second: "Buy Full Access @ ₹5000/yr",
+    },
+  },
  
 ];
+const FadeInBox = styled(Box)(({ theme }) => ({
+  opacity: 0,
+  transform: "translateY(30px)",
+  transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+  "&.visible": {
+    opacity: 1,
+    transform: "translateY(0)",
+  },
+}));
 const Offer = () => {
   const theme=useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -151,6 +185,63 @@ const Offer = () => {
     setCurrentIndex(index);
   };
 
+  const StyledIconButton = styled(IconButton)`
+  && {
+    background-color: ${colors.white};
+    &:hover {
+      background-color: ${colors.white};
+    }
+  }
+`;
+  const [inView, setInView] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.unobserve(ref.current);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+  const [isVisible, setVisible] = useState(false);
+  const domRef = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => setVisible(entry.isIntersecting));
+    });
+    if (domRef.current) {
+      observer.observe(domRef.current);
+    }
+    return () => {
+      if (domRef.current) {
+        observer.unobserve(domRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 7000); // Change slide every 3 seconds
+
+    return () => clearInterval(interval); // Clear interval on unmount
+  }, []);
+
   return (
     <Box
       sx={{
@@ -168,6 +259,7 @@ const Offer = () => {
      
       >
         <Grid item>
+        <FadeInBox ref={domRef} className={isVisible ? "visible" : ""}>
           <Typography sx={{ textAlign: "center" }}>
             <StyledTypography1 component="span" color="#0D1726" marginRight={1}>
               This is What we offer
@@ -176,13 +268,14 @@ const Offer = () => {
               You
             </StyledTypography1>
           </Typography>
-        </Grid>
-
-        <Grid item paddingX={2}>
-          <StyledTypography2 component="div" color="#627B8F" textAlign="center">
+          <StyledTypography2 component="div" color="#627B8F" textAlign="center" paddingX={2}>
             Here is everything that you will get from Sovrenn
           </StyledTypography2>
+           </FadeInBox>
         </Grid>
+        <Fade in={inView} timeout={1000}>
+<Grid container  ref={ref}
+          sx={{ opacity: inView ? 1 : 0 }} justifyContent="center">
         <Box
          sx={{
           position: "relative",
@@ -191,16 +284,16 @@ const Offer = () => {
         }}
         >
  <Box sx={{display:{xs:"flex",sm:"none",md:"none"},justifyContent:'center'}} marginTop={3}>
-        <IconButton
+        <StyledIconButton
                   onClick={prevSlide}
                 sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",right:"1vw"}} >
                   <ArrowBackIcon sx={{color:colors.navyBlue500}}/>
-                </IconButton>
-                <IconButton
+                </StyledIconButton>
+                <StyledIconButton
                  onClick={nextSlide}
                 sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",left:"1vw"}} >
                   <ArrowForwardIcon sx={{color:colors.navyBlue500}}/>
-                </IconButton>
+                </StyledIconButton>
         </Box>
        
        <Box sx={{display:"flex",transition: 'transform 0.5s ease-in-out',
@@ -239,11 +332,11 @@ const Offer = () => {
              marginLeft={{xs:4,sm:4,md:0}}
               >
                
-                <IconButton
+                <StyledIconButton
                   onClick={prevSlide}
                 sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",right:"1vw",display:{xs:"none",md:"block"}}} >
                   <ArrowBackIcon sx={{color:colors.navyBlue500}}/>
-                </IconButton>
+                </StyledIconButton>
                
                
                 <Image
@@ -309,10 +402,10 @@ const Offer = () => {
                         </List>
                       </Grid>
                       <Grid item>
-                        <Grid container my={2}>
-                          {/* <Grid item >
-                  <StyledButton1 variant="outlined"  sx={{ borderColor:"#20365B", color: '#20365B',padding:"6px"}}>{element.button.first}</StyledButton1>
-                    </Grid> */}
+                        <Grid container my={2} gap={2} direction={{xs:"column",md:"row"}}>
+                          <Grid item >
+                  <StyledButton1 variant="outlined"  sx={{ borderColor:colors.navyBlue500, color: colors.navyBlue500,padding:"8px"}}>{element.button.first}</StyledButton1>
+                    </Grid>
                           <Grid item>
                             <StyledButton2 variant="contained">
                               {element.button.second}
@@ -323,11 +416,11 @@ const Offer = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-                <IconButton
+                <StyledIconButton
                  onClick={nextSlide}
                 sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",left:"1vw",display:{xs:"none",md:"block"}}} >
                   <ArrowForwardIcon sx={{color:colors.navyBlue500}}/>
-                </IconButton>
+                </StyledIconButton>
               </Grid>
             </Grid>
             </Box>
@@ -337,18 +430,19 @@ const Offer = () => {
 
        </Box>
        </Box>
+       
        <Grid item>
         <Box sx={{display:{xs:"none",sm:"flex",md:"none"},justifyContent:'center'}} marginBottom={2}>
-        <IconButton
+        <StyledIconButton
                   onClick={prevSlide}
                 sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",right:"1vw"}} >
                   <ArrowBackIcon sx={{color:colors.navyBlue500}}/>
-                </IconButton>
-                <IconButton
+                </StyledIconButton>
+                <StyledIconButton
                  onClick={nextSlide}
                 sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",left:"1vw"}} >
                   <ArrowForwardIcon sx={{color:colors.navyBlue500}}/>
-                </IconButton>
+                </StyledIconButton>
         </Box>
        <Box sx={{ width: '100%', display: {xs:"none",sm:"flex"}, justifyContent: 'center',position:"relative",bottom:"8px"  }}>
         {sovreenOfferArray.map((_, index) => (
@@ -372,6 +466,8 @@ const Offer = () => {
         ))}
       </Box>
        </Grid>
+       </Grid>
+       </Fade>
       </Grid>
     </Box>
   );

@@ -30,6 +30,7 @@ export const colors={
     navyBlue50:'#E6E8E9',
     navyBlue200:'#8A949C',
     navyBlue:'500',
+    neutral500:'#F4F3F3',
 }
 
 export const gradientColors={
