@@ -43,7 +43,7 @@ const StyledTypography2 = styled(Typography)`
 `;
 const StyledTypography3 = styled(Typography)`
   font-weight: 600;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 32px;
 `;
 
@@ -57,7 +57,8 @@ const TutorialSection = () => {
           justifyContent="center"
           alignItems="center"
           spacing={1}
-          paddingTop={4}
+          paddingTop={3}
+          paddingBottom={2}
         >
           <Grid item>
             <Typography
@@ -111,24 +112,42 @@ const TutorialSection = () => {
                   <Grid
                     item
                     key={index}
-                    sm={5.6}
+                    sm={5.8}
                     sx={{ border: "1px solid #E4E7EC", borderRadius: "12px" }}
                   >
-                    <Box sx={{ borderRadius: "12px", overflow: "hidden" }}>
-                      <Image
-                        src={element.image}
-                        alt="..."
-                        width={380}
-                        height={350}
-                        layout="responsive"
-                      />
-                    </Box>
+                    <Box sx={{ position: 'relative', borderRadius: "12px", overflow: "hidden" }}>
+            <Image
+              src={element.image}
+              alt="..."
+              width={380}
+              height={350}
+              layout="responsive"
+            />
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '80px', 
+                height: '80px', 
+              }}
+            >
+              <Image
+                src="/play.svg" 
+                alt="overlay"
+                layout="fill"
+                objectFit="contain" 
+              />
+            </Box>
+          </Box>
+
 
                     <StyledTypography3
                       color="#101828"
                       marginLeft={3}
-                      paddingBottom={5}
-                      paddingTop={3}
+                      paddingY={3}
+                      
                     >
                       {element.description}
                     </StyledTypography3>
