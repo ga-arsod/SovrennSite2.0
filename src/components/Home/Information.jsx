@@ -32,6 +32,27 @@ const StyledTypography2 = styled(Typography)`
     text-align: center;
   }
 `;
+const Container = styled(Box)`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+// Styled component for the overlay image
+const OverlayImage = styled(Image)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1; 
+  cursor:pointer
+`;
+const ParentImage = styled(Image)`
+  border-radius: 12px; /* Black border, adjust color and thickness as needed */
+`;
 
 const Information = () => {
   const theme = useTheme();
@@ -77,13 +98,20 @@ const Information = () => {
             </StyledTypography2>
           </Grid>
           <Grid item>
-            <Image
+          <Container>
+      {/* Parent Image */}
+      <ParentImage
               src="/green.svg"
               alt="..."
               width={750}
               height={470}
               layout="responsive"
             />
+
+      {/* Overlay Image */}
+      <OverlayImage src="/play.svg" alt="Overlay Image" width={80} height={80} />
+    </Container>
+           
           </Grid>
         </Grid>
       </Box>

@@ -83,7 +83,7 @@ const LiveSessionInfo = () => {
     <>
       <Box>
         <Grid container width="100%">
-          <Grid item xs={12} marginY={6} paddingX={3}>
+          <Grid item xs={12} marginY={7} paddingX={3}>
             <Typography sx={{ textAlign: "center" }} marginBottom={2}>
               <StyledTypography1
                 component="span"

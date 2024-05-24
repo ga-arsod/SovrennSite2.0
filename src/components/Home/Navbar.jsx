@@ -23,7 +23,12 @@ import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDown
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { colors } from "../Constants/colors";
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+
 const navItems = [
+  "Sign Up",
+  "Login",
   "Education",
   "Times",
   "Prime",
@@ -34,18 +39,33 @@ const navItems = [
   "Pricing",
 ];
 
-const StyledListItemText = styled(ListItemText)`
- 
-&& .MuiTypography-root {
-  color: #0d1726;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 17px;
-  text-align: center;
-}
-    
-  
+const StyledListItem = styled(ListItem)`
+  position: relative;
+  width: 100%;
+  &:first-of-type .MuiTypography-root {
+    color: ${colors.themeGreen};
+  }
+  &:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    bottom:0;
+    left: 0;
+    width: 100vw;
+    border-bottom: 1px solid ${colors.neutral500}; 
+    transform: translateX(-38vw); 
+  }
 `;
+
+const StyledListItemText = styled(ListItemText)`
+  && .MuiTypography-root {
+    color: #0d1726;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+  }
+`;
+
 const SearchContainer = styled.div`
   position: relative;
   border-radius: 4px;
@@ -71,7 +91,7 @@ const StyledGrid3 = styled(Grid)`
   @media (min-width: 1120px) {
     display: none;
   }
-  @media (max-width: 500px) {
+  @media (max-width: 639px) {
     display: none;
   }
 `;
@@ -107,17 +127,27 @@ const SearchInput = styled(InputBase)`
   width: 100%;
   padding: 4px 4px 4px 0;
 `;
+
 const Navbar = () => {
+  const theme = useTheme();
+  const isGreaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
+
   const [open, setOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
   if (!isLoaded) return null;
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
-console.log(open,"open")
+
+  // Filter the navItems based on screen size
+  const filteredNavItems = isGreaterThanMd ? navItems.slice(2) : navItems;
+
   return (
     <>
       <AppBar
@@ -126,7 +156,6 @@ console.log(open,"open")
           boxShadow: "none",
           position: "fixed",
           zIndex: 11200,
-        
         }}
       >
         <Toolbar>
@@ -136,13 +165,12 @@ console.log(open,"open")
             alignItems="center"
             justifyContent="space-between"
             spacing={4}
-           
           >
             <StyledGrid1 item>
               <Image src="/logo.svg" width={146} height={30} alt="logo" />
             </StyledGrid1>
             <StyledGrid3 item>
-            <IconButton onClick={toggleDrawer}>
+              <IconButton onClick={toggleDrawer}>
                 {open ? <CloseIcon /> : <MenuIcon />}
               </IconButton>
             </StyledGrid3>
@@ -151,26 +179,20 @@ console.log(open,"open")
                 <List
                   sx={{ display: "flex", flexDirection: "row", padding: 0 }}
                 >
-                  {navItems.map((item) => {
-                    return (
-                      <ListItem
-                        onClick={() => {
-                          setOpen(false);
-                        }}
-                        key={item}
-                        sx={{
-                          px: 1,
-                          whiteSpace: "nowrap",
-
-                          textOverflow: "ellipsis",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <StyledListItemText primary={item}></StyledListItemText>
-                       
-                      </ListItem>
-                    );
-                  })}
+                  {filteredNavItems.map((item) => (
+                    <ListItem
+                      onClick={() => setOpen(false)}
+                      key={item}
+                      sx={{
+                        px: 1,
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <StyledListItemText primary={item}></StyledListItemText>
+                    </ListItem>
+                  ))}
                 </List>
               </Box>
             </StyledGrid1>
@@ -211,14 +233,12 @@ console.log(open,"open")
               </IconButton>
             </StyledGrid1>
             <StyledGrid3 item>
-           
               <IconButton>
                 <SearchIcon />
               </IconButton>
               <StyledButton1 variant="contained">Sign Up</StyledButton1>
               <StyledButton2 variant="contained" disableElevation>
                 Login
-               
               </StyledButton2>
             </StyledGrid3>
             <StyledGrid4 item>
@@ -226,7 +246,7 @@ console.log(open,"open")
                 <SearchIcon />
               </IconButton>
               <IconButton onClick={toggleDrawer}>
-                {open ? <CloseIcon sx={{color:"black"}} /> : <MenuIcon />}
+                {open ? <CloseIcon sx={{ color: "black" }} /> : <MenuIcon />}
               </IconButton>
             </StyledGrid4>
           </Grid>
@@ -234,21 +254,21 @@ console.log(open,"open")
       </AppBar>
       <Drawer
         ModalProps={{
-          keepMounted: true, 
+          keepMounted: true,
           BackdropProps: {
-            style: { 
+            style: {
               backgroundColor: '#1C1C1C80',
-             
             },
           },
-          hideBackdrop: false }}
+          hideBackdrop: false
+        }}
         open={open}
         onClose={toggleDrawer}
         anchor="top"
         sx={{
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
-            top: "64px",
+            top: "55px",
           },
         }}
       >
@@ -265,25 +285,20 @@ console.log(open,"open")
           }}
         >
           <List>
-            {navItems.map((item) => {
-              return (
-                <ListItem
-                  key={item}
-                  sx={{
-                    px: 1,
-                    whiteSpace: "nowrap",
-
-                    textOverflow: "ellipsis",
-                    cursor: "pointer",
-                  }}
-                  onClick={toggleDrawer}
-                >
-                  <StyledListItemText primary={item}></StyledListItemText>
-                 
-                
-                </ListItem>
-              );
-            })}
+            {filteredNavItems.map((item) => (
+              <StyledListItem
+                key={item}
+                sx={{
+                  px: 1,
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  cursor: "pointer",
+                }}
+                onClick={toggleDrawer}
+              >
+                <StyledListItemText primary={item}></StyledListItemText>
+              </StyledListItem>
+            ))}
           </List>
         </Box>
       </Drawer>
