@@ -186,6 +186,7 @@ const MainPoster = () => {
       sx={{
         backgroundImage: `url('/rectangle.png')`,
         backgroundSize: "cover",
+        overflow: "hidden"
       }}
       marginTop={6}
     >
@@ -327,8 +328,8 @@ const MainPoster = () => {
                   src="/hero2.svg"
                   alt="Parent"
                   width={500}
-                  height={636}
-                  layout="responsive"
+                  height={410}
+                  layout="fixed"
                 />
                 <Box
                   sx={{
@@ -336,7 +337,7 @@ const MainPoster = () => {
                     width: "183px",
                     height: "68px",
                     top: 0,
-                    left: "-25vh",
+                    left: "-10vh",
                     transition: "transform 0.3s",
                     transform: hoverTransform1,
                   }}
@@ -355,7 +356,7 @@ const MainPoster = () => {
                     width: "35px",
                     height: "35px",
                     top: "25vh",
-                    left: "0",
+                    left: "20vh",
                     transition: "transform 0.3s",
                     transform: hoverTransform2,
                   }}
@@ -373,8 +374,8 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "121px",
                     height: "61px",
-                    top: "60vh",
-                    left: "-15vh",
+                    top: "55vh",
+                    left: "3vh",
                     transition: "transform 0.3s",
                     transform: hoverTransform3,
                   }}
@@ -392,8 +393,8 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "129px",
                     height: "32px",
-                    top: "70vh",
-                    left: "20vh",
+                    top: "62vh",
+                    left: "33vh",
                     transition: "transform 0.3s",
                     transform: hoverTransform4,
                   }}
@@ -411,8 +412,8 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "35px",
                     height: "35px",
-                    bottom: "4px",
-                    right: "2vh",
+                    bottom: "10px",
+                    right: "-10vh",
                     transition: "transform 0.3s",
                     transform: hoverTransform5,
                   }}
@@ -430,8 +431,8 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "129px",
                     height: "166px",
-                    bottom: "10vh",
-                    right: "-15vh",
+                    bottom: "15vh",
+                    right: "-25vh",
                     transition: "transform 0.3s",
                     transform: hoverTransform6,
                   }}
