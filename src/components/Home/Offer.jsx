@@ -242,6 +242,7 @@ const Offer = () => {
     return () => clearInterval(interval); // Clear interval on unmount
   }, []);
 
+  
   return (
     <Box
       sx={{
@@ -342,8 +343,8 @@ const Offer = () => {
                 <Image
                   src={element.imagePath}
                   alt="..."
-                  width={300}
-                  height={300}
+                  width={560}
+                  height={351}
 
                   layout="responsive"
                 />

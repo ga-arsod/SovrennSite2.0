@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React,{useState} from "react";
 import styled from "@emotion/styled";
 import { Box, Typography, Grid } from "@mui/material";
 import Image from "next/image";
 import { colors } from "../Constants/colors";
+import LanguageModal from "../Modal/LanguageModal";
 
 const tutorialArray = [
   {
@@ -48,8 +49,14 @@ const StyledTypography3 = styled(Typography)`
 `;
 
 const TutorialSection = () => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <>
+    {
+      open ? <LanguageModal open={open}/> : <></>
+    }
       <Box>
         <Grid
           container
@@ -132,6 +139,7 @@ const TutorialSection = () => {
                 width: '80px', 
                 height: '80px', 
               }}
+             
             >
               <Image
                 src="/play.svg" 

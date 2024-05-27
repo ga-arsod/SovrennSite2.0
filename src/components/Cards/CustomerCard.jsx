@@ -44,6 +44,7 @@ const CustomerCard = ({ element }) => {
         width: { xs: "70vw", sm: "40vw", md: "25vw" },
         margin: "5px",
         borderRadius: "6px",
+        cursor:'pointer'
       }}
     >
       <Grid item padding={2}>

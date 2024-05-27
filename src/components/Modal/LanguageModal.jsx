@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Box, Grid, Typography, Button, IconButton } from "@mui/material";
+import { Box, Grid, Typography, Button, IconButton,Modal } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import CloseIcon from "@mui/icons-material/Close";
@@ -62,8 +62,27 @@ const StyledButton2 = styled(Button)`
    
   }
 `;
-const LanguageModal = () => {
+const StyledBox=styled(Box)`
+position: 'absolute' as 'absolute',
+top: '50%',
+left: '50%',
+transform: 'translate(-50%, -50%)',
+width: 100vw,
+height: 100vh,
+bgcolor: 'background.paper',
+border: '2px solid #000',
+boxShadow: 24,
+p: 4,
+`;
+const LanguageModal = ({open}) => {
   return (
+    <Modal
+    open={open}
+   
+    aria-labelledby="modal-modal-title"
+    aria-describedby="modal-modal-description"
+  >
+    <StyledBox>
     <Box
       bgcolor={colors.white}
       width={{xs:"100vw",sm:"60vw",md:"40vw"}}
@@ -107,6 +126,8 @@ const LanguageModal = () => {
         </Grid>
       </Grid>
     </Box>
+    </StyledBox>
+    </Modal>
   );
 };
 
