@@ -7,16 +7,17 @@ import CustomerCard from "../Cards/CustomerCard";
 import Marquee from "react-fast-marquee";
 import { customerArray } from "@/utils/Data";
 import { gradientColors } from "../Constants/colors";
-import { Fade } from "@mui/material";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 34px;
   line-height: 40px;
+  letter-spacing:-0.04em;
   @media (max-width: 700px) {
     font-weight: 600;
     font-size: 23px;
     line-height: 28px;
+    letter-spacing:-0.02em;
   }
 `;
 
@@ -47,8 +48,10 @@ const FadeInBox = styled(Box)(({ theme }) => ({
     transform: "translateY(0)",
   },
 }));
+
 const CustomerVerdict = () => {
   const [inView, setInView] = useState(false);
+  const [speed, setSpeed] = useState(50); // Initial speed of the Marquee
   const ref = useRef(null);
 
   useEffect(() => {
@@ -72,6 +75,7 @@ const CustomerVerdict = () => {
       }
     };
   }, []);
+
   const [isVisible, setVisible] = useState(false);
   const domRef = useRef();
 
@@ -89,12 +93,20 @@ const CustomerVerdict = () => {
     };
   }, []);
 
+  const handleMouseEnter = () => {
+    setSpeed(30); 
+  };
+
+  const handleMouseLeave = () => {
+    setSpeed(60);
+  };
+
   return (
     <StyledBox>
       <Grid
         container
         justifyContent="center"
-        py={3}
+        py={4}
         sx={{ position: "relative" }}
       >
         <Grid item paddingX={5}>
@@ -125,7 +137,7 @@ const CustomerVerdict = () => {
         ref={ref}
         sx={{ opacity: inView ? 1 : 0 }}
       >
-        <Marquee>
+        <Marquee speed={speed}>
           {customerArray.map((element, index) => {
             return (
               <Grid
@@ -135,6 +147,9 @@ const CustomerVerdict = () => {
                 md={4}
                 marginRight={1}
                 marginBottom={2}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+               
               >
                 <CustomerCard element={element} />
               </Grid>
