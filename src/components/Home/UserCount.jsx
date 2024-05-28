@@ -1,13 +1,9 @@
 "use client";
-import React from "react";
-import { Grid, Typography, IconButton, Paper,Avatar } from "@mui/material";
+import React,{useState,useEffect,useRef} from "react";
+import { Grid, Typography, IconButton, Paper,Avatar,Box } from "@mui/material";
 import styled from "@emotion/styled";
 import  Image  from "next/image";
-
-import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
-import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
-import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
-import PersonOutlineSharpIcon from "@mui/icons-material/PersonOutlineSharp";
+import { Fade } from "@mui/material";
 
 
 const UserCount = () => {
@@ -26,9 +22,34 @@ const UserCount = () => {
     },
     {
       icon: "/icon4.svg",
-      heading: "4.9 Rating on Playstore",
+      heading:"4.5+ Rating on Playstore",
+      
     },
   ];
+  const [inView, setInView] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.unobserve(ref.current);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
 
   const StyledTypography1 = styled(Typography)`
     font-size: 23px;
@@ -40,18 +61,22 @@ const UserCount = () => {
   `;
 
   return (
+    <Box sx={{display:"flex",justifyContent:"center"}} >
+       <Fade in={inView} timeout={2000}>
     <Grid
       container
       alignItems="center"
       justifyContent="center"
       direction="row"
       paddingX={{ xs: 6, lg: 10 }}
-      paddingY={{xs:3,sm:6}}
+      paddingY={{xs:2,sm:6}}
       spacing={4}
+      ref={ref}
+          sx={{ opacity: inView ? 1 : 0 }}
     >
       {analyticsArray.map((element, index) => {
         return (
-          <Grid item xs={12} sm={3} key={index}  height={{sm:"12vh",lg:"20vh"}}>
+          <Grid item xs={12} sm={3} md={2.8} key={index}  height={{sm:"12vh",lg:"20vh"}}>
             <Grid
               container
               direction="column"
@@ -60,16 +85,21 @@ const UserCount = () => {
              
                
             >
-              <Grid item>
-              <Image
-      src={element.icon}
-      width={40}
-      height={40}
-      alt={`icon${index}`}
-    />
-                
-              </Grid>
-              <Grid item>
+             <Box
+                    sx={{
+                      width: { xs: "32px", sm: "64px" },
+                      height: { xs: "32px", sm: "64px" },
+                    }}
+                  >
+                    <Image
+                      src={element.icon}
+                      alt={`icon${index}`}
+                      width={64}
+                      height={64}
+                      style={{ width: '100%', height: 'auto' }}
+                    />
+                  </Box>
+              <Grid item  width="100%">
                 <StyledTypography1
                   color="#0D1726"
                   align="center"
@@ -83,6 +113,8 @@ const UserCount = () => {
         );
       })}
     </Grid>
+    </Fade>
+    </Box>
   );
 };
 export default UserCount;

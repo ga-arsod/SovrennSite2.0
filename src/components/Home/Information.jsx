@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
+import React,{useState,useEffect,useRef} from "react";
 import { Typography, Box, Grid } from "@mui/material";
 import Image from "next/image";
 import styled from "@emotion/styled";
 import { useTheme } from "@mui/material/styles";
 import { colors } from "../Constants/colors";
+import { Fade } from "@mui/material";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -53,9 +54,58 @@ const OverlayImage = styled(Image)`
 const ParentImage = styled(Image)`
   border-radius: 12px; /* Black border, adjust color and thickness as needed */
 `;
+const FadeInBox = styled(Box)(({ theme }) => ({
+  opacity: 0,
+  transform: "translateY(30px)",
+  transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+  "&.visible": {
+    opacity: 1,
+    transform: "translateY(0)",
+  },
+}));
 
 const Information = () => {
   const theme = useTheme();
+  const [inView, setInView] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.unobserve(ref.current);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+  const [isVisible, setVisible] = useState(false);
+  const domRef = useRef();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => setVisible(entry.isIntersecting));
+    });
+    if (domRef.current) {
+      observer.observe(domRef.current);
+    }
+    return () => {
+      if (domRef.current) {
+        observer.unobserve(domRef.current);
+      }
+    };
+  }, []);
   return (
     <>
       <Box>
@@ -68,7 +118,9 @@ const Information = () => {
           paddingX={{xs:2,sm:3,md:2}}
           paddingY={6}
         >
+           <FadeInBox ref={domRef} className={isVisible ? "visible" : ""} >
           <Grid item>
+         
             <Typography sx={{ textAlign: "center" }} gutterBottom >
               <StyledTypography1
                 component="span"
@@ -97,8 +149,11 @@ const Information = () => {
               you can expect from Sovrenn.
             </StyledTypography2>
           </Grid>
+          </FadeInBox>
           <Grid item>
-          <Container>
+          <Fade in={inView} timeout={1000}>
+          <Container  ref={ref}
+          sx={{ opacity: inView ? 1 : 0 }}>
       {/* Parent Image */}
       <ParentImage
               src="/green.svg"
@@ -111,7 +166,7 @@ const Information = () => {
       {/* Overlay Image */}
       <OverlayImage src="/play.svg" alt="Overlay Image" width={80} height={80} />
     </Container>
-           
+    </Fade>
           </Grid>
         </Grid>
       </Box>

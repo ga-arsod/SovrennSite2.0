@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 const FoundersCard = ({ item }) => {
   const pathname=usePathname();
   return (
-    <Grid item paddingY={4} paddingX={{xs:4,sm:2,md:4}} xs={12} sm={pathname==="/" ? "6":"12"} sx={{position:'relative'}}>
+    <Grid item paddingY={{xs:"20px",sm:6}} paddingX={{xs:4,sm:2,md:4}} xs={12} sm={pathname==="/" ? "6":"12"} sx={{position:'relative'}}>
       <Grid
         container
         direction="column"
@@ -45,7 +45,7 @@ const FoundersCard = ({ item }) => {
             {item.position}
           </Typography>
 
-          <Grid item  marginBottom={4}>
+          <Grid item  marginBottom={9}>
             <Typography
               component="div"
               justifyContent="center"
@@ -57,7 +57,7 @@ const FoundersCard = ({ item }) => {
              {item.description}
             </Typography>
           </Grid>
-          <Grid container justifyContent="center" alignItems='center' sx={{position:'absolute',bottom:'24px'}} width={pathname==="/" ? "80%" : "90%"} >
+          <Grid container justifyContent="center" alignItems='center' sx={{position:'absolute',bottom:'48px'}} width={pathname==="/" ? "80%" : "90%"} >
             <Grid item component="span">
               <IconButton sx={{ color: "#98A2B3" }}>
                 <TwitterIcon />

@@ -22,22 +22,28 @@ left:10%;
 
 const StyledTypography1=styled(Typography)`
 font-weight:700;
-font-size:26px;
+font-size:28px;
 line-height:34px; 
 letter-spacing: -0.02em;  
 
-
+@media (max-width:639px)
+{
+  
+  font-weight:600;
+font-size:23px;
+line-height:28px;
+}
 
 
 `;
 
 const StyledTypography2 = styled(Typography)`
 font-weight:400;
-font-size:18px;
+font-size:20px;
 line-height:24px;
-@media (max-width:700px)
+@media (max-width:639px)
 {
-  font-family: 'Inter', sans-serif;
+  
   font-weight:400;
 font-size:12px;
 line-height:14px;
@@ -58,7 +64,7 @@ const TrialCard=()=>{
     <>
 
     <Box sx={{position:'absolute'}} bgcolor={{xs:'#0D1726',sm:""}}  width="100vw"  >
-      <StyledGrid container justifyContent='center' paddingTop={{xs:16,sm:3}} >
+      <StyledGrid container justifyContent='center' paddingTop={{xs:16,sm:0}} >
 <Grid item  sx={{background: `linear-gradient(45deg, ${gradientColors.c1}, ${gradientColors.c2})`, boxShadow: '0px 8px 8px -4px #1018280A, 0px 20px 24px -4px #1018281A',borderRadius:'8px',}}>
 <Grid container direction={{xs:"column",sm:"row"}}   spacing={0} alignItems='center' justifyContent='space-between' paddingY={{xs:1,sm:3,md:6}} paddingX={{xs:1,sm:6,md:4}} >
         <Grid item  width={{xs:"100%",sm:"70%"}}>
@@ -66,7 +72,7 @@ const TrialCard=()=>{
         <StyledTypography2 color="#F4F3F3" textAlign={{xs:"center",sm:"start"}} gutterBottom marginBottom={3} >Unlock two months of financial insight with Sovrenn. Empower your investing journey today!</StyledTypography2>
         </Grid>
         <Grid item >
-        <StyledButton variant="contained"  sx={{fontSize:{xs:"16px",sm:"16px"} ,backgroundColor:"white",paddingY:{xs:"12px",sm:"14px"},lineHeight:"19px" ,textTransform:'none'}}>Buy Trial Now</StyledButton>
+        <StyledButton variant="contained"  sx={{fontSize:{xs:"16px",sm:"16px"} ,backgroundColor:"white",paddingY:{xs:"12px",sm:"14px"},lineHeight:{xs:"19px",sm:"21px"} ,textTransform:'none'}}>Buy Trial Now</StyledButton>
         </Grid>
         </Grid>
 
