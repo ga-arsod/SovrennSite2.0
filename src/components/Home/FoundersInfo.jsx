@@ -100,7 +100,7 @@ const FoundersInfo = () => {
           direction="column"
           justifyContent="center"
           alignItems="center"
-          paddingTop={3}
+          paddingTop={{xs:"20px",sm:6}}
         >
           <Grid item>
             <Typography textAlign="center">
@@ -141,6 +141,7 @@ const FoundersInfo = () => {
           item
           ref={ref}
           sx={{ opacity: inView ? 1 : 0 }}
+         marginTop={{xs:"20px",sm:6}}
         >
           {(pathname === "/" ? foundersArray : foundersArray.slice(0, 1)).map(
             (item, index) => {

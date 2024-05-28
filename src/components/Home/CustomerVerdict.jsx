@@ -106,7 +106,7 @@ const CustomerVerdict = () => {
       <Grid
         container
         justifyContent="center"
-        py={4}
+        paddingY={{xs:"20px",sm:6}}
         sx={{ position: "relative" }}
       >
         <Grid item paddingX={5}>
@@ -133,7 +133,8 @@ const CustomerVerdict = () => {
       <Grid
         container
         spacing={4}
-        paddingY={2}
+        paddingTop={2}
+        paddingBottom={{xs:"20px",sm:6}}
         ref={ref}
         sx={{ opacity: inView ? 1 : 0 }}
       >

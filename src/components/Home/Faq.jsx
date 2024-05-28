@@ -156,7 +156,7 @@ const Faq = () => {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        paddingTop={4}
+        paddingY={{xs:"20px",sm:6}}
       >
         <Grid item>
           <FadeInBox ref={domRef} className={isVisible ? "visible" : ""}>

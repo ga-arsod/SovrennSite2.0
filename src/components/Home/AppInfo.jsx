@@ -91,7 +91,7 @@ const AppInfo = () => {
       <Grid
         container
         direction="column"
-        paddingBottom={{ xs: 3, sm: 17, md: 13 }}
+       
         justifyContent="center"
         paddingX={{ xs: 2, sm: 1, md: 2 }}
       >
@@ -102,7 +102,7 @@ const AppInfo = () => {
               spacing={3}
               direction="column"
               alignItems="center"
-              paddingTop={8}
+              paddingY={{xs:"40px",sm:"48px"}}
             >
               <Grid item>
                 <StyledTypography1
@@ -157,6 +157,8 @@ const AppInfo = () => {
               alignItems="center"
               ref={ref}
               sx={{ opacity: inView ? 1 : 0 }}
+              paddingTop={{xs:"20px",sm:6}}
+              paddingBottom={{xs:"20px",sm:16}}
             >
               <Grid item>
                 <Typography

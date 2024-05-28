@@ -81,7 +81,7 @@ const PlanInfo = () => {
     };
   }, []);
   return (
-    <Box width="100%" paddingY={4}>
+    <Box width="100%" paddingY={{xs:"20px",sm:6}}>
       <FadeInBox ref={domRef} className={isVisible ? "visible" : ""}>
         <Grid
           container
