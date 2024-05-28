@@ -320,15 +320,17 @@ const MainPoster = () => {
             </Grid>
             <Grid item sm={6.5} sx={{display:{xs:"none",md:"block"}}}>
             <Box
-                sx={{ position: "relative",display:{xs:"none",md:"block" }}}
+                sx={{ position: "relative",display:{xs:"none",md:"block", zIndex:5, }}}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                width="500px"
+                height="450px"
               >
                 <Image
                   src="/hero2.svg"
                   alt="Parent"
                   width={500}
-                  height={410}
+                  height={450}
                   layout="fixed"
                 />
                 <Box
@@ -337,9 +339,10 @@ const MainPoster = () => {
                     width: "183px",
                     height: "68px",
                     top: 0,
-                    left: "-10vh",
+                    left: "-32px",
                     transition: "transform 0.3s",
                     transform: hoverTransform1,
+                    zIndex:10,
                   }}
                 >
                   <Image
@@ -355,10 +358,11 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "35px",
                     height: "35px",
-                    top: "25vh",
-                    left: "20vh",
+                    top: "150px",
+                    left: "90px",
                     transition: "transform 0.3s",
                     transform: hoverTransform2,
+                    zIndex:10,
                   }}
                 >
                   <Image
@@ -374,10 +378,11 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "121px",
                     height: "61px",
-                    top: "55vh",
-                    left: "3vh",
+                    bottom: "50px",
+                    left: "1px",
                     transition: "transform 0.3s",
                     transform: hoverTransform3,
+                    zIndex:10,
                   }}
                 >
                   <Image
@@ -393,10 +398,11 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "129px",
                     height: "32px",
-                    top: "62vh",
-                    left: "33vh",
+                    bottom: "40px",
+                    left: "180px",
                     transition: "transform 0.3s",
                     transform: hoverTransform4,
+                    zIndex:10,
                   }}
                 >
                   <Image
@@ -412,10 +418,11 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "35px",
                     height: "35px",
-                    bottom: "10px",
-                    right: "-10vh",
+                    bottom: "5px",
+                    right: "80px",
                     transition: "transform 0.3s",
                     transform: hoverTransform5,
+                    zIndex:10,
                   }}
                 >
                   <Image
@@ -431,10 +438,11 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "129px",
                     height: "166px",
-                    bottom: "15vh",
-                    right: "-25vh",
+                    bottom: "60px",
+                    right: "5px",
                     transition: "transform 0.3s",
                     transform: hoverTransform6,
+                    zIndex:10,
                   }}
                 >
                   <Image

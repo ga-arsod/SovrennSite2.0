@@ -14,6 +14,7 @@ import { LiveSessionInfoArray } from "@/utils/Data";
 import styled from "@emotion/styled";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { colors } from "../Constants/colors";
+import SlotBookingModal from "../Modal/SlotBookingModal";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -79,8 +80,14 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
 }));
 
 const LiveSessionInfo = () => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <>
+    {
+      open ? <SlotBookingModal open={open} handleClose={handleClose}/> : <></>
+    }
       <Box>
         <Grid container width="100%">
           <Grid item xs={12} marginY={7} paddingX={3}>
@@ -177,8 +184,8 @@ const LiveSessionInfo = () => {
                     </Typography>
                    
                   </Grid>
-                  <Grid item>
-                    <StyledButton2 variant="contained">
+                  <Grid item >
+                    <StyledButton2 variant="contained"  onClick={handleOpen}>
                       Book a slot
                     </StyledButton2>
                   </Grid>
