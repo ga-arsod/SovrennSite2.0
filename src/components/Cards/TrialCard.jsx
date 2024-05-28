@@ -58,7 +58,7 @@ const TrialCard=()=>{
     <>
 
     <Box sx={{position:'absolute'}} bgcolor={{xs:'#0D1726',sm:""}}  width="100vw"  >
-      <StyledGrid container justifyContent='center' paddingTop={{xs:16,sm:3}} >
+      <StyledGrid container justifyContent='center' paddingTop={{xs:16,sm:0}} >
 <Grid item  sx={{background: `linear-gradient(45deg, ${gradientColors.c1}, ${gradientColors.c2})`, boxShadow: '0px 8px 8px -4px #1018280A, 0px 20px 24px -4px #1018281A',borderRadius:'8px',}}>
 <Grid container direction={{xs:"column",sm:"row"}}   spacing={0} alignItems='center' justifyContent='space-between' paddingY={{xs:1,sm:3,md:6}} paddingX={{xs:1,sm:6,md:4}} >
         <Grid item  width={{xs:"100%",sm:"70%"}}>

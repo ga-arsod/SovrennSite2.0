@@ -324,13 +324,13 @@ const MainPoster = () => {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 width="500px"
-                height="450px"
+                height="420px"
               >
                 <Image
                   src="/hero2.svg"
                   alt="Parent"
                   width={500}
-                  height={450}
+                  height={420}
                   layout="fixed"
                 />
                 <Box
@@ -339,7 +339,7 @@ const MainPoster = () => {
                     width: "183px",
                     height: "68px",
                     top: 0,
-                    left: "-32px",
+                    left: "-22px",
                     transition: "transform 0.3s",
                     transform: hoverTransform1,
                     zIndex:10,
@@ -359,7 +359,7 @@ const MainPoster = () => {
                     width: "35px",
                     height: "35px",
                     top: "150px",
-                    left: "90px",
+                    left: "130px",
                     transition: "transform 0.3s",
                     transform: hoverTransform2,
                     zIndex:10,
@@ -379,7 +379,7 @@ const MainPoster = () => {
                     width: "121px",
                     height: "61px",
                     bottom: "50px",
-                    left: "1px",
+                    left: "35px",
                     transition: "transform 0.3s",
                     transform: hoverTransform3,
                     zIndex:10,
@@ -399,7 +399,7 @@ const MainPoster = () => {
                     width: "129px",
                     height: "32px",
                     bottom: "40px",
-                    left: "180px",
+                    left: "220px",
                     transition: "transform 0.3s",
                     transform: hoverTransform4,
                     zIndex:10,
@@ -438,8 +438,8 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "129px",
                     height: "166px",
-                    bottom: "60px",
-                    right: "5px",
+                    bottom: "45px",
+                    right: "0px",
                     transition: "transform 0.3s",
                     transform: hoverTransform6,
                     zIndex:10,
