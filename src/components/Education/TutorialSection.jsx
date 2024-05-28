@@ -55,7 +55,7 @@ const TutorialSection = () => {
   return (
     <>
     {
-      open ? <LanguageModal open={open}/> : <></>
+      open ? <LanguageModal open={open} handleClose={handleClose}/> : <></>
     }
       <Box>
         <Grid
@@ -108,8 +108,9 @@ const TutorialSection = () => {
           >
             <Grid
               container
-              padding={2}
-              gap={4}
+              paddingY={2}
+              paddingX={4}
+              gap={2}
               direction={{ xs: "column", sm: "row" }}
               width={{ xs: "100%", md: "85%" }}
               justifyContent="space-between"
@@ -119,7 +120,7 @@ const TutorialSection = () => {
                   <Grid
                     item
                     key={index}
-                    sm={5.8}
+                    sm={5.7}
                     sx={{ border: "1px solid #E4E7EC", borderRadius: "12px" }}
                   >
                     <Box sx={{ position: 'relative', borderRadius: "12px", overflow: "hidden" }}>
@@ -138,8 +139,9 @@ const TutorialSection = () => {
                 transform: 'translate(-50%, -50%)',
                 width: '80px', 
                 height: '80px', 
+                cursor:"pointer"
               }}
-             
+              onClick={handleOpen}
             >
               <Image
                 src="/play.svg" 
