@@ -13,7 +13,7 @@ const StyledTypography1 = styled(Typography)`
   font-size: 34px;
   line-height: 40px;
   letter-spacing:-0.04em;
-  @media (max-width: 700px) {
+  @media (max-width: 639px) {
     font-weight: 600;
     font-size: 23px;
     line-height: 28px;
@@ -27,8 +27,8 @@ const StyledTypography2 = styled(Typography)`
   line-height: 24px;
   @media (max-width: 700px) {
     font-weight: 400;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 12px;
+    line-height: 14px;
   }
 `;
 const StyledBox = styled(Box)`

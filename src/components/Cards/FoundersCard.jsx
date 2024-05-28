@@ -45,7 +45,7 @@ const FoundersCard = ({ item }) => {
             {item.position}
           </Typography>
 
-          <Grid item  marginBottom={6}>
+          <Grid item  marginBottom={9}>
             <Typography
               component="div"
               justifyContent="center"
