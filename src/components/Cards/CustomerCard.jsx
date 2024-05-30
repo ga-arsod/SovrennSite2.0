@@ -13,6 +13,9 @@ const StyledTypography1 = styled(Typography)`
   font-weight: 400;
   font-size: 18px;
   line-height: 21px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-bottom: 0.49px solid ${colors.neutral600};
 `;
 const StyledTypography2 = styled(Typography)`
   @media (max-width: 639px) {
@@ -71,12 +74,14 @@ const CustomerCard = ({ element }) => {
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
+                  
                   sx={{
                     borderRadius: "50%",
                     overflow: "hidden",
                     width: { xs: "40px", sm: "80px" },
                     height: { xs: "40px", sm: "80px" },
                     backgroundColor: "white",
+                    border: `4px solid ${colors.white}` // Add border for circular ring effect
                   }}
                 >
                   <Image

@@ -99,7 +99,7 @@ const UserCount = () => {
                       style={{ width: '100%', height: 'auto' }}
                     />
                   </Box>
-              <Grid item  width="100%">
+              <Grid item  width={{xs:"50%",sm:"90%",md:"80%",xl:"37%"}}>
                 <StyledTypography1
                   color="#0D1726"
                   align="center"
