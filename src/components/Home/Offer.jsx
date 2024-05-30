@@ -237,7 +237,7 @@ const Offer = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
-    }, 7000); // Change slide every 3 seconds
+    }, 7000); // Change slide every 7 seconds
 
     return () => clearInterval(interval); // Clear interval on unmount
   }, []);
@@ -253,7 +253,7 @@ const Offer = () => {
     >
       <Grid
         container
-        paddingY={3}
+        paddingY={{xs:"10px",sm:5}}
         spacing={2}
         direction="column"
         justifyContent="center"
