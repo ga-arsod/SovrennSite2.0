@@ -24,7 +24,7 @@ const StyledTypography2 = styled(Typography)`
   line-height: 23px;
   letter-spacing: -0.02em;
   color:${colors.navyBlue400};
-  @media (max-width: 700px) {
+  @media (max-width: 639px) {
     font-size: 14px;
     font-weight: 400;
     line-height:17px;

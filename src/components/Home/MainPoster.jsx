@@ -25,7 +25,7 @@ const headingsArray = [
 const StyledButton1 = styled(Button)`
   border-color: ${colors.themeGreen};
   color: ${colors.themeGreen};
-  font-weight: 600;
+  font-weight: 500;
   font-size: 18px;
   line-height: 21px;
   padding-top: 12px;
@@ -41,7 +41,7 @@ const StyledButton1 = styled(Button)`
   }
   @media (max-width: 639px) {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 20px;
     padding-top: 12px;
     padding-bottom: 12px;
@@ -50,7 +50,7 @@ const StyledButton1 = styled(Button)`
 
 const StyledButton2 = styled(Button)`
   color: white;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 18px;
   line-height: 21px;
   padding-top: 12px;
@@ -64,7 +64,7 @@ const StyledButton2 = styled(Button)`
   }
   @media (max-width: 700px) {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 22px;
     padding-top: 12px;
     padding-bottom: 12px;
@@ -75,20 +75,21 @@ const StyledTypography1 = styled(Typography)`
   color: ${colors.themeGreen};
   margin-right: 8px;
 
-  @media (max-width: 700px) {
+  @media (max-width: 639px) {
     font-size: 23px;
     font-weight: 600;
     line-height: 28px;
     letter-spacing: -0.02em;
   }
-  @media (min-width: 701px) and (max-width: 1120px) {
+  @media (min-width: 640px) and (max-width: 1024px) {
     font-size: 48px;
     font-weight: 700;
     letter-spacing: -0.04em;
   }
-  @media (min-width: 1121px) {
+  @media (min-width: 1025px) {
     font-size: 48px;
     font-weight: 700;
+    line-height:56px;
     letter-spacing: -0.04em;
   }
 `;
@@ -205,7 +206,7 @@ const MainPoster = () => {
          
           <SlideInLeftBox container justifyContent="center" alignItems="center" className={animate ? 'animate' : ''}>
             <Grid item>
-              <StyledTyography3 gutterBottom>
+              <StyledTyography3 marginBottom={1}>
                 <Typography
                   component="span"
                   sx={{
@@ -241,7 +242,7 @@ const MainPoster = () => {
                 {headingsArray.map((element, index) => {
                   return (
                     <Box key={index}>
-                      <StyledTyography3 marginTop={{ xs: 1, sm: 0 }}>
+                      <StyledTyography3  marginBottom="4px">
                         <StyledTypography1 variant="h6" component="span">
                           {element.h1}
                         </StyledTypography1>
@@ -255,7 +256,8 @@ const MainPoster = () => {
               </Box>
               <Box
                 sx={{ textAlign: { xs: "center", lg: "start" } }}
-                marginTop={1}
+                marginTop="4px"
+                marginBottom="28px"
               >
                 <Typography
                   align="justify"
@@ -277,7 +279,7 @@ const MainPoster = () => {
                 container
                 direction={{ xs: "column", sm: "row" }}
                 spacing={2}
-                sx={{ paddingTop: "12px" }}
+               
               >
                 <Grid item>
                   <StyledButton1 variant="outlined">

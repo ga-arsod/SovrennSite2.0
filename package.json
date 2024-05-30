@@ -25,6 +25,7 @@
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
+    "@swc/plugin-emotion": "^3.0.5",
     "eslint": "^8",
     "eslint-config-next": "14.1.4"
   }

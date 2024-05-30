@@ -124,14 +124,13 @@ const PlanInfo = () => {
           ref={ref}
           sx={{ opacity: inView ? 1 : 0 }}
           width="100vw"
-          spacing={2}
+          gap={3}
           justifyContent="center"
-          paddingLeft={{ xs: 2, sm: 4, lg: 8 }}
-          paddingRight={{ xs: 0, sm: 4, lg: 8 }}
+         
         >
           {planData.map((element, index) => {
             return (
-              <Grid item xs={12} sm={4} key={index}>
+              <Grid item width={{xs:"318px",sm:"293px",md:"370px"}} key={index} sx={{display:"flex",justifyContent:"center"}}>
                 <PlanCard element={element} />
               </Grid>
             );

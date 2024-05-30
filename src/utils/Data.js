@@ -80,25 +80,25 @@ export const foundersArray=[
 export const customerArray=[
   {
     description:"I've been using Sovrenn for several years now, and I couldn't be happier with their services. The mobile banking app they provide is an absolute game-changer. It's incredibly user-friendly and has made managing my finances a breeze.",
-    imagePath:"/images.jpeg",
+    imagePath:"/images.jpg",
     name:"Jerry Helfer",
     date:"24  Oct, 2023",
   },
   {
     description:"I've been using Sovrenn for several years now, and I couldn't be happier with their services. The mobile banking app they provide is an absolute game-changer. It's incredibly user-friendly and has made managing my finances a breeze.",
-    imagePath:"/images.jpeg",
+    imagePath:"/images.jpg",
     name:"Jerry Helfer",
     date:"24  Oct, 2023",
   },
   {
     description:"I've been using Sovrenn for several years now, and I couldn't be happier with their services. The mobile banking app they provide is an absolute game-changer. It's incredibly user-friendly and has made managing my finances a breeze.",
-    imagePath:"/images.jpeg",
+    imagePath:"/images.jpg",
     name:"Jerry Helfer",
     date:"24  Oct, 2023",
   },
   {
     description:"I've been using Sovrenn for several years now, and I couldn't be happier with their services. The mobile banking app they provide is an absolute game-changer. It's incredibly user-friendly and has made managing my finances a breeze.",
-    imagePath:"/images.jpeg",
+    imagePath:"/images.jpg",
     name:"Jerry Helfer",
     date:"24  Oct, 2023",
   }
