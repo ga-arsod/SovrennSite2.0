@@ -7,24 +7,18 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Button,IconButton,
-  useTheme
+  Button,
+  IconButton,
+  useTheme,
+  Fade,
 } from "@mui/material";
-import React,{useState,useEffect,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import CheckIcon from "@mui/icons-material/Check";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
 import { colors } from "../Constants/colors";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import CircleIcon from '@mui/icons-material/Circle';
-import { Fade } from "@mui/material";
-
-
-
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -47,21 +41,19 @@ const StyledTypography2 = styled(Typography)`
     line-height: 14px;
   }
 `;
+
 const StyledTypography3 = styled(Typography)`
-font-weight:400;
-font-size:18px;
-line-height:28px;
-color:#667085;
-}
-
-
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28px;
+  color: #667085;
 `;
+
 const StyledListItemText = styled(ListItemText)`
   color: #667085;
   font-size: 12px;
   @media (max-width: 700px) {
     font-weight: 400;
-
     line-height: 14px;
   }
 `;
@@ -73,11 +65,9 @@ const StyledButton1 = styled(Button)`
   text-transform: none;
   :hover {
     background-color: ${colors.blueButtonHover};
-
     border-color: ${colors.blueButtonHover};
     color: ${colors.white};
     outline: ${colors.blueButtonHover};
-
   }
   @media (max-width: 620px) {
     font-size: 16px;
@@ -95,10 +85,9 @@ const StyledButton2 = styled(Button)`
   line-height: 17px;
   text-transform: none;
   padding-top: 8px;
-    padding-bottom: 8px;
+  padding-bottom: 8px;
   :hover {
     background-color: ${colors.themeButtonHover};
-
     border-color: ${colors.themeButtonHover};
     outline: ${colors.themeButtonHover};
   }
@@ -112,7 +101,7 @@ const StyledButton2 = styled(Button)`
 
 const sovreenOfferArray = [
   {
-    imagePath: "/content.svg",
+    imagePath: "/content.png",
     Info: {
       heading: "Sovrenn discovery",
       listItems: ["Daily updates on", "Daily updates on", "Daily updates on"],
@@ -123,7 +112,7 @@ const sovreenOfferArray = [
     },
   },
   {
-    imagePath: "/content.svg",
+    imagePath: "/content.png",
     Info: {
       heading: "Sovrenn education",
       listItems: ["Daily updates on", "Daily updates on", "Daily updates on"],
@@ -134,7 +123,7 @@ const sovreenOfferArray = [
     },
   },
   {
-    imagePath: "/content.svg",
+    imagePath: "/content.png",
     Info: {
       heading: "Sovrenn discovery",
       listItems: ["Daily updates on", "Daily updates on", "Daily updates on"],
@@ -145,7 +134,7 @@ const sovreenOfferArray = [
     },
   },
   {
-    imagePath: "/content.svg",
+    imagePath: "/content.png",
     Info: {
       heading: "Sovrenn education",
       listItems: ["Daily updates on", "Daily updates on", "Daily updates on"],
@@ -155,8 +144,8 @@ const sovreenOfferArray = [
       second: "Buy Full Access @ ₹5000/yr",
     },
   },
- 
 ];
+
 const FadeInBox = styled(Box)(({ theme }) => ({
   opacity: 0,
   transform: "translateY(30px)",
@@ -166,10 +155,10 @@ const FadeInBox = styled(Box)(({ theme }) => ({
     transform: "translateY(0)",
   },
 }));
+
 const Offer = () => {
-  const theme=useTheme();
+  const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
- 
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % sovreenOfferArray.length);
@@ -186,13 +175,14 @@ const Offer = () => {
   };
 
   const StyledIconButton = styled(IconButton)`
-  && {
-    background-color: ${colors.white};
-    &:hover {
+    && {
       background-color: ${colors.white};
+      &:hover {
+        background-color: ${colors.white};
+      }
     }
-  }
-`;
+  `;
+
   const [inView, setInView] = useState(false);
   const ref = useRef(null);
 
@@ -217,6 +207,7 @@ const Offer = () => {
       }
     };
   }, []);
+
   const [isVisible, setVisible] = useState(false);
   const domRef = useRef();
 
@@ -242,7 +233,6 @@ const Offer = () => {
     return () => clearInterval(interval); // Clear interval on unmount
   }, []);
 
-  
   return (
     <Box
       sx={{
@@ -253,38 +243,30 @@ const Offer = () => {
     >
       <Grid
         container
-        paddingY={{xs:"10px",sm:5}}
+        paddingY={{ xs: "10px", sm: 5 }}
         spacing={2}
         direction="column"
         justifyContent="center"
-     
       >
         <Grid item>
-        <FadeInBox ref={domRef} className={isVisible ? "visible" : ""}>
-          <Typography sx={{ textAlign: "center" }}>
-            <StyledTypography1 component="span" color="#0D1726" marginRight={1}>
-              This is What we offer
-            </StyledTypography1>
-            <StyledTypography1 component="span" color={colors.themeGreen}>
-              You
-            </StyledTypography1>
-          </Typography>
-          <StyledTypography2 component="div" color="#627B8F" textAlign="center" paddingX={2}>
-            Here is everything that you will get from Sovrenn
-          </StyledTypography2>
-           </FadeInBox>
+          <FadeInBox ref={domRef} className={isVisible ? "visible" : ""}>
+            <Typography sx={{ textAlign: "center" }}>
+              <StyledTypography1 component="span" color="#0D1726" marginRight={1}>
+                This is What we offer
+              </StyledTypography1>
+              <StyledTypography1 component="span" color={colors.themeGreen}>
+                You
+              </StyledTypography1>
+            </Typography>
+            <StyledTypography2 component="div" color="#627B8F" textAlign="center" paddingX={2}>
+              Here is everything that you will get from Sovrenn
+            </StyledTypography2>
+          </FadeInBox>
         </Grid>
         <Fade in={inView} timeout={1000}>
-<Grid container  ref={ref}
-          sx={{ opacity: inView ? 1 : 0 }} justifyContent="center">
-        <Box
-         sx={{
-          position: "relative",
-          overflowX: "auto",
-          width: "100%",
-        }}
-        >
- <Box sx={{display:{xs:"flex",sm:"none",md:"none"},justifyContent:'center'}} marginTop={3}>
+          <Grid container ref={ref} sx={{ opacity: inView ? 1 : 0 }} justifyContent="center">
+            <Box sx={{ position: "relative", overflow: "hidden", width: "100%" }}>
+            <Box sx={{display:{xs:"flex",sm:"none",md:"none"},justifyContent:'center'}} marginTop={3}>
         <StyledIconButton
                   onClick={prevSlide}
                 sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",right:"1vw"}} >
@@ -296,60 +278,52 @@ const Offer = () => {
                   <ArrowForwardIcon sx={{color:colors.navyBlue500}}/>
                 </StyledIconButton>
         </Box>
-       
-       <Box sx={{display:"flex",transition: 'transform 0.5s ease-in-out',
-          transform: `translateX(-${currentIndex * 100}%)`,}}>
-       {sovreenOfferArray.map((element, index) => {
-          return (
-            <>
-            <Box
-             sx={{
-              minWidth: "100%",
-              boxSizing: "border-box",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            key={index}
-            display={index===currentIndex?"block":"none"}
-            >
-
-          
-            <Grid
-              container
-              paddingTop={4}
-              justifyContent="center"
-              alignItems="center"
-            
-              direction={{xs:"column",sm:"row"}}
-             width="100vw"
-            >
-              <Grid
-                item
-                xs={5}
-               sm={5.5}
-                sx={{ display: "flex", justifyContent: "space-between",alignItems:"center" }}
-              
-             marginLeft={{xs:4,sm:4,md:0}}
+              <Box
+                sx={{
+                  display: "flex",
+                  transition: "transform 0.5s ease-in-out",
+                  transform: `translateX(-${currentIndex * 100}%)`,
+                }}
               >
-               
-                <StyledIconButton
-                  onClick={prevSlide}
-                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",right:"1vw",display:{xs:"none",md:"block"}}} >
-                  <ArrowBackIcon sx={{color:colors.navyBlue500}}/>
-                </StyledIconButton>
-               
-               
-                <Image
-                  src={element.imagePath}
-                  alt="..."
-                  width={560}
-                  height={351}
-
-                  layout="responsive"
-                />
-              </Grid>
-              <Grid item>
+                {sovreenOfferArray.map((element, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      minWidth: "100%",
+                      boxSizing: "border-box",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                   paddingLeft={5}
+                    display={index === currentIndex ? "block" : "none"}
+                  >
+                    <Grid
+                      container
+                      paddingTop={4}
+                      justifyContent="center"
+                      alignItems="center"
+                      direction={{ xs: "column", sm: "row" }}
+                      width="100vw"
+                    >
+                      <Grid
+                        item
+                        xs={5}
+                        sm={5.5}
+                        md={4.8}
+                        sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                        marginTop={{ xs: 0, sm: 0 }}
+                      >
+                        <Image
+                          src={element.imagePath}
+                          alt="offer"
+                          width={560}
+                          height={351}
+                          layout="intrinsic"
+                          priority
+                        />
+                      </Grid>
+                      <Grid item>
               <Box sx={{ width: '100%', display: {xs:"flex",sm:"none"}, justifyContent: 'center'  }} marginBottom={3}>
         {sovreenOfferArray.map((_, index) => (
           <IconButton
@@ -372,103 +346,144 @@ const Offer = () => {
         ))}
       </Box>
               </Grid>
-              <Grid item marginTop={1}  sm={5.5} sx={{display:"flex",alignItems:"center"}}>
-                <Grid container justifyContent="center" alignItems="center">
-                  <Grid item>
-                    <StyledTypography1 color="#0D1726">
-                      {element.Info.heading}
-                    </StyledTypography1>
-                    <Grid container direction="column">
-                      <Grid item>
-                        <List>
-                          {element.Info.listItems.map((item, index) => {
-                            return (
-                              <ListItem key={index}>
-                                <ListItemIcon>
-                                  <CheckIcon
-                                    fontSize="medium"
-                                    sx={{
-                                      color: colors.themeGreen,
-                                      backgroundColor: "#B9E2DF", // Background color
-                                      borderRadius: "50%",
-                                      padding: "4px",
-                                    }}
-                                  />
-                                </ListItemIcon>
-
-                                <StyledTypography3>{item}</StyledTypography3>
-                              </ListItem>
-                            );
-                          })}
-                        </List>
-                      </Grid>
-                      <Grid item>
-                        <Grid container my={2} gap={2} direction={{xs:"column",md:"row"}}>
-                          <Grid item >
-                  <StyledButton1 variant="outlined"  sx={{ borderColor:colors.navyBlue500, color: colors.navyBlue500,padding:"8px"}}>{element.button.first}</StyledButton1>
-                    </Grid>
+                      <Grid item marginTop={1} sm={5.5} sx={{ display: "flex", alignItems: "center" }}>
+                        <Grid container justifyContent="center" alignItems="center">
                           <Grid item>
-                            <StyledButton2 variant="contained">
-                              {element.button.second}
-                            </StyledButton2>
+                            <StyledTypography1 color="#0D1726">
+                              {element.Info.heading}
+                            </StyledTypography1>
+                            <Grid container direction="column">
+                              <Grid item>
+                                <List>
+                                  {element.Info.listItems.map((item, index) => (
+                                    <ListItem key={index}>
+                                      <ListItemIcon>
+                                        <CheckIcon
+                                          fontSize="medium"
+                                          sx={{
+                                            color: colors.themeGreen,
+                                            backgroundColor: "#B9E2DF",
+                                            borderRadius: "50%",
+                                            padding: "4px",
+                                          }}
+                                        />
+                                      </ListItemIcon>
+                                      <StyledTypography3>{item}</StyledTypography3>
+                                    </ListItem>
+                                  ))}
+                                </List>
+                              </Grid>
+                              <Grid item>
+                                <Grid container my={2} gap={2} direction={{ xs: "column", md: "row" }}>
+                                  <Grid item>
+                                    <StyledButton1
+                                      variant="outlined"
+                                      sx={{
+                                        borderColor: colors.navyBlue500,
+                                        color: colors.navyBlue500,
+                                        padding: "8px",
+                                      }}
+                                    >
+                                      {element.button.first}
+                                    </StyledButton1>
+                                  </Grid>
+                                  <Grid item>
+                                    <StyledButton2 variant="contained">
+                                      {element.button.second}
+                                    </StyledButton2>
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+                            </Grid>
                           </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                </Grid>
-                <StyledIconButton
-                 onClick={nextSlide}
-                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",left:"1vw",display:{xs:"none",md:"block"}}} >
-                  <ArrowForwardIcon sx={{color:colors.navyBlue500}}/>
-                </StyledIconButton>
-              </Grid>
-            </Grid>
+                  </Box>
+                ))}
+              </Box>
+              <StyledIconButton
+                onClick={prevSlide}
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "40px",
+                  transform: "translateY(-50%)",
+                  backgroundColor: colors.white,
+                  borderRadius: "50%",
+                  height: "38px",
+                  display: { xs: "none", md: "block" },
+                }}
+              >
+                <ArrowBackIcon sx={{ color: colors.navyBlue500 }} />
+              </StyledIconButton>
+              <StyledIconButton
+                onClick={nextSlide}
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "40px",
+                  transform: "translateY(-50%)",
+                  backgroundColor: colors.white,
+                  borderRadius: "50%",
+                  height: "38px",
+                  display: { xs: "none", md: "block" },
+                }}
+              >
+                <ArrowForwardIcon sx={{ color: colors.navyBlue500 }} />
+              </StyledIconButton>
             </Box>
-            </>
-          );
-        })}
-
-       </Box>
-       </Box>
-       
-       <Grid item>
-        <Box sx={{display:{xs:"none",sm:"flex",md:"none"},justifyContent:'center'}} marginBottom={2}>
-        <StyledIconButton
+            <Grid item>
+              <Box sx={{ display: { xs: "none", sm: "flex", md: "none" }, justifyContent: "center" }} marginBottom={2}>
+                <StyledIconButton
                   onClick={prevSlide}
-                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",right:"1vw"}} >
-                  <ArrowBackIcon sx={{color:colors.navyBlue500}}/>
+                  sx={{
+                    backgroundColor: colors.white,
+                    borderRadius: "50%",
+                    height: "38px",
+                    position: "relative",
+                    right: "1vw",
+                  }}
+                >
+                  <ArrowBackIcon sx={{ color: colors.navyBlue500 }} />
                 </StyledIconButton>
                 <StyledIconButton
-                 onClick={nextSlide}
-                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",left:"1vw"}} >
-                  <ArrowForwardIcon sx={{color:colors.navyBlue500}}/>
+                  onClick={nextSlide}
+                  sx={{
+                    backgroundColor: colors.white,
+                    borderRadius: "50%",
+                    height: "38px",
+                    position: "relative",
+                    left: "1vw",
+                  }}
+                >
+                  <ArrowForwardIcon sx={{ color: colors.navyBlue500 }} />
                 </StyledIconButton>
-        </Box>
-       <Box sx={{ width: '100%', display: {xs:"none",sm:"flex"}, justifyContent: 'center',position:"relative",bottom:"8px"  }}>
-        {sovreenOfferArray.map((_, index) => (
-          <IconButton
-            key={index}
-            onClick={() => goToSlide(index)}
-            sx={{
-              padding: theme.spacing(0.5),
-              color: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
-            }}
-          >
-            <Box
-              sx={{
-                width: '10px',
-                height: '10px',
-                borderRadius: '50%',
-                backgroundColor: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
-              }}
-            ></Box>
-          </IconButton>
-        ))}
-      </Box>
-       </Grid>
-       </Grid>
-       </Fade>
+              </Box>
+              <Box sx={{ width: "100%", display: { xs: "none", sm: "flex" }, justifyContent: "center", position: "relative", bottom: "8px" }}>
+                {sovreenOfferArray.map((_, index) => (
+                  <IconButton
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    sx={{
+                      padding: theme.spacing(0.5),
+                      color: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: "10px",
+                        height: "10px",
+                        borderRadius: "50%",
+                        backgroundColor: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
+                      }}
+                    ></Box>
+                  </IconButton>
+                ))}
+              </Box>
+            </Grid>
+          </Grid>
+        </Fade>
       </Grid>
     </Box>
   );

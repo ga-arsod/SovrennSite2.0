@@ -8,9 +8,21 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-const GridContainer1 = styled(Grid)`
-  row-gap: 24px; /* Gap between rows */
-  column-gap: 16px; /* Gap between columns */
+const GridContainer = styled(Box)`
+  display: grid;
+  gap: 24px 16px; /* Row gap, Column gap */
+
+  @media (min-width: 1025px) {
+    grid-template-columns: repeat(4, 1fr); /* 4 items per row on desktop */
+  }
+
+  @media (min-width: 640px) and (max-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr); /* 3 items per row on tablet */
+  }
+
+  @media (max-width: 639px) {
+    flex: 1 1 100%;
+  }
 `;
 
 const StyledTypography1 = styled(Typography)`
@@ -19,25 +31,38 @@ const StyledTypography1 = styled(Typography)`
   line-height: 24px;
   color: ${colors.black};
 `;
+
 const StyledTypography2 = styled(Typography)`
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
 `;
-const StyledGrid = styled(Grid)`
+
+const StyledGrid = styled(Box)`
   cursor: pointer;
   background-color: ${colors.navyBlue50};
+  border-radius: 3px;
+ 
+
   &:hover {
     background-color: ${colors.green50};
   }
+
+ 
 `;
+
 const StyledTypography3 = styled(Typography)`
   font-weight: 700;
   font-size: 28px;
   line-height: 34px;
   letter-spacing: -0.02em;
   color: ${colors.navyBlue900};
+  @media (max-width: 639px) {
+    font-size: 23px;
+  line-height: 28px;
+  }
 `;
+
 const HoverBox = styled(Box)`
   background-color: #F6F5F5;
   border-radius: 4px;
@@ -118,18 +143,7 @@ const fadeOut = `
   }
 `;
 
-const GridContainer = styled(Grid)`
-  &.fade-in {
-    animation: fadeIn 0.5s forwards;
-  }
-  &.fade-out {
-    animation: fadeOut 0.5s forwards;
-  }
-  ${fadeIn}
-  ${fadeOut}
-`;
-
-const DiscoveryCard = ({title}) => {
+const DiscoveryCard = ({ title }) => {
   const [isGridOpen, setIsGridOpen] = useState(true); // State to control the collapse
 
   const handleToggle = () => {
@@ -139,18 +153,18 @@ const DiscoveryCard = ({title}) => {
   return (
     <>
       <Box marginBottom={6}>
-        <HoverBox 
-          onClick={handleToggle} 
+        <HoverBox
+          onClick={handleToggle}
           className={isGridOpen ? '' : 'collapsed'}
-        > 
+        >
           <Grid container justifyContent="space-between" paddingY={1} paddingX="12px" alignItems="center">
             <Grid item>
               <StyledTypography3 className="header-text">{title}</StyledTypography3>
             </Grid>
             <Grid item>
-              <IconButton >
+              <IconButton>
                 {isGridOpen ? (
-                  <KeyboardArrowUpIcon sx={{ color: colors.navyBlue900 }} fontSize='large' className="header-icon"/>
+                  <KeyboardArrowUpIcon sx={{ color: colors.navyBlue900 }} fontSize='large' className="header-icon" />
                 ) : (
                   <KeyboardArrowDownIcon sx={{ color: colors.navyBlue900 }} fontSize='large' className="header-icon" />
                 )}
@@ -159,11 +173,11 @@ const DiscoveryCard = ({title}) => {
           </Grid>
         </HoverBox>
         {isGridOpen && (
-          <GridContainer container rowGap={3} columnGap={2}  className='fade-in'>
+          <GridContainer className='fade-in'>
             {
               Array.from("abcedfghij").map((item, index) => {
                 return (
-                  <StyledGrid item key={index} width="310px" direction={{ xs: "column", sm: "row" }} sx={{ borderRadius: "3px" }}>
+                  <StyledGrid key={index}>
                     <Grid container>
                       <Grid item paddingY={2} paddingX="20px" width="100%">
                         <Box

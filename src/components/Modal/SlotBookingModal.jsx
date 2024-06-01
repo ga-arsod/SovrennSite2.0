@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Box,Grid ,IconButton,Typography,Modal,FormControl,FormControlLabel,RadioGroup,Radio,Button} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "@emotion/styled";
@@ -114,6 +114,17 @@ const StyledRadio = styled(Radio)`
   }
 `;
 const SlotBookingModal=({open,handleClose})=>{
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [open]);
     return(
         <>
         

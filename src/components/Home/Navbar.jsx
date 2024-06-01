@@ -25,18 +25,51 @@ import CloseIcon from "@mui/icons-material/Close";
 import { colors } from "../Constants/colors";
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-
+import Link from 'next/link';
 const navItems = [
-  "Sign Up",
-  "Login",
-  "Education",
-  "Times",
-  "Prime",
-  "Discovery",
-  "IPO",
-  "Knowledge",
-  "Self Help",
-  "Pricing",
+  {
+    name: "Sign Up",
+    link:"/signup"
+  },
+  {
+    name: "Login",
+    link:"/login"
+  },
+  {
+    name: "Education",
+    link:"/education"
+  },
+  {
+    name: "Times",
+    link:"/times"
+  },
+  {
+    name: "Prime",
+    link:"/prime"
+  },
+  {
+    name: "Discovery",
+    link:"/discovery"
+  },
+  {
+    name: "IPO",
+    link:"/ipo"
+  },
+  {
+    name: "Knowledge",
+    link:"/knowledge"
+  },
+  {
+    name: "Self Help",
+    link:"/selfhelp"
+  },
+  {
+    name: "Pricing",
+    link:"/pricing"
+  },
+ 
+
+
 ];
 
 const StyledListItem = styled(ListItem)`
@@ -128,6 +161,11 @@ const SearchInput = styled(InputBase)`
   padding: 4px 4px 4px 0;
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none; // This will remove the blue underline
+  display: block;
+  width: 100%;
+`;
 const Navbar = () => {
   const theme = useTheme();
   const isGreaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -180,9 +218,10 @@ const Navbar = () => {
                   sx={{ display: "flex", flexDirection: "row", padding: 0 }}
                 >
                   {filteredNavItems.map((item) => (
+                    <StyledLink  key={item} href={item.link} passHref>
                     <ListItem
                       onClick={() => setOpen(false)}
-                      key={item}
+                     
                       sx={{
                         px: 1,
                         whiteSpace: "nowrap",
@@ -190,8 +229,9 @@ const Navbar = () => {
                         cursor: "pointer",
                       }}
                     >
-                      <StyledListItemText primary={item}></StyledListItemText>
+                      <StyledListItemText primary={item.name}></StyledListItemText>
                     </ListItem>
+                    </StyledLink>
                   ))}
                 </List>
               </Box>
@@ -286,8 +326,9 @@ const Navbar = () => {
         >
           <List>
             {filteredNavItems.map((item) => (
+              <StyledLink key={item} href={item.link} passHref>
               <StyledListItem
-                key={item}
+               
                 sx={{
                   px: 1,
                   whiteSpace: "nowrap",
@@ -296,8 +337,9 @@ const Navbar = () => {
                 }}
                 onClick={toggleDrawer}
               >
-                <StyledListItemText primary={item}></StyledListItemText>
+                <StyledListItemText primary={item.link}></StyledListItemText>
               </StyledListItem>
+              </StyledLink>
             ))}
           </List>
         </Box>
