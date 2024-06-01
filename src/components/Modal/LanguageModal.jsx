@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React,{useEffect} from "react";
 import { Box, Grid, Typography, Button, IconButton, Modal } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
@@ -88,6 +88,7 @@ const StyledBox = styled(Box)`
 const LanguageModal = ({ open, handleClose }) => {
   const theme = useTheme();
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down('sm'));
+ 
   return (
     <Modal
       open={open}
