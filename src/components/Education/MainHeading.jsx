@@ -44,7 +44,7 @@ const MainHeading = () => {
     <>
       <Box
         width="100vw"
-        height={{xs:"25vh",sm:"37vh",md:"50vh"}}
+       paddingY={{xs:8,sm:14}}
         display="flex"
         justifyContent="center"
         alignItems="center"
@@ -57,7 +57,7 @@ const MainHeading = () => {
       >
         <Grid container >
           <Grid item width="100%"  paddingX={3}>
-             <Typography textAlign="center" gutterBottom>
+             <Typography textAlign="center"marginBottom={1}>
               <StyledTypography1
                 color={colors.navyBlue500}
              

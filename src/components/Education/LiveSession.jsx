@@ -47,24 +47,24 @@ const LiveSession = ({button}) => {
   return (
     <>
       <Box
-        height={{xs:"42vh",sm:"25vh",md:"33vh"}}
+       paddingY={8}
         display="flex"
         alignItems="center"
         justifyContent="center"
         sx={{ background:  `linear-gradient(45deg, ${gradientColors.c1}, ${gradientColors.c2})`}}
-       
+       marginY={{xs:button?"0":"3",md:button?"0":"6"}}
       >
         <Grid container width="100%" alignItems="center" >
-          <Grid item width="100%" sx={{display:"flex",alignItems:"center",flexDirection:"column"}}>
-            <StyledTypography1 component="h2" textAlign="center" gutterBottom  paddingX={2} >
+          <Grid item width="100%" sx={{display:"flex",alignItems:"center",flexDirection:"column"}} marginBottom="20px">
+            <StyledTypography1 component="h2" textAlign="center" paddingX={2} >
               Book a live session
             </StyledTypography1>
-            <StyledTypography2 textAlign="center" paddingX={4} gutterBottom>
+            <StyledTypography2 textAlign="center" paddingX={4} marginBottom="20px">
               Join over 1,000+ learners who already started investing after this
               session
             </StyledTypography2>
             {
-              button &&  <StyledButton2 variant="contained">
+              button &&  <StyledButton2 variant="contained" >
               Book Now
             </StyledButton2>
             }

@@ -205,7 +205,9 @@ const Navbar = () => {
             spacing={4}
           >
             <StyledGrid1 item>
+              <Link href="/" passHref>
               <Image src="/logo.svg" width={146} height={30} alt="logo" />
+              </Link>
             </StyledGrid1>
             <StyledGrid3 item>
               <IconButton onClick={toggleDrawer}>

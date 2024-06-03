@@ -71,11 +71,16 @@ const StyledButton2 = styled(Button)`
 `;
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
+  position: "relative",
+  paddingLeft: theme.spacing(3), // Adjust to make space for the bullet
   "&::before": {
     content: '"•"',
-    marginRight: theme.spacing(1),
-    marginTop: 0,
+    position: "absolute",
+    left: 0,
+    top: "0.75em", // Align the bullet with the first line of text
     color: "#667085",
+    fontSize: "1.25em",
+    lineHeight: "0", // Ensures the bullet is not affected by line height
   },
 }));
 
@@ -89,8 +94,8 @@ const LiveSessionInfo = () => {
       open ? <SlotBookingModal open={open} handleClose={handleClose}/> : <></>
     }
       <Box>
-        <Grid container width="100%">
-          <Grid item xs={12} marginY={7} paddingX={3}>
+        <Grid container width="100%" paddingY={{xs:3,md:6}}>
+          <Grid item xs={12}  paddingX={3} marginBottom={{xs:3,md:8}}>
             <Typography sx={{ textAlign: "center" }} marginBottom={2}>
               <StyledTypography1
                 component="span"
@@ -108,17 +113,17 @@ const LiveSessionInfo = () => {
               Insights
             </StyledTypography2>
           </Grid>
-          <Grid item>
-            <Grid container direction={{xs:"column",sm:"row"}} gap={3}  justifyContent="center" paddingX={2} paddingBottom={4} >
+          <Grid item sx={{display:"flex",justifyContent:"center",alignItems:"center"  }} width="100%">
+            <Grid container direction={{xs:"column",sm:"row"}} gap={3}  justifyContent="center"  paddingX={2} paddingBottom={4}>
             {LiveSessionInfoArray.map((element, index) => {
             return (
-              <Grid item xs={5.9} sm={5.6} md={5} key={index} sx={{border: "1px solid #E4E7EC",borderRadius:"8px"}} padding={2} >
+              <Grid item width={{width:"100%",sm:"465px",md:"582px"}} key={index} sx={{border: "1px solid #E4E7EC",borderRadius:"8px",position:"relative"}} paddingX={3} paddingY={4} >
                 <List
                   sx={{
                     width: "100%",
                     listStyleType: "disc",
                     padding: 0,
-                    height: {xs:"45vh",sm:"35vh",md:"45vh"},
+                    height: {xs:"500px",sm:"435px",md:"411px"},
                   }}
                 >
                   <StyledTypography3
@@ -153,7 +158,8 @@ const LiveSessionInfo = () => {
                   alignItems="center"
                   direction="column"
                   spacing={3}
-                  marginTop={{xs:4,sm:-2}}
+                
+                  sx={{position:"absolute",bottom:"32px",left:"50%",transform: "translate(-50%, 0%)"}}
                 >
                   <Grid item>
                     <Typography textAlign="center">
@@ -161,6 +167,7 @@ const LiveSessionInfo = () => {
                       color={colors.navyBlue400}
                       marginRight={0.5}
                       component="span"
+                      paddingTop={2}
                       sx={{
                         fontWeight: "600",
                         fontSize: "14px",

@@ -64,10 +64,9 @@ const TutorialSection = () => {
           justifyContent="center"
           alignItems="center"
           spacing={1}
-          paddingTop={3}
-          paddingBottom={2}
+         paddingY={{xs:3,md:6}}
         >
-          <Grid item>
+          <Grid item marginBottom={2}>
             <Typography
               sx={{ textAlign: "center" }}
               paddingX={{ xs: 2, sm: 0 }}
@@ -84,20 +83,20 @@ const TutorialSection = () => {
               </StyledTypography1>
             </Typography>
           </Grid>
-          <Grid item display="flex" justifyContent="center">
+          <Grid item display="flex" justifyContent="center" marginBottom="28px">
             <StyledTypography2
               textAlign="center"
-              gutterBottom
+             
               color={colors.greyBlue500}
               paddingX={{ xs: 2, sm: 0 }}
-              paddingY={1}
+             
             >
               You can understand the basics of investing with these two videos
             </StyledTypography2>
           </Grid>
           <Grid
             item
-            paddingY={5}
+           
             sx={{
               display: "flex",
               justifyContent: "center",

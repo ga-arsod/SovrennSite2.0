@@ -91,7 +91,7 @@ const PlanInfo = () => {
           alignItems="center"
         >
           <Grid item>
-            <Typography textAlign="center" paddingX={2}>
+            <Typography textAlign="center" paddingX={2} marginBottom={{xs:1,sm:"20px"}}>
               <StyledTypography1
                 component="span"
                 color="#0D1726"
@@ -108,7 +108,7 @@ const PlanInfo = () => {
           <Grid item>
             <StyledTypography2
               component="div"
-              marginBottom={3}
+              marginBottom={5}
               color="#627B8F"
               textAlign="center"
               sx={{ fontWeight: "400", fontSize: "20px", lineHeight: "24px" }}

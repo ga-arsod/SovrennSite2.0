@@ -12,12 +12,12 @@ const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 34px;
   line-height: 40px;
-  letter-spacing:-0.04em;
+  letter-spacing: -0.04em;
   @media (max-width: 639px) {
     font-weight: 600;
     font-size: 23px;
     line-height: 28px;
-    letter-spacing:-0.02em;
+    letter-spacing: -0.02em;
   }
 `;
 
@@ -32,11 +32,7 @@ const StyledTypography2 = styled(Typography)`
   }
 `;
 const StyledBox = styled(Box)`
-  background: linear-gradient(
-    45deg,
-    ${gradientColors.c1},
-    ${gradientColors.c2}
-  );
+  background: linear-gradient(45deg, ${gradientColors.c1}, ${gradientColors.c2});
 `;
 
 const FadeInBox = styled(Box)(({ theme }) => ({
@@ -51,7 +47,6 @@ const FadeInBox = styled(Box)(({ theme }) => ({
 
 const CustomerVerdict = () => {
   const [inView, setInView] = useState(false);
-  const [speed, setSpeed] = useState(50); // Initial speed of the Marquee
   const ref = useRef(null);
 
   useEffect(() => {
@@ -93,20 +88,12 @@ const CustomerVerdict = () => {
     };
   }, []);
 
-  const handleMouseEnter = () => {
-    setSpeed(30); 
-  };
-
-  const handleMouseLeave = () => {
-    setSpeed(60);
-  };
-
   return (
     <StyledBox>
       <Grid
         container
         justifyContent="center"
-        paddingY={{xs:"20px",sm:6}}
+        paddingY={{ xs: "20px", sm: 6 }}
         sx={{ position: "relative" }}
       >
         <Grid item paddingX={5}>
@@ -115,7 +102,7 @@ const CustomerVerdict = () => {
               component="div"
               color="white"
               textAlign="center"
-              gutterBottom
+              marginBottom={{xs:1,sm:"20px"}}
             >
               What Our Customers Say About Us
             </StyledTypography1>
@@ -134,11 +121,11 @@ const CustomerVerdict = () => {
         container
         spacing={4}
         paddingTop={2}
-        paddingBottom={{xs:"20px",sm:6}}
+        paddingBottom={{ xs: "20px", sm: 6 }}
         ref={ref}
         sx={{ opacity: inView ? 1 : 0 }}
       >
-        <Marquee speed={speed}>
+        <Marquee pauseOnHover={true}>
           {customerArray.map((element, index) => {
             return (
               <Grid
@@ -148,9 +135,6 @@ const CustomerVerdict = () => {
                 md={4}
                 marginRight={1}
                 marginBottom={2}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-               
               >
                 <CustomerCard element={element} />
               </Grid>
