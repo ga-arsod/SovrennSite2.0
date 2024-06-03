@@ -5,11 +5,12 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import Image from "next/image";
 import { colors } from "../Constants/colors";
 import { usePathname } from "next/navigation";
+import Link from 'next/link'
 
 const FoundersCard = ({ item }) => {
   const pathname=usePathname();
   return (
-    <Grid item paddingY={{xs:"20px",sm:6}} paddingX={{xs:4,sm:2,md:4}} xs={12} sm={pathname==="/" ? "6":"12"} sx={{position:'relative'}}>
+    <Grid item paddingY={{xs:"20px",sm:pathname==="/"?"6":"20px",md:6}} paddingX={{xs:4,sm:2,md:4}} xs={12} sm={pathname==="/" ? "6":"12"} sx={{position:'relative'}}>
       <Grid
         container
         direction="column"
@@ -57,16 +58,20 @@ const FoundersCard = ({ item }) => {
              {item.description}
             </Typography>
           </Grid>
-          <Grid container justifyContent="center" alignItems='center' sx={{position:'absolute',bottom:'48px'}} width={pathname==="/" ? "80%" : "90%"} >
+          <Grid container justifyContent="center" alignItems='center' sx={{position:'absolute',bottom:{xs:"20px",sm:pathname=="/"?"48px":"20px",md:"48px"}}} width={pathname==="/" ? "80%" : "90%"} >
             <Grid item component="span">
+              <Link href={item.twitter}  passHref>
               <IconButton sx={{ color: "#98A2B3" }}>
                 <TwitterIcon />
               </IconButton>
+              </Link>
             </Grid>
             <Grid item component="span">
+            <Link href={item.linkedin}  passHref>
               <IconButton sx={{ color: "#98A2B3" }}>
                 <LinkedInIcon />
               </IconButton>
+              </Link>
             </Grid>
           </Grid>
         </Grid>

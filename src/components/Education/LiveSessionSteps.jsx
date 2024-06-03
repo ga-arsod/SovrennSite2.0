@@ -64,7 +64,7 @@ const LiveSessionSteps = () => {
           justifyContent="center"
           alignItems="center"
           paddingTop={4}
-          paddingY={5}
+          paddingY={{xs:3,md:6}}
           paddingX={{xs:3,sm:6}}
         >
           <Grid item>

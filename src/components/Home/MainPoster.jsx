@@ -327,6 +327,8 @@ const MainPoster = () => {
                 onMouseLeave={handleMouseLeave}
                 width="500px"
                 height="420px"
+              
+               
               >
                 <Image
                   src="/hero2.svg"
@@ -334,6 +336,7 @@ const MainPoster = () => {
                   width={500}
                   height={420}
                   layout="fixed"
+                
                 />
                 <Box
                   sx={{
@@ -400,7 +403,7 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "129px",
                     height: "32px",
-                    bottom: "40px",
+                    bottom: "15px",
                     left: "220px",
                     transition: "transform 0.3s",
                     transform: hoverTransform4,
@@ -440,8 +443,8 @@ const MainPoster = () => {
                     position: "absolute",
                     width: "129px",
                     height: "166px",
-                    bottom: "45px",
-                    right: "0px",
+                    bottom: "35px",
+                    right: "15px",
                     transition: "transform 0.3s",
                     transform: hoverTransform6,
                     zIndex:10,

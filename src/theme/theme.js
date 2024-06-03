@@ -31,6 +31,11 @@ export const theme=createTheme({
               '&:hover': {
                 boxShadow: 'none',
               },
+              '&.Mui-disabled': {
+                borderColor: '#CED6DC',
+                backgroundColor: '#CED6DC',
+                color: '#597082',
+              },
             },
           },
         },

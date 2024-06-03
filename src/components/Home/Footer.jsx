@@ -19,6 +19,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { colors } from "../Constants/colors";
+import Link from 'next/link'
 
 const listArray = [
   {
@@ -53,10 +54,16 @@ const listArray = [
   },
 ];
 const iconsArray = [
-  { icon: <TwitterIcon /> },
-  { icon: <LinkedInIcon /> },
-  { icon: <YouTubeIcon /> },
-  { icon: <InstagramIcon /> },
+  { icon: <TwitterIcon />,
+handle:"https://x.com/sovrennofficial",
+},
+  { icon: <LinkedInIcon />,
+handle:"https://www.linkedin.com/company/sovrenn"
+},
+  { icon: <YouTubeIcon />,
+handle:"https://www.youtube.com/@aditya_joshi12" },
+  { icon: <InstagramIcon />,
+handle:"https://instagram.com/sovrennofficial?igshid=YWJhMjlhZTc=" },
 ];
 const StyledSubheader = styled(ListSubheader)`
   background-color: transparent;
@@ -80,9 +87,9 @@ const Footer = () => {
         bgcolor={colors.navyBlue900}
         height={{
           xs: "50vh",
-          sm: pathname === "/" ? "60vh" : "53vh",
+          sm: pathname === "/" ? "60vh" : "50vh",
           md: pathname === "/" ? "40vh" : "58vh",
-          lg: pathname === "/" ? "90vh" : "60vh",
+          lg: pathname === "/" ? "90vh" : "70vh",
         }}
         sx={{ position: "relative" }}
       >
@@ -256,9 +263,11 @@ const Footer = () => {
               {iconsArray.map((item, index) => {
                 return (
                   <Grid item key={index}>
+                    <Link href={item.handle} passHref>
                     <IconButton sx={{ color: "#98A2B3" }}>
                       {item.icon}
                     </IconButton>
+                    </Link>
                   </Grid>
                 );
               })}
