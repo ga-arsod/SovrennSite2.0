@@ -1,14 +1,14 @@
 export const planData=[
   {
-    planName:"Sovreen Times",
+    planName:"Sovrenn Times",
     price:"4000",
     validity:"1 year",
-    planDescription:"Full access of Sovreen Times",
+    planDescription:"Full access of Sovrenn Times",
     popular:false,
     features:[
       {
         accessibility:true,
-        description:"Access to daily Sovreen Times",
+        description:"Access to daily Sovrenn Times",
       },
       {
         accessibility:false,
@@ -22,7 +22,7 @@ export const planData=[
     planName:"Trial Plan",
     price:"400",
     validity:"2 months",
-    planDescription:"Try out Sovreen for 2 months.",
+    planDescription:"Try out Sovrenn for 2 months.",
     applicable:"*(Applicable only once)",
     popular:false,
     features:[
@@ -60,10 +60,13 @@ export const planData=[
   }
 ]
 
+
 export const foundersArray=[
   {
     imagePath:"/aditya.png",
     name:"Aditya Joshi",
+    linkedin: "https://in.linkedin.com/in/adityajoshi1",
+    twitter: "https://twitter.com/aditya_joshi12",
     position:"Co-founder & CEO",
     description:"Aditya Joshi is the co-founder and CEO at Sovrenn. Prior to starting up, he was a Senior Vice President at Stanza Living where he headed Growth Strategy. Prior to Stanza, he was Chief of Staff and Online Business Head at Lenskart. He has completed his MBA from IIM Calcutta and his B.Tech. from IIT Delhi where he was an Institute Silver Medallist. He believes in the values of compassion, honesty, perseverance and ambition."
 
@@ -71,6 +74,8 @@ export const foundersArray=[
   {
     imagePath:"/akriti.png",
     name:"Akriti Swaroop",
+    linkedin: "https://www.linkedin.com/in/akritiswaroop/",
+    twitter: "https://twitter.com/SwaroopAkriti",
     position:"Co-founder & COO",
     description:"Akriti Swaroop, CFA, is the co-founder and COO at Sovrenn. She has close to seven years of experience in research between Credit Suisse and Deutsche Bank. She is an alumnus of IIM Calcutta and IIT Kharagpur. She holds tightly the values of empathy, honesty and diligence."
 

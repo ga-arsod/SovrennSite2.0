@@ -100,7 +100,7 @@ const FoundersInfo = () => {
           direction="column"
           justifyContent="center"
           alignItems="center"
-          paddingTop={{xs:"20px",sm:6}}
+          paddingTop={{xs:"20px",sm:pathname==="/"?"48px":"20px",md:"48px"}}
         >
           <Grid item>
             <Typography textAlign="center">

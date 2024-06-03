@@ -20,6 +20,7 @@ import { colors } from "../Constants/colors";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
+
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 34px;
@@ -248,9 +249,9 @@ const Offer = () => {
         direction="column"
         justifyContent="center"
       >
-        <Grid item>
+        <Grid itemID="">
           <FadeInBox ref={domRef} className={isVisible ? "visible" : ""}>
-            <Typography sx={{ textAlign: "center" }}>
+            <Typography sx={{ textAlign: "center" }}  marginBottom={{xs:1,sm:"20px"}}>
               <StyledTypography1 component="span" color="#0D1726" marginRight={1}>
                 This is What we offer
               </StyledTypography1>
@@ -295,7 +296,7 @@ const Offer = () => {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                   paddingLeft={5}
+                   paddingLeft={6}
                     display={index === currentIndex ? "block" : "none"}
                   >
                     <Grid
@@ -319,7 +320,7 @@ const Offer = () => {
                           alt="offer"
                           width={560}
                           height={351}
-                          layout="intrinsic"
+                          layout="responsive"
                           priority
                         />
                       </Grid>
@@ -407,7 +408,7 @@ const Offer = () => {
                 sx={{
                   position: "absolute",
                   top: "50%",
-                  left: "40px",
+                  left: "50px",
                   transform: "translateY(-50%)",
                   backgroundColor: colors.white,
                   borderRadius: "50%",
@@ -422,7 +423,7 @@ const Offer = () => {
                 sx={{
                   position: "absolute",
                   top: "50%",
-                  right: "40px",
+                  right: "50px",
                   transform: "translateY(-50%)",
                   backgroundColor: colors.white,
                   borderRadius: "50%",

@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{useEffect,useState} from "react";
 import { Box,Grid ,IconButton,Typography,Modal,FormControl,FormControlLabel,RadioGroup,Radio,Button} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "@emotion/styled";
@@ -114,6 +114,7 @@ const StyledRadio = styled(Radio)`
   }
 `;
 const SlotBookingModal=({open,handleClose})=>{
+  const [selectedSlot, setSelectedSlot] = useState("");
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
@@ -125,6 +126,9 @@ const SlotBookingModal=({open,handleClose})=>{
       document.body.style.overflow = 'auto';
     };
   }, [open]);
+  const handleSlotChange = (event) => {
+    setSelectedSlot(event.target.value);
+  };
     return(
         <>
         
@@ -171,9 +175,10 @@ const SlotBookingModal=({open,handleClose})=>{
             <FormControl>
  
   <CustomRadioGroup
-    aria-labelledby="demo-radio-buttons-group-label"
-    defaultValue="female"
-    name="radio-buttons-group"
+   aria-labelledby="demo-radio-buttons-group-label"
+   value={selectedSlot}
+   onChange={handleSlotChange}
+   name="radio-buttons-group"
   >
     <StyledFormControlLabel value="slot1" control={<StyledRadio />} label="25th Dec 23 at 2:30 P.M." />
     <StyledFormControlLabel value="slot2" control={<StyledRadio />} label="25th Dec 23 at 2:30 P.M." />
@@ -187,7 +192,7 @@ const SlotBookingModal=({open,handleClose})=>{
                   <StyledButton1 variant="outlined"  onClick={handleClose}>Cancel</StyledButton1>
                 </Grid>
                 <Grid item xs={6}>
-                  <StyledButton2 variant="contained">Book Now</StyledButton2>
+                  <StyledButton2 variant="contained"  disabled={!selectedSlot}>Book Now</StyledButton2>
                 </Grid>
               </Grid>
             </Grid>

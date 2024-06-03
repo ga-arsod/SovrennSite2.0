@@ -26,7 +26,7 @@ const StyledButton = styled(Button)`
   box-shadow: 0px 1px 2px 0px #1018280d;
   text-transform: none;
   @media (min-width: 701px) and (max-width: 900px) {
-    font-weight: 400;
+    font-weight: 500;
     text-transform: none;
     font-size: 13px;
     line-height: 16px;
@@ -164,7 +164,7 @@ const PlanCard = ({ element }) => {
                   sx={{
                     paddingY: "10px",
                     backgroundColor: colors.themeGreen,
-                    fontWeight: "600",
+                    fontWeight: "500",
                     fontSize: { xs: "18px", sm: "16px", md: "18px" },
                     lineHeight: "21px",
                     color: "white",
