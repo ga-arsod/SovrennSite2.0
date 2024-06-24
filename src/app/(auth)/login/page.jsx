@@ -13,6 +13,7 @@ import { useTheme } from "@mui/material/styles";
 import SignInCard from "@/components/Cards/SignInCard";
 import SignUpCard from "@/components/Cards/SignUpCard";
 import Login from "@/components/Auth/Login";
+import SignUp from "@/components/Auth/SignUp";
 
 
 
@@ -69,7 +70,7 @@ const Auth = () => {
             paddingY: "14vh",
           }}
         >
-          <Login isSignIn={isSignIn} setIsSignIn={setIsSignIn} />
+        {isSignIn ? <Login isSignIn={isSignIn} setIsSignIn={setIsSignIn}/> :<SignUp isSignIn={isSignIn} setIsSignIn={setIsSignIn}/>}
         </Grid>
       </Grid>
     </Box>

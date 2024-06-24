@@ -13,7 +13,7 @@ export const colors={
     greyBlueFifty:'#eff2f4',
     greyBlue100:'#ced6dc',
     greyBlue200:'#b7c2cb',
-    greyBlue300:'#96a7b4',
+    greyBlue300:'#96A7B4',
     greyBlue400:'#8195a5',
     greyBlue500:'#627b8f',
     greyBlue600:'#597082',
@@ -22,6 +22,7 @@ export const colors={
     greyBlue900:'#29343c',
     navyBlue500:'#011627',
     navyBlue400:'#344552',
+    navyBlue800:'#010C15',
     blueButtonHover:'#55636E',
     headingColor:'#101828',
     white:'#FFFFFF',
@@ -35,6 +36,11 @@ export const colors={
     neutral900:'#666666',
     neutral400:'#F6F5F5',
     neutral600:'#DEDDDD',
+    navyBlue100:'#B0B7BC',
+    neutral900:'#666666',
+    green500:'#43CB43',
+    red500:'#F60909',
+    neutral700:'#ADADAD',
 }
 
 export const gradientColors={

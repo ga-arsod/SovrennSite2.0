@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "@/theme/theme";
 import Navbar from "@/components/Home/Navbar";
+import { Providers } from "./Redux/provider";
 
 const inter = Inter({
   weight: ['200'],
@@ -14,7 +15,11 @@ export default function RootLayout({ children }) {
     <ThemeProvider theme={theme}>
     <html lang="en">
       <Navbar/>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Providers>
+        {children}
+        </Providers>
+        </body>
     </html>
     </ThemeProvider>
   );

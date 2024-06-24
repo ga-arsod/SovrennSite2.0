@@ -316,7 +316,7 @@ const Offer = () => {
                         marginTop={{ xs: 0, sm: 0 }}
                       >
                         <Image
-                          src={element.imagePath}
+                          src={element?.imagePath}
                           alt="offer"
                           width={560}
                           height={351}

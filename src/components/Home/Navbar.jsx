@@ -73,19 +73,20 @@ const navItems = [
 ];
 
 const StyledListItem = styled(ListItem)`
-  position: relative;
+   position: relative;
   width: 100%;
-  &:first-of-type .MuiTypography-root {
-    color: ${colors.themeGreen};
+  
+  &:not(:nth-of-type(1)) .MuiTypography-root {
+    color: #0d1726;
   }
   &:not(:last-child)::after {
     content: "";
     position: absolute;
-    bottom:0;
+    bottom: 0;
     left: 0;
     width: 100vw;
-    border-bottom: 1px solid ${colors.neutral500}; 
-    transform: translateX(-38vw); 
+    border-bottom: 1px solid ${colors.neutral500};
+    transform: translateX(-38vw);
   }
 `;
 
@@ -96,6 +97,7 @@ const StyledListItemText = styled(ListItemText)`
     font-size: 14px;
     line-height: 17px;
     text-align: center;
+    color: ${props => props.isFirst ? colors.themeGreen : colors.black};
   }
 `;
 
@@ -193,7 +195,7 @@ const Navbar = () => {
           backgroundColor: "#F4F6F8",
           boxShadow: "none",
           position: "fixed",
-          zIndex: 11200,
+         zIndex:1300,
         }}
       >
         <Toolbar>
@@ -327,7 +329,7 @@ const Navbar = () => {
           }}
         >
           <List>
-            {filteredNavItems.map((item) => (
+            {filteredNavItems.map((item,index) => (
               <StyledLink key={item} href={item.link} passHref>
               <StyledListItem
                
@@ -339,7 +341,7 @@ const Navbar = () => {
                 }}
                 onClick={toggleDrawer}
               >
-                <StyledListItemText primary={item.link}></StyledListItemText>
+                <StyledListItemText primary={item.name} isFirst={index === 0}></StyledListItemText>
               </StyledListItem>
               </StyledLink>
             ))}

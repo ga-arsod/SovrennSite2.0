@@ -162,3 +162,29 @@ export const faqDescription={
   home:"Everything you need to know about the product and billing.",
   education:"Everything you need to know about the session booking."
 }
+
+export const bucketFormConfig = [
+  {
+    type: 'text',
+    label: 'Title of Bucket list',
+    name: 'bucketListTitle',
+    placeholder: 'Enter a name of the bucket list',
+  },
+  {
+    type: 'text',
+    label: 'Description of bucket list',
+    name: 'description',
+    placeholder: 'Add description of your bucket list',
+  },
+  {
+    type: 'select',
+    label: 'Select Bucket',
+    name: 'bucket',
+    options: [
+      { value: 'rightIssuance', label: 'Right Issuance' },
+      { value: 'consumption', label: 'Consumption' },
+      { value: 'infrastructure', label: 'Infrastructure' },
+      { value: 'microcap', label: 'Strategic Microcap Corner' },
+    ],
+  },
+];

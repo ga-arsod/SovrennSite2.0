@@ -7,67 +7,23 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  InputLabel
+  InputLabel,
 } from "@mui/material";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {  Visibility, VisibilityOff } from "@mui/icons-material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { colors } from "../Constants/colors";
 import Image from "next/image";
+import { validEmail ,validPassword,validPhoneNumber} from "./Regex";
+import { useRouter } from "next/navigation";
 
-const inputsFieldsArray = [
-  {
-    inputLabel: "Name",
-    placeholder: "Enter your full name",
-    type: "text",
-    id: "name",
-    htmlFor: "name",
-    signIn: false,
-    signUp: true,
-  },
-  {
-    inputLabel: "Enter Email or Phone no.",
-    placeholder: "Enter your email or Phone no.",
-    type: "email",
-    id: "email",
-    htmlFor: "email",
-    signIn: true,
-    signUp: true,
-  },
-  {
-    inputLabel: "Enter Password",
-    placeholder: "Enter your password",
-    type: "password",
-    id: "password",
-    htmlFor: "password",
-    signIn: true,
-    signUp: false,
-  },
-  {
-    inputLabel: "Create Password",
-    placeholder: "Enter at least 6 characters",
-    type: "password",
-    id: "createPassword",
-    htmlFor: "createPassword",
-    signIn: false,
-    signUp: true,
-  },
-  {
-    inputLabel: "Confirm Password",
-    placeholder: "Re-enter your password",
-    type: "password",
-    id: "confirmPassword",
-    htmlFor: "confirmPassword",
-    signIn: false,
-    signUp: true,
-  },
-];
+
 const StyledInputLabel = styled(InputLabel)`
   font-weight: 400;
   font-size: 17px;
   line-height: 21px;
-  color:#010C15;
+  color: #010c15;
 `;
 const StyledTypography = styled(Typography)`
   font-weight: 600;
@@ -82,8 +38,8 @@ const StyledButton1 = styled(Button)`
   line-height: 30px;
   text-transform: none;
   width: 100%;
-  padding-top:10px;
-  padding-bottom:10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
   background-color: ${colors.themeGreen};
   :hover {
@@ -98,17 +54,128 @@ const StyledButton2 = styled(Button)`
   line-height: 30px;
   text-transform: none;
   width: 100%;
-  padding-top:10px;
-  padding-bottom:10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
   border: 1px solid #20365b;
 `;
+const CustomTextField = styled(TextField)(({ theme }) => ({
+  
+  "& .MuiOutlinedInput-input": {
+    padding: "12px 8px",
+    color: colors.navyBlue900,
+    fontWeight: 400,
+    fontSize: "14px",
+    lineHeight: "17px",
+  },
+  "& .MuiInputLabel-root": {
+    fontSize: "0.60rem",
+  },
+  "& .MuiOutlinedInput-root": {
+    fontSize: "0.90rem",
+  },
+  "& input:-webkit-autofill": {
+    WebkitBoxShadow: "0 0 0 1000px white inset",
+    WebkitTextFillColor: colors.navyBlue900,
+    caretColor: colors.navyBlue900,
+  },
+}));
+
+const URL = "https://api.sovrenn.com";
 const Login = ({ isSignIn, setIsSignIn }) => {
-  const [showPassword, setShowPassword] = useState({
-    password: false,
-    createPassword: false,
-    confirmPassword: false,
+ 
+  const [values, setValues] = useState({
+    password: '',
+    showPassword: false,
+});
+const [validate, setValidate] = useState(true);
+const [form, setForm] = useState({
+    email: "",
+    password: ""
+});
+const [message, setMessage] = useState("");
+
+const router=useRouter()
+const handleChange = (prop) => (event) => {
+  formInputChange(event);
+  setValues({ ...values, [prop]: event.target.value })
+};
+
+const formInputChange = (event) => {
+  const { value, name } = event.target;
+  setValidate(true);
+
+  setForm({
+      ...form,
+      [name]: value
   });
+};
+
+const handleClickShowPassword = () => {
+  setValues({
+      ...values,
+      showPassword: !values.showPassword,
+  })
+};
+
+const handleMouseDownPassword = (event) => {
+  event.preventDefault();
+};
+
+const handleSubmitForm = async (event) => {
+  event.preventDefault();
+
+  const data = await fetch(`${URL}/login`, {
+      method: "POST",
+      headers: {
+          "Content-type": "application/json"
+      },
+      body: JSON.stringify(form)
+  })
+      .then((response) => response.json());
+
+  if (data.success) {
+      localStorage.setItem("sov_user", data.token);
+      // dispatch(authAction({
+      //     isAuth: true,
+      //     token: data.token,
+      //     user: data.user
+      // }));
+
+      if (router.query.extra) {
+          router.replace(`/discovery/${router.query.extra}`);
+          return;
+      }
+
+      router.replace(router.query.from || "/");
+      return;
+  }
+
+  setMessage(data.message);
+  setValidate(false);
+  return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+ 
+ 
+
+  
   return (
     <Grid
       container
@@ -116,173 +183,112 @@ const Login = ({ isSignIn, setIsSignIn }) => {
       width={{ xs: "90%", sm: "50%", lg: "70%" }}
       justifyContent="center"
       alignItems="center"
-     
+      marginTop={6}
     >
       <Grid
         item
         width="100%"
-        sx={{ display: "flex",justifyContent:"space-between",alignItems:"center"}}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
         marginBottom={3}
       >
-        <IconButton sx={{padding:0,visibility:{xs:"",sm:"hidden"}}}>
-          <ArrowBackIcon sx={{ color:"#011627"}}/>
+        <IconButton sx={{ padding: 0, visibility: { xs: "", sm: "hidden" } }}>
+          <ArrowBackIcon sx={{ color: "#011627" }} />
         </IconButton>
 
         <Typography
           textAlign="center"
           color={colors.themeGreen}
           sx={{ fontWeight: "600", fontSize: "33px", lineHeight: "40px" }}
-          
         >
-          {isSignIn ? "Sign In" : "Sign Up"}
+         Sign In
         </Typography>
-        <Typography ></Typography>
-        
+        <Typography></Typography>
       </Grid>
-      <Grid item   width="100%">
-        <form>
+      <Grid item width="100%">
+        <form onSubmit={handleSubmitForm}>
           <Grid container direction="column">
-            {isSignIn
-              ? inputsFieldsArray.map((element, index) => {
-                  return (
-                    element.signIn && (
-                      <Grid item marginBottom={2} key={index}>
-                        <StyledInputLabel htmlFor={element.htmlFor}>
-                          {element.inputLabel}
-                        </StyledInputLabel>
-                        <TextField
-                          sx={{
-                            "& .MuiOutlinedInput-input": {
-                              padding: "12px 8px",
-                            },
-                            "& .MuiInputLabel-root": {
-                              fontSize: "0.60rem",
-                            },
-                          }}
-                          id={element.id}
-                          type={element.type}
-                          placeholder={element.placeholder}
-                          fullWidth
-                          InputProps={{
-                            sx: { fontSize: "0.90rem" }, // Adjust font size to decrease
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                {element.type == "password" && (
-                                  <IconButton
-                                    aria-label="toggle password visibility"
-                                    id={element.id}
-                                    onClick={(e) => {
-                                      handleClickShowPassword(e.target.id);
-                                    }}
-                                    edge="end"
-                                  >
-                                    {showPassword ? (
-                                      <Visibility />
-                                    ) : (
-                                      <VisibilityOff />
-                                    )}
-                                  </IconButton>
-                                )}
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                        {element.id == "password" && (
-                          <Typography textAlign="right">
-                            <Button
-                              disableElevation
-                              sx={{
-                                color: "#1DA098",
-                                fontWeight: "400",
-                                fontSize: "13px",
-                                lineHeight: "17px",
-                                textTransform: "none",
-                              }}
-                            >
-                              Forgot Password
-                            </Button>
-                          </Typography>
-                        )}
-                      </Grid>
-                    )
-                  );
-                })
-              : inputsFieldsArray.map((element, index) => {
-                  return (
-                    element.signUp && (
-                      <Grid item marginBottom={2} key={index}>
-                        <StyledInputLabel htmlFor={element.htmlFor}>
-                          {element.inputLabel}
-                        </StyledInputLabel>
-                        <TextField
-                          sx={{
-                            
-                            "& .MuiOutlinedInput-input": {
-                              padding: "12px 8px", // Adjust padding to decrease height
-                            },
-                            "& .MuiInputLabel-root": {
-                              fontSize: "0.60rem", // Optionally adjust label font size
-                            },
-                          }}
-                          id={element.id}
-                          type={element.type}
-                          placeholder={element.placeholder}
-                          fullWidth
-                          InputProps={{
-                            sx: { fontSize: "0.90rem" }, // Adjust font size to decrease
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                {element.type == "password" && (
-                                  <IconButton
-                                    aria-label="toggle password visibility"
-                                    id={element.id}
-                                    onClick={(e) => {
-                                      handleClickShowPassword(e.target.id);
-                                    }}
-                                    edge="end"
-                                  >
-                                    {showPassword ? (
-                                      <Visibility />
-                                    ) : (
-                                      <VisibilityOff />
-                                    )}
-                                  </IconButton>
-                                )}
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                        {element.id === "password" && (
-                          <Typography textAlign="right">
-                            <Button
-                              disableElevation
-                              sx={{
-                                color: colors.themeGreen,
-                                fontWeight: "400",
-                                fontSize: "13px",
-                                lineHeight: "17px",
-                                textTransform: "none",
-                              }}
-                            >
-                              Forgot Password
-                            </Button>
-                          </Typography>
-                        )}
-                      </Grid>
-                    )
-                  );
-                })}
+            <Grid item >
+             
+              <StyledInputLabel htmlFor="email">
+                Email or Phone no.
+              </StyledInputLabel>
+
+              <CustomTextField
+                sx={{ marginBottom: "16px" }}
+                id="email"
+                required
+                name="email"
+                placeholder="Enter your email or Phone no."
+                value={values.email}
+                onChange={formInputChange}
+                fullWidth
+              />
+              <StyledInputLabel htmlFor="password">
+                Password
+              </StyledInputLabel>
+
+              <CustomTextField
+                sx={{ marginBottom: "16px" }}
+                id="password"
+                required
+                type={values.showPassword ? 'text' : 'password'}
+                value={values.password}
+                onChange={handleChange("password")}
+                name="password"
+                placeholder="Enter at least 6 characters"
+              
+               width="100%"
+                fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                    
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          id={"password"}
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              
+
+              <Typography textAlign="right">
+                <Button
+                  disableElevation
+                  sx={{
+                    color: "#1DA098",
+                    fontWeight: "400",
+                    fontSize: "13px",
+                    lineHeight: "17px",
+                    textTransform: "none",
+                  }}
+                >
+                  Forgot Password
+                </Button>
+              </Typography>
+            </Grid>
+            {!validate ? <Typography marginBottom={1} textAlign="center" sx={{fontWeight:400,fontSize:"14px",lineheight:"17px"}} color={colors.red500}>{message}</Typography> : ""}
+            <Grid item width="100%">
+              <StyledButton1 type="submit" variant="contained">
+                Sign In
+              </StyledButton1>
+            </Grid>
           </Grid>
         </form>
-        </Grid>
+      </Grid>
       <Grid item width="100%">
         <Grid container width="100%" rowSpacing={2}>
-          <Grid item width="100%">
-            <StyledButton1 variant="contained">
-              {" "}
-              {isSignIn ? "Sign In" : "Sign Up"}
-            </StyledButton1>
-          </Grid>
           <Grid item width="100%">
             <Typography
               color="#98A3B4"
@@ -303,8 +309,8 @@ const Login = ({ isSignIn, setIsSignIn }) => {
                 <Image
                   src="/google.svg"
                   alt="My Image"
-                width={20}
-                height={20}
+                  width={20}
+                  height={20}
                 />
               }
             >
@@ -319,11 +325,9 @@ const Login = ({ isSignIn, setIsSignIn }) => {
               <StyledTypography
                 component="span"
                 color={colors.themeGreen}
-                onClick={() => {
-                  setIsSignIn(!isSignIn);
-                }}
+              onClick={()=>{setIsSignIn(!isSignIn)}}
               >
-                {isSignIn ? "Sign Up" : "Sign In"}
+              Sign Up
               </StyledTypography>
             </Typography>
           </Grid>

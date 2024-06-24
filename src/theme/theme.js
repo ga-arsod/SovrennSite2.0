@@ -1,5 +1,6 @@
 "use client"
 import { createTheme } from "@mui/material"
+import { colors } from "@/components/Constants/colors"
 
 export const theme=createTheme({
     palette:{
@@ -39,5 +40,46 @@ export const theme=createTheme({
             },
           },
         },
+        MuiTextField: {
+          styleOverrides: {
+            root: {
+              backgroundColor:colors.white,
+              borderRadius: '4px',
+              input: {
+                paddingX: '0px',
+                paddingY:'0px', 
+                '&::placeholder': {
+                  color:colors.greyBlue300, 
+                  opacity: 1,
+                },
+              },
+              
+              '& .MuiInputBase-root': {
+                color: colors.navyBlue200,
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor:colors.navyBlue200,
+                },
+                '&:hover fieldset': {
+                  border: `1px solid ${colors.navyBlue200}`,
+                },
+                '&.Mui-focused fieldset': {
+                  border: `1px solid ${colors.navyBlue200}`,
+                },
+              },
+            },
+          },
+        },
+        MuiSelect: {
+          styleOverrides: {
+            select: {
+              '&:focus': {
+                borderColor: 'red', // Change this to your desired border color
+              },
+            },
+          },
+        },
+       
       },
 })

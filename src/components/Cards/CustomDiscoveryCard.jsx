@@ -1,13 +1,15 @@
 "use client"
-import React, { useState } from 'react';
-import { Box, Grid, IconButton, Typography } from '@mui/material';
+import React ,{useState} from 'react'
+import { Box,Grid,IconButton,Typography } from '@mui/material'
 import Image from 'next/image';
-import { colors } from '../Constants/colors';
-import styled from "@emotion/styled";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import CreateBucketModal from '../Modal/CreateBucketModal';
+import styled from '@emotion/styled';
+import { colors } from '../Constants/colors';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
+
 
 const GridContainer = styled(Box)`
   display: grid;
@@ -144,20 +146,17 @@ const fadeOut = `
   }
 `;
 
-const DiscoveryCard = ({ title }) => {
-  
-  const [isGridOpen, setIsGridOpen] = useState(true); // State to control the collapse
 
-  const handleToggle = () => {
-    setIsGridOpen(!isGridOpen);
-  };
- 
-  
-  
+const CustomDiscoveryCard = ({title}) => {
+    const [isGridOpen, setIsGridOpen] = useState(true); // State to control the collapse
+
+    const handleToggle = () => {
+      setIsGridOpen(!isGridOpen);
+    };
+    
   return (
-    <>
-   
-      <Box marginBottom={6}>
+   <>
+   <Box marginBottom={6}>
         <HoverBox
           onClick={handleToggle}
           className={isGridOpen ? '' : 'collapsed'}
@@ -183,8 +182,12 @@ const DiscoveryCard = ({ title }) => {
               Array.from("abcedfghij").map((item, index) => {
                 return (
                   <StyledGrid key={index}>
+                    <Box sx={{display:'flex',justifyContent:"flex-end",alignItems:'center'}} paddingX="4px" >
+                        <IconButton sx={{paddingX:"0px"}}><DeleteOutlineIcon sx={{color:colors.red500,fontSize:"18px"}}/></IconButton>
+                        <Typography color={colors.red500} sx={{fontWeight:600,fontSize:"14px",lineHeight:"17px"}}>Delete</Typography>
+                    </Box>
                     <Grid container>
-                      <Grid item paddingY={2} paddingX="20px" width="100%">
+                      <Grid item paddingY={0} paddingX="20px" width="100%">
                         <Box
                           sx={{
                             borderRadius: '3px',
@@ -192,7 +195,7 @@ const DiscoveryCard = ({ title }) => {
                           }}
                         >
                           <Image
-                            src="/discovery.jpg"
+                            src="/custombucket.svg"
                             width={274}
                             height={140}
                             alt="poster"
@@ -200,15 +203,15 @@ const DiscoveryCard = ({ title }) => {
                           />
                         </Box>
                       </Grid>
-                      <Grid item paddingX="11px">
+                      <Grid item paddingX="20px">
                         <StyledTypography1 gutterBottom>
-                          Preferential Issuance
+                        New Bucket list
                         </StyledTypography1>
-                        <StyledTypography2 color={colors.navyBlue400} sx={{fontWeight:500}} marginBottom={2}>
-                          List of interesting stocks in the process of raising capital via Preferential Issuance
+                        <StyledTypography2 color={colors.navyBlue400} sx={{fontWeight:500}} marginBottom={5}>
+                        This is a new bucket
                         </StyledTypography2>
                       </Grid>
-                      <Grid item width="100%" sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} paddingX="11px" marginTop={2} marginBottom="12px">
+                      <Grid item width="100%" sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} paddingX="20px" marginY={2} >
                         <StyledTypography2 component="span" color={colors.themeGreen} sx={{fontWeight:600}}>187 Companies are in this bucket</StyledTypography2>
                         <CustomIconButton>
                           <ArrowForwardIcon fontSize='small' className="arrow-icon" sx={{ color: "#3C464F" }} />
@@ -222,8 +225,8 @@ const DiscoveryCard = ({ title }) => {
           </GridContainer>
         )}
       </Box>
-    </>
+   </>
   )
 }
 
-export default DiscoveryCard;
+export default CustomDiscoveryCard

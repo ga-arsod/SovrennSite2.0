@@ -1,10 +1,13 @@
 "use client";
 import styled from "@emotion/styled";
-import { Grid, Typography,Box } from "@mui/material";
-import React from "react";
+import { Grid, Typography,Box,Button } from "@mui/material";
+import React,{useState} from "react";
 import { useTheme } from "@mui/material/styles";
 import { colors } from "../Constants/colors";
 import SearchBar from "../Common/SearchBar";
+import CreateBucketModal from "../Modal/CreateBucketModal";
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 48px;
@@ -31,9 +34,36 @@ const StyledTypography2 = styled(Typography)`
    
   }
 `;
+const StyledButton=styled(Button)`
+color:${colors.navyBlue500};
+background-color:transparent;
+text-transform:none;
+border: 1px solid ${colors.navyBlue500};
+font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  padding-left:18px;
+  padding-right:18px;
+  padding-top:12px;
+  padding-bottom:12px;
+  white-space:nowrap;
+  :hover {
+    background-color: ${colors.white};
+   
+   
+  }
+   
+`;
+
 const DiscoveryHeading = () => {
+  const [open,setOpen]=useState(false)
+  const handleClose=()=>{setOpen(false)};
   const theme = useTheme();
   return (
+    <>
+    {
+      open ? <CreateBucketModal open={open} handleClose={handleClose} /> :<></>
+    }
     <Box marginTop={8} marginBottom={{xs:3,sm:"28px"}} >
       <Grid container  alignItems="center">
         <Grid item paddingY={{xs:2,sm:5}}>
@@ -55,13 +85,19 @@ const DiscoveryHeading = () => {
         </Grid>
        
       </Grid>
-      <Grid container justifyContent="space-between">
-        <Typography></Typography>
-      <Grid item >
+      <Grid container justifyContent="flex-end" width="100%" gap={{xs:3,sm:4}} flexWrap="wrap">
+       <Grid item order={{xs:2,sm:1}} width={{xs:"100%",sm:"auto"}} sx={{display:{xs:"flex",sm:"",justifyContent:"center"}}}>
+       <StyledButton onClick={()=>{setOpen(true)}} variant="contained" width="170px"  startIcon={<AddOutlinedIcon sx={{color:colors.navyBlue500,strokeWidth:10}} />}>
+Create Bucket
+</StyledButton>
+       </Grid>
+      <Grid item  order={{xs:1,sm:2}} >
+     
          <SearchBar/>
         </Grid>
       </Grid>
     </Box>
+    </>
   );
 };
 
