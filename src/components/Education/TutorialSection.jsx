@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React,{useState} from "react";
 import styled from "@emotion/styled";
 import { Box, Typography, Grid } from "@mui/material";

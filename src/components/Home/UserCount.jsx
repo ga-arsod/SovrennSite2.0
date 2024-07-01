@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React,{useState,useEffect,useRef} from "react";
 import { Grid, Typography, IconButton, Paper,Avatar,Box } from "@mui/material";
 import styled from "@emotion/styled";

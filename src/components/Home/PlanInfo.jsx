@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState, useEffect, useRef } from "react";
 import PlanCard from "../Cards/PlanCard";
 import { Box, Grid, Typography } from "@mui/material";

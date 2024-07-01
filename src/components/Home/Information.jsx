@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState, useEffect, useRef } from "react";
 import { Typography, Box, Grid } from "@mui/material";
 import Image from "next/image";
@@ -114,6 +114,7 @@ const Information = () => {
   const handlePlayClick = () => {
     setIsPlaying(true);
   };
+  console.log(process.env.APP_URL,"url")
 
   return (
     <>

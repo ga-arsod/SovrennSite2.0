@@ -188,3 +188,49 @@ export const bucketFormConfig = [
     ],
   },
 ];
+
+export const navItems = [
+  {
+    name: "Sign Up",
+    link:"/signup"
+  },
+  {
+    name: "Login",
+    link:"/login"
+  },
+  {
+    name: "Education",
+    link:"/education"
+  },
+  {
+    name: "Times",
+    link:"/times"
+  },
+  {
+    name: "Prime",
+    link:"/prime"
+  },
+  {
+    name: "Discovery",
+    link:"/discovery"
+  },
+  {
+    name: "IPO",
+    link:"/ipo"
+  },
+  {
+    name: "Knowledge",
+    link:"/knowledge"
+  },
+  {
+    name: "Self Help",
+    link:"/selfhelp"
+  },
+  {
+    name: "Pricing",
+    link:"/pricing"
+  },
+ 
+
+
+];

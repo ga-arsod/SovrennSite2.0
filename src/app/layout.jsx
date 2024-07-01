@@ -1,3 +1,4 @@
+
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import { ThemeProvider } from "@mui/material";
@@ -13,14 +14,16 @@ const inter = Inter({
 export default function RootLayout({ children }) {
   return (
     <ThemeProvider theme={theme}>
+      <Providers>
     <html lang="en">
       <Navbar/>
       <body className={inter.className}>
-        <Providers>
+        
         {children}
-        </Providers>
+      
         </body>
     </html>
+    </Providers>
     </ThemeProvider>
   );
 };

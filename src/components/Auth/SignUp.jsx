@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState } from "react";
 import {
   Grid,
@@ -7,7 +7,7 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  InputLabel,
+  InputLabel,form
 } from "@mui/material";
 import styled from "@emotion/styled";
 import Link from "next/link";
@@ -20,6 +20,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { colors } from "../Constants/colors";
 import Image from "next/image";
 import { validEmail, validPassword, validPhoneNumber } from "./Regex";
+import { doSocialLogin } from "@/app/actions";
 
 const StyledInputLabel = styled(InputLabel)`
   font-weight: 400;
@@ -418,8 +419,12 @@ const SignUp = ({ isSignIn, setIsSignIn }) => {
             </Typography>
           </Grid>
           <Grid item width="100%">
+            <form action={doSocialLogin}>
             <StyledButton2
               variant="outlined"
+              type="submit"
+              name="action"
+              value="google"
               startIcon={
                 <Image
                   src="/google.svg"
@@ -431,6 +436,7 @@ const SignUp = ({ isSignIn, setIsSignIn }) => {
             >
               Continue with Google
             </StyledButton2>
+            </form>
           </Grid>
           <Grid item width="100%">
             <Typography textAlign="center" sx={{ cursor: "pointer" }}>

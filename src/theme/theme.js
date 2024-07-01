@@ -1,4 +1,4 @@
-"use client"
+
 import { createTheme } from "@mui/material"
 import { colors } from "@/components/Constants/colors"
 

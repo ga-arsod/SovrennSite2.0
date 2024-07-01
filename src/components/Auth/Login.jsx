@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState } from "react";
 import {
   Grid,
@@ -7,17 +7,21 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  InputLabel,
+  InputLabel
 } from "@mui/material";
+import { useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import {  Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { colors } from "../Constants/colors";
 import Image from "next/image";
-import { validEmail ,validPassword,validPhoneNumber} from "./Regex";
+import { validEmail, validPassword, validPhoneNumber } from "./Regex";
 import { useRouter } from "next/navigation";
-
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "@/app/Redux/Slices/authSlice";
+import { store } from "@/app/Redux/store";
+import { doSocialLogin } from "@/app/actions";
 
 const StyledInputLabel = styled(InputLabel)`
   font-weight: 400;
@@ -60,7 +64,6 @@ const StyledButton2 = styled(Button)`
   border: 1px solid #20365b;
 `;
 const CustomTextField = styled(TextField)(({ theme }) => ({
-  
   "& .MuiOutlinedInput-input": {
     padding: "12px 8px",
     color: colors.navyBlue900,
@@ -83,99 +86,79 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
 
 const URL = "https://api.sovrenn.com";
 const Login = ({ isSignIn, setIsSignIn }) => {
+  const dispatch = useDispatch();
  
   const [values, setValues] = useState({
-    password: '',
+    password: "",
     showPassword: false,
-});
-const [validate, setValidate] = useState(true);
-const [form, setForm] = useState({
-    email: "",
-    password: ""
-});
-const [message, setMessage] = useState("");
-
-const router=useRouter()
-const handleChange = (prop) => (event) => {
-  formInputChange(event);
-  setValues({ ...values, [prop]: event.target.value })
-};
-
-const formInputChange = (event) => {
-  const { value, name } = event.target;
-  setValidate(true);
-
-  setForm({
-      ...form,
-      [name]: value
   });
-};
+  const [validate, setValidate] = useState(true);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+  const [message, setMessage] = useState("");
 
-const handleClickShowPassword = () => {
-  setValues({
+  const router = useRouter();
+  const handleChange = (prop) => (event) => {
+    formInputChange(event);
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const formInputChange = (event) => {
+    const { value, name } = event.target;
+    setValidate(true);
+
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({
       ...values,
       showPassword: !values.showPassword,
-  })
-};
+    });
+  };
 
-const handleMouseDownPassword = (event) => {
-  event.preventDefault();
-};
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
-const handleSubmitForm = async (event) => {
-  event.preventDefault();
+  const handleSubmitForm = async (event) => {
+    event.preventDefault();
 
-  const data = await fetch(`${URL}/login`, {
+    const data = await fetch(`${URL}/login`, {
       method: "POST",
       headers: {
-          "Content-type": "application/json"
+        "Content-type": "application/json",
       },
-      body: JSON.stringify(form)
-  })
-      .then((response) => response.json());
+      body: JSON.stringify(form),
+    }).then((response) => response.json());
 
-  if (data.success) {
-      localStorage.setItem("sov_user", data.token);
-      // dispatch(authAction({
-      //     isAuth: true,
-      //     token: data.token,
-      //     user: data.user
-      // }));
+    if (data.success) {
+    
+      localStorage.setItem("token", data.token);
 
-      if (router.query.extra) {
-          router.replace(`/discovery/${router.query.extra}`);
-          return;
-      }
+      dispatch(loginSuccess(data));
 
-      router.replace(router.query.from || "/");
+      // if (router.query.extra) {
+      //     router.replace(`/discovery/${router.query.extra}`);
+      //     return;
+      // }
+
+      router.replace("/");
       return;
-  }
+    }
 
-  setMessage(data.message);
-  setValidate(false);
-  return;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
+    setMessage(data.message);
+    setValidate(false);
+    return;
+  };
 
  
- 
 
-  
   return (
     <Grid
       container
@@ -204,15 +187,14 @@ const handleSubmitForm = async (event) => {
           color={colors.themeGreen}
           sx={{ fontWeight: "600", fontSize: "33px", lineHeight: "40px" }}
         >
-         Sign In
+          Sign In
         </Typography>
         <Typography></Typography>
       </Grid>
       <Grid item width="100%">
         <form onSubmit={handleSubmitForm}>
           <Grid container direction="column">
-            <Grid item >
-             
+            <Grid item>
               <StyledInputLabel htmlFor="email">
                 Email or Phone no.
               </StyledInputLabel>
@@ -227,41 +209,39 @@ const handleSubmitForm = async (event) => {
                 onChange={formInputChange}
                 fullWidth
               />
-              <StyledInputLabel htmlFor="password">
-                Password
-              </StyledInputLabel>
+              <StyledInputLabel htmlFor="password">Password</StyledInputLabel>
 
               <CustomTextField
                 sx={{ marginBottom: "16px" }}
                 id="password"
                 required
-                type={values.showPassword ? 'text' : 'password'}
+                type={values.showPassword ? "text" : "password"}
                 value={values.password}
                 onChange={handleChange("password")}
                 name="password"
                 placeholder="Enter at least 6 characters"
-              
-               width="100%"
+                width="100%"
                 fullWidth
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                    
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          id={"password"}
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        id={"password"}
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
                     </InputAdornment>
                   ),
                 }}
               />
-              
 
               <Typography textAlign="right">
                 <Button
@@ -278,7 +258,18 @@ const handleSubmitForm = async (event) => {
                 </Button>
               </Typography>
             </Grid>
-            {!validate ? <Typography marginBottom={1} textAlign="center" sx={{fontWeight:400,fontSize:"14px",lineheight:"17px"}} color={colors.red500}>{message}</Typography> : ""}
+            {!validate ? (
+              <Typography
+                marginBottom={1}
+                textAlign="center"
+                sx={{ fontWeight: 400, fontSize: "14px", lineheight: "17px" }}
+                color={colors.red500}
+              >
+                {message}
+              </Typography>
+            ) : (
+              ""
+            )}
             <Grid item width="100%">
               <StyledButton1 type="submit" variant="contained">
                 Sign In
@@ -303,7 +294,11 @@ const handleSubmitForm = async (event) => {
             </Typography>
           </Grid>
           <Grid item width="100%">
+            <form action={doSocialLogin}>
             <StyledButton2
+            type="submit"
+           name="action"
+           value="google"
               variant="outlined"
               startIcon={
                 <Image
@@ -316,6 +311,7 @@ const handleSubmitForm = async (event) => {
             >
               Continue with Google
             </StyledButton2>
+            </form>
           </Grid>
           <Grid item width="100%">
             <Typography textAlign="center" sx={{ cursor: "pointer" }}>
@@ -325,9 +321,11 @@ const handleSubmitForm = async (event) => {
               <StyledTypography
                 component="span"
                 color={colors.themeGreen}
-              onClick={()=>{setIsSignIn(!isSignIn)}}
+                onClick={() => {
+                  setIsSignIn(!isSignIn);
+                }}
               >
-              Sign Up
+                Sign Up
               </StyledTypography>
             </Typography>
           </Grid>

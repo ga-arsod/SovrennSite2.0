@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import {
   Box,
   AppBar,
@@ -26,51 +26,14 @@ import { colors } from "../Constants/colors";
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Link from 'next/link';
-const navItems = [
-  {
-    name: "Sign Up",
-    link:"/signup"
-  },
-  {
-    name: "Login",
-    link:"/login"
-  },
-  {
-    name: "Education",
-    link:"/education"
-  },
-  {
-    name: "Times",
-    link:"/times"
-  },
-  {
-    name: "Prime",
-    link:"/prime"
-  },
-  {
-    name: "Discovery",
-    link:"/discovery"
-  },
-  {
-    name: "IPO",
-    link:"/ipo"
-  },
-  {
-    name: "Knowledge",
-    link:"/knowledge"
-  },
-  {
-    name: "Self Help",
-    link:"/selfhelp"
-  },
-  {
-    name: "Pricing",
-    link:"/pricing"
-  },
- 
+import { useSelector } from "react-redux";
+import { navItems } from "@/utils/Data";
+import { useRouter } from "next/navigation";
 
 
-];
+
+
+
 
 const StyledListItem = styled(ListItem)`
    position: relative;
@@ -110,9 +73,7 @@ const SearchContainer = styled.div`
 `;
 
 const StyledGrid1 = styled(Grid)`
-  @media (min-width: 501px) and (max-width: 1120px) {
-    display: none;
-  }
+
   @media (max-width: 501px) {
     display: none;
   }
@@ -148,6 +109,7 @@ const StyledButton1 = styled(Button)`
   line-height: 17px;
   background-color: ${colors.themeGreen};
   color: white;
+  text-transform:none;
 `;
 const StyledButton2 = styled(Button)`
   font-weight: 600;
@@ -171,6 +133,8 @@ const StyledLink = styled(Link)`
 const Navbar = () => {
   const theme = useTheme();
   const isGreaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
+ const {isAuth,user}=useSelector((store)=>store.auth)
+ const router=useRouter()
 
   const [open, setOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -187,7 +151,7 @@ const Navbar = () => {
 
   // Filter the navItems based on screen size
   const filteredNavItems = isGreaterThanMd ? navItems.slice(2) : navItems;
-
+console.log(isAuth,"isAuth")
   return (
     <>
       <AppBar
@@ -204,11 +168,11 @@ const Navbar = () => {
             direction="row"
             alignItems="center"
             justifyContent="space-between"
-            spacing={4}
+            spacing={0}
           >
             <StyledGrid1 item>
               <Link href="/" passHref>
-              <Image src="/logo.svg" width={146} height={30} alt="logo" />
+              <Image src="/logo.svg" width={146} height={25} alt="logo" />
               </Link>
             </StyledGrid1>
             <StyledGrid3 item>
@@ -243,7 +207,7 @@ const Navbar = () => {
             <StyledGrid2 item>
               <Image src="/logo.svg" width={136} height={30} alt="logo" />
             </StyledGrid2>
-            <StyledGrid1 item width="30%">
+            <StyledGrid1 item width="22%">
               <SearchContainer>
                 <SearchIconWrapper>
                   <SearchIcon sx={{ color: "#64748B" }} />
@@ -254,9 +218,10 @@ const Navbar = () => {
                 />
               </SearchContainer>
             </StyledGrid1>
+            
             <StyledGrid1
               item
-              sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center" }}
+              sx={{ display: isAuth ? "flex":"none", alignItems: "center" }}
             >
               <Box
                 sx={{
@@ -268,23 +233,30 @@ const Navbar = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  overflow:"hidden"
                 }}
               >
-                <Typography color="white">R</Typography>
+               {
+                user?.profile_pic===null ?  <Typography color="white">{user?.first_name.charAt(0)}</Typography> :
+                <Image src="/images.jpg" width={30} height={30} alt="logo"  sx={{ objectFit: 'cover', borderRadius: '50%' }}/>
+               }
+               
+                
+               
               </Box>
               <IconButton>
                 <KeyboardArrowDownOutlinedIcon />
               </IconButton>
             </StyledGrid1>
-            <StyledGrid3 item>
+            <StyledGrid1  item sx={{display:isAuth ? "none":"flex",alignItems:"center"}}>
               <IconButton>
                 <SearchIcon />
               </IconButton>
-              <StyledButton1 variant="contained">Sign Up</StyledButton1>
-              <StyledButton2 variant="contained" disableElevation>
+              <StyledButton1 sx={{marginRight:"16px"}} variant="contained" onClick={()=>{router.push("login")}}>Sign Up</StyledButton1>
+              <Typography  color={colors.navyBlue500}  sx={{fontWeight:"600",fontSize:"14px",lineHeight:"17px",cursor:"pointer"}} onClick={()=>{router.push("login")}} disableElevation>
                 Login
-              </StyledButton2>
-            </StyledGrid3>
+              </Typography>
+            </StyledGrid1>
             <StyledGrid4 item>
               <IconButton>
                 <SearchIcon />
