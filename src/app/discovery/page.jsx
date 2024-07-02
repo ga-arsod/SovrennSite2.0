@@ -5,6 +5,7 @@ import DiscoveryHeader from "@/components/Discovery/DiscoveryHeader";
 import DiscoveryHeading from "@/components/Discovery/DiscoveryHeading";
 import DiscoveryTable from "@/components/Discovery/DiscoveryTable";
 import {Container } from "@mui/material"
+import Buckets from "../../components/Discovery/Buckets"
 const Discovery=()=>{
     return(
         <>
@@ -12,10 +13,8 @@ const Discovery=()=>{
         <DiscoveryHeading/>
        
         <CustomDiscoveryCard title="My Buckets" />
-        <DiscoveryCard title="Functional"/>
-        <DiscoveryCard title="Sectoral"/>
-        <DiscoveryCard title="Important Buckets"/>
-        
+      
+        <Buckets/>
         <DiscoveryTable/>
         </Container>
        

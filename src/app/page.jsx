@@ -15,12 +15,12 @@ import TrialCard from "@/components/Cards/TrialCard";
 import Updates from "@/components/Home/Updates";
 
 const Home = () => {
-  const { isAuth } = useSelector((store) => store.auth);
+ 
   return (
     <>
       <MainPoster />
 
-      {isAuth && <Updates />}
+      <Updates/>
 
       <UserCount />
       <Information />

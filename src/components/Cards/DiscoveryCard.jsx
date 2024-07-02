@@ -144,7 +144,7 @@ const fadeOut = `
   }
 `;
 
-const DiscoveryCard = ({ title }) => {
+const DiscoveryCard = ({ title,data }) => {
   
   const [isGridOpen, setIsGridOpen] = useState(true); // State to control the collapse
 
@@ -180,7 +180,7 @@ const DiscoveryCard = ({ title }) => {
         {isGridOpen && (
           <GridContainer className='fade-in'>
             {
-              Array.from("abcedfghij").map((item, index) => {
+             data?.map((item, index) => {
                 return (
                   <StyledGrid key={index}>
                     <Grid container>
@@ -202,14 +202,14 @@ const DiscoveryCard = ({ title }) => {
                       </Grid>
                       <Grid item paddingX="11px">
                         <StyledTypography1 gutterBottom>
-                          Preferential Issuance
+                         {item?.title}
                         </StyledTypography1>
                         <StyledTypography2 color={colors.navyBlue400} sx={{fontWeight:500}} marginBottom={2}>
-                          List of interesting stocks in the process of raising capital via Preferential Issuance
+                        {item?.description}
                         </StyledTypography2>
                       </Grid>
                       <Grid item width="100%" sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} paddingX="11px" marginTop={2} marginBottom="12px">
-                        <StyledTypography2 component="span" color={colors.themeGreen} sx={{fontWeight:600}}>187 Companies are in this bucket</StyledTypography2>
+                        <StyledTypography2 component="span" color={colors.themeGreen} sx={{fontWeight:600}}>{`${item?.total_companies} Companies are in this bucket`}</StyledTypography2>
                         <CustomIconButton>
                           <ArrowForwardIcon fontSize='small' className="arrow-icon" sx={{ color: "#3C464F" }} />
                         </CustomIconButton>
