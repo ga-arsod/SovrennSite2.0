@@ -5,7 +5,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 
 import { colors } from "../Constants/colors";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { homeUpdatesApi } from "@/app/Redux/Slices/homeSlice";
 import UpdateInfo from "./updateInfo";
@@ -36,7 +36,7 @@ const StyledTypography2 = styled(Typography)`
   }
 `;
 const Updates = () => {
-  const { isAuth } = useSelector((store) => store.auth);
+ 
   const dispatch = useDispatch();
 
   useEffect(() => {
