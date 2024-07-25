@@ -8,7 +8,7 @@ import { colors } from "../Constants/colors";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { homeUpdatesApi } from "@/app/Redux/Slices/homeSlice";
-import UpdateInfo from "./updateInfo";
+import UpdateInfo from "../../components/Home/UpdateInfo"
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
