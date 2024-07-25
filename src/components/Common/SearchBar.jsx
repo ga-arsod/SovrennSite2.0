@@ -40,8 +40,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: '100%',
   '& .MuiInputBase-input': {
     fontWeight:'400',
-    fontSize:'14px',
-    lineHeight:'17px',
+    fontSize:'10px',
+    lineHeight:'12px',
     padding: theme.spacing(1, 1, 1, 0), // Default padding
 
 
@@ -100,7 +100,7 @@ background-color:${colors.navyBlue500};
 }
 
 `;
-const SearchBar = () => {
+const SearchBar = ({placeholder}) => {
  
   return (
    <Grid container spacing={1} alignItems="center">
@@ -110,7 +110,7 @@ const SearchBar = () => {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search for a bucket"
+              placeholder={placeholder}
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>

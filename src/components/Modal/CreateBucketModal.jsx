@@ -1,13 +1,27 @@
-"use client"
-import React, { useState } from 'react';
-import { Box, Grid, Button, IconButton, Typography, Modal, TextField, InputLabel, Select, MenuItem, Chip } from '@mui/material';
+"use client";
+import React, { useState } from "react";
+import {
+  Box,
+  Grid,
+  Button,
+  IconButton,
+  Typography,
+  Modal,
+  TextField,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import styled from '@emotion/styled';
-import { colors } from '../Constants/colors';
-import { bucketFormConfig } from '@/utils/Data';
-import HighlightOffSharpIcon from '@mui/icons-material/HighlightOffSharp';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import styled from "@emotion/styled";
+import { colors } from "../Constants/colors";
+import { bucketFormConfig } from "@/utils/Data";
+import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import { createCustomBucketApi } from "@/app/Redux/Slices/discoverySlice";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -21,10 +35,9 @@ const StyledTypography1 = styled(Typography)`
   }
 `;
 const StyledTypography2 = styled(Typography)`
- 
   @media (max-width: 639px) {
     font-size: 14px;
-   
+
     line-height: 17px;
   }
 `;
@@ -45,7 +58,7 @@ const StyledInputLabel = styled(InputLabel)`
   font-weight: 400;
   font-size: 18px;
   line-height: 21px;
-  color: ${colors.navyBlue800}
+  color: ${colors.navyBlue800};
 `;
 
 const StyledButton2 = styled(Button)`
@@ -76,31 +89,43 @@ const StyledButton2 = styled(Button)`
 `;
 const StyledChip = styled(Chip)`
   margin: 5px;
-  border-radius:8px;
-  padding-top:10px;
-  padding-bottom:10px;
+  border-radius: 8px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   background-color: ${colors.navyBlue500};
   .MuiChip-label {
     font-weight: 600;
     font-size: 15px;
-    line-height:18px;
+    line-height: 18px;
     color: ${colors.white};
-    padding-left:4px;
+    padding-left: 4px;
   }
 `;
 
-
-const CreateBucketModal = ({open,handleClose}) => {
+const CreateBucketModal = ({ open, handleClose }) => {
   const theme = useTheme();
-  const isSmallerThanSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    bucket_list: [],
+  });
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
- 
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleSelectChange = (event) => {
     const value = event.target.value;
     if (!selectedOptions.includes(value)) {
       setSelectedOptions([...selectedOptions, value]);
+      setFormData({ ...formData, bucket_list: [...selectedOptions, value] });
     }
   };
 
@@ -110,18 +135,20 @@ const CreateBucketModal = ({open,handleClose}) => {
 
   const renderField = (field) => {
     switch (field.type) {
-      case 'text':
+      case "text":
         return (
           <>
-            <StyledInputLabel marginBottom="4px">{field.label}</StyledInputLabel>
+            <StyledInputLabel marginBottom="4px">
+              {field.label}
+            </StyledInputLabel>
             <TextField
               key={field.name}
               name={field.name}
               placeholder={field.placeholder}
               fullWidth
               variant="outlined"
+              onChange={handleInputChange}
               sx={{
-             
                 "& .MuiOutlinedInput-input": {
                   padding: "10px 8px",
                   color: colors.navyBlue900,
@@ -129,9 +156,8 @@ const CreateBucketModal = ({open,handleClose}) => {
                   fontSize: "18px",
                   lineHeight: "21px",
                   "@media (max-width: 639px)": {
-                   
                     fontSize: "14px",
-                  lineHeight: "17px",
+                    lineHeight: "17px",
                   },
 
                   "&::placeholder": {
@@ -140,9 +166,8 @@ const CreateBucketModal = ({open,handleClose}) => {
                     fontSize: "18px",
                     lineHeight: "21px",
                     "@media (max-width: 639px)": {
-                   
                       fontSize: "14px",
-                    lineHeight: "17px",
+                      lineHeight: "17px",
                     },
                   },
                 },
@@ -153,12 +178,10 @@ const CreateBucketModal = ({open,handleClose}) => {
             />
           </>
         );
-      case 'select':
+      case "select":
         return (
           <>
-            <StyledInputLabel id={field.name}>
-              {field.label}
-            </StyledInputLabel>
+            <StyledInputLabel id={field.name}>{field.label}</StyledInputLabel>
             <Select
               labelId={field.name}
               id={field.name}
@@ -167,8 +190,18 @@ const CreateBucketModal = ({open,handleClose}) => {
               renderValue={(selected) => {
                 if (!selected || selected.length === 0) {
                   return (
-                    <StyledTypography2 sx={{ fontWeight: 400, fontSize: '18px', lineHeight: '21px', color: colors.greyBlue300 }} data-custom="true">
-                    {isSmallerThanSm ?"Search for a bucket list ( Min. two)" :"Search for bucket list (Select atleast two)"}
+                    <StyledTypography2
+                      sx={{
+                        fontWeight: 400,
+                        fontSize: "18px",
+                        lineHeight: "21px",
+                        color: colors.greyBlue300,
+                      }}
+                      data-custom="true"
+                    >
+                      {isSmallerThanSm
+                        ? "Search for a bucket list ( Min. two)"
+                        : "Search for bucket list (Select atleast two)"}
                     </StyledTypography2>
                   );
                 }
@@ -181,7 +214,6 @@ const CreateBucketModal = ({open,handleClose}) => {
                 "& .MuiInputLabel-root": {
                   fontSize: "0.60rem",
                 },
-               
               }}
               variant="outlined"
               displayEmpty
@@ -200,32 +232,47 @@ const CreateBucketModal = ({open,handleClose}) => {
                   key={option.value}
                   value={option.label}
                   sx={{
-                    color: selectedOptions.includes(option.label) ? colors.navyBlue100 : colors.navyBlue900, // Change color based on selection
-                    borderWidth: '1px 1px 0 1px', // Correct way to specify border-width for all sides
-                    borderStyle: 'solid',
-                    borderColor: '#DEDDDD',
-                    '&:last-child': {
-                      borderWidth: '1px', // Apply full border to the last child
+                    color: selectedOptions.includes(option.label)
+                      ? colors.navyBlue100
+                      : colors.navyBlue900, // Change color based on selection
+                    borderWidth: "1px 1px 0 1px", // Correct way to specify border-width for all sides
+                    borderStyle: "solid",
+                    borderColor: "#DEDDDD",
+                    "&:last-child": {
+                      borderWidth: "1px", // Apply full border to the last child
                     },
-                    '&:hover': {
+                    "&:hover": {
                       backgroundColor: colors.navyBlue50, // Change this color to your preferred hover color
                     },
                     ...(index === 0 && {
-                      backgroundColor: 'transparent !important', // No background color for the first item
-                      '&:hover': {
+                      backgroundColor: "transparent !important", // No background color for the first item
+                      "&:hover": {
                         backgroundColor: `${colors.navyBlue50} !important`, // Change this color to your preferred hover color
                       },
                     }),
                   }}
                 >
-                 <Grid container display="flex" justifyContent="space-between" alignItems="center" width="100%">
-                 <Grid item>
-                  {option.label}
-                 </Grid>
-                 <Grid item>
-                  <Typography sx={{fontWeight:400,fontSize:'12px',lineHeight:"14px"}} color={colors.green500}>2 common</Typography>
-                 </Grid>
-                 </Grid>
+                  <Grid
+                    container
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    width="100%"
+                  >
+                    <Grid item>{option.label}</Grid>
+                    <Grid item>
+                      <Typography
+                        sx={{
+                          fontWeight: 400,
+                          fontSize: "12px",
+                          lineHeight: "14px",
+                        }}
+                        color={colors.green500}
+                      >
+                        2 common
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 </MenuItem>
               ))}
             </Select>
@@ -236,29 +283,33 @@ const CreateBucketModal = ({open,handleClose}) => {
                   label={option}
                   icon={
                     <IconButton
-                    
                       onClick={() => handleRemoveOption(option)}
                       // sx={{
-                      
+
                       // width:'16px',
                       // height:'16px',
                       //   border:'2.5px solid #FFFFFF',
                       //   borderRadius:'50%'
                       // }}
                     >
-                      <HighlightOffSharpIcon sx={{color:colors.white,fontSize:"24px",fontWeight:'600'}}/>
+                      <HighlightOffSharpIcon
+                        sx={{
+                          color: colors.white,
+                          fontSize: "24px",
+                          fontWeight: "600",
+                        }}
+                      />
                     </IconButton>
                   }
                   sx={{
-                    color:colors.white,
-                    margin: '5px',
+                    color: colors.white,
+                    margin: "5px",
                     backgroundColor: colors.navyBlue500,
-                    '& .MuiChip-deleteIcon': {
+                    "& .MuiChip-deleteIcon": {
                       color: colors.white,
-                      fontWeight:600,
-                      fontSize:'12px',
-                      lineHeight:'14px'
-
+                      fontWeight: 600,
+                      fontSize: "12px",
+                      lineHeight: "14px",
                     },
                   }}
                 />
@@ -281,42 +332,46 @@ const CreateBucketModal = ({open,handleClose}) => {
         sx={{ border: "none", outline: "none" }} // Set modal's z-index higher than navbar's z-index
         BackdropProps={{
           sx: {
-            backgroundColor: 'rgba(0, 0, 0, 0.25)',
-            border: 'none',
-            outline: 'none',
+            backgroundColor: "rgba(0, 0, 0, 0.25)",
+            border: "none",
+            outline: "none",
           },
         }}
       >
         <StyledBox>
           <Box
             bgcolor={colors.white}
-            width={{xs:"90%", sm: "680px" }}
+            width={{ xs: "90%", sm: "680px" }}
             height="auto"
             sx={{
               boxShadow: "0px 12px 24px 0px #0000001A",
               position: "relative",
               borderRadius: "8px",
-              border: 'none', // Ensure no border
-              outline: 'none', // Ensure no outline
+              border: "none", // Ensure no border
+              outline: "none", // Ensure no outline
             }}
           >
             <IconButton
-            onClick={handleClose}
-              
+              onClick={handleClose}
               sx={{ position: "absolute", top: "6px", right: "4px" }}
             >
               <CloseIcon sx={{ color: colors.black, zIndex: 1400 }} />
             </IconButton>
             <Grid
               container
-              paddingTop={{xs:4,sm:5}}
+              paddingTop={{ xs: 4, sm: 5 }}
               paddingBottom="28px"
-              paddingX={{xs:"28px",sm:"54px"}}
+              paddingX={{ xs: "28px", sm: "54px" }}
               flexDirection="column"
               alignItems="center"
               justifyContent="center"
             >
-              <Grid item sx={{ display: "flex", justifyContent: "center" }} width="100%" marginBottom={4}>
+              <Grid
+                item
+                sx={{ display: "flex", justifyContent: "center" }}
+                width="100%"
+                marginBottom={4}
+              >
                 <StyledTypography1>Add Bucket Details</StyledTypography1>
               </Grid>
               <Grid item width="100%">
@@ -329,9 +384,18 @@ const CreateBucketModal = ({open,handleClose}) => {
                 </Grid>
               </Grid>
               <Grid item width="100%" marginTop={5}>
-                <StyledButton2 variant="contained"
-                disabled={selectedOptions.length < 2}
-                >Create Bucket List</StyledButton2>
+                <StyledButton2
+                  variant="contained"
+                  onClick={() => {
+                 setTimeout(()=>{
+                  handleClose()
+                 },1000)
+                    dispatch(createCustomBucketApi(formData));
+                  }}
+                  disabled={selectedOptions.length < 2}
+                >
+                  Create Bucket List
+                </StyledButton2>
               </Grid>
             </Grid>
           </Box>

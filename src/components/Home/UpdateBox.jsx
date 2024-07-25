@@ -11,16 +11,11 @@ const StyledTypography1 = styled(Typography)`
   line-height: 40px;
   text-align: center;
   letter-spacing: -0.02em;
-  @media (max-width: 700px) {
-    font-weight: 600;
-    font-size: 23px;
-    line-height: 28px;
-    text-align: center;
-  }
+ 
 `;
 
 const StyledTypography2 = styled(Typography)`
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
 `;
 
@@ -39,7 +34,7 @@ const CustomIconButton = styled(IconButton)`
 
 const UpdateBox = ({ name, number }) => {
   return (
-    <Box sx={{ border: `1px solid ${colors.neutral600}`, borderRadius: "4px" }}>
+    <Box sx={{ border: `1px solid ${colors.neutral600}`, borderRadius: "4px" }} height="160px">
       <Grid container paddingY={3} paddingX={4} justifyContent={"center"}>
         <Grid item>
           <StyledTypography1 textAlign="center" color={colors.themeGreen}>
@@ -47,7 +42,7 @@ const UpdateBox = ({ name, number }) => {
           </StyledTypography1>
           <Typography
             color={colors.greyBlue500}
-            sx={{ fontWeight: "600", fontSize: "20px", lineHeight: "24px" }}
+            sx={{ fontWeight: "600", fontSize: {xs:"14px",sm:"20px"}, lineHeight:{xs:"17px",sm:"24px"} }}
           >
             {name}
           </Typography>
@@ -67,7 +62,8 @@ const UpdateBox = ({ name, number }) => {
           <StyledTypography2
             component="span"
             color={colors.navyBlue500}
-            sx={{ fontWeight: 600 }}
+            sx={{ fontWeight: '700' }}
+          
           >
             Read More
           </StyledTypography2>

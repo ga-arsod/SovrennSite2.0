@@ -1,12 +1,35 @@
-const { configureStore } = require("@reduxjs/toolkit");
-import authReducer from './Slices/authSlice'
-import homeReducer from "./Slices/homeSlice"
-import discoveryReducer from "./Slices/discoverySlice"
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import { combineReducers } from 'redux'; 
+import authReducer from './Slices/authSlice';
+import homeReducer from './Slices/homeSlice';
+import discoveryReducer from './Slices/discoverySlice';
+import educationReducer from './Slices/educationSlice';
 
-export const store=configureStore({
-    reducer:{
-        auth:authReducer,
-        home:homeReducer,
-        discovery:discoveryReducer
-    }
-})
+// Configuration for redux-persist
+const persistConfig = {
+  key: 'root', 
+  storage,     
+};
+
+
+const rootReducer = combineReducers({
+  auth: authReducer,
+  home: homeReducer,
+  discovery: discoveryReducer,
+  education: educationReducer,
+});
+
+// Persist the root reducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
+
+export const persistor = persistStore(store);

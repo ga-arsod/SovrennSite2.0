@@ -1,6 +1,6 @@
 
 
-import { useSelector } from "react-redux";
+
 import MainPoster from "@/components/Home/MainPoster";
 import UserCount from "@/components/Home/UserCount";
 import Information from "@/components/Home/Information";
@@ -13,14 +13,19 @@ import AppInfo from "@/components/Home/AppInfo";
 import Footer from "@/components/Home/Footer";
 import TrialCard from "@/components/Cards/TrialCard";
 import Updates from "@/components/Home/Updates";
+import {auth} from "@/auth";
 
-const Home = () => {
+const Home = async() => {
+ const session=await auth();
  
   return (
     <>
       <MainPoster />
 
-      <Updates/>
+  <Updates session={session}/>
+  
+
+     
 
       <UserCount />
       <Information />

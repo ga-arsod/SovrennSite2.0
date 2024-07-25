@@ -26,6 +26,7 @@
 html, body {
   overflow-x: hidden; /* This hides the horizontal scrollbar */
   overflow-y: auto; /* This ensures vertical scrolling is possible */
+ 
 }
 body {
   width:100vw;

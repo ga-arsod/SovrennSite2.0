@@ -4,6 +4,7 @@ import Image from "next/image";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 
+
 const StyledTypography1 = styled(Typography)`
   @media (max-width: 639px) {
     font-size: 12px;
@@ -38,6 +39,7 @@ const StyledTypography3 = styled(Typography)`
   line-height: 17px;
 `;
 const CustomerCard = ({ element }) => {
+ 
   return (
     <Grid
       container

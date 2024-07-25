@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Box, Grid, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { colors } from '../Constants/colors';
@@ -7,7 +7,9 @@ import styled from "@emotion/styled";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import CreateBucketModal from '../Modal/CreateBucketModal';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { discoveryTableApi } from '@/app/Redux/Slices/discoverySlice';
 
 const GridContainer = styled(Box)`
   display: grid;
@@ -145,14 +147,18 @@ const fadeOut = `
 `;
 
 const DiscoveryCard = ({ title,data }) => {
+const router=useRouter();
+  const dispatch=useDispatch();
   
   const [isGridOpen, setIsGridOpen] = useState(true); // State to control the collapse
 
   const handleToggle = () => {
     setIsGridOpen(!isGridOpen);
   };
+  const [isClient, setIsClient] = useState(false);
+
  
-  
+ 
   
   return (
     <>
@@ -210,7 +216,14 @@ const DiscoveryCard = ({ title,data }) => {
                       </Grid>
                       <Grid item width="100%" sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} paddingX="11px" marginTop={2} marginBottom="12px">
                         <StyledTypography2 component="span" color={colors.themeGreen} sx={{fontWeight:600}}>{`${item?.total_companies} Companies are in this bucket`}</StyledTypography2>
-                        <CustomIconButton>
+                        <CustomIconButton 
+                        onClick={() => 
+                          {
+                            dispatch(discoveryTableApi(item?.slug));
+                            router.push(`/discovery/${item?.slug}`)
+                          }
+                        }
+                        >
                           <ArrowForwardIcon fontSize='small' className="arrow-icon" sx={{ color: "#3C464F" }} />
                         </CustomIconButton>
                       </Grid>

@@ -114,7 +114,7 @@ const Information = () => {
   const handlePlayClick = () => {
     setIsPlaying(true);
   };
-  console.log(process.env.APP_URL,"url")
+ 
 
   return (
     <>

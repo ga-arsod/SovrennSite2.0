@@ -89,7 +89,7 @@ const Footer = () => {
           xs: "50vh",
           sm: pathname === "/" ? "60vh" : "50vh",
           md: pathname === "/" ? "40vh" : "58vh",
-          lg: pathname === "/" ? "90vh" : "70vh",
+          lg: pathname === "/" ? "90vh" : "65vh",
         }}
         sx={{ position: "relative" }}
       >

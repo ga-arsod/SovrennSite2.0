@@ -16,6 +16,9 @@ import { styled } from "@mui/system";
 import { colors } from "../Constants/colors";
 import Pagination from "../Pagination/Pagination";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useSelector } from "react-redux";
+
+
 
 const StyledTableCell = styled(TableCell)`
   font-weight: 600;
@@ -74,9 +77,13 @@ const StyledTableRow = styled(TableRow)`
   }
 `;
 
-export default function DiscoveryTable() {
+export default function DiscoveryTable({tableData}) {
+  
   const [hoveredRow, setHoveredRow] = useState(null);
-  const totalPages = 20; // Example total pages, you can fetch this from an API
+  
+  const totalPages = 20; 
+ 
+  
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
   };
@@ -87,7 +94,7 @@ export default function DiscoveryTable() {
 
   return (
     <>
-      <TableContainer component={Paper} sx={{ boxShadow: "none", position: "relative", overflowX: "auto" }}>
+      <TableContainer component={Paper}  sx={{ boxShadow: "none", position: "relative", overflowX: "auto" }}>
         <Table sx={{ minWidth: 1000, border: `1px solid ${colors.neutral600}` }} aria-label="simple table">
           <TableHead sx={{borderBottom:"none"}}>
             <TableRow sx={{borderBottom:"none"}}>
@@ -99,18 +106,18 @@ export default function DiscoveryTable() {
             </TableRow>
           </TableHead>
           <TableBody sx={{padding:"40px"}}>
-            {Array.from("abcedef").map((row, index) => (
+            {tableData?.map((item, index) => (
               <StyledTableRow key={index} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave}>
                 <StyledTableCell2 sx={{ color: colors.navyBlue500 ,fontWeight:600}} align="left">
              
-                  Balu Forge Industries Ltd.
+                 {item?.company?.company_name}
               
                 </StyledTableCell2>
-                <StyledTableCell2 sx={{ color: colors.neutral900 }} align="center">223</StyledTableCell2>
-                <StyledTableCell2 sx={{ color: colors.neutral900 }}>34x</StyledTableCell2>
-                <StyledTableCell2 sx={{ color: colors.neutral900 }}>7th Oct 23</StyledTableCell2>
+                <StyledTableCell2 sx={{ color: colors.neutral900 }} align="center">{item?.company?.market_cap}</StyledTableCell2>
+                <StyledTableCell2 sx={{ color: colors.neutral900 }}>{item?.company?.ttm_pe}</StyledTableCell2>
+                <StyledTableCell2 sx={{ color: colors.neutral900 }}>{item?.date}</StyledTableCell2>
                 <StyledTableCell2 sx={{ color: colors.neutral900, textAlign: "justify" }}>
-                  BoD considered and approved the allotment of 25L equity shares to Sixteenth Street Asian Gems Fund (Non-promoter) and 50L warrants to Promoter Group, at INR 183.6 per unit, aggregating to INR 138 Cr. The issuance of these units were earlier approved by the Board in Sep 2023.
+                {item?.remark}
                   <SlideBox hovered={hoveredRow === index}>
                     <Typography sx={{ fontWeight: 600, fontSize: '14px', lineHeight: '17px', marginRight: '8px' }}>Read More</Typography>
                     <CustomIconButton>

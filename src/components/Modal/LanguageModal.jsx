@@ -1,11 +1,18 @@
-"use client"
-import React,{useEffect} from "react";
-import { Box, Grid, Typography, Button, IconButton, Modal } from "@mui/material";
+"use client";
+import React, { useEffect } from "react";
+import {
+  Box,
+  Grid,
+  Typography,
+  Button,
+  IconButton,
+  Modal,
+} from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import CloseIcon from "@mui/icons-material/Close";
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -69,7 +76,7 @@ const StyledButton2 = styled(Button)`
     font-weight: 600;
     line-height: 19px;
     padding-top: 12px;
-  padding-bottom: 12px;
+    padding-bottom: 12px;
   }
 `;
 
@@ -85,22 +92,22 @@ const StyledBox = styled(Box)`
   justify-content: center;
 `;
 
-const LanguageModal = ({ open, handleClose }) => {
+const LanguageModal = ({ open, handleClose, setLanguage }) => {
   const theme = useTheme();
-  const isSmallerThanSm = useMediaQuery(theme.breakpoints.down('sm'));
- 
+  const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Modal
       open={open}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
-      sx={{ zIndex: 12000,border:"none",outline:"none" }}
+      sx={{ zIndex: 12000, border: "none", outline: "none" }}
       BackdropProps={{
         sx: {
-          backgroundColor: 'rgba(0, 0, 0, 0.25)',
-          border: 'none',
-          outline: 'none',
+          backgroundColor: "rgba(0, 0, 0, 0.25)",
+          border: "none",
+          outline: "none",
         },
       }}
     >
@@ -113,37 +120,59 @@ const LanguageModal = ({ open, handleClose }) => {
             boxShadow: "0px 12px 24px 0px #0000001A",
             position: "relative",
             borderRadius: "8px",
-            border: 'none', // Ensure no border
-            outline: 'none', // Ensure no outline
+            border: "none", // Ensure no border
+            outline: "none", // Ensure no outline
           }}
         >
           <IconButton
             onClick={handleClose}
             sx={{ position: "absolute", top: "6px", right: "4px" }}
           >
-            <CloseIcon sx={{color:colors.black}}/>
+            <CloseIcon sx={{ color: colors.black }} />
           </IconButton>
           <Grid
             container
             padding={"20px"}
-           
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
             gap={4}
           >
-            <Grid item paddingX={{xs:1,sm:4}} >
-              <StyledTypography1 color={colors.navyBlue500} textAlign="center" >
+            <Grid item paddingX={{ xs: 1, sm: 4 }}>
+              <StyledTypography1 color={colors.navyBlue500} textAlign="center">
                 In Which Language You Want to Watch this?
               </StyledTypography1>
             </Grid>
             <Grid item width="100%">
-              <Grid container display="flex" justifyContent="space-between" spacing={2} width="100%">
+              <Grid
+                container
+                display="flex"
+                justifyContent="space-between"
+                spacing={2}
+                width="100%"
+              >
                 <Grid item xs={6}>
-                  <StyledButton1 variant="outlined">{isSmallerThanSm?"Hindi":"Watch in Hindi"}</StyledButton1>
+                  <StyledButton1
+                    onClick={() => {
+                      setLanguage("hindi");
+                      handleClose()
+                     
+                    }}
+                    variant="outlined"
+                  >
+                    {isSmallerThanSm ? "Hindi" : "Watch in Hindi"}
+                  </StyledButton1>
                 </Grid>
                 <Grid item xs={6}>
-                  <StyledButton2 variant="contained">{isSmallerThanSm?"English":"Watch in English"}</StyledButton2>
+                  <StyledButton2
+                    variant="contained"
+                    onClick={() => {
+                      setLanguage("english");
+                      handleClose()
+                    }}
+                  >
+                    {isSmallerThanSm ? "English" : "Watch in English"}
+                  </StyledButton2>
                 </Grid>
               </Grid>
             </Grid>

@@ -7,10 +7,11 @@ import Faq from "@/components/Home/Faq";
 import Footer from "@/components/Home/Footer";
 import FoundersInfo from "@/components/Home/FoundersInfo";
 import LanguageModal from "@/components/Modal/LanguageModal";
-
+import { useDispatch } from "react-redux";
 
 
 const Education=()=>{
+   
     return(
         <>
         <MainHeading/>

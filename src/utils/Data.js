@@ -167,7 +167,7 @@ export const bucketFormConfig = [
   {
     type: 'text',
     label: 'Title of Bucket list',
-    name: 'bucketListTitle',
+    name: 'title',
     placeholder: 'Enter a name of the bucket list',
   },
   {
@@ -179,7 +179,7 @@ export const bucketFormConfig = [
   {
     type: 'select',
     label: 'Select Bucket',
-    name: 'bucket',
+    name: 'bucket_list',
     options: [
       { value: 'rightIssuance', label: 'Right Issuance' },
       { value: 'consumption', label: 'Consumption' },
@@ -234,3 +234,26 @@ export const navItems = [
 
 
 ];
+
+export const landingPageArray=[
+  {
+    title:"Sovrenn Education",
+    description:"Learn long-term investing in simple, easy to understand language (English and Hindi)"
+  },
+  {
+    title:"Sovrenn Times",
+    description:"Get daily newsletter covering updates on important events in smallcap and microcap space - large orders received, strategic acquisitions, capacity expansion, fund raise, etc."
+  },
+  {
+    title:"Sovrenn Prime",
+    description:"Read detailed articles on promising smallcap and microcap companies."
+  },
+  {
+    title:"Sovrenn Discovery",
+    description:"Get thematic buckets on themes like Solar, Railways, Defence, IT, Consumption, Electrification, etc."
+  },
+  {
+    title:"Sovrenn Pulse",
+    description:"Create your own watchlist of stocks and get live company updates on important developments."
+  }
+]

@@ -1,10 +1,13 @@
-"use client"
-import React,{useState} from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Box, Typography, Grid } from "@mui/material";
 import Image from "next/image";
 import { colors } from "../Constants/colors";
 import LanguageModal from "../Modal/LanguageModal";
+import { educationVideosApi } from "@/app/Redux/Slices/educationSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const tutorialArray = [
   {
@@ -52,11 +55,26 @@ const TutorialSection = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [language, setLanguage] = useState(null);
+  const dispatch = useDispatch();
+  const videoData = useSelector((store) => store.education.videoBucket);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    dispatch(educationVideosApi());
+  }, []);
+
   return (
     <>
-    {
-      open ? <LanguageModal open={open} handleClose={handleClose}/> : <></>
-    }
+      {open ? (
+        <LanguageModal
+          open={open}
+          handleClose={handleClose}
+          setLanguage={setLanguage}
+        />
+      ) : (
+        <></>
+      )}
       <Box>
         <Grid
           container
@@ -64,7 +82,7 @@ const TutorialSection = () => {
           justifyContent="center"
           alignItems="center"
           spacing={1}
-         paddingY={{xs:3,md:6}}
+          paddingY={{ xs: 3, md: 6 }}
         >
           <Grid item marginBottom={2}>
             <Typography
@@ -86,17 +104,14 @@ const TutorialSection = () => {
           <Grid item display="flex" justifyContent="center" marginBottom="28px">
             <StyledTypography2
               textAlign="center"
-             
               color={colors.greyBlue500}
               paddingX={{ xs: 2, sm: 0 }}
-             
             >
               You can understand the basics of investing with these two videos
             </StyledTypography2>
           </Grid>
           <Grid
             item
-           
             sx={{
               display: "flex",
               justifyContent: "center",
@@ -114,52 +129,95 @@ const TutorialSection = () => {
               width={{ xs: "100%", md: "85%" }}
               justifyContent="space-between"
             >
-              {tutorialArray.map((element, index) => {
+              {videoData?.map((element, index) => {
                 return (
                   <Grid
                     item
                     key={index}
                     sm={5.7}
-                    sx={{ border: "1px solid #E4E7EC", borderRadius: "12px" }}
+                    sx={{ border:  "1px solid #E4E7EC", borderRadius: "12px" }}
                   >
-                    <Box sx={{ position: 'relative', borderRadius: "12px", overflow: "hidden" }}>
-            <Image
-              src={element.image}
-              alt="..."
-              width={380}
-              height={350}
-              layout="responsive"
-            />
-            <Box
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: '80px', 
-                height: '80px', 
-                cursor:"pointer"
-              }}
-              onClick={handleOpen}
-            >
-              <Image
-                src="/play.svg" 
-                alt="overlay"
-                layout="fill"
-                objectFit="contain" 
-              />
-            </Box>
-          </Box>
-
+                    {
+                      isPlaying===index && language!==null ? 
+                      <Box
+                      sx={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        position: "relative",
+                        zIndex:"10"
+                      }}
+                    >
+                      <video
+                        width="100%"
+                        height="100%"
+                        controls
+                        autoPlay
+                        style={{ borderRadius: "12px" }}
+                      >
+                        <source
+                          src={
+                            language === "hindi"
+                              ? element?.hindiUrl
+                              : element?.englishUrl
+                          }
+                          type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    </Box>
+                      :<>
+                    <Box
+                      sx={{
+                        position: "relative",
+                        borderRadius: "12px",
+                        overflow: "hidden",
+                        zIndex:"5"
+                      }}
+                    >
+                      <Image
+                        src={element?.thumbUrl}
+                        alt="..."
+                        width={380}
+                        height={350}
+                        layout="responsive"
+                      />
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          width: "80px",
+                          height: "80px",
+                          cursor: "pointer",
+                        }}
+                        onClick={handleOpen}
+                      >
+                        <Image
+                          src="/play.svg"
+                          alt="overlay"
+                          layout="fill"
+                          objectFit="contain"
+                          onClick={() => {
+                            setIsPlaying(index);
+                          }}
+                        />
+                      </Box>
+                    </Box>
 
                     <StyledTypography3
                       color="#101828"
                       marginLeft={3}
                       paddingY={3}
-                      
                     >
-                      {element.description}
+                      {element?.title}
                     </StyledTypography3>
+                    </>
+                    }
+                   
                   </Grid>
                 );
               })}
