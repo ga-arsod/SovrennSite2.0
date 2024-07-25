@@ -23,9 +23,5 @@ export const {
       },
     }),
   ],
-<<<<<<< HEAD
   
-=======
- 
->>>>>>> d2a73fc59bc64d5474bb022daa9106b147ef1e2b
 });
