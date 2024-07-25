@@ -6,7 +6,6 @@ import styled from "@emotion/styled";
 
 import { colors } from "../Constants/colors";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { homeUpdatesApi } from "@/app/Redux/Slices/homeSlice";
 import UpdateInfo from "./updateInfo";
 

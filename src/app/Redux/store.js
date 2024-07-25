@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -33,3 +34,17 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+=======
+const { configureStore } = require("@reduxjs/toolkit");
+import authReducer from './Slices/authSlice'
+import homeReducer from "./Slices/homeSlice"
+import discoveryReducer from "./Slices/discoverySlice"
+
+export const store=configureStore({
+    reducer:{
+        auth:authReducer,
+        home:homeReducer,
+        discovery:discoveryReducer
+    }
+})
+>>>>>>> d2a73fc59bc64d5474bb022daa9106b147ef1e2b
