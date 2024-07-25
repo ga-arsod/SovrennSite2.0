@@ -147,11 +147,8 @@ const fadeOut = `
 `;
 
 const DiscoveryCard = ({ title,data }) => {
-<<<<<<< HEAD
 const router=useRouter();
   const dispatch=useDispatch();
-=======
->>>>>>> d2a73fc59bc64d5474bb022daa9106b147ef1e2b
   
   const [isGridOpen, setIsGridOpen] = useState(true); // State to control the collapse
 
@@ -219,7 +216,6 @@ const router=useRouter();
                       </Grid>
                       <Grid item width="100%" sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} paddingX="11px" marginTop={2} marginBottom="12px">
                         <StyledTypography2 component="span" color={colors.themeGreen} sx={{fontWeight:600}}>{`${item?.total_companies} Companies are in this bucket`}</StyledTypography2>
-<<<<<<< HEAD
                         <CustomIconButton 
                         onClick={() => 
                           {
@@ -228,9 +224,6 @@ const router=useRouter();
                           }
                         }
                         >
-=======
-                        <CustomIconButton>
->>>>>>> d2a73fc59bc64d5474bb022daa9106b147ef1e2b
                           <ArrowForwardIcon fontSize='small' className="arrow-icon" sx={{ color: "#3C464F" }} />
                         </CustomIconButton>
                       </Grid>
