@@ -1,5 +1,4 @@
-"use client"
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Grid, IconButton, Typography } from "@mui/material";
 import Image from "next/image";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -8,22 +7,21 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import {deleteCustomBucketApi} from "../../app/Redux/Slices/discoverySlice"
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { discoveryTableApi } from "../../app/Redux/Slices/discoverySlice";
-
+import {  discoveryTableApi } from "../../app/Redux/Slices/discoverySlice";
+import DeleteModal from "../../components/Modal/DeleteModal";
 
 const GridContainer = styled(Box)`
   display: grid;
-  gap: 24px 16px; /* Row gap, Column gap */
+  gap: 24px 16px;
 
   @media (min-width: 1025px) {
-    grid-template-columns: repeat(4, 1fr); /* 4 items per row on desktop */
+    grid-template-columns: repeat(4, 1fr);
   }
 
   @media (min-width: 640px) and (max-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr); /* 3 items per row on tablet */
+    grid-template-columns: repeat(3, 1fr);
   }
 
   @media (max-width: 639px) {
@@ -75,34 +73,34 @@ const HoverBox = styled(Box)`
     background-color: ${colors.neutral900};
 
     .header-text {
-      color: ${colors.white}; /* Change text color on hover */
+      color: ${colors.white};
     }
 
     .header-icon {
-      color: ${colors.white}; /* Change arrow color on hover */
+      color: ${colors.white};
     }
   }
 
   &.collapsed {
-    background-color: ${colors.neutral400}; /* Color when collapsed */
+    background-color: ${colors.neutral400};
 
     .header-text {
-      color: ${colors.navyBlue900}; /* Text color when collapsed */
+      color: ${colors.navyBlue900};
     }
 
     .header-icon {
-      color: ${colors.navyBlue900}; /* Icon color when collapsed */
+      color: ${colors.navyBlue900};
     }
 
     &:hover {
       background-color: ${colors.neutral900};
 
       .header-text {
-        color: ${colors.white}; /* Text color on hover when collapsed */
+        color: ${colors.white};
       }
 
       .header-icon {
-        color: ${colors.white}; /* Icon color on hover when collapsed */
+        color: ${colors.white};
       }
     }
   }
@@ -118,46 +116,44 @@ const CustomIconButton = styled(IconButton)`
   border: 1px solid #b0b7bc;
   border-radius: 50%;
   background-color: ${colors.white};
-  transition: background-color 0.3s, border-color 0.3s, transform 0.3s; /* Add transition for all properties */
+  transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
 
   &:hover {
-    background-color: ${colors.themeGreen}; /* Change background color on hover */
-    border-color: ${colors.navyBlue900}; /* Change border color on hover */
-    transform: rotate(
-      -45deg
-    ); /* Rotate icon by 45 degrees anticlockwise on hover */
+    background-color: ${colors.themeGreen};
+    border-color: ${colors.navyBlue900};
+    transform: rotate(-45deg);
 
     .arrow-icon {
-      color: ${colors.white}; /* Change arrow color on hover */
+      color: ${colors.white};
     }
   }
 `;
 
-const fadeIn = `
-  @keyframes fadeIn {
-    from { opacity: 0; visibility: hidden; }
-    to { opacity: 1; visibility: visible; }
-  }
-`;
-
-const fadeOut = `
-  @keyframes fadeOut {
-    from { opacity: 1; visibility: visible; }
-    to { opacity: 0; visibility: hidden; }
-  }
-`;
-
 const CustomDiscoveryCard = ({ title, data }) => {
-  const router=useRouter();
-  const [isGridOpen, setIsGridOpen] = useState(true); // State to control the collapse
-  const dispatch=useDispatch();
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [isGridOpen, setIsGridOpen] = useState(true);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const dispatch = useDispatch();
+
   const handleToggle = () => {
     setIsGridOpen(!isGridOpen);
   };
 
-  console.log(data,"data")
+  const handleDeleteClick = (id) => {
+    setSelectedItemId(id); 
+    setOpen(true); 
+  };
+
   return (
     <>
+      {open && (
+        <DeleteModal
+          open={open}
+          setOpen={setOpen}
+          itemId={selectedItemId} 
+        />
+      )}
       <Box marginBottom={6}>
         <HoverBox
           onClick={handleToggle}
@@ -200,9 +196,7 @@ const CustomDiscoveryCard = ({ title, data }) => {
               return (
                 <StyledGrid key={index}>
                   <Box
-                   onClick={()=>{
-                    console.log("hello")
-                    dispatch(deleteCustomBucketApi(item?._id))}}
+                    onClick={() => handleDeleteClick(item._id)} 
                     sx={{
                       display: "flex",
                       justifyContent: "flex-end",
@@ -210,9 +204,7 @@ const CustomDiscoveryCard = ({ title, data }) => {
                     }}
                     paddingX="4px"
                   >
-                    <IconButton sx={{ paddingX: "0px" }}
-                   
-                    >
+                    <IconButton sx={{ paddingX: "0px" }}>
                       <DeleteOutlineIcon
                         sx={{ color: colors.red500, fontSize: "18px" }}
                       />
@@ -247,14 +239,14 @@ const CustomDiscoveryCard = ({ title, data }) => {
                     </Grid>
                     <Grid item paddingX="20px">
                       <StyledTypography1 gutterBottom>
-                        {item?.title}
+                        {item.title}
                       </StyledTypography1>
                       <StyledTypography2
                         color={colors.navyBlue400}
                         sx={{ fontWeight: 500 }}
                         marginBottom={5}
                       >
-                        {item?.description}
+                        {item.description}
                       </StyledTypography2>
                     </Grid>
                     <Grid
@@ -272,13 +264,12 @@ const CustomDiscoveryCard = ({ title, data }) => {
                         component="span"
                         color={colors.themeGreen}
                         sx={{ fontWeight: 600 }}
-                      >{`${item?.total_companies} Companies are in this bucket`}</StyledTypography2>
-                      <CustomIconButton onClick={()=>{ 
-                         dispatch(discoveryTableApi(item?.slug))
-                        
-                         
-                        
-                        }}>
+                      >{`${item.total_companies} Companies are in this bucket`}</StyledTypography2>
+                      <CustomIconButton
+                        onClick={() => {
+                          dispatch(discoveryTableApi(item.slug));
+                        }}
+                      >
                         <ArrowForwardIcon
                           fontSize="small"
                           className="arrow-icon"

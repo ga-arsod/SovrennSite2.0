@@ -16,6 +16,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { colors } from '../Constants/colors';
 import styled from "@emotion/styled";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useRouter } from 'next/navigation';
 
 // Define styled components for table cells
 const StyledTableCell = styled(TableCell)`
@@ -111,6 +112,7 @@ const data = [
 ];
 
 const TableData = () => {
+  const router=useRouter();
   return (
     <Container>
       <Box sx={{ paddingX: 2, marginTop: 3,marginBottom:"200px", border: `1px solid ${colors.neutral600}`, borderRadius: 1 }}>
@@ -163,7 +165,12 @@ const TableData = () => {
                   <StyledBodyTableCell sx={{ color: colors.neutral900 }}>{row.sector}</StyledBodyTableCell>
                   <StyledBodyTableCell sx={{ color: colors.neutral900 }}>{row.industry}</StyledBodyTableCell>
                   <StyledBodyTableCell>
-                    <StyledButton variant="outlined" endIcon={<StyledArrowForwardIosIcon />} size="small">
+                    <StyledButton  onClick={() => 
+                          {
+                           
+                            router.push(`/prime/${row?.companyName}`)
+                          }
+                        } variant="outlined" endIcon={<StyledArrowForwardIosIcon />} size="small">
                       Read
                     </StyledButton>
                   </StyledBodyTableCell>

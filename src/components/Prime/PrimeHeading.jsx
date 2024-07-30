@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { colors } from '../Constants/colors'; 
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import PrimeHeader from "../../components/Prime/PrimeHeader";
+import PrimeHeader from "./PrimeHeader";
 
 const ArrowBoxContainer = styled(Box)`
   display: flex;
@@ -80,7 +80,7 @@ const TabLabel = ({ text, isActive }) => {
   );
 };
 
-const IpoHeader = () => {
+const PrimeHeading = () => {
   const [value, setValue] = useState('one');
   const theme = useTheme();
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
@@ -174,4 +174,4 @@ const IpoHeader = () => {
   );
 };
 
-export default IpoHeader;
+export default PrimeHeading;

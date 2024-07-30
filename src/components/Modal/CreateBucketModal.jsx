@@ -22,6 +22,7 @@ import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { createCustomBucketApi } from "@/app/Redux/Slices/discoverySlice";
+import DeleteBucketCreation from "../../components/Modal/DeleteBucketCreation"
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -104,6 +105,7 @@ const StyledChip = styled(Chip)`
 
 const CreateBucketModal = ({ open, handleClose }) => {
   const theme = useTheme();
+  const [isOpen,setIsOpen]=useState(false)
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
@@ -234,20 +236,20 @@ const CreateBucketModal = ({ open, handleClose }) => {
                   sx={{
                     color: selectedOptions.includes(option.label)
                       ? colors.navyBlue100
-                      : colors.navyBlue900, // Change color based on selection
-                    borderWidth: "1px 1px 0 1px", // Correct way to specify border-width for all sides
+                      : colors.navyBlue900, 
+                    borderWidth: "1px 1px 0 1px", 
                     borderStyle: "solid",
                     borderColor: "#DEDDDD",
                     "&:last-child": {
-                      borderWidth: "1px", // Apply full border to the last child
+                      borderWidth: "1px",
                     },
                     "&:hover": {
-                      backgroundColor: colors.navyBlue50, // Change this color to your preferred hover color
+                      backgroundColor: colors.navyBlue50, 
                     },
                     ...(index === 0 && {
-                      backgroundColor: "transparent !important", // No background color for the first item
+                      backgroundColor: "transparent !important", 
                       "&:hover": {
-                        backgroundColor: `${colors.navyBlue50} !important`, // Change this color to your preferred hover color
+                        backgroundColor: `${colors.navyBlue50} !important`, 
                       },
                     }),
                   }}
@@ -324,6 +326,9 @@ const CreateBucketModal = ({ open, handleClose }) => {
 
   return (
     <>
+    {
+      open ? <DeleteBucketCreation isOpen={isOpen} setIsOpen={setIsOpen} handleClose={handleClose}/>:<></>
+    }
       <Modal
         open={open}
         onClose={handleClose}
@@ -347,13 +352,14 @@ const CreateBucketModal = ({ open, handleClose }) => {
               boxShadow: "0px 12px 24px 0px #0000001A",
               position: "relative",
               borderRadius: "8px",
-              border: "none", // Ensure no border
-              outline: "none", // Ensure no outline
+              border: "none", 
+              outline: "none", 
             }}
           >
             <IconButton
-              onClick={handleClose}
+             
               sx={{ position: "absolute", top: "6px", right: "4px" }}
+              onClick={()=>{setIsOpen(true)}}
             >
               <CloseIcon sx={{ color: colors.black, zIndex: 1400 }} />
             </IconButton>
@@ -387,9 +393,9 @@ const CreateBucketModal = ({ open, handleClose }) => {
                 <StyledButton2
                   variant="contained"
                   onClick={() => {
-                 setTimeout(()=>{
+               
                   handleClose()
-                 },1000)
+               
                     dispatch(createCustomBucketApi(formData));
                   }}
                   disabled={selectedOptions.length < 2}

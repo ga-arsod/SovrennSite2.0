@@ -1,16 +1,18 @@
 import React from 'react'
 
-import IpoHeader from '../../components/Prime/IpoHeader'
-import Filters from '../../components/Prime/Filters'
+import PrimeHeading from '../../components/Prime/PrimeHeading'
+import PrimeFilters from '../../components/Prime/PrimeFilters'
 import Footer from '@/components/Home/Footer'
 import PrimeTableContent from '../../components/Prime/PrimeTableContent'
+
 
 const Prime = () => {
   return (
    <>
-    <IpoHeader/> 
-    <Filters/>
+    <PrimeHeading/> 
+   <PrimeFilters/>
    <PrimeTableContent/>
+   {/* <Articles/> */}
    <Footer/>
 
    </>

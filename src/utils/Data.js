@@ -216,7 +216,7 @@ export const navItems = [
   },
   {
     name: "IPO",
-    link:"/ipo"
+    link:"/ipo-zone"
   },
   {
     name: "Knowledge",
@@ -224,7 +224,7 @@ export const navItems = [
   },
   {
     name: "Self Help",
-    link:"/selfhelp"
+    link:"/self-help"
   },
   {
     name: "Pricing",

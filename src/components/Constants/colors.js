@@ -44,7 +44,9 @@ export const colors={
     red400:'#F83A3A',
     themeOrange:'#FB8935',
     greyBlue:'#627B8F',
-    navyBlue300:'#55636E'
+    navyBlue300:'#55636E',
+    red500:'#F60909',
+    red300:'#F95A5A'
 }
 
 export const gradientColors={

@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import { colors } from '../Constants/colors';
 import SearchBar from "../Common/SearchBar"
 import { useTheme } from "@mui/material/styles";
-import { useRouter } from 'next/navigation';
+
 import { useSelector } from 'react-redux';
 
 const StyledTypography1 = styled(Typography)`
@@ -41,7 +41,9 @@ const DiscoveryHeader = () => {
  
   return (
     <>
+   
      <Box sx={{marginTop:"64px"}} marginBottom={{xs:3,sm:"28px"}}  >
+     
       <Grid container  alignItems="center">
         <Grid item paddingY={{xs:2,sm:5}}>
           <Box marginBottom={1}>

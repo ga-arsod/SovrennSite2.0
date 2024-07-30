@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import {
   Paper,
@@ -16,28 +16,34 @@ import { styled } from "@mui/system";
 import { colors } from "../Constants/colors";
 import Pagination from "../Pagination/Pagination";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useSelector } from "react-redux";
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
-
-
+// Styled Components
 const StyledTableCell = styled(TableCell)`
   font-weight: 600;
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 16px;
+  line-height: 19px;
   color: ${colors.themeGreen};
-  border-bottom: 1px solid ${colors.neutral700};
+  position: relative;
+  padding: 24px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  &:hover {
+    color: ${colors.navyBlue500};
+  }
+  &:hover .arrow-icon {
+    opacity: 1;
+  }
 `;
 
 const StyledTableCell2 = styled(TableCell)`
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
-  padding: 16px 24px 16px 24px; /* Adjust padding to create space within the cell */
+  padding: 16px 24px;
   border-bottom: 1px solid ${colors.neutral500};
-  position: relative; /* Ensure the SlideBox is positioned relative to this cell */
-  overflow: hidden; /* Hide any overflowing content */
-  margin-bottom: 16px; /* Add margin to create space between rows */
- 
+  position: relative;
+  overflow: hidden;
 `;
 
 const CustomIconButton = styled(IconButton)`
@@ -52,13 +58,18 @@ const CustomIconButton = styled(IconButton)`
   background-color: ${colors.white};
 `;
 
+const HeaderTextWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  position: relative;
+`;
+
 const SlideBox = styled(Box)`
   position: absolute;
   top: 0;
-  right: -200px; /* Position off-screen initially */
-  transform: translateX(${(props) => (props.hovered ? "-100%" : "0")});
+  right: 0;
   width: 200px;
-  height: 100%; /* Take the height of the row */
+  height: 100%;
   background-color: ${colors.navyBlue500};
   display: flex;
   justify-content: center;
@@ -67,23 +78,45 @@ const SlideBox = styled(Box)`
   z-index: 10;
   color: ${colors.white};
   cursor: pointer;
+  transform: translateX(${(props) => (props.hovered ? "0" : "100%")});
   opacity: ${(props) => (props.hovered ? "1" : "0")};
   pointer-events: ${(props) => (props.hovered ? "auto" : "none")};
 `;
 
 const StyledTableRow = styled(TableRow)`
   &:hover {
-    background-color: ${colors.neutral600}; /* Change this to your desired hover color */
+    background-color: ${colors.neutral600};
+  }
+  position: relative; // Ensure SlideBox positions relative to this row
+`;
+
+const StyledBodyTableCell = styled(TableCell)`
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  padding: 16px 24px;
+  position: relative;
+  overflow: hidden;
+`;
+
+const StyledArrowUpwardIcon = styled(ArrowUpwardIcon)`
+  && {
+    font-size: 18px;
+    color: ${colors.navyBlue500};
+    margin-left: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
   }
 `;
 
-export default function DiscoveryTable({tableData}) {
-  
+const headerData = ["Company Name", "Market Cap(in Cr)", "TTM PE", "Date of Info", "Remarks"];
+
+export default function DiscoveryTable({ tableData }) {
   const [hoveredRow, setHoveredRow] = useState(null);
-  
-  const totalPages = 20; 
- 
-  
+
+  const totalPages = 20;
+
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
   };
@@ -94,42 +127,76 @@ export default function DiscoveryTable({tableData}) {
 
   return (
     <>
-      <TableContainer component={Paper}  sx={{ boxShadow: "none", position: "relative", overflowX: "auto" }}>
-        <Table sx={{ minWidth: 1000, border: `1px solid ${colors.neutral600}` }} aria-label="simple table">
-          <TableHead sx={{borderBottom:"none"}}>
-            <TableRow sx={{borderBottom:"none"}}>
-              <StyledTableCell width="20%">Company Name</StyledTableCell>
-              <StyledTableCell width="15%">Market Cap(in Cr)</StyledTableCell>
-              <StyledTableCell width="10%">TTM PE</StyledTableCell>
-              <StyledTableCell width="15%">Date of Info</StyledTableCell>
-              <StyledTableCell width="40%">Remarks</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody sx={{padding:"40px"}}>
-            {tableData?.map((item, index) => (
-              <StyledTableRow key={index} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave}>
-                <StyledTableCell2 sx={{ color: colors.navyBlue500 ,fontWeight:600}} align="left">
-             
-                 {item?.company?.company_name}
-              
-                </StyledTableCell2>
-                <StyledTableCell2 sx={{ color: colors.neutral900 }} align="center">{item?.company?.market_cap}</StyledTableCell2>
-                <StyledTableCell2 sx={{ color: colors.neutral900 }}>{item?.company?.ttm_pe}</StyledTableCell2>
-                <StyledTableCell2 sx={{ color: colors.neutral900 }}>{item?.date}</StyledTableCell2>
-                <StyledTableCell2 sx={{ color: colors.neutral900, textAlign: "justify" }}>
-                {item?.remark}
-                  <SlideBox hovered={hoveredRow === index}>
-                    <Typography sx={{ fontWeight: 600, fontSize: '14px', lineHeight: '17px', marginRight: '8px' }}>Read More</Typography>
-                    <CustomIconButton>
-                      <ArrowForwardIosIcon fontSize='small' sx={{ color: colors.themeGreen, fontSize: '12px' }} />
-                    </CustomIconButton>
-                  </SlideBox>
-                </StyledTableCell2>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box
+        sx={{
+          paddingX: 0,
+          marginTop: 3,
+          marginBottom: "200px",
+          border: `1px solid ${colors.neutral600}`,
+          borderRadius: 1,
+         overflowX:'hidden'
+         
+        
+      }}
+      >
+        <TableContainer
+          component={Paper}
+          elevation={0}
+          sx={{ boxShadow: "none", paddingY: 0 }}
+        >
+          <Table sx={{ borderCollapse: "separate" }}>
+            <TableHead>
+              <TableRow>
+                {headerData.map((header_name, index) => (
+                  <StyledTableCell
+                    key={index}
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <HeaderTextWrapper>
+                      {header_name}
+                      <StyledArrowUpwardIcon className="arrow-icon" />
+                    </HeaderTextWrapper>
+                  </StyledTableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {tableData.map((item, index) => (
+                <StyledTableRow
+                  key={index}
+                  onMouseEnter={() => handleMouseEnter(index)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <StyledBodyTableCell sx={{ color: colors.navyBlue500 }} align="left">
+                    {item?.company?.company_name}
+                  </StyledBodyTableCell>
+                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
+                    {item?.company?.market_cap}
+                  </StyledBodyTableCell>
+                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
+                    {item?.company?.ttm_pe}
+                  </StyledBodyTableCell>
+                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
+                    {item?.date}
+                  </StyledBodyTableCell>
+                  <StyledBodyTableCell sx={{ color: colors.neutral900, textAlign: 'justify', position: 'relative' }}>
+                    {item?.remark}
+                    <SlideBox hovered={hoveredRow === index}>
+                      <Typography sx={{ fontWeight: 600, fontSize: '14px', lineHeight: '17px', marginRight: '8px' }}>
+                        Read More
+                      </Typography>
+                      <CustomIconButton>
+                        <ArrowForwardIosIcon fontSize='small' sx={{ color: colors.themeGreen, fontSize: '12px' }} />
+                      </CustomIconButton>
+                    </SlideBox>
+                  </StyledBodyTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
       <Box mt={2}>
         <Pagination totalPages={totalPages} />
       </Box>

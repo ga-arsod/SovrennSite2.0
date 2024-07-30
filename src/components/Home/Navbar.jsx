@@ -211,7 +211,7 @@ const Navbar = ({ session }) => {
   };
 
   const filteredNavItems = isGreaterThanMd ? navItems.slice(2) : navItems;
-  console.log(session, "session");
+
   return (
     <>
       <AppBar

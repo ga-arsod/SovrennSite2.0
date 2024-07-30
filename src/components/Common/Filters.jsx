@@ -1,27 +1,14 @@
-"use client";
-import React, { useState } from "react";
-import {
-  Grid,
-  Box,
-  Drawer,
-  Typography,
-  FormControl,
-  TextField,
-  FormControlLabel,
-  Button,
-  Checkbox,
-  Container,
-  Divider,InputAdornment,IconButton
-} from "@mui/material";
+"use client"
+import React,{useState} from 'react'
+import { Box,Drawer,Grid,Typography,FormControl,FormControlLabel,Divider,Button,TextField ,InputAdornment,IconButton,Checkbox} from '@mui/material'
 import SearchIcon from "@mui/icons-material/Search";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
-import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-import SearchBar from "../Common/SearchBar";
+
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import { useMediaQuery } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -30,26 +17,8 @@ const StyledTypography1 = styled(Typography)`
   color: ${colors.greyBlue500};
 `;
 
-const StyledButton = styled(Button)`
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 17px;
-  color: ${colors.navyBlue500};
-  padding: 8px 16px;
-  text-transform: none;
-  border-color: ${colors.navyBlue500};
-  &:hover {
-    background-color: ${colors.navyBlue200};
-    color: white;
-    border-color: ${colors.navyBlue200};
-  }
-`;
-const StyledFilterIcon = styled(FilterAltOutlinedIcon)`
- && {
-    font-size: 16px; // Decrease the icon size
-    color: ${colors.navyBlue500}; // Ensure the icon color does not change
-  }
-`;
+
+
 const UnderlinedTypography = styled(Typography)`
   position: relative;
   display: inline-block;
@@ -76,9 +45,7 @@ const StyledViewAllButton = styled(Button)`
   padding: 8px 0;
     min-width: 0; /* Ensure the button doesn't have extra padding */
 
-//   .MuiButton-endIcon {
-//     margin-left: 4px;
-//   }
+
 `;
 
 const StyledButton2 = styled(Button)`
@@ -135,7 +102,7 @@ const CustomDivider = styled(Divider)`
 
 const StyledTextField = styled(TextField)`
   .MuiOutlinedInput-root {
-    border-color: ${colors.navyBlue300}; // Change the border color
+    border-color: ${colors.navyBlue300}; 
     &:hover .MuiOutlinedInput-notchedOutline {
       border-color: ${colors.navyBlue300};
     }
@@ -166,19 +133,7 @@ const CustomSearchIcon = styled(SearchIcon)`
   color: #64748B; // Change the color of the search icon
 `;
 
-const Filters = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [showAllSectors, setShowAllSectors] = useState(false);
-  const [showAllIndustries, setShowAllIndustries] = useState(false);
-  const theme = useTheme();
-
-  const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const toggleDrawer = (open) => () => {
-    setIsOpen(open);
-  };
-
-  const sectors = [
+const sectors = [
     "Advertising",
     "Beverages",
     "Capital Goods",
@@ -201,30 +156,18 @@ const Filters = () => {
     "Event Management",
   ];
 
+
+const Filters = ({isOpen,setIsOpen}) => {
+   
+    const [showAllSectors, setShowAllSectors] = useState(false);
+    const [showAllIndustries, setShowAllIndustries] = useState(false);
+    const toggleDrawer = (open) => () => {
+        setIsOpen(open);
+      };
+      console.log(isOpen,"open")
   return (
-    <Container>
-      {
-        !isSmallerThanSm &&  <Grid container justifyContent="space-between" width="100%" marginTop={5}>
-        <Grid item>
-          <StyledButton
-            variant="outlined"
-            endIcon={<StyledFilterIcon />}
-            size="small"
-            onClick={toggleDrawer(true)}
-          >
-            Filter
-          </StyledButton>
-        </Grid>
-       
-          <Grid item>
-          <SearchBar placeholder={"Search for company, sector, or industry"} />
-        </Grid>
-        
-       
-      </Grid>
-      }
-     
-      <Box>
+   <>
+    <Box>
         <Drawer
           anchor="left"
           open={isOpen}
@@ -356,8 +299,10 @@ const Filters = () => {
           </Box>
         </Drawer>
       </Box>
-    </Container>
-  );
-};
+   
+   </>
+  )
+}
 
-export default Filters;
+export default Filters
+

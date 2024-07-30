@@ -1,13 +1,12 @@
 "use client";
 import styled from "@emotion/styled";
-import { Grid, Typography, Box, Button } from "@mui/material";
+import { Grid, Typography, Box, Button,Container } from "@mui/material";
 import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { colors } from "../Constants/colors";
 import SearchBar from "../Common/SearchBar";
 import CreateBucketModal from "../Modal/CreateBucketModal";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import Snackbar from "../Snackbar/SnackBar"
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -51,21 +50,13 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const DiscoveryHeading = () => {
-  const [open, setOpen] = useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
+const IpoHeader = () => {
+ 
   const theme = useTheme();
   return (
     <>
-      {open ? (
-        <CreateBucketModal open={open} handleClose={handleClose} />
-      ) : (
-        <></>
-      )}
+     <Container>
       <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "28px" }}>
-        <Snackbar/>
         <Grid container alignItems="center">
           <Grid item paddingY={{ xs: 2, sm: 5 }}>
             <Box marginBottom={1}>
@@ -74,18 +65,17 @@ const DiscoveryHeading = () => {
                 marginRight={1}
                 component="span"
               >
-                Stock
+               IPO
               </StyledTypography1>
               <StyledTypography1
                 color={theme.palette.primary.main}
                 component="span"
               >
-                Discovery
+              Zone
               </StyledTypography1>
             </Box>
             <StyledTypography2 color={colors.navyBlue400}>
-              Explore our thematic buckets of stocks for capturing the decadal
-              trends in your personal investment portfolio.
+            We are bringing to you IPO stock articles to make you better equipped with information before making investment decisions
             </StyledTypography2>
           </Grid>
         </Grid>
@@ -96,34 +86,15 @@ const DiscoveryHeading = () => {
           gap={{ xs: 3, sm: 4 }}
           flexWrap="wrap"
         >
-          <Grid
-            item
-            order={{ xs: 2, sm: 1 }}
-            width={{ xs: "100%", sm: "auto" }}
-            sx={{ display: { xs: "flex", sm: "", justifyContent: "center" } }}
-          >
-            <StyledButton
-              onClick={() => {
-                setOpen(true);
-              }}
-              variant="contained"
-              width="170px"
-              startIcon={
-                <AddOutlinedIcon
-                  sx={{ color: colors.navyBlue500, strokeWidth: 10 }}
-                />
-              }
-            >
-              Create Bucket
-            </StyledButton>
-          </Grid>
+        
           <Grid item order={{ xs: 1, sm: 2 }}>
-            <SearchBar placeholder="Search for a bucket"/>
+            <SearchBar placeholder="Search for company, or industry"/>
           </Grid>
         </Grid>
       </Box>
+      </Container>
     </>
   );
 };
 
-export default DiscoveryHeading;
+export default IpoHeader;

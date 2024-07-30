@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { setSnackStatus } from "./snackbarSlice";
 const url = "https://api.sovrenn.com";
 const initialState = {
   importantBuckets: [],
@@ -45,20 +46,29 @@ export const myBucketsApiCall = createAsyncThunk(
 
 export const deleteCustomBucketApi = createAsyncThunk(
   "deleteCustomBucketApi",
-  async (id) => {
+  async (id, { dispatch }) => {
     const response = await fetch(`${url}/my-buckets/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
-    return response.json();
+    const result = await response.json();
+
+    
+    if (response.ok) {
+   
+      dispatch(myBucketsApiCall())
+      dispatch(setSnackStatus({status:true,severity:"error",message:result.message})); 
+    }
+
+    return result;
   }
 );
 
 export const createCustomBucketApi = createAsyncThunk(
   "customBucketApi",
-  async (data) => {
+  async (data, { dispatch }) => {
     const response = await fetch(`${url}/my-buckets/`, {
       method: "POST",
       headers: {
@@ -68,7 +78,16 @@ export const createCustomBucketApi = createAsyncThunk(
       body: JSON.stringify(data),
     });
 
-    return response.json();
+    const result = await response.json();
+
+    
+    if (response.ok) {
+   
+      dispatch(myBucketsApiCall())
+      dispatch(setSnackStatus({status:true,severity:"success",message:result.message})); 
+    }
+
+    return result;
   }
 );
 
