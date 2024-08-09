@@ -1,5 +1,6 @@
-"use client"
-import React, { useState,useEffect } from 'react';
+
+"use client";
+import React, { useState } from 'react';
 import { Box, Grid, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { colors } from '../Constants/colors';
@@ -8,8 +9,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
-import { discoveryTableApi } from '@/app/Redux/Slices/discoverySlice';
 
 const GridContainer = styled(Box)`
   display: grid;
@@ -36,7 +35,6 @@ const StyledTypography1 = styled(Typography)`
 `;
 
 const StyledTypography2 = styled(Typography)`
- 
   font-size: 14px;
   line-height: 17px;
 `;
@@ -45,13 +43,41 @@ const StyledGrid = styled(Box)`
   cursor: pointer;
   background-color: ${colors.navyBlue50};
   border-radius: 3px;
- 
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  position: relative;
+  transition: background-color 0.8s; 
 
   &:hover {
     background-color: ${colors.green50};
+
+    .arrow-icon {
+      transform: rotate(-45deg); 
+      color:white;
+      font-size:14px
+    }
+
+    .icon-button {
+      background-color: ${colors.themeGreen}; 
+         border-color: ${colors.navyBlue900}; 
+    }
   }
 
- 
+  .content {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .bottom-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 11px;
+    margin-top: auto;
+  }
 `;
 
 const StyledTypography3 = styled(Typography)`
@@ -62,7 +88,7 @@ const StyledTypography3 = styled(Typography)`
   color: ${colors.navyBlue900};
   @media (max-width: 639px) {
     font-size: 23px;
-  line-height: 28px;
+    line-height: 28px;
   }
 `;
 
@@ -76,34 +102,34 @@ const HoverBox = styled(Box)`
     background-color: ${colors.neutral900};
 
     .header-text {
-      color: ${colors.white}; /* Change text color on hover */
+      color: ${colors.white}; 
     }
 
     .header-icon {
-      color: ${colors.white}; /* Change arrow color on hover */
+      color: ${colors.white};
     }
   }
 
   &.collapsed {
-    background-color: ${colors.neutral400}; /* Color when collapsed */
+    background-color: ${colors.neutral400}; 
 
     .header-text {
-      color: ${colors.navyBlue900}; /* Text color when collapsed */
+      color: ${colors.navyBlue900}; 
     }
 
     .header-icon {
-      color: ${colors.navyBlue900}; /* Icon color when collapsed */
+      color: ${colors.navyBlue900}; 
     }
 
     &:hover {
       background-color: ${colors.neutral900};
 
       .header-text {
-        color: ${colors.white}; /* Text color on hover when collapsed */
+        color: ${colors.white}; 
       }
 
       .header-icon {
-        color: ${colors.white}; /* Icon color on hover when collapsed */
+        color: ${colors.white}; 
       }
     }
   }
@@ -119,50 +145,23 @@ const CustomIconButton = styled(IconButton)`
   border: 1px solid #B0B7BC;
   border-radius: 50%;
   background-color: ${colors.white};
-  transition: background-color 0.3s, border-color 0.3s, transform 0.3s; /* Add transition for all properties */
-
-  &:hover {
-    background-color: ${colors.themeGreen}; /* Change background color on hover */
-    border-color: ${colors.navyBlue900}; /* Change border color on hover */
-    transform: rotate(-45deg); /* Rotate icon by 45 degrees anticlockwise on hover */
-
-    .arrow-icon {
-      color: ${colors.white}; /* Change arrow color on hover */
-    }
-  }
-`;
-
-const fadeIn = `
-  @keyframes fadeIn {
-    from { opacity: 0; visibility: hidden; }
-    to { opacity: 1; visibility: visible; }
-  }
-`;
-
-const fadeOut = `
-  @keyframes fadeOut {
-    from { opacity: 1; visibility: visible; }
-    to { opacity: 0; visibility: hidden; }
-  }
-`;
-
-const DiscoveryCard = ({ title,data }) => {
-const router=useRouter();
-  const dispatch=useDispatch();
+  transition: background-color 0.5s, border-color 0.5s, transform 0.5s; /* Transition for all properties */
   
+  .arrow-icon {
+    transition: transform 0.8s; /* Transition for rotation */
+  }
+`;
+
+const DiscoveryCard = ({ title, data }) => {
+  const router = useRouter();
   const [isGridOpen, setIsGridOpen] = useState(true); // State to control the collapse
 
   const handleToggle = () => {
     setIsGridOpen(!isGridOpen);
   };
-  const [isClient, setIsClient] = useState(false);
 
- 
- 
-  
   return (
     <>
-   
       <Box marginBottom={6}>
         <HoverBox
           onClick={handleToggle}
@@ -184,59 +183,54 @@ const router=useRouter();
           </Grid>
         </HoverBox>
         {isGridOpen && (
-          <GridContainer className='fade-in'>
-            {
-             data?.map((item, index) => {
-                return (
-                  <StyledGrid key={index}>
-                    <Grid container>
-                      <Grid item paddingY={2} paddingX="20px" width="100%">
-                        <Box
-                          sx={{
-                            borderRadius: '3px',
-                            overflow: 'hidden',
-                          }}
-                        >
-                          <Image
-                            src="/discovery.jpg"
-                            width={274}
-                            height={140}
-                            alt="poster"
-                            layout="responsive"
-                          />
-                        </Box>
-                      </Grid>
-                      <Grid item paddingX="11px">
-                        <StyledTypography1 gutterBottom>
-                         {item?.title}
-                        </StyledTypography1>
-                        <StyledTypography2 color={colors.navyBlue400} sx={{fontWeight:500}} marginBottom={2}>
-                        {item?.description}
-                        </StyledTypography2>
-                      </Grid>
-                      <Grid item width="100%" sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }} paddingX="11px" marginTop={2} marginBottom="12px">
-                        <StyledTypography2 component="span" color={colors.themeGreen} sx={{fontWeight:600}}>{`${item?.total_companies} Companies are in this bucket`}</StyledTypography2>
-                        <CustomIconButton 
-                        onClick={() => 
-                          {
-                            dispatch(discoveryTableApi(item?.slug));
-                            router.push(`/discovery/${item?.slug}`)
-                          }
-                        }
-                        >
-                          <ArrowForwardIcon fontSize='small' className="arrow-icon" sx={{ color: "#3C464F" }} />
-                        </CustomIconButton>
-                      </Grid>
+          <GridContainer>
+            {data?.map((item, index) => (
+              <StyledGrid key={index} onClick={() => router.push(`/discovery/${item?.slug}`)}>
+                <Box className="content">
+                  <Grid container>
+                    <Grid item paddingY={2} paddingX="20px" width="100%">
+                      <Box
+                        sx={{
+                          borderRadius: '3px',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        <Image
+                          src={item.thumb_url}
+                          width={274}
+                          height={140}
+                          alt="poster"
+                          layout="responsive"
+                        />
+                      </Box>
                     </Grid>
-                  </StyledGrid>
-                )
-              })
-            }
+                    <Grid item paddingX="11px">
+                      <StyledTypography1 gutterBottom>
+                        {item?.title}
+                      </StyledTypography1>
+                      <StyledTypography2 color={colors.navyBlue400} sx={{ fontWeight: 500 }} marginBottom={1}>
+                        {item?.description}
+                      </StyledTypography2>
+                    </Grid>
+                  </Grid>
+                  <Box className="bottom-section">
+                    <StyledTypography2 component="span" color={colors.themeGreen} sx={{ fontWeight: 600 }}>
+                      {`${item?.total_companies} Companies are in this bucket`}
+                    </StyledTypography2>
+                    <CustomIconButton className="icon-button"
+                      
+                    >
+                      <ArrowForwardIcon fontSize='small' className="arrow-icon" sx={{ color: "#3C464F" }} />
+                    </CustomIconButton>
+                  </Box>
+                </Box>
+              </StyledGrid>
+            ))}
           </GridContainer>
         )}
       </Box>
     </>
-  )
+  );
 }
 
 export default DiscoveryCard;

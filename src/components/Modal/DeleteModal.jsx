@@ -90,9 +90,10 @@ const StyledBox = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;
+ 
 `;
 
-const DeleteModal = ({ open, setOpen, itemId }) => {
+const DeleteModal = ({ open, setOpen,selectedItemObject }) => {
   const dispatch = useDispatch();
   const handleClose = () => {
     setOpen(false);
@@ -116,7 +117,7 @@ const DeleteModal = ({ open, setOpen, itemId }) => {
       <StyledBox>
         <Box
           bgcolor={colors.white}
-          width={{ xs: "90vw", sm: "65vw", md: "40vw" }}
+          width={{ xs: "90vw", sm: "65vw", md: "600px" }}
           height="auto"
           sx={{
             boxShadow: "0px 12px 24px 0px #0000001A",
@@ -142,7 +143,7 @@ const DeleteModal = ({ open, setOpen, itemId }) => {
           >
             <Grid item paddingX={{ xs: 1, sm: 4 }}>
               <StyledTypography1 color={colors.navyBlue500} textAlign="center">
-                Do you really want to delete “My Bucket list”?
+               {`Do you really want to delete “${selectedItemObject.title}”?`}
               </StyledTypography1>
             </Grid>
             <Grid item width="100%">
@@ -163,7 +164,7 @@ const DeleteModal = ({ open, setOpen, itemId }) => {
                     variant="contained"
                     onClick={() => {
                        
-                      dispatch(deleteCustomBucketApi(itemId));
+                      dispatch(deleteCustomBucketApi(selectedItemObject.id));
                       setOpen(false)
                     }}
                   >

@@ -7,6 +7,9 @@ import CustomerCard from "../Cards/CustomerCard";
 import Marquee from "react-fast-marquee";
 import { customerArray } from "@/utils/Data";
 import { gradientColors } from "../Constants/colors";
+import { customerReviewsApi } from "@/app/Redux/Slices/homeSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -46,6 +49,8 @@ const FadeInBox = styled(Box)(({ theme }) => ({
 }));
 
 const CustomerVerdict = () => {
+  const dispatch=useDispatch();
+  const reviewData = useSelector((store) => store.home.customerReviews);
   const [inView, setInView] = useState(false);
   const ref = useRef(null);
 
@@ -87,6 +92,9 @@ const CustomerVerdict = () => {
       }
     };
   }, []);
+  useEffect(()=>{
+    dispatch(customerReviewsApi())
+  },[])
 
   return (
     <StyledBox>
@@ -126,7 +134,7 @@ const CustomerVerdict = () => {
         sx={{ opacity: inView ? 1 : 0 }}
       >
         <Marquee pauseOnHover={true}>
-          {customerArray.map((element, index) => {
+          {reviewData.map((element, index) => {
             return (
               <Grid
                 item

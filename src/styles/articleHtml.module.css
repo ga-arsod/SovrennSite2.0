@@ -1,0 +1,37 @@
+#MainContainer {
+    font-family: sans-serif;
+}
+#MainContainer>p {
+    text-align: justify;
+    margin: 20px 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height:19px
+}
+
+#MainContainer ul {
+    margin: 20px 0 10px 50px;
+}
+
+#MainContainer li {
+    margin: 5px 0;
+}
+
+#MainContainer table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 30px;
+}
+
+#MainContainer th,
+#MainContainer td {
+    text-align: left;
+    padding: 5px 10px;
+    border-bottom: 1px solid #39566d;
+}
+
+#MainContainer img {
+    max-width: 100%;
+    max-height: 300px;
+}

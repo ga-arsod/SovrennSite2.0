@@ -41,6 +41,13 @@ export const theme=createTheme({
             },
           },
         },
+        MuiCircularProgress: {
+          styleOverrides: {
+            root: {
+              color: '#06A77D',
+            },
+          },
+        },
         MuiTextField: {
           styleOverrides: {
             root: {

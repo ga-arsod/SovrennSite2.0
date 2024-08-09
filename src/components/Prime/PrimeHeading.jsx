@@ -98,10 +98,10 @@ const PrimeHeading = () => {
             <StyledArrowBackIcon 
               sx={{
                 position: 'absolute',
-                left: { xs: 'calc(1% - 20px)', md: 'calc(5% - 20px)' },
+                left: { xs: 'calc(2% - 20px)',sm: 'calc(1% - 20px)', md: 'calc(5% - 20px)' },
                 top: '50%',
                 transform: 'translateY(-50%)',
-                fontSize: {  sm: '24px', md: '20px' },
+                fontSize: {  xs: '20px', sm: '24px' },
                 color: colors.navyBlue500,
               }}
             />
@@ -111,7 +111,7 @@ const PrimeHeading = () => {
             onChange={handleChange}
             aria-label="wrapped label tabs example"
             sx={{
-              marginLeft:{xs:0,sm:'20px',md:0},
+              marginLeft:{xs:'20px',sm:'20px',md:0},
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

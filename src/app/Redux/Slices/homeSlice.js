@@ -5,6 +5,7 @@ const initialState = {
    isLoading:false,
     isError:false,
     customerReviews:[],
+    faqsArray:[],
   };
 
   export const homeUpdatesApi=createAsyncThunk("apidata",async ()=>{
@@ -24,6 +25,14 @@ const initialState = {
   })
     return response.json()
   })
+
+  export const faqApi=createAsyncThunk("faqApi",async ()=>{
+    const response=await fetch(`${url}/common/faqs`,{
+      method: "GET",
+      
+  })
+    return response.json()
+  })
   
   const homeSlice = createSlice({
     name: 'home',
@@ -38,7 +47,8 @@ const initialState = {
            state.articleUpdates=action.payload;
       });
       builder.addCase(homeUpdatesApi.rejected,(state,action)=>{
-        state.isError=true
+        state.isError=true;
+        state.isLoading=false;
       });
 
     },
@@ -52,7 +62,23 @@ const initialState = {
            state.customerReviews=action.payload.data
       });
       builder.addCase(homeUpdatesApi.rejected,(state,action)=>{
-        state.isError=true
+        state.isError=true;
+        state.isLoading=false;
+      });
+
+    },
+
+    extraReducers:(builder)=>{
+      builder.addCase(faqApi.pending,(state,action)=>{
+        state.isLoading=true
+      });
+      builder.addCase(faqApi.fulfilled,(state,action)=>{
+           state.isLoading=false,
+           state.faqsArray=action.payload.data
+      });
+      builder.addCase(faqApi.rejected,(state,action)=>{
+        state.isError=true;
+        state.isLoading=false;
       });
 
     }

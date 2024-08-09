@@ -70,7 +70,7 @@ const Auth = () => {
             paddingY: "14vh",
           }}
         >
-        {isSignIn ? <Login isSignIn={isSignIn} setIsSignIn={setIsSignIn}/> :<SignUp isSignIn={isSignIn} setIsSignIn={setIsSignIn}/>}
+        {isSignIn ? <Login component="login"/> :<SignUp isSignIn={isSignIn} setIsSignIn={setIsSignIn}/>}
         </Grid>
       </Grid>
     </Box>

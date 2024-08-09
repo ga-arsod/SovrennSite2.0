@@ -204,7 +204,7 @@ const IpoTableData = () => {
                   </StyledBodyTableCell>
                   <StyledBodyTableCell>
                     <StyledButton variant="outlined" size="small">
-                      Read Summary
+                      Read
                     </StyledButton>
                   </StyledBodyTableCell>
                 </TableRow>
