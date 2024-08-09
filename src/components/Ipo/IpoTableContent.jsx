@@ -2,7 +2,8 @@
 import React from "react";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-
+import IpoCard from "../Cards/IpoCard";
+import IpoTableData from "../Ipo/IpoTableData"
 
 
 const IpoTableContent = () => {
@@ -12,7 +13,11 @@ const IpoTableContent = () => {
   
   return (
     <>
-     
+      {isSmallerThanMd ? (
+        <IpoCard />
+      ) : (
+        <IpoTableData  />
+      )}
     </>
   );
 };

@@ -4,7 +4,7 @@ import LiveSessionSteps from "@/components/Education/LiveSessionSteps";
 import MainHeading from "@/components/Education/MainHeading";
 import TutorialSection from "@/components/Education/TutorialSection";
 import Faq from "@/components/Home/Faq";
-import Footer from "@/components/Home/Footer";
+
 import FoundersInfo from "@/components/Home/FoundersInfo";
 import LanguageModal from "@/components/Modal/LanguageModal";
 import { useDispatch } from "react-redux";
@@ -22,7 +22,7 @@ const Education=()=>{
        <LiveSessionSteps/>
        <Faq/>
        <LiveSession button={true}/>
-       <Footer/>
+      
       
         </>
     )

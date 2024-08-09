@@ -10,7 +10,7 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    domains: ['lh3.googleusercontent.com'], // Add the hostname here
+    domains: ['lh3.googleusercontent.com','sovrenn-website-images.s3.ap-south-1.amazonaws.com'],
   },
 };
 

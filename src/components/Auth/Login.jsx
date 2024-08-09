@@ -25,9 +25,9 @@ import { doSocialLogin } from "@/app/actions";
 
 const StyledInputLabel = styled(InputLabel)`
   font-weight: 400;
-  font-size: 17px;
-  line-height: 21px;
-  color: #010c15;
+  font-size: 18px;
+  line-height: 21.5px;
+  color: ${colors.navyBlue800};
 `;
 const StyledTypography = styled(Typography)`
   font-weight: 600;
@@ -85,7 +85,7 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const URL = "https://api.sovrenn.com";
-const Login = ({ isSignIn, setIsSignIn }) => {
+const Login = ({component}) => {
   const dispatch = useDispatch();
  
   const [values, setValues] = useState({
@@ -163,10 +163,10 @@ const Login = ({ isSignIn, setIsSignIn }) => {
     <Grid
       container
       display="flex"
-      width={{ xs: "90%", sm: "50%", lg: "70%" }}
+      width={{ xs: "90%", sm: component==="login" ?'50%':'80%', lg: component==="login" ?'70%':'80%' }}
       justifyContent="center"
       alignItems="center"
-      marginTop={6}
+      marginTop={component==="login" ?'6':'0'}
     >
       <Grid
         item
@@ -212,7 +212,7 @@ const Login = ({ isSignIn, setIsSignIn }) => {
               <StyledInputLabel htmlFor="password">Password</StyledInputLabel>
 
               <CustomTextField
-                sx={{ marginBottom: "16px" }}
+              
                 id="password"
                 required
                 type={values.showPassword ? "text" : "password"}
@@ -243,7 +243,7 @@ const Login = ({ isSignIn, setIsSignIn }) => {
                 }}
               />
 
-              <Typography textAlign="right">
+              <Typography textAlign="right" marginBottom={2}>
                 <Button
                   disableElevation
                   sx={{
@@ -279,8 +279,8 @@ const Login = ({ isSignIn, setIsSignIn }) => {
         </form>
       </Grid>
       <Grid item width="100%">
-        <Grid container width="100%" rowSpacing={2}>
-          <Grid item width="100%">
+        <Grid container width="100%" >
+          <Grid item width="100%" marginY={2}>
             <Typography
               color="#98A3B4"
               textAlign="center"
@@ -313,7 +313,7 @@ const Login = ({ isSignIn, setIsSignIn }) => {
             </StyledButton2>
             </form>
           </Grid>
-          <Grid item width="100%">
+          <Grid item width="100%" marginTop={3}>
             <Typography textAlign="center" sx={{ cursor: "pointer" }}>
               <StyledTypography component="span" color="#121E32">
                 Don’t have an account?

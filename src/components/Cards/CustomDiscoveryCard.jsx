@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { Box, Grid, IconButton, Typography } from "@mui/material";
 import Image from "next/image";
@@ -9,7 +10,7 @@ import { colors } from "../Constants/colors";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import {  discoveryTableApi } from "../../app/Redux/Slices/discoverySlice";
+import { discoveryTableApi } from "../../app/Redux/Slices/discoverySlice";
 import DeleteModal from "../../components/Modal/DeleteModal";
 
 const GridContainer = styled(Box)`
@@ -45,9 +46,20 @@ const StyledGrid = styled(Box)`
   cursor: pointer;
   background-color: ${colors.navyBlue50};
   border-radius: 3px;
+  transition: background-color 0.3s;
 
   &:hover {
     background-color: ${colors.green50};
+
+    .arrow-icon {
+      transform: rotate(-45deg); 
+      color: ${colors.white}; 
+    }
+
+    .icon-button {
+      background-color: ${colors.themeGreen}; 
+      border-color: ${colors.navyBlue900}; 
+    }
   }
 `;
 
@@ -116,16 +128,10 @@ const CustomIconButton = styled(IconButton)`
   border: 1px solid #b0b7bc;
   border-radius: 50%;
   background-color: ${colors.white};
-  transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
-
-  &:hover {
-    background-color: ${colors.themeGreen};
-    border-color: ${colors.navyBlue900};
-    transform: rotate(-45deg);
-
-    .arrow-icon {
-      color: ${colors.white};
-    }
+  transition: background-color 0.8s, border-color 0.8s, transform 0.8s; 
+  
+  .arrow-icon {
+    transition: transform 0.3s, color 0.3s; 
   }
 `;
 
@@ -133,16 +139,23 @@ const CustomDiscoveryCard = ({ title, data }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isGridOpen, setIsGridOpen] = useState(true);
-  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedItemObject, setSelectedItemObject] = useState({
+    id: null,
+    title: "",
+  });
   const dispatch = useDispatch();
 
   const handleToggle = () => {
     setIsGridOpen(!isGridOpen);
   };
 
-  const handleDeleteClick = (id) => {
-    setSelectedItemId(id); 
-    setOpen(true); 
+  const handleDeleteClick = (id, title) => {
+    setSelectedItemObject({
+      ...selectedItemObject,
+      id: id,
+      title: title,
+    });
+    setOpen(true);
   };
 
   return (
@@ -151,7 +164,7 @@ const CustomDiscoveryCard = ({ title, data }) => {
         <DeleteModal
           open={open}
           setOpen={setOpen}
-          itemId={selectedItemId} 
+          selectedItemObject={selectedItemObject}
         />
       )}
       <Box marginBottom={6}>
@@ -194,9 +207,11 @@ const CustomDiscoveryCard = ({ title, data }) => {
           <GridContainer className="fade-in">
             {data.map((item, index) => {
               return (
-                <StyledGrid key={index}>
+                <StyledGrid key={index}  onClick={() => {
+                  dispatch(discoveryTableApi(item.slug));
+                }}>
                   <Box
-                    onClick={() => handleDeleteClick(item._id)} 
+                    onClick={() => handleDeleteClick(item._id, item.title)}
                     sx={{
                       display: "flex",
                       justifyContent: "flex-end",
@@ -264,11 +279,11 @@ const CustomDiscoveryCard = ({ title, data }) => {
                         component="span"
                         color={colors.themeGreen}
                         sx={{ fontWeight: 600 }}
-                      >{`${item.total_companies} Companies are in this bucket`}</StyledTypography2>
-                      <CustomIconButton
-                        onClick={() => {
-                          dispatch(discoveryTableApi(item.slug));
-                        }}
+                      >
+                        {`${item.total_companies} Companies are in this bucket`}
+                      </StyledTypography2>
+                      <CustomIconButton className="icon-button"
+                       
                       >
                         <ArrowForwardIcon
                           fontSize="small"

@@ -17,8 +17,9 @@ import { colors } from "../Constants/colors";
 import Pagination from "../Pagination/Pagination";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import Link from "next/link";
 
-// Styled Components
+
 const StyledTableCell = styled(TableCell)`
   font-weight: 600;
   font-size: 16px;
@@ -91,7 +92,7 @@ const StyledTableRow = styled(TableRow)`
 `;
 
 const StyledBodyTableCell = styled(TableCell)`
-  font-weight: 600;
+
   font-size: 16px;
   line-height: 19px;
   padding: 16px 24px;
@@ -112,7 +113,7 @@ const StyledArrowUpwardIcon = styled(ArrowUpwardIcon)`
 
 const headerData = ["Company Name", "Market Cap(in Cr)", "TTM PE", "Date of Info", "Remarks"];
 
-export default function DiscoveryTable({ tableData }) {
+export default function DiscoveryTable({ tableData,id }) {
   const [hoveredRow, setHoveredRow] = useState(null);
 
   const totalPages = 20;
@@ -168,20 +169,21 @@ export default function DiscoveryTable({ tableData }) {
                   onMouseEnter={() => handleMouseEnter(index)}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <StyledBodyTableCell sx={{ color: colors.navyBlue500 }} align="left">
-                    {item?.company?.company_name}
+                  <StyledBodyTableCell sx={{ color: colors.navyBlue500 ,fontWeight:'600'}} align="left">
+                    {item?.company_name}
                   </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                    {item?.company?.market_cap}
+                  <StyledBodyTableCell sx={{ color: colors.neutral900 ,fontWeight:'400' }}>
+                    {item?.market_cap}
                   </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                    {item?.company?.ttm_pe}
+                  <StyledBodyTableCell sx={{ color: colors.neutral900,fontWeight:'400' }}>
+                    {item?.ttm_pe}
                   </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
+                  <StyledBodyTableCell sx={{ color: colors.neutral900 ,fontWeight:'400'}}>
                     {item?.date}
                   </StyledBodyTableCell>
                   <StyledBodyTableCell sx={{ color: colors.neutral900, textAlign: 'justify', position: 'relative' }}>
                     {item?.remark}
+                    <Link target="_blank" href={`/discovery/${id}/${item?.slug}`}>
                     <SlideBox hovered={hoveredRow === index}>
                       <Typography sx={{ fontWeight: 600, fontSize: '14px', lineHeight: '17px', marginRight: '8px' }}>
                         Read More
@@ -190,6 +192,7 @@ export default function DiscoveryTable({ tableData }) {
                         <ArrowForwardIosIcon fontSize='small' sx={{ color: colors.themeGreen, fontSize: '12px' }} />
                       </CustomIconButton>
                     </SlideBox>
+                    </Link>
                   </StyledBodyTableCell>
                 </StyledTableRow>
               ))}

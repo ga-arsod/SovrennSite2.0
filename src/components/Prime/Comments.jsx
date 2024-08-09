@@ -110,7 +110,7 @@ const CustomMenuItem = styled(MenuItem)`
 const CommentDrawer = () => {
   const [newComment, setNewComment] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleAddComment = () => {
     setNewComment("");

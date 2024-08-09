@@ -53,7 +53,7 @@ const PrimeCard = () => {
             sm: "repeat(2, minmax(0, 1fr))",
           },
           gap: 2,
-          padding: { xs: 1 }, // Adds padding to the grid container
+          padding: { xs: 1 }, 
         }}
       >
         {Array.from("abcderhjkjkk").map((item, index) => (

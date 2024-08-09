@@ -14,6 +14,9 @@ import { colors } from "../Constants/colors";
 import { usePathname } from "next/navigation";
 import { educationFaqArray, faqDescription } from "@/utils/Data";
 import { Fade } from "@mui/material";
+import { faqApi } from "@/app/Redux/Slices/homeSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -75,24 +78,10 @@ const FadeInBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-const faqs = [
-  {
-    question: "What will I get in the 2 months trial plan?",
-    answer:
-      'Lorem Ipsum, sometimes referred to as lipsum", is the placeholder text used in design when creating content.',
-  },
-  {
-    question: "What will I get in the 2 months trial plan?",
-    answer:
-      'Lorem Ipsum, sometimes referred to as "lipsum", is the placeholder text used in design when creating content.',
-  },
-  {
-    question: "What will I get in the 2 months trial plan?",
-    answer:
-      'Lorem Ipsum, sometimes referred to as "lipsum", is the placeholder text used in design when creating content.',
-  },
-];
+
 const Faq = () => {
+  const dispatch=useDispatch();
+  const faqData = useSelector((store) => store.home.faqsArray);
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(null);
 
@@ -139,7 +128,9 @@ const Faq = () => {
       }
     };
   }, []);
-
+useEffect(()=>{
+  dispatch(faqApi())
+},[])
   return (
     <Box
       width="100%"
@@ -153,6 +144,7 @@ const Faq = () => {
         container
         paddingX={2}
         spacing={1}
+       
         direction="column"
         justifyContent="center"
         alignItems="center"
@@ -185,7 +177,7 @@ const Faq = () => {
           </FadeInBox>
         </Grid>
 
-        <Grid item paddingBottom={4}>
+        <Grid item paddingBottom={4}  width={{xs:"100%",md:"900px"}}>
           <Fade in={inView} timeout={1000}>
             <Grid
               container
@@ -195,7 +187,7 @@ const Faq = () => {
               sx={{ opacity: inView ? 1 : 0 }}
             >
               <Grid item paddingX={{ xs: 2 }}>
-                {(pathname === "/" ? faqs : educationFaqArray).map(
+                {(pathname === "/" ? faqData : educationFaqArray).map(
                   (faq, index) => (
                     <>
                       <StyledAccordion
@@ -219,7 +211,7 @@ const Faq = () => {
                             }}
                           >
                             {" "}
-                            {faq.question}
+                            {faq.que}
                           </Typography>
                         </StyledAccordionSummary>
                         <StyledAccordionDetails>
@@ -231,13 +223,13 @@ const Faq = () => {
                               lineHeight: "24px",
                             }}
                           >
-                            {faq.answer}
+                            {faq.ans}
                           </Typography>
                         </StyledAccordionDetails>
                       </StyledAccordion>
                       {index !==
                         (pathname === "/"
-                          ? faqs.length
+                          ? faqData.length
                           : educationFaqArray.length) -
                           1 && <HorizontalLine />}
                     </>

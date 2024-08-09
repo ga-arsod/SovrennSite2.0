@@ -13,7 +13,7 @@ const Prime = () => {
    <PrimeFilters/>
    <PrimeTableContent/>
    {/* <Articles/> */}
-   <Footer/>
+  
 
    </>
   )

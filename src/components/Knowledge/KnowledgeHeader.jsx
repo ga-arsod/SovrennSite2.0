@@ -1,12 +1,10 @@
 "use client";
 import styled from "@emotion/styled";
-import { Grid, Typography, Box, Button,Container } from "@mui/material";
-import React, { useState } from "react";
+import { Grid, Typography, Box, Button, Container } from "@mui/material";
+import React from "react";
 import { useTheme } from "@mui/material/styles";
 import { colors } from "../Constants/colors";
-import SearchBar from "../Common/SearchBar";
-
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'; 
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -27,7 +25,7 @@ const StyledTypography2 = styled(Typography)`
   letter-spacing: 0.02em;
   @media (max-width: 639px) {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 600;
     line-height: 17px;
     letter-spacing: 0.02em;
   }
@@ -50,19 +48,22 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const IpoHeader = () => {
- 
+const KnowledgeHeader = () => {
   const theme = useTheme();
   return (
-    <>
-     <Container>
+    <Container>
       <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "28px" }}>
         <Grid container alignItems="center">
-          <Grid item paddingY={{ xs: 2, sm: 5 }}>
+          <Grid item paddingTop={{ xs: 2, sm: 5 }}>
             <Box marginBottom={1}>
-            <Box display="flex" alignItems="center">
-                <Box display={{ xs: 'block', sm: 'block', md: 'none' }} marginRight={1}>
-                  <ArrowBackIcon sx={{fontSize:{xs:'14px',sm:'24px'}}} />
+              <Box display="flex" alignItems="center">
+                <Box
+                  display={{ xs: "block", sm: "block", md: "none" }}
+                  marginRight={1}
+                >
+                  <ArrowBackIcon
+                    sx={{ fontSize: { xs: "16px", sm: "24px" } }}
+                  />
                 </Box>
                 <StyledTypography1
                   color={colors.navyBlue500}
@@ -78,28 +79,16 @@ const IpoHeader = () => {
                   Knowledge
                 </StyledTypography1>
               </Box>
+              <StyledTypography2 color={colors.navyBlue400}>
+                Explore our article that enables you to gain more knowledge
+                about the finance world.
+              </StyledTypography2>
             </Box>
-            <StyledTypography2 color={colors.navyBlue400}>
-            We are bringing to you IPO stock articles to make you better equipped with information before making investment decisions
-            </StyledTypography2>
-          </Grid>
-        </Grid>
-        <Grid
-          container
-          justifyContent="flex-end"
-          width="100%"
-          gap={{ xs: 3, sm: 4 }}
-          flexWrap="wrap"
-        >
-        
-          <Grid item order={{ xs: 1, sm: 2 }}>
-            <SearchBar placeholder="Search for company, or industry"/>
           </Grid>
         </Grid>
       </Box>
-      </Container>
-    </>
+    </Container>
   );
 };
 
-export default IpoHeader;
+export default KnowledgeHeader;

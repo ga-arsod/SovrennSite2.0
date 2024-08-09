@@ -90,7 +90,7 @@ const StyledFormControlLabel = styled(FormControlLabel)`
 `;
 const CustomRadioGroup = styled(RadioGroup)`
   & .MuiFormControlLabel-root {
-    margin-bottom: -8px; /* Adjust this value to decrease the gap */
+    margin-bottom: -8px; 
     &:last-child {
       margin-bottom: 10px;
     }
@@ -105,12 +105,12 @@ const StyledRadio = styled(Radio)`
   }
 
   & .MuiSvgIcon-root {
-    font-size: 22px; /* Adjust the size of the radio button circle */
-    color: ${colors.green50}; /* Default color of the radio button */
+    font-size: 22px; 
+    color: ${colors.green50}; 
   }
 
   &:hover .MuiSvgIcon-root {
-    color: ${colors.themeGreen}; /* Change color on hover */
+    color: ${colors.themeGreen}; 
   }
 `;
 const SlotBookingModal=({open,handleClose})=>{
@@ -149,14 +149,14 @@ const SlotBookingModal=({open,handleClose})=>{
         <StyledBox>
         <Box
          bgcolor={colors.white}
-         width={{ xs: "90vw", sm: "65vw", md: "45vw" }}
+         width={{ xs: "90vw", sm: "65vw", md: "600px" }}
          height="auto"
          sx={{
            boxShadow: "0px 12px 24px 0px #0000001A",
            position: "relative",
            borderRadius: "8px",
-           border: 'none', // Ensure no border
-           outline: 'none', // Ensure no outline
+           border: 'none', 
+           outline: 'none', 
          }}
         >
             <IconButton

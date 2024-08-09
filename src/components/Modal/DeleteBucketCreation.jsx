@@ -116,7 +116,7 @@ const DeleteBucketCreation = ({ isOpen, setIsOpen ,handleClose}) => {
       <StyledBox>
         <Box
           bgcolor={colors.white}
-          width={{ xs: "90vw", sm: "65vw", md: "40vw" }}
+          width={{ xs: "90vw", sm: "65vw", md: "600px" }}
           height="auto"
           sx={{
             boxShadow: "0px 12px 24px 0px #0000001A",

@@ -15,7 +15,7 @@ const CustomSnackbar = () => {
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
     
       style={{ marginTop: '60px' }} // Additional space from the top
-      autoHideDuration={5000}
+      autoHideDuration={2000}
     >
       <Alert
         severity={severity}
