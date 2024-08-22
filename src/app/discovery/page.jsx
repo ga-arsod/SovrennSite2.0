@@ -11,10 +11,10 @@ import {
   myBucketsApiCall,
   bucketsApiCall,
 } from "../Redux/Slices/discoverySlice";
-import { useSelectedLayoutSegment } from "next/navigation";
+
 import DiscoveryCard from "@/components/Cards/DiscoveryCard";
 import CustomDiscoveryCard from "@/components/Cards/CustomDiscoveryCard";
-import DiscoveryFilter from "@/components/Discovery/DiscoveryFilter"
+import DiscoveryFilter from "@/components/Discovery/DiscoveryFilter";
 
 const Discovery = () => {
   const { isAllBucketsLoading, isMyBucketsLoading } = useSelector(
@@ -56,22 +56,32 @@ const Discovery = () => {
   }
   return (
     <>
-     <Head>
-                <title>Investors are Going Crazy Over this Groundbreaking Stock Discovery</title>
-                <meta name="description" content="Stock Discovery! Investors can't get enough of this groundbreaking opportunity. Find out why everyone is going crazy over it today.!" />
+      <Head>
+        <title>
+          Investors are Going Crazy Over this Groundbreaking Stock Discovery
+        </title>
+        <meta
+          name="description"
+          content="Stock Discovery! Investors can't get enough of this groundbreaking opportunity. Find out why everyone is going crazy over it today.!"
+        />
 
-                <meta property="og:title" content="Investors are Going Crazy Over this Groundbreaking Stock Discovery" />
-                <meta property="og:description" content="Stock Discovery! Investors can't get enough of this groundbreaking opportunity. Find out why everyone is going crazy over it today." />
-                <link
-                    rel="canonical"
-                    href={`https://www.sovrenn.com/discovery`}
-                    key="canonical"
-                />
-
-            </Head>
+        <meta
+          property="og:title"
+          content="Investors are Going Crazy Over this Groundbreaking Stock Discovery"
+        />
+        <meta
+          property="og:description"
+          content="Stock Discovery! Investors can't get enough of this groundbreaking opportunity. Find out why everyone is going crazy over it today."
+        />
+        <link
+          rel="canonical"
+          href={`https://www.sovrenn.com/discovery`}
+          key="canonical"
+        />
+      </Head>
       <Container>
         <DiscoveryHeading />
-        <DiscoveryFilter/>
+        <DiscoveryFilter />
         <CustomDiscoveryCard title="My Buckets" data={myBuckets} />
         <DiscoveryCard title="Functional" data={functional} />
         <DiscoveryCard title="Sectoral" data={sectoral} />

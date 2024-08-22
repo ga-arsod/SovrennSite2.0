@@ -18,21 +18,21 @@ import styled from "@emotion/styled";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useRouter } from 'next/navigation';
 
-// Define styled components for table cells
+
 const StyledTableCell = styled(TableCell)`
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
   color: ${colors.themeGreen};
-  position: relative; // Set position relative for positioning the icon
-  padding: 24px 16px 12px 16px; // Adjust padding for alignment
-  cursor: pointer; // Add cursor pointer to indicate it's clickable
+  position: relative; 
+  padding: 24px 16px 12px 16px; 
+  cursor: pointer; 
 
   &:hover {
-    color: ${colors.navyBlue500}; // Change to the desired hover color
+    color: ${colors.navyBlue500}; 
   }
   &:hover .arrow-icon {
-    opacity: 1; // Show icon on hover
+    opacity: 1; 
   }
 `;
 
@@ -55,8 +55,8 @@ const StyledArrowUpwardIcon = styled(ArrowUpwardIcon)`
 `;
 const StyledArrowForwardIosIcon = styled(ArrowForwardIosIcon)`
  && {
-    font-size: 12px; // Decrease the icon size
-    color: ${colors.navyBlue500}; // Ensure the icon color does not change
+    font-size: 12px; 
+    color: ${colors.navyBlue500}; 
   }
 `;
 
@@ -65,7 +65,7 @@ const StyledBodyTableCell = styled(TableCell)`
   font-size: 16px;
   line-height: 19px;
   &:hover {
-    color: ${colors.themeGreen}; // Change to the desired hover color
+    color: ${colors.themeGreen}; 
   }
 `;
 

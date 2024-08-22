@@ -4,7 +4,7 @@ import { Box, Typography, Divider, Grid, Chip } from "@mui/material";
 import { CalendarToday } from "@mui/icons-material";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import Comments from "../../../../components/Prime/Comments";
-import Snackbar from "../../../../components/Snackbar/SnackBar";
+
 import Head from "next/head";
 import Spinner from "../../../../components/Common/Spinner";
 import { discoveryArticleApi } from "../../../Redux/Slices/discoverySlice";
@@ -18,8 +18,9 @@ import Link from "next/link";
 import { colors } from "@/components/Constants/colors";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
-import BlurredContent from "../../../../components/Common/BlurredContent";
 import Disclaimer from "../../../../components/Common/Disclaimer"
+import {primeArticleDisclaimer} from "@/utils/Data"
+
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
   font-weight: 600;
@@ -92,7 +93,7 @@ const CustomDivider2 = styled(Divider)`
   border-bottom-width: 0px;
   height: 1px;
 `;
-
+ 
 const DiscoveryArticle = () => {
   const dispatch = useDispatch();
   const { id, slug } = useParams();
@@ -394,7 +395,7 @@ const DiscoveryArticle = () => {
           <KeyboardArrowUpIcon />
         </Box>
       </Box>
-      <Disclaimer/>
+      <Disclaimer margin="4" text={primeArticleDisclaimer} width="915px"/>
       <Comments />
     </>
   );
