@@ -156,7 +156,7 @@ const ScrollableBox = styled(Box)`
 
   /* Custom scrollbar styles */
   &::-webkit-scrollbar {
-    width: 4px; /* Very thin width of the scrollbar */
+    width: 4px; 
   }
 
   &::-webkit-scrollbar-thumb {
@@ -393,17 +393,17 @@ const Filters = ({ isOpen, setIsOpen }) => {
            <StyledButton
             fullWidth
             variant="outlined"
-            onClose={toggleDrawer(false)}
+            onClick={toggleDrawer(false)}
           >
          Cancel
           </StyledButton>
 
            </Grid>
-           <Grid item xs={12}>
+           <Grid item xs={6}>
            <StyledButton3
             fullWidth
             variant="contained"
-            disabled={isApplyButtonDisabled} // Disable button based on state
+            disabled={isApplyButtonDisabled} 
           >
             Apply Filter
           </StyledButton3>

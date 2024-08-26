@@ -227,7 +227,7 @@ const part2 = title.substring(lastSpaceIndex + 1);
                     inputProps={{ "aria-label": "Without label" }}
                     IconComponent={ExpandMoreIcon}
                   >
-                    {filtersData[0]?.options.map((element, index) => (
+                    {filtersData[0]?.options?.map((element, index) => (
                       <StyledMenuItem
                         key={index}
                         value={index === 0 ? "all" : index === 1 ? "$lte" : "$gt"}
@@ -249,7 +249,7 @@ const part2 = title.substring(lastSpaceIndex + 1);
                     inputProps={{ "aria-label": "Without label" }}
                     IconComponent={ExpandMoreIcon}
                   >
-                    {filtersData[1]?.options.map((element, index) => (
+                    {filtersData[1]?.options?.map((element, index) => (
                       <StyledMenuItem
                         key={index}
                         value={index === 0 ? "all" : index === 1 ? "$lte" : "$gt"}
@@ -271,7 +271,7 @@ const part2 = title.substring(lastSpaceIndex + 1);
                     inputProps={{ "aria-label": "Without label" }}
                     IconComponent={ExpandMoreIcon}
                   >
-                    {filtersData[2]?.options.map((element, index) => (
+                    {filtersData[2]?.options?.map((element, index) => (
                       <StyledMenuItem
                         key={index}
                         value={index === 0 ? "all" : index === 1 ? "SME" : "Non SME"}
