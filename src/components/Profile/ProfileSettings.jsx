@@ -91,14 +91,14 @@ const ProfileSettings=()=> {
         width: '100%',
         maxWidth: { xs: '100%', md: '822px' },
         margin: 'auto',
-        marginTop: '90px',
+        marginTop: {xs:"24px",sm:"90px"},
         borderRadius: '8px',
         padding: '24px',
         backgroundColor: '#fff',
       }}
     >
       {/* Password Section */}
-      <Box sx={{ marginBottom: '24px' }}>
+      <Box sx={{ marginBottom: {xs:"12px",sm:"24px"} }}>
         <StyledInputLabel htmlFor="password">Password</StyledInputLabel>
         <StyledTextField
       onClick={()=>{setIsOpen(true)}}
@@ -122,6 +122,8 @@ const ProfileSettings=()=> {
           borderTop: '1px solid #e0e0e0',
           paddingTop: '24px',
           display: 'flex',
+          flexDirection:{xs:"column",sm:"row"},
+          gap:4,
           justifyContent: 'space-between',
         }}
       >

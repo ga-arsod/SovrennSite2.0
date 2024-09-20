@@ -42,7 +42,7 @@ const PrimeFilters = () => {
   };
 
   return (
-    <Container>
+  <>
       {!isSmallerThanSm && (
         <Grid
           container
@@ -70,7 +70,7 @@ const PrimeFilters = () => {
       )}
 
       <Filters isOpen={isOpen} setIsOpen={setIsOpen} />
-    </Container>
+      </>
   );
 };
 

@@ -60,7 +60,7 @@ const DiscoveryTableCard = ({ tableData }) => {
           gap: 2,
         }}
       >
-        {tableData?.map((item, index) => (
+        {tableData?.companies?.map((item, index) => (
           <Box
             key={index}
             sx={{
@@ -70,7 +70,7 @@ const DiscoveryTableCard = ({ tableData }) => {
               width: "100%",
               padding: 2,
               boxSizing: "border-box",
-              margin: "auto", // Center the items horizontally
+              margin: "auto", 
             }}
           >
             <StyledTypography1

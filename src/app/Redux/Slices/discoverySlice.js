@@ -6,10 +6,18 @@ const initialState = {
   isAllBucketsLoading: false,
   isMyBucketsLoading: false,
   isTableDataLoading: false,
+  isNestedBucketTableDataLoading:false,
   isArticleDataLoading: false,
+  isParentsBucketLoading:false,
+ 
   isError: false,
   myBuckets: [],
+  parentsBucket:[],
+  isBookmarked: false,
+  comments: null,
+  otherBucketsCompanyPresent: [],
   discoveryTableBucket: [],
+  nestedBucketDiscoveryTableBucket:[],
   title: "",
   filtersData: null,
   articleData: {
@@ -21,7 +29,8 @@ const initialState = {
     share_price: "",
     sector: "",
     sectoral_pe_range: "",
-    pe_remark: ""
+    pe_remark: "",
+    company_id: "",
   },
 };
 
@@ -118,13 +127,70 @@ export const createCustomBucketApi = createAsyncThunk(
 
 export const discoveryTableApi = createAsyncThunk(
   "discoveryTableApi",
-  async ({ id, body }) => {
-    const response = await fetch(`${url}/buckets/companies/${id}`, {
-      method: "POST",
+  async ({ id, body, page }) => {
+    const response = await fetch(
+      `${url}/buckets/companies/${id}?page=${page}&page_size=200&sort_by=company_name&sort_order=inc&platform=website`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    return response.json();
+  }
+);
+
+export const nestedBucketDiscoveryTableApi = createAsyncThunk(
+  "nestedBucketDiscoveryTableApi",
+  async ({ id, body, page }) => {
+    const response = await fetch(
+      `${url}/child-buckets/companies/${id}?page=${page}&page_size=200&sort_by=company_name&sort_order=inc&platform=website`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    return response.json();
+  }
+);
+
+export const myBucketDiscoveryTableApi = createAsyncThunk(
+  "myBucketDiscoveryTableApi",
+  async ({ id, body, page }) => {
+    const response = await fetch(
+      `${url}/my-buckets/companies/${id}?page=${page}&page_size=200&sort_by=company_name&sort_order=inc&platform=website`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    return response.json();
+  }
+);
+
+export const otherBucketsCompanyPresentApi = createAsyncThunk(
+  "otherBucketsCompanyPresentApi",
+  async ({ company_id }) => {
+    const response = await fetch(`${url}/buckets/present/${company_id}`, {
+      method: "GET",
       headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
     });
 
     return response.json();
@@ -140,12 +206,244 @@ export const discoveryArticleApi = createAsyncThunk(
         Authorization: "Bearer " + localStorage.getItem("token"),
         "Content-Type": "application/json",
       },
-     
     });
 
     return response.json();
   }
 );
+
+export const isBookmarkedApi = createAsyncThunk(
+  "isBookmarkedApi",
+  async ({ company_id }) => {
+    const response = await fetch(
+      `${url}/user/available-in-watchlist/${company_id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.json();
+  }
+);
+
+export const addToWatchlistApi = createAsyncThunk(
+  "addToWatchlistApi",
+  async (company_id, { dispatch }) => {
+    const response = await fetch(`${url}/user/add-to-watchlist`, {
+      method: "PATCH",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        company_id: company_id,
+        uptrend_potential: 0,
+        expected_price_after_1year: 0,
+      }),
+    });
+    const result = await response.json();
+
+    if (response.ok) {
+      dispatch(
+        setSnackStatus({
+          status: true,
+          severity: "success",
+          message: "The company added to your watchlist successfully!",
+        })
+      );
+    }
+
+    return result;
+  }
+);
+
+export const removeFromWatchlistApi = createAsyncThunk(
+  "removeFromWatchlistApi",
+  async (company_id, { dispatch }) => {
+    const response = await fetch(
+      `${url}/user/remove-from-watchlist/${company_id}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const result = await response.json();
+
+    if (response.ok) {
+      dispatch(
+        setSnackStatus({
+          status: true,
+          severity: "warning",
+          message: "The company removed from your watchlist successfully!",
+        })
+      );
+    }
+
+    return result;
+  }
+);
+
+
+
+export const getCommentsApi = createAsyncThunk(
+  "getCommentsApi",
+  async ({ company_id }) => {
+    const response = await fetch(
+      `${url}/comments/discovery/${company_id}?page=1&page_size=100&sort_by=latest`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.json();
+  }
+);
+
+export const postCommentApi = createAsyncThunk("postCommentApi", async ({comment,company_id,user_id},{dispatch}) => {
+  const response = await fetch(`${url}/comments`, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(
+      {
+        "comment": comment,
+      "company_id": company_id,
+      "user_id":user_id
+}
+    ),
+  });
+
+  const result = await response.json();
+
+  if (response.ok) {
+    dispatch(getCommentsApi({company_id:company_id}));
+    dispatch(setSnackStatus({
+      status: true,
+       severity: "success",
+      message: "Added new comment",
+     
+    }));
+  };
+
+  return result;
+});
+
+export const commentLikeApi = createAsyncThunk(
+  "commentLikeApi",
+  async ({ company_id, comment_id }, { dispatch }) => {
+    const response = await fetch(
+      `${url}/comments/${comment_id}/like`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: "",
+      }
+    );
+    const result = await response.json();
+
+    if (response.ok) {
+      dispatch(getCommentsApi({company_id}));
+      
+    }
+
+    return result;
+  }
+);
+
+export const commentunLikeApi = createAsyncThunk(
+  "commentunLikeApi",
+  async ({ company_id, comment_id }, { dispatch }) => {
+    const response = await fetch(
+      `${url}/comments/${comment_id}/like`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "text/plain",
+        },
+      }
+    );
+    if (response.ok) {
+      dispatch(getCommentsApi({company_id}));
+      
+    }
+
+    return response.json();
+  }
+);
+
+
+
+    export const commentDeleteApi = createAsyncThunk(
+      "commentDeleteApi",
+      async ({company_id,  comment_id },{dispatch}) => {
+        const response = await fetch(
+          `${url}/comments/${comment_id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const result = await response.json();
+    
+        if (response.ok) {
+          dispatch(getCommentsApi({company_id}));
+          dispatch(
+            setSnackStatus({
+              status: true,
+              severity: "warning",
+              message: "Comment deleted",
+            })
+          );
+        }
+    
+      return result;
+      }
+    );
+    
+    export const getParentsBucketApi = createAsyncThunk(
+      "getParentsBucketApi",
+      async ({title}) => {
+        const response = await fetch(
+          `${url}/parent-buckets/${title}`,
+          {
+            method: "GET",
+            headers: {
+              
+              "Content-Type": "application/json",
+            },
+           
+          }
+        );
+        return response.json();
+    
+       
+    
+     
+      }
+    );
+ 
+  
+
 
 const discoverySlice = createSlice({
   name: "discovery",
@@ -178,7 +476,7 @@ const discoverySlice = createSlice({
     builder.addCase(createCustomBucketApi.rejected, (state, action) => {
       state.isError = true;
       state.isLoading = false;
-      state.error = action.payload;
+     
     });
 
     // GET request for My buckets
@@ -205,16 +503,50 @@ const discoverySlice = createSlice({
       state.isLoading = false;
     });
 
+    // Comment delete Api
+    
+    builder.addCase(commentDeleteApi.rejected, (state, action) => {
+      state.isError = true;
+      
+    });
+
     // Get Discovery Table Data Api
     builder.addCase(discoveryTableApi.pending, (state, action) => {
       state.isTableDataLoading = true;
     });
     builder.addCase(discoveryTableApi.fulfilled, (state, action) => {
       state.isTableDataLoading = false;
-      state.discoveryTableBucket = action.payload.data.companies;
-      state.title = action.payload.data.bucket.title;
+      state.discoveryTableBucket = action.payload.data;
+      // state.title = action.payload.data.bucket.title;
     });
     builder.addCase(discoveryTableApi.rejected, (state, action) => {
+      state.isError = true;
+      state.isTableDataLoading = false;
+    });
+
+    // Get nested bucket Discovery Table Data Api
+    builder.addCase(nestedBucketDiscoveryTableApi.pending, (state, action) => {
+      state.isNestedBucketTableDataLoading = true;
+    });
+    builder.addCase(nestedBucketDiscoveryTableApi.fulfilled, (state, action) => {
+      state.isNestedBucketTableDataLoading = false;
+      state.nestedBucketDiscoveryTableBucket = action.payload.data;
+      // state.title = action.payload.data.bucket.title;
+    });
+    builder.addCase(nestedBucketDiscoveryTableApi.rejected, (state, action) => {
+      state.isError = true;
+      state.isNestedBucketTableDataLoading = false;
+    });
+    // Get Discovery My Bucket Table Data Api
+    builder.addCase(myBucketDiscoveryTableApi.pending, (state, action) => {
+      state.isTableDataLoading = true;
+    });
+    builder.addCase(myBucketDiscoveryTableApi.fulfilled, (state, action) => {
+      state.isTableDataLoading = false;
+      state.discoveryTableBucket = action.payload.data;
+      // state.title = action.payload.data.bucket.title;
+    });
+    builder.addCase(myBucketDiscoveryTableApi.rejected, (state, action) => {
       state.isError = true;
       state.isTableDataLoading = false;
     });
@@ -230,6 +562,85 @@ const discoverySlice = createSlice({
       state.isError = true;
       state.isLoading = false;
     });
+    // Get Parents Bucket Api
+    builder.addCase(getParentsBucketApi.pending, (state, action) => {
+      state.isParentsBucketLoading = true;
+    });
+    builder.addCase(getParentsBucketApi.fulfilled, (state, action) => {
+      state.isParentsBucketLoading = false;
+      state.parentsBucket = action.payload.buckets;
+    });
+    builder.addCase(getParentsBucketApi.rejected, (state, action) => {
+      state.isError = true;
+      state.isParentsBucketLoading = false;
+    });
+    // Company Present in other buckets Api
+    builder.addCase(otherBucketsCompanyPresentApi.pending, (state, action) => {
+      state.isArticleDataLoading = true;
+    });
+    builder.addCase(
+      otherBucketsCompanyPresentApi.fulfilled,
+      (state, action) => {
+        state.isArticleDataLoading = false;
+        state.otherBucketsCompanyPresent = action.payload.buckets;
+      }
+    );
+    builder.addCase(otherBucketsCompanyPresentApi.rejected, (state, action) => {
+      state.isError = true;
+      state.isArticleDataLoading = false;
+    });
+    // Get bookmark Api
+
+    builder.addCase(isBookmarkedApi.fulfilled, (state, action) => {
+      state.isBookmarked = action.payload.isAvailable;
+    });
+    builder.addCase(isBookmarkedApi.rejected, (state, action) => {
+      state.isError = true;
+    });
+     // Comment Like Api
+     builder.addCase(commentLikeApi.fulfilled, (state, action) => {
+      state.isBookmarked = action.payload;
+    });
+    
+    builder.addCase(commentLikeApi.rejected, (state, action) => {
+      state.isError = true;
+    });
+
+    // Comment unlike Api
+
+   
+    builder.addCase(commentunLikeApi.rejected, (state, action) => {
+      state.isError = true;
+    });
+    // Add to watchlist Api
+
+    builder.addCase(addToWatchlistApi.fulfilled, (state, action) => {
+      state.isBookmarked = true;
+    });
+    builder.addCase(addToWatchlistApi.rejected, (state, action) => {
+      state.isError = true;
+    });
+
+    // Remove from watchlist Api
+
+    builder.addCase(removeFromWatchlistApi.fulfilled, (state, action) => {
+      state.isBookmarked = false;
+    });
+    builder.addCase(removeFromWatchlistApi.rejected, (state, action) => {
+      state.isError = true;
+    });
+
+    // GET comments Api
+   
+    builder.addCase(getCommentsApi.fulfilled, (state, action) => {
+    
+      state.comments = action.payload;
+    });
+    builder.addCase(getCommentsApi.rejected, (state, action) => {
+      state.isError = true;
+      
+    });
+
     // Get Discovery Article Data Api
     builder.addCase(discoveryArticleApi.pending, (state, action) => {
       state.isArticleDataLoading = true;
@@ -241,12 +652,13 @@ const discoverySlice = createSlice({
         date: "",
         content: action.payload.data.discovery.content,
         title: action.payload.data.discovery.title,
-        market_cap:  action.payload.data.discovery.market_cap,
-        ttm_pe:  action.payload.data.discovery.ttm_pe,
-        share_price:  action.payload.data.discovery.share_price,
-        sector:action.payload.data.discovery.sector,
+        market_cap: action.payload.data.discovery.market_cap,
+        ttm_pe: action.payload.data.discovery.ttm_pe,
+        share_price: action.payload.data.discovery.share_price,
+        sector: action.payload.data.discovery.sector,
         sectoral_pe_range: action.payload.data.discovery.sectoral_pe_range,
-        pe_remark: action.payload.data.discovery.pe_remark
+        pe_remark: action.payload.data.discovery.pe_remark,
+        company_id: action.payload.data.discovery._id,
       };
     });
     builder.addCase(discoveryArticleApi.rejected, (state, action) => {

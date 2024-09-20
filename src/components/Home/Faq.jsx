@@ -187,7 +187,7 @@ useEffect(()=>{
               sx={{ opacity: inView ? 1 : 0 }}
             >
               <Grid item paddingX={{ xs: 2 }}>
-                {(pathname === "/" ? faqData : educationFaqArray).map(
+                {(pathname === "/" ? faqData : educationFaqArray)?.map(
                   (faq, index) => (
                     <>
                       <StyledAccordion

@@ -41,10 +41,10 @@ const StyledButton2 = styled(Button)`
 
 const PrimeCard = () => {
   return (
-    <Box sx={{ flexGrow: 1, padding: 2 }}>
+    <Box sx={{ flexGrow: 1, paddingY: 2 }}>
       <Grid
         container
-        marginBottom={5}
+        marginBottom={1}
         justifyContent="center"
         sx={{
           display: "grid",

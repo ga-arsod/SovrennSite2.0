@@ -19,6 +19,8 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)`
 const StyledToggleButton = styled(ToggleButton)`
   text-transform: none;
   font-weight: 500;
+  font-size:14px;
+  line-height:20px;
   padding: 8px 16px;
   border: none;
   color: #1F2D3D;
@@ -26,6 +28,10 @@ const StyledToggleButton = styled(ToggleButton)`
     color: #0FA958; 
     background-color: #e0f7e4;
     font-weight: 600;
+  }
+     @media (max-width: 640px) {
+    font-weight: 600;
+  
   }
 `;
 const StyledTypography1 = styled(Typography)`

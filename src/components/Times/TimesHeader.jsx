@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { colors } from '../Constants/colors'; 
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import PrimeHeader from "./PrimeHeader";
+
 
 const ArrowBoxContainer = styled(Box)`
   display: flex;
@@ -80,7 +80,7 @@ const TabLabel = ({ text, isActive }) => {
   );
 };
 
-const PrimeHeading = () => {
+const TimesHeader = () => {
   const [value, setValue] = useState('one');
   const theme = useTheme();
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
@@ -91,8 +91,8 @@ const PrimeHeading = () => {
 
   return (
     <>
-      {isSmallerThanSm && <PrimeHeader />}
-      <Box sx={{ width: '100%' }} marginTop={isSmallerThanSm ? 3 : 11}>
+    <Container>
+      <Box sx={{ width: '100%' }} marginTop="36px">
         <Box sx={{ position: 'relative', display: 'inline-block', width: '900px' }}>
           {isSmallerThanMd && (
             <StyledArrowBackIcon 
@@ -116,7 +116,7 @@ const PrimeHeading = () => {
               alignItems: 'center',
               justifyContent: 'center',
               '& .MuiTabs-flexContainer': {
-                gap: {xs:"40px",sm:"70px",md:"140px"},
+                gap: {xs:"40px",sm:"70px",md:"110px"},
                 position: 'relative',
               },
               '& .MuiTab-root': {
@@ -132,7 +132,7 @@ const PrimeHeading = () => {
           >
             <Tab
               value="one"
-              label={<TabLabel text="Prime Articles" isActive={value === 'one'} />}
+              label={<TabLabel text="Sovrenn Times" isActive={value === 'one'} />}
               sx={{
                 textTransform: 'none',
                 minWidth: 'auto',
@@ -145,14 +145,14 @@ const PrimeHeading = () => {
               }}
             />
             {!isSmallerThanSm && (
-              <ArrowBoxContainer sx={{ left:{xs:'calc(29% )',md:'calc(39% )'} , transform: 'translateX(-50%)' }}>
+              <ArrowBoxContainer sx={{ left:{xs:'calc(29% )',md:'calc(40% )'} , transform: 'translateX(-50%)' }}>
                 <StyledArrowForwardIcon />
                 <StyledArrowBackIcon />
               </ArrowBoxContainer>
             )}
             <Tab
               value="two"
-              label={<TabLabel text="Promoter Interviews" isActive={value === 'two'} />}
+              label={<TabLabel text="Sovrenn Times PDFs" isActive={value === 'two'} />}
               sx={{
                 textTransform: 'none',
                 minWidth: 'auto',
@@ -170,8 +170,9 @@ const PrimeHeading = () => {
           </StyledTypography>
         )}
       </Box>
+      </Container>
     </>
   );
 };
 
-export default PrimeHeading;
+export default TimesHeader;

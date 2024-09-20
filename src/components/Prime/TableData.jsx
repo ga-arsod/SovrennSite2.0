@@ -45,11 +45,11 @@ const HeaderTextWrapper = styled('div')`
 const StyledArrowUpwardIcon = styled(ArrowUpwardIcon)`
   && {
   
-    font-size: 18px; // Decrease the icon size
-    color: ${colors.navyBlue500}; // Ensure the icon color does not change
-    margin-left: 8px; // Space between text and icon
-    opacity: 0; // Hide the icon by default
-    transition: opacity 0.3s; // Smooth transition for showing/hiding
+    font-size: 18px;
+    color: ${colors.navyBlue500}; 
+    margin-left: 8px;
+    opacity: 0; 
+    transition: opacity 0.3s; 
      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
   }
 `;
@@ -114,14 +114,14 @@ const data = [
 const TableData = () => {
   const router=useRouter();
   return (
-    <Container>
-      <Box sx={{ paddingX: 2, marginTop: 3,marginBottom:"200px", border: `1px solid ${colors.neutral600}`, borderRadius: 1 }}>
+    <>
+      <Box sx={{ paddingX: 2, marginTop: 3, border: `1px solid ${colors.neutral600}`, borderRadius: 1 }}>
         <TableContainer component={Paper} elevation={0} sx={{ boxShadow: 'none', paddingY: 0 }}>
           <Table sx={{ borderCollapse: 'separate' }}>
             <TableHead>
               <TableRow
                 sx={{
-                  '& th': { borderBottom: 'none' }, // Remove bottom border
+                  '& th': { borderBottom: 'none' }, 
                 }}
               >
                 <StyledTableCell>
@@ -157,7 +157,7 @@ const TableData = () => {
                   key={index}
                   sx={{
                     '& td': { paddingX: 2, borderBottom: `1px solid ${colors.neutral700}` },
-                    '&:last-child td': { borderBottom: 'none' }, // Remove border for the last row
+                    '&:last-child td': { borderBottom: 'none' }, 
                   }}
                 >
                   <StyledBodyTableCell sx={{ color: colors.neutral900 }}>{row.date}</StyledBodyTableCell>
@@ -180,7 +180,7 @@ const TableData = () => {
           </Table>
         </TableContainer>
       </Box>
-    </Container>
+    </>
   );
 };
 

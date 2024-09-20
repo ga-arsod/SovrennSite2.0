@@ -14,7 +14,7 @@ import {
   Drawer,
   Menu,
   MenuItem,
-  Divider,
+  Divider,Autocomplete,InputAdornment,TextField
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
@@ -37,6 +37,7 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
 import { doLogout } from "../../app/actions/index";
 import { logout } from "@/app/Redux/Slices/authSlice";
+import { userDetailsApi } from "@/app/Redux/Slices/authSlice";
 
 const StyledListItem = styled(ListItem)`
   position: relative;
@@ -54,6 +55,32 @@ const StyledListItem = styled(ListItem)`
     border-bottom: 1px solid ${colors.neutral500};
   }
 `;
+
+const CustomTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    padding: '8px 13px',
+    "@media (max-width: 639px)": {
+      padding: "5px 16px",
+    },
+    '&:hover .MuiOutlinedInput-notchedOutline': {
+      border: 'none', 
+    },
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      border: 'none', 
+    },
+  },
+  '& .MuiOutlinedInput-notchedOutline': {
+    border: 'none', 
+  },
+  '& .MuiInputBase-input': {
+    padding: '2px 12px',
+    fontSize: '12px',
+    color: 'black',
+    '&::placeholder': {
+      fontSize: '12px',
+    },
+  },
+}));
 
 const StyledListItemText = styled(ListItemText)`
   && .MuiTypography-root {
@@ -91,7 +118,7 @@ const StyledGrid2 = styled(Grid)`
 `;
 
 const StyledGrid3 = styled(Grid)`
-  @media (min-width: 1120px) {
+  @media (min-width: 1040px) {
     display: none;
   }
   @media (max-width: 639px) {
@@ -105,11 +132,7 @@ const StyledGrid4 = styled(Grid)`
   }
 `;
 
-const SearchIconWrapper = styled.div`
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
-`;
+
 
 const StyledButton1 = styled(Button)`
   font-weight: 600;
@@ -185,11 +208,18 @@ const StyledMenu = styled((props) => (
 const Navbar = ({ session }) => {
   const theme = useTheme();
   const isGreaterThanMd = useMediaQuery(theme.breakpoints.up("md"));
+  const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const { isAuth, user } = useSelector((store) => store.auth);
   const router = useRouter();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  const handleSearchClick = () => {
+    setSearchOpen(!searchOpen);
+  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const opens = Boolean(anchorEl);
@@ -202,6 +232,8 @@ const Navbar = ({ session }) => {
 
   useEffect(() => {
     setIsLoaded(true);
+   
+    dispatch(userDetailsApi())
   }, []);
 
   if (!isLoaded) return null;
@@ -211,7 +243,7 @@ const Navbar = ({ session }) => {
   };
 
   const filteredNavItems = isGreaterThanMd ? navItems.slice(2) : navItems;
-
+   const options=["KP Green","Nescafe"]
   return (
     <>
       <AppBar
@@ -229,12 +261,17 @@ const Navbar = ({ session }) => {
             alignItems="center"
             justifyContent="space-between"
             spacing={0}
+            width="100%"
           >
-            <StyledGrid1 item>
+            <Grid item sx={{display:{xs:"block",sm:"none",md:"block"}}}>
               <Link href="/" passHref>
-                <Image src="/logo.svg" width={146} height={25} alt="logo" />
+              {
+                !searchOpen &&   <Image src="/logo.svg" width={146} height={25} alt="logo" />
+              }
+              
               </Link>
-            </StyledGrid1>
+            </Grid>
+            
             <StyledGrid3 item>
               <IconButton onClick={toggleDrawer}>
                 {open ? <CloseIcon /> : <MenuIcon />}
@@ -265,21 +302,34 @@ const Navbar = ({ session }) => {
                 </List>
               </Box>
             </StyledGrid1>
-            <StyledGrid2 item>
+            
+            <Grid item width="300px" sx={{display:{xs:'none',sm:'flex',md:'none'},justifyContent:'flex-end'}}>
               <Image src="/logo.svg" width={136} height={30} alt="logo" />
-            </StyledGrid2>
+            </Grid>
             <StyledGrid1 item width="22%">
-              <SearchContainer>
-                <SearchIconWrapper>
-                  <SearchIcon sx={{ color: "#64748B" }} />
-                </SearchIconWrapper>
-                <SearchInput
-                  placeholder="Search for a company"
-                  inputProps={{ "aria-label": "search" }}
-                />
-              </SearchContainer>
+            <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={options}
+          sx={{ width: {xs:"210px",sm:'280px'} }}
+          renderInput={(params) => (
+            <CustomTextField
+              {...params}
+              placeholder="Search for a company"
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: null,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
+        />
             </StyledGrid1>
-            <StyledGrid1
+            <StyledGrid5
               item
               sx={{
                 display: isAuth || session?.user ? "flex" : "none",
@@ -396,50 +446,94 @@ const Navbar = ({ session }) => {
                   Logout
                 </StyledMenuItem2>
               </StyledMenu>
-            </StyledGrid1>
-            <StyledGrid5
-              item
-              sx={{
-                display: isAuth || session?.user ? "none" : "flex",
-                alignItems: "center",
-              }}
-            >
-              <IconButton>
-                <SearchIcon />
-              </IconButton>
-              <StyledButton1
-                sx={{ marginRight: "16px" }}
-                variant="contained"
-                onClick={() => {
-                  router.push("login");
-                }}
-              >
-                Sign Up
-              </StyledButton1>
-              <Typography
-                color={colors.navyBlue500}
-                sx={{
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  lineHeight: "17px",
-                  cursor: "pointer",
-                }}
-                onClick={() => {
-                  router.push("login");
-                }}
-                disableElevation
-              >
-                Login
-              </Typography>
             </StyledGrid5>
-            <StyledGrid4 item>
-              {/* <IconButton>
-                <SearchIcon />
-              </IconButton> */}
-              <IconButton onClick={toggleDrawer}>
-                {open ? <CloseIcon sx={{ color: "black" }} /> : <MenuIcon />}
-              </IconButton>
-            </StyledGrid4>
+            
+            <Grid
+      item
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent:'start',
+       width:isSmallerThanSm && searchOpen ? "100%":"auto"
+      }}
+    >
+      {/* Icon to toggle the search input */}
+     { !searchOpen && <IconButton onClick={handleSearchClick} sx={{display:{xs:"none",sm:"block",md:"none"}}}>
+        <SearchIcon />
+      </IconButton>}
+
+      {/* Autocomplete component, conditionally rendered */}
+      {searchOpen && (
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={options}
+          sx={{ width: { xs:"100%",sm:"230px" },height:"50px" }}
+          renderInput={(params) => (
+            <CustomTextField
+              {...params}
+              placeholder="Search for a company"
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: null,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
+        />
+      )}
+    
+    {
+      !isSmallerThanSm && <>
+       <StyledButton1
+        sx={{
+          marginRight: "16px",
+          display: isAuth || session?.user  ? "none" : "",
+        }}
+        variant="contained"
+        onClick={() => {
+          router.push("login");
+        }}
+      >
+        Sign Up
+      </StyledButton1>
+
+      <Typography
+        color={colors.navyBlue500}
+        sx={{
+          fontWeight: "600",
+          fontSize: "14px",
+          lineHeight: "17px",
+          cursor: "pointer",
+          display: isAuth || session?.user ? "none" : "",
+        }}
+        onClick={() => {
+          router.push("login");
+        }}
+        disableElevation
+      >
+        Login
+      </Typography>
+      </>
+    }
+     
+    </Grid>
+    {
+      !searchOpen && <StyledGrid4 item>
+      <IconButton onClick={handleSearchClick}>
+        <SearchIcon />
+      </IconButton>
+      
+      <IconButton onClick={toggleDrawer}>
+        {open ? <CloseIcon sx={{ color: "black" }} /> : <MenuIcon />}
+      </IconButton>
+    </StyledGrid4>
+    }
+            
           </Grid>
         </Toolbar>
       </AppBar>

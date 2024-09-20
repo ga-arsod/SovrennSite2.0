@@ -31,10 +31,14 @@ const Discovery = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("Fetching All Buckets Data...");
+   
     dispatch(bucketsApiCall());
   }, [dispatch]);
-  console.log(isAllBucketsLoading, isMyBucketsLoading);
+ 
+  const headingObject={
+    heading:"Stock Discovery",
+    description:"Explore our thematic buckets of stocks for capturing the decadal  trends in your personal investment portfolio.",
+  }
 
   if (isAllBucketsLoading && isMyBucketsLoading) {
     return (
@@ -80,7 +84,7 @@ const Discovery = () => {
         />
       </Head>
       <Container>
-        <DiscoveryHeading />
+        <DiscoveryHeading headingObject={headingObject}/>
         <DiscoveryFilter />
         <CustomDiscoveryCard title="My Buckets" data={myBuckets} />
         <DiscoveryCard title="Functional" data={functional} />

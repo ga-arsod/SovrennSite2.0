@@ -9,26 +9,24 @@ import {
   Select,
   Container,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; 
+import DiscoveryTable from "@/components/Discovery/DiscoveryTable";
 import DiscoveryTableCard from "@/components/Cards/DiscoveryTableCard";
-import DiscoveryTable from "../../../components/Discovery/DiscoveryTable";
 import styled from "@emotion/styled";
 import { colors } from "@/components/Constants/colors";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import {
-  discoveryTableApi,
-  myBucketDiscoveryTableApi,
+  nestedBucketDiscoveryTableApi,
   discoveryFiltersApiCall,
 } from "@/app/Redux/Slices/discoverySlice";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useParams } from "next/navigation";
-import LoginModal from "../../../components/Modal/LoginModal";
-import Spinner from "../../../components/Common/Spinner";
+
+import Spinner from "../../../../components/Common/Spinner";
+import LoginModal from "../../../../components/Modal/LoginModal";
 import Head from "next/head";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -88,23 +86,30 @@ const StyledMenuItem = styled(MenuItem)`
   font-size: 14px;
 `;
 
-const DiscoveryBucketContent = () => {
+const ChildBucketCompanyContent = () => {
   const theme = useTheme();
   const router = useRouter();
+  const pathname = usePathname(); 
+  const pathSegments = pathname ? decodeURIComponent(pathname).split("/") : [];
+  
+  const title = pathSegments?.[2] || ""; 
+  const bucketName = pathSegments?.[3] || ""; 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const { id } = useParams();
+  
   const [isOpen, setIsOpen] = useState(true);
-  const { title, isTableDataLoading } = useSelector((store) => store.discovery);
+  const { isNestedBucketTableDataLoading } = useSelector(
+    (store) => store.discovery
+  );
   const dispatch = useDispatch();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const filtersData = useSelector((store) => store.discovery.filtersData);
   const tableData = useSelector(
-    (store) => store.discovery.discoveryTableBucket
+    (store) => store.discovery.nestedBucketDiscoveryTableBucket
   );
-  const lastSpaceIndex = title.lastIndexOf(" ");
 
-  const part1 = title.substring(0, lastSpaceIndex + 1);
-  const part2 = title.substring(lastSpaceIndex + 1);
+  const lastSpaceIndex = tableData.bucket.title.lastIndexOf(" ");
+  const part1 = tableData.bucket.title.substring(0, lastSpaceIndex + 1);
+  const part2 = tableData.bucket.title.substring(lastSpaceIndex + 1);
   const [filter, setFilter] = useState({
     company_type: "all",
     ttm_pe: "all",
@@ -143,20 +148,7 @@ const DiscoveryBucketContent = () => {
       };
     }
 
-    if (typeof window !== "undefined") {
-      const fullPath = window.location.href;
-
-      const url = new URL(fullPath);
-
-      const bucketValue = url.searchParams.get("bucket");
-      if (bucketValue) {
-        dispatch(
-          myBucketDiscoveryTableApi({ id: id, body: filterObj, page: 1 })
-        );
-      } else {
-        dispatch(discoveryTableApi({ id: id, body: filterObj, page: 1 }));
-      }
-    }
+    dispatch(nestedBucketDiscoveryTableApi({ id: bucketName, body: filterObj, page: 1 }));
   }, [filter]);
 
   const handleClose = () => {
@@ -164,20 +156,18 @@ const DiscoveryBucketContent = () => {
   };
 
   useEffect(() => {
-    console.log("inside filters")
     dispatch(discoveryFiltersApiCall());
   }, []);
 
-  if (isTableDataLoading) {
+  
+
+  
+
+  if (isNestedBucketTableDataLoading) {
     return (
       <>
         <Head>
           <title>{title}</title>
-          {/* <link
-            rel="canonical"
-            href={`https://www.sovrenn.com/discovery/${id}`}
-            key="canonical"
-          /> */}
         </Head>
         <Spinner margin={15} />
       </>
@@ -188,18 +178,11 @@ const DiscoveryBucketContent = () => {
     <>
       <Head>
         <title>{title}</title>
-        {/* <link
-          rel="canonical"
-          href={`https://www.sovrenn.com/discovery/${id}`}
-          key="canonical"
-        /> */}
       </Head>
       <Container>
         {isOpen ? (
           <LoginModal isOpen={!isOpen} handleClose={handleClose} />
-        ) : (
-          <></>
-        )}
+        ) : null}
         <Box sx={{ marginTop: "64px" }} marginBottom={{ xs: 3, sm: "28px" }}>
           <Grid container alignItems="center">
             <Grid item paddingY={{ xs: 2, sm: 5 }}>
@@ -288,9 +271,9 @@ const DiscoveryBucketContent = () => {
                   </StyledSelect>
                 </StyledSelectContainer>
 
-                {/* SME/Non-SME */}
+                {/* Company Type */}
                 <StyledSelectContainer>
-                  <StyledInputLabel>{`SME/Non-SME `}</StyledInputLabel>
+                  <StyledInputLabel>{`Company Type `}</StyledInputLabel>
                   <StyledSelect
                     name="company_type"
                     value={filter.company_type}
@@ -302,9 +285,7 @@ const DiscoveryBucketContent = () => {
                     {filtersData[2]?.options?.map((element, index) => (
                       <StyledMenuItem
                         key={index}
-                        value={
-                          index === 0 ? "all" : index === 1 ? "SME" : "Non SME"
-                        }
+                        value={index === 0 ? "all" : element.id}
                       >
                         {element.placeholder}
                       </StyledMenuItem>
@@ -316,13 +297,13 @@ const DiscoveryBucketContent = () => {
           </Grid>
         </Box>
         {isSmallerThanMd ? (
-          <DiscoveryTableCard tableData={tableData} id={id} />
+          <DiscoveryTableCard tableData={tableData} id={title}  />
         ) : (
-          <DiscoveryTable tableData={tableData} id={id} />
+          <DiscoveryTable tableData={tableData} id={title}/>
         )}
       </Container>
     </>
   );
 };
 
-export default DiscoveryBucketContent;
+export default ChildBucketCompanyContent;

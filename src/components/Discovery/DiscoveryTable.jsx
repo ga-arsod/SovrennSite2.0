@@ -16,9 +16,10 @@ import { styled } from "@mui/system";
 import { colors } from "../Constants/colors";
 import Pagination from "../Pagination/Pagination";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import Link from "next/link";
-
+import moment from "moment";
+import { useSelector } from "react-redux";
 
 const StyledTableCell = styled(TableCell)`
   font-weight: 600;
@@ -59,7 +60,7 @@ const CustomIconButton = styled(IconButton)`
   background-color: ${colors.white};
 `;
 
-const HeaderTextWrapper = styled('div')`
+const HeaderTextWrapper = styled("div")`
   display: flex;
   align-items: center;
   position: relative;
@@ -88,11 +89,10 @@ const StyledTableRow = styled(TableRow)`
   &:hover {
     background-color: ${colors.neutral600};
   }
-  position: relative; // Ensure SlideBox positions relative to this row
+  position: relative; 
 `;
 
 const StyledBodyTableCell = styled(TableCell)`
-
   font-size: 16px;
   line-height: 19px;
   padding: 16px 24px;
@@ -111,10 +111,117 @@ const StyledArrowUpwardIcon = styled(ArrowUpwardIcon)`
   }
 `;
 
-const headerData = ["Company Name", "Market Cap(in Cr)", "TTM PE", "Date of Info", "Remarks"];
+const wordsStr = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+  "AA",
+  "AB",
+  "AC",
+  "AD",
+  "AE",
+  "AF",
+  "AG",
+  "AH",
+  "AI",
+  "AJ",
+  "AK",
+  "AL",
+  "AM",
+  "AN",
+  "AO",
+  "AP",
+  "AQ",
+  "AR",
+  "AS",
+  "AT",
+  "AU",
+  "AV",
+  "AW",
+  "AX",
+  "AY",
+  "AZ",
+  "BA",
+  "BB",
+  "BC",
+  "BD",
+  "BE",
+  "BF",
+  "BG",
+  "BH",
+  "BI",
+  "BJ",
+  "BK",
+  "BL",
+  "BM",
+  "BN",
+  "BO",
+  "BP",
+  "BQ",
+  "BR",
+  "BS",
+  "BT",
+  "BU",
+  "BV",
+  "BW",
+  "BX",
+  "BY",
+  "BZ",
+  "CA",
+  "CB",
+  "CC",
+  "CD",
+  "CE",
+  "CF",
+  "CG",
+  "CH",
+  "CI",
+  "CJ",
+  "CK",
+  "CL",
+  "CM",
+  "CN",
+  "CO",
+  "CP",
+  "CQ",
+  "CR",
+  "CS",
+  "CT",
+  "CU",
+  "CV",
+  "CW",
+  "CX",
+  "CY",
+  "CZ",
+];
 
-export default function DiscoveryTable({ tableData,id }) {
+export default function DiscoveryTable({ tableData, id }) {
   const [hoveredRow, setHoveredRow] = useState(null);
+
+  const { userDetails } = useSelector((store) => store.auth);
 
   const totalPages = 20;
 
@@ -135,10 +242,8 @@ export default function DiscoveryTable({ tableData,id }) {
           marginBottom: "200px",
           border: `1px solid ${colors.neutral600}`,
           borderRadius: 1,
-         overflowX:'hidden'
-         
-        
-      }}
+          overflowX: "hidden",
+        }}
       >
         <TableContainer
           component={Paper}
@@ -148,50 +253,134 @@ export default function DiscoveryTable({ tableData,id }) {
           <Table sx={{ borderCollapse: "separate" }}>
             <TableHead>
               <TableRow>
-                {headerData.map((header_name, index) => (
-                  <StyledTableCell
-                    key={index}
-                    onMouseEnter={() => handleMouseEnter(index)}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    <HeaderTextWrapper>
-                      {header_name}
-                      <StyledArrowUpwardIcon className="arrow-icon" />
-                    </HeaderTextWrapper>
-                  </StyledTableCell>
-                ))}
+                <StyledTableCell
+
+                // onMouseEnter={() => handleMouseEnter(index)}
+                // onMouseLeave={handleMouseLeave}
+                >
+                  <HeaderTextWrapper>
+                    Company Name
+                    <StyledArrowUpwardIcon className="arrow-icon" />
+                  </HeaderTextWrapper>
+                </StyledTableCell>
+                <StyledTableCell
+
+                // onMouseEnter={() => handleMouseEnter(index)}
+                // onMouseLeave={handleMouseLeave}
+                >
+                  <HeaderTextWrapper>
+                    Market Cap(in Cr)
+                    <StyledArrowUpwardIcon className="arrow-icon" />
+                  </HeaderTextWrapper>
+                </StyledTableCell>
+                <StyledTableCell
+
+                // onMouseEnter={() => handleMouseEnter(index)}
+                // onMouseLeave={handleMouseLeave}
+                >
+                  <HeaderTextWrapper>
+                    TTM PE
+                    <StyledArrowUpwardIcon className="arrow-icon" />
+                  </HeaderTextWrapper>
+                </StyledTableCell>
+
+                <StyledTableCell
+
+                // onMouseEnter={() => handleMouseEnter(index)}
+                // onMouseLeave={handleMouseLeave}
+                >
+                  <HeaderTextWrapper>
+                    Date of Info
+                    <StyledArrowUpwardIcon className="arrow-icon" />
+                  </HeaderTextWrapper>
+                </StyledTableCell>
+
+                <StyledTableCell
+
+                // onMouseEnter={() => handleMouseEnter(index)}
+                // onMouseLeave={handleMouseLeave}
+                >
+                  <HeaderTextWrapper>
+                    Remarks
+                    <StyledArrowUpwardIcon className="arrow-icon" />
+                  </HeaderTextWrapper>
+                </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData.map((item, index) => (
+              {(tableData?.companies)?.map((item, index) => (
                 <StyledTableRow
                   key={index}
                   onMouseEnter={() => handleMouseEnter(index)}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <StyledBodyTableCell sx={{ color: colors.navyBlue500 ,fontWeight:'600'}} align="left">
-                    {item?.company_name}
+                  {(index % 2 === 0 && tableData?.avail_free) ||
+                  userDetails?.subscriptions?.includes("full-access") ||
+                  userDetails?.subscriptions?.includes("monthly") ||
+                  userDetails?.subscriptions?.includes("quarterly") ||
+                  userDetails?.subscriptions?.includes("life") ||
+                  userDetails?.subscriptions?.includes("trial") ||
+                  userDetails?.subscriptions?.includes("basket") ? (
+                    <StyledBodyTableCell
+                      sx={{ color: colors.navyBlue500, fontWeight: "600" }}
+                      align="left"
+                    >
+                      {item?.company_name}
+                    </StyledBodyTableCell>
+                  ) : (
+                    <StyledBodyTableCell
+                      sx={{ color: colors.navyBlue500, fontWeight: "600" }}
+                      align="left"
+                    >
+                      Company {wordsStr[index]}
+                    </StyledBodyTableCell>
+                  )}
+
+                  <StyledBodyTableCell
+                    sx={{ color: colors.neutral900, fontWeight: "400" }}
+                  >
+                    {item?.market_cap ? item?.market_cap : "NA"}
                   </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 ,fontWeight:'400' }}>
-                    {item?.market_cap}
+                  <StyledBodyTableCell
+                    sx={{ color: colors.neutral900, fontWeight: "400" }}
+                  >
+                    {item?.ttm_pe ? `${item?.ttm_pe}x` : "NA"}
                   </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900,fontWeight:'400' }}>
-                    {item?.ttm_pe}
+                  <StyledBodyTableCell
+                    sx={{ color: colors.neutral900, fontWeight: "400" }}
+                  >
+                    {item?.date ? moment(item.date).format("Do MMM YY") : "NA"}
                   </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 ,fontWeight:'400'}}>
-                    {item?.date}
-                  </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900, textAlign: 'justify', position: 'relative' }}>
-                    {item?.remark}
-                    <Link target="_blank" href={`/discovery/${id}/${item?.slug}`}>
-                    <SlideBox hovered={hoveredRow === index}>
-                      <Typography sx={{ fontWeight: 600, fontSize: '14px', lineHeight: '17px', marginRight: '8px' }}>
-                        Read More
-                      </Typography>
-                      <CustomIconButton>
-                        <ArrowForwardIosIcon fontSize='small' sx={{ color: colors.themeGreen, fontSize: '12px' }} />
-                      </CustomIconButton>
-                    </SlideBox>
+                  <StyledBodyTableCell
+                    sx={{
+                      color: colors.neutral900,
+                      textAlign: "justify",
+                      position: "relative",
+                    }}
+                  >
+                    {item?.remark ? item?.remark : "NA"}
+                    <Link
+                      target="_blank"
+                      href={`/discovery/${id}/${item?.slug}`}
+                    >
+                      <SlideBox hovered={hoveredRow === index}>
+                        <Typography
+                          sx={{
+                            fontWeight: 600,
+                            fontSize: "14px",
+                            lineHeight: "17px",
+                            marginRight: "8px",
+                          }}
+                        >
+                          Read More
+                        </Typography>
+                        <CustomIconButton>
+                          <ArrowForwardIosIcon
+                            fontSize="small"
+                            sx={{ color: colors.themeGreen, fontSize: "12px" }}
+                          />
+                        </CustomIconButton>
+                      </SlideBox>
                     </Link>
                   </StyledBodyTableCell>
                 </StyledTableRow>

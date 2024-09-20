@@ -6,8 +6,6 @@ import TutorialSection from "@/components/Education/TutorialSection";
 import Faq from "@/components/Home/Faq";
 
 import FoundersInfo from "@/components/Home/FoundersInfo";
-import LanguageModal from "@/components/Modal/LanguageModal";
-import { useDispatch } from "react-redux";
 
 
 const Education=()=>{

@@ -154,18 +154,18 @@ const ScrollableBox = styled(Box)`
   overflow: auto;
   padding-bottom: 80px;
 
-  /* Custom scrollbar styles */
+  
   &::-webkit-scrollbar {
     width: 4px; 
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${colors.neutral700}; /* Scrollbar thumb color */
-    border-radius: 2px; /* Rounded corners of the scrollbar thumb */
+    background-color: ${colors.neutral700}; 
+    border-radius: 2px; 
   }
 
   &::-webkit-scrollbar-track {
-    background-color: ${colors.greyBlue100}; /* Scrollbar track color */
+    background-color: ${colors.greyBlue100}; 
   }
 `;
 const StyledButton = styled(Button)`

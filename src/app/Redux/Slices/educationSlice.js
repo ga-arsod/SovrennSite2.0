@@ -9,9 +9,9 @@ const initialState = {
     const response=await fetch(`${url}/course/videos`,{
       method: "GET",
       headers: {
-        "Authorization": "Bearer " + localStorage.getItem('token'),
-        
-    },
+        Authorization: "Bearer " + localStorage.getItem("token"),
+       
+      },
      
   })
     return response.json()

@@ -9,9 +9,12 @@ const Container = styled(Box)`
   display: flex;
   flex-direction: row;
   align-items: center; 
-  padding: 20px;
+  padding: 12px;
   padding-top: 90px;
-
+ @media (max-width: 639px) {
+    padding-top: 20px;
+   
+  }
   @media (max-width: 1024px) {
     flex-direction: column;
   }
@@ -133,6 +136,13 @@ const StyledTypography = styled(Typography)`
   font-size: 30px;
   line-height: 38px;
   color:#101828;
+  white-space:nowrap;
+  @media (max-width: 639px) {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+   
+  }
 `;
 
 const Details = () => {
@@ -169,7 +179,7 @@ const Details = () => {
         </StyledTypography>
       </ProfileContainer>
       <StyledGrid item width="100%">
-        <Box component="form" noValidate autoComplete="off" paddingY="24px">
+        <Box component="form" noValidate autoComplete="off" paddingY="16px">
           <StyledInputLabel htmlFor="full_name">Full Name</StyledInputLabel>
           <StyledTextField
             placeholder="Ritik Sahu"
@@ -229,8 +239,8 @@ const Details = () => {
               ),
             }}
           />
-          <Divider marginBottom="16px" />
-          <Box paddingX="24px">
+          <Divider sx={{marginBottom:"16px"}} />
+          <Box paddingX="24px" sx={{display:'flex',justifyContent:"flex-end"}}>
           <StyledButton  variant="contained">Save Changes</StyledButton>
           </Box>
          

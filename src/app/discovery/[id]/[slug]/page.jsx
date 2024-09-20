@@ -7,7 +7,10 @@ import Comments from "../../../../components/Prime/Comments";
 
 import Head from "next/head";
 import Spinner from "../../../../components/Common/Spinner";
-import { discoveryArticleApi } from "../../../Redux/Slices/discoverySlice";
+import {
+  discoveryArticleApi,
+  otherBucketsCompanyPresentApi,addToWatchlistApi,removeFromWatchlistApi,isBookmarkedApi,getCommentsApi
+} from "../../../Redux/Slices/discoverySlice";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -18,8 +21,9 @@ import Link from "next/link";
 import { colors } from "@/components/Constants/colors";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
-import Disclaimer from "../../../../components/Common/Disclaimer"
-import {primeArticleDisclaimer} from "@/utils/Data"
+import Disclaimer from "../../../../components/Common/Disclaimer";
+import { primeArticleDisclaimer } from "@/utils/Data";
+import Snackbar from "../../../../components/Snackbar/SnackBar"
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -93,23 +97,43 @@ const CustomDivider2 = styled(Divider)`
   border-bottom-width: 0px;
   height: 1px;
 `;
- 
+
 const DiscoveryArticle = () => {
   const dispatch = useDispatch();
   const { id, slug } = useParams();
-  const { isArticleDataLoading, articleData } = useSelector(
-    (store) => store.discovery
-  );
-  const { content, date, title,market_cap,ttm_pe,share_price,sector,sectoral_pe_range,pe_remark} = articleData;
+  const { isArticleDataLoading, articleData, otherBucketsCompanyPresent,isBookmarked,comments} =
+    useSelector((store) => store.discovery);
+   
+
+  const {
+    content,
+    date,
+    title,
+    market_cap,
+    ttm_pe,
+    share_price,
+    sector,
+    sectoral_pe_range,
+    pe_remark,
+    company_id,
+  } = articleData;
 
   const [showScroll, setShowScroll] = useState(false);
   const [isInWatchlist, setIsInWatchlist] = useState(false);
+  const [isCommentsModalOpen,setIsCommentsModalOpen]=useState(false)
 
   useEffect(() => {
     if (slug) {
       dispatch(discoveryArticleApi(slug));
+      dispatch(otherBucketsCompanyPresentApi({ company_id: company_id }));
     }
   }, [dispatch, slug]);
+
+  useEffect(() => {
+   dispatch(isBookmarkedApi({company_id:company_id}))
+   setIsInWatchlist(isBookmarked);
+   dispatch(getCommentsApi({company_id:company_id}))
+  }, []);
 
   useEffect(() => {
     const checkScrollTop = () => {
@@ -134,7 +158,7 @@ const DiscoveryArticle = () => {
     setIsInWatchlist((prev) => !prev);
   };
 
-  if (isArticleDataLoading) {
+  if (isArticleDataLoading ) {
     return (
       <>
         <Head>
@@ -162,27 +186,28 @@ const DiscoveryArticle = () => {
       </Head>
       <article>
         <Box sx={{ maxWidth: 915, margin: "84px auto 0px auto", padding: 1 }}>
+        <Snackbar/>  
           <StyledTypography1>{title}</StyledTypography1>
+         
           <CustomDivider1 sx={{ marginTop: 3, marginBottom: 1 }} />
           <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <Box
-              sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-            >
-              <CalendarToday sx={{ marginRight: 1 }} />
-              <StyledTypography2>
-                {new Date(date).toLocaleDateString()}
-              </StyledTypography2>
-            </Box>
+           
             <HoverBox
               sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+              onClick={()=>{setIsCommentsModalOpen(true)}}
             >
               <ChatBubbleOutlineOutlinedIcon sx={{ marginRight: 1 }} />
-              <StyledTypography2>2 Comments</StyledTypography2>
+              <StyledTypography2>{`${comments?.totalComments === "0"? "No" :comments?.totalComments} Comments`}</StyledTypography2>
             </HoverBox>
             <WatchlistBox
               sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
               isInWatchlist={isInWatchlist}
-              onClick={toggleWatchlist}
+              onClick={()=>{toggleWatchlist()
+                
+               isInWatchlist ? dispatch(removeFromWatchlistApi(company_id)):dispatch(addToWatchlistApi(company_id)) 
+              }
+              }
+
             >
               <BookmarkBorderOutlinedIcon sx={{ marginRight: 1 }} />
               <StyledTypography2>
@@ -192,22 +217,28 @@ const DiscoveryArticle = () => {
           </Box>
           <CustomDivider1 sx={{ marginTop: 1 }} />
           <Box sx={{ mb: 2, mt: 3 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                mb: 2,
+                flexWrap: "wrap",
+              }}
+            >
               <StyledTypography2
                 color={colors.greyBlue500}
-                sx={{ marginRight: 1 }}
+                sx={{ marginRight: 1, whiteSpace: "nowrap" }}
               >
                 Also present in buckets:
               </StyledTypography2>
-              <StyledChip
-                label="Excellent Results (Dec-23)"
-                variant="outlined"
-              />
-              <StyledChip label="Breakout" variant="outlined" />
-              <StyledChip
-                label="Excellent Results (Jun-24)"
-                variant="outlined"
-              />
+              {otherBucketsCompanyPresent?.map((item, index) => {
+                return (
+                  <>
+                    <StyledChip label={item.title} variant="outlined" />
+                  </>
+                );
+              })}
             </Box>
             <CustomDivider2 />
             <Grid
@@ -229,7 +260,7 @@ const DiscoveryArticle = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                 {share_price}
+                  {share_price}
                 </StyledTypography3>
               </Grid>
               <Grid item xs={6}>
@@ -245,7 +276,7 @@ const DiscoveryArticle = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                {sector}
+                  {sector}
                 </StyledTypography3>
               </Grid>
             </Grid>
@@ -268,7 +299,7 @@ const DiscoveryArticle = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                {market_cap}
+                  {market_cap}
                 </StyledTypography3>
               </Grid>
               <Grid item xs={6}>
@@ -284,7 +315,7 @@ const DiscoveryArticle = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-               {ttm_pe}
+                  {ttm_pe}
                 </StyledTypography3>
               </Grid>
             </Grid>
@@ -307,7 +338,7 @@ const DiscoveryArticle = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-               {sectoral_pe_range}
+                  {sectoral_pe_range}
                 </StyledTypography3>
               </Grid>
               <Grid item xs={6}>
@@ -323,17 +354,17 @@ const DiscoveryArticle = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-               {pe_remark}
+                  {pe_remark}
                 </StyledTypography3>
               </Grid>
             </Grid>
           </Box>
           <CustomDivider2 />
-         
+
           <div id={styles.MainContainer}>{convertToHtml(content)}</div>
         </Box>
       </article>
-      
+
       <Box width="915px" marginX="auto" paddingX={1} marginBottom={3}>
         <Divider sx={{ marginY: 1 }} />
         <Grid container justifyContent="flex-start">
@@ -395,8 +426,10 @@ const DiscoveryArticle = () => {
           <KeyboardArrowUpIcon />
         </Box>
       </Box>
-      <Disclaimer margin="4" text={primeArticleDisclaimer} width="915px"/>
-      <Comments />
+      <Box sx={{display:'flex',justifyContent:'center'}}>
+      <Disclaimer margin="4" text={primeArticleDisclaimer} width="915px" />
+      </Box>
+      <Comments  isCommentsModalOpen={isCommentsModalOpen} setIsCommentsModalOpen={setIsCommentsModalOpen} comments={comments} company_id={company_id}/>
     </>
   );
 };

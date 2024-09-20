@@ -7,7 +7,7 @@ import { colors } from "../Constants/colors";
 import SearchBar from "../Common/SearchBar";
 import CreateBucketModal from "../Modal/CreateBucketModal";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-
+import { useSelector } from "react-redux";
 
 
 const StyledButton = styled(Button)`
@@ -29,6 +29,7 @@ const StyledButton = styled(Button)`
 `;
 const DiscoveryFilter = () => {
     const [open, setOpen] = useState(false);
+    const {userDetails} = useSelector((store) => store.auth);
   
  
     const handleClose = () => {
@@ -49,13 +50,16 @@ const DiscoveryFilter = () => {
           flexWrap="wrap"
           marginBottom={3}
         >
+
           <Grid
             item
             order={{ xs: 2, sm: 1 }}
             width={{ xs: "100%", sm: "auto" }}
             sx={{ display: { xs: "flex", sm: "", justifyContent: "center" } }}
           >
-            <StyledButton
+            {
+              (userDetails?.subscriptions?.includes("full-access") || userDetails?.subscriptions?.includes("monthly") || userDetails?.subscriptions?.includes("quarterly") || userDetails?.subscriptions?.includes("life") || userDetails?.subscriptions?.includes("basket") || userDetails?.subscriptions?.includes("trial")) ?
+              <StyledButton
               onClick={() => {
                 setOpen(true);
               }}
@@ -68,7 +72,9 @@ const DiscoveryFilter = () => {
               }
             >
               Create Bucket
-            </StyledButton>
+            </StyledButton>:""
+            }
+          
           </Grid>
           <Grid item order={{ xs: 1, sm: 2 }}>
             <SearchBar placeholder="Search for a bucket"/>

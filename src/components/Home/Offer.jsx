@@ -229,9 +229,9 @@ const Offer = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
-    }, 7000); // Change slide every 7 seconds
+    }, 7000); 
 
-    return () => clearInterval(interval); // Clear interval on unmount
+    return () => clearInterval(interval); 
   }, []);
 
   return (
