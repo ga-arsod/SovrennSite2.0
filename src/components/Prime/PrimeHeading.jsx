@@ -90,7 +90,7 @@ const PrimeHeading = () => {
   };
 
   return (
-    <Container>
+    <>
       {isSmallerThanSm && <PrimeHeader />}
       <Box sx={{ width: '100%' }} marginTop={isSmallerThanSm ? 3 : 11}>
         <Box sx={{ position: 'relative', display: 'inline-block', width: '900px' }}>
@@ -170,7 +170,7 @@ const PrimeHeading = () => {
           </StyledTypography>
         )}
       </Box>
-    </Container>
+    </>
   );
 };
 

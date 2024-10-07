@@ -141,14 +141,14 @@ const slideInFromBottom = keyframes`
 `;
 
 const SlideInLeftBox = styled(Grid)`
-opacity: 0; /* Initial state */
+opacity: 0;
 &.animate {
   animation: ${slideInFromLeft} 1s ease-out forwards;
 }
 `;
 
 const SlideInBottomBox = styled(Box)`
-opacity: 0; /* Initial state */
+opacity: 0; 
 &.animate {
   animation: ${slideInFromBottom} 1s ease-out forwards;
 }
@@ -177,7 +177,7 @@ const MainPoster = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setAnimate(true);
-    }, 200); // Delay in milliseconds
+    }, 200); 
 
     return () => clearTimeout(timer);
   }, []);

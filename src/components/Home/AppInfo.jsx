@@ -6,6 +6,7 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import Image from "next/image";
 import { colors } from "../Constants/colors";
 import { Fade } from "@mui/material";
+import Link from "next/link";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -47,6 +48,15 @@ const FadeInBox = styled(Box)(({ theme }) => ({
 const AppInfo = () => {
   const [inView, setInView] = useState(false);
   const ref = useRef(null);
+
+  
+
+  const handleMailClick = () => {
+    window.open(
+      "https://mail.google.com/mail/?view=cm&fs=1&to=help@sovrenn.com.com&su=Inquiry&body=Hi%20team,", 
+      "_blank"
+    );
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -133,6 +143,7 @@ const AppInfo = () => {
                 <StyledButton
                   variant="contained"
                   startIcon={<MailOutlineIcon />}
+                  onClick={handleMailClick}
                   sx={{
                     color: "white",
                     fontWeight: "600",
@@ -158,7 +169,7 @@ const AppInfo = () => {
               ref={ref}
               sx={{ opacity: inView ? 1 : 0 }}
               paddingTop={{xs:"20px",sm:6}}
-              paddingBottom={{xs:"20px",sm:16}}
+              paddingBottom={{xs:"20px",sm:25}}
             >
               <Grid item>
                 <Typography
@@ -195,20 +206,34 @@ const AppInfo = () => {
                   direction={{ xs: "row", sm: "column" }}
                 >
                   <Grid item>
+                  <Link
+                    href="https://apps.apple.com/us/app/sovrenn/id6450649929"
+                    passHref
+                     target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
                     <Image
-                      src="/playStore.png"
+                      src="/appstore3.png"
                       width={132}
                       height={44}
                       alt="play-store"
                     />
+                    </Link>
                   </Grid>
                   <Grid item>
+                  <Link
+                    href="https://play.google.com/store/apps/details?id=com.sovrenn&pli=1"
+                    passHref
+                    target="_blank"
+                    style={{ textDecoration: "none" }}
+                  >
                     <Image
-                      src="/appStore.png"
+                      src="/mobilestore.png"
                       width={132}
                       height={44}
                       alt="app-store"
                     />
+                    </Link>
                   </Grid>
                 </Grid>
               </Grid>

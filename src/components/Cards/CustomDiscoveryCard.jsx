@@ -46,7 +46,10 @@ const StyledGrid = styled(Box)`
   cursor: pointer;
   background-color: ${colors.navyBlue50};
   border-radius: 3px;
+  display: flex;
+  flex-direction: column;
   transition: background-color 0.3s;
+  min-height: 315px; /* Minimum height to start with */
 
   &:hover {
     background-color: ${colors.green50};
@@ -60,6 +63,21 @@ const StyledGrid = styled(Box)`
       background-color: ${colors.themeGreen}; 
       border-color: ${colors.navyBlue900}; 
     }
+  }
+  
+  .content {
+    flex: 1; /* Allow content to grow */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .bottom-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 11px;
+    margin-top: auto;
   }
 `;
 
@@ -129,10 +147,22 @@ const CustomIconButton = styled(IconButton)`
   border-radius: 50%;
   background-color: ${colors.white};
   transition: background-color 0.8s, border-color 0.8s, transform 0.8s; 
-  
+
   .arrow-icon {
     transition: transform 0.3s, color 0.3s; 
   }
+`;
+const DefaultImageContainer = styled(Box)`
+  background-color: ${colors.green900};
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 140px; /* Adjust as needed */
+  border-radius: 3px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px; /* Adjust as needed */
 `;
 
 const CustomDiscoveryCard = ({ title, data }) => {
@@ -149,7 +179,8 @@ const CustomDiscoveryCard = ({ title, data }) => {
     setIsGridOpen(!isGridOpen);
   };
 
-  const handleDeleteClick = (id, title) => {
+  const handleDeleteClick = (event,id, title) => {
+    event.stopPropagation(); 
     setSelectedItemObject({
       ...selectedItemObject,
       id: id,
@@ -205,51 +236,44 @@ const CustomDiscoveryCard = ({ title, data }) => {
         </HoverBox>
         {isGridOpen && (
           <GridContainer className="fade-in">
-            {data.map((item, index) => {
-              return (
-                <StyledGrid key={index}  onClick={() => {
-                  dispatch(discoveryTableApi(item.slug));
-                }}>
-                  <Box
-                    onClick={() => handleDeleteClick(item._id, item.title)}
+            {data?.map((item, index) => (
+              <StyledGrid key={index} onClick={() => router.push(`/discovery/${item?.slug}?bucket=my_bucket`)}>
+                <Box
+                  onClick={(e) => handleDeleteClick(e,item._id, item.title)}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                  }}
+                  paddingX="4px"
+                >
+                  <IconButton sx={{ paddingX: "0px" }}>
+                    <DeleteOutlineIcon
+                      sx={{ color: colors.red500, fontSize: "18px" }}
+                    />
+                  </IconButton>
+                  <Typography
+                    color={colors.red500}
                     sx={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "center",
+                      fontWeight: 600,
+                      fontSize: "14px",
+                      lineHeight: "17px",
                     }}
-                    paddingX="4px"
                   >
-                    <IconButton sx={{ paddingX: "0px" }}>
-                      <DeleteOutlineIcon
-                        sx={{ color: colors.red500, fontSize: "18px" }}
-                      />
-                    </IconButton>
-                    <Typography
-                      color={colors.red500}
-                      sx={{
-                        fontWeight: 600,
-                        fontSize: "14px",
-                        lineHeight: "17px",
-                      }}
-                    >
-                      Delete
-                    </Typography>
-                  </Box>
+                    Delete
+                  </Typography>
+                </Box>
+                <Box className="content">
                   <Grid container>
-                    <Grid item paddingY={0} paddingX="20px" width="100%">
-                      <Box
-                        sx={{
-                          borderRadius: "3px",
-                          overflow: "hidden",
-                        }}
-                      >
-                        <Image
-                          src="/custombucket.svg"
-                          width={274}
-                          height={140}
-                          alt="poster"
-                          layout="responsive"
-                        />
+                  <Grid item paddingY={2} paddingX="20px" width="100%">
+                      <Box sx={{ borderRadius: "3px", overflow: "hidden" }}>
+                        {item?.thumb_url ? (
+                          <Image src={item.thumb_url} width={274} height={140} alt="poster" layout="responsive" />
+                        ) : (
+                          <DefaultImageContainer>
+                            <Typography variant="h6">{item?.title}</Typography>
+                          </DefaultImageContainer>
+                        )}
                       </Box>
                     </Grid>
                     <Grid item paddingX="20px">
@@ -264,38 +288,26 @@ const CustomDiscoveryCard = ({ title, data }) => {
                         {item.description}
                       </StyledTypography2>
                     </Grid>
-                    <Grid
-                      item
-                      width="100%"
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                      paddingX="20px"
-                      marginY={2}
-                    >
-                      <StyledTypography2
-                        component="span"
-                        color={colors.themeGreen}
-                        sx={{ fontWeight: 600 }}
-                      >
-                        {`${item.total_companies} Companies are in this bucket`}
-                      </StyledTypography2>
-                      <CustomIconButton className="icon-button"
-                       
-                      >
-                        <ArrowForwardIcon
-                          fontSize="small"
-                          className="arrow-icon"
-                          sx={{ color: "#3C464F" }}
-                        />
-                      </CustomIconButton>
-                    </Grid>
                   </Grid>
-                </StyledGrid>
-              );
-            })}
+                  <Box className="bottom-section">
+                    <StyledTypography2
+                      component="span"
+                      color={colors.themeGreen}
+                      sx={{ fontWeight: 600 }}
+                    >
+                      {item?.is_nested_bucket ? `Check out ${item.total_buckets} child buckets` : `${item.total_companies} companies are in this bucket`}
+                    </StyledTypography2>
+                    <CustomIconButton className="icon-button">
+                      <ArrowForwardIcon
+                        fontSize="small"
+                        className="arrow-icon"
+                        sx={{ color: "#3C464F" }}
+                      />
+                    </CustomIconButton>
+                  </Box>
+                </Box>
+              </StyledGrid>
+            ))}
           </GridContainer>
         )}
       </Box>

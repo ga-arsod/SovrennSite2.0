@@ -1,3 +1,4 @@
+
 import MainPoster from "@/components/Home/MainPoster";
 import UserCount from "@/components/Home/UserCount";
 import Information from "@/components/Home/Information";

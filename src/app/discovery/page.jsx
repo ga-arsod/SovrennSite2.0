@@ -20,6 +20,7 @@ const Discovery = () => {
   const { isAllBucketsLoading, isMyBucketsLoading } = useSelector(
     (store) => store.discovery
   );
+  const { userDetails } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
   const { functional, sectoral, important } = useSelector(
@@ -31,10 +32,14 @@ const Discovery = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("Fetching All Buckets Data...");
     dispatch(bucketsApiCall());
   }, [dispatch]);
-  console.log(isAllBucketsLoading, isMyBucketsLoading);
+
+  const headingObject = {
+    heading: "Stock Discovery",
+    description:
+      "Explore our thematic buckets of stocks for capturing the decadal  trends in your personal investment portfolio.",
+  };
 
   if (isAllBucketsLoading && isMyBucketsLoading) {
     return (
@@ -80,9 +85,18 @@ const Discovery = () => {
         />
       </Head>
       <Container>
-        <DiscoveryHeading />
+        <DiscoveryHeading headingObject={headingObject} />
         <DiscoveryFilter />
-        <CustomDiscoveryCard title="My Buckets" data={myBuckets} />
+        {(userDetails?.subscriptions?.includes("full-access") ||
+          userDetails?.subscriptions?.includes("monthly") ||
+          userDetails?.subscriptions?.includes("quarterly") ||
+          userDetails?.subscriptions?.includes("life") ||
+          userDetails?.subscriptions?.includes("basket") ||
+          userDetails?.subscriptions?.includes("trial")) &&
+          myBuckets?.length ?
+            <CustomDiscoveryCard title="My Buckets" data={myBuckets} />:<></>
+          }
+
         <DiscoveryCard title="Functional" data={functional} />
         <DiscoveryCard title="Sectoral" data={sectoral} />
 

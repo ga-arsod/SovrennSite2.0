@@ -16,9 +16,14 @@ import { styled } from "@mui/system";
 import { colors } from "../Constants/colors";
 import Pagination from "../Pagination/Pagination";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import Link from "next/link";
 
+import moment from "moment";
+import { useSelector, useDispatch } from "react-redux";
+import LoginModal from "../Modal/LoginModal";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import { setSortBy, toggleSortOrder } from "@/app/Redux/Slices/sortingSlice";
 
 const StyledTableCell = styled(TableCell)`
   font-weight: 600;
@@ -59,7 +64,7 @@ const CustomIconButton = styled(IconButton)`
   background-color: ${colors.white};
 `;
 
-const HeaderTextWrapper = styled('div')`
+const HeaderTextWrapper = styled("div")`
   display: flex;
   align-items: center;
   position: relative;
@@ -88,11 +93,10 @@ const StyledTableRow = styled(TableRow)`
   &:hover {
     background-color: ${colors.neutral600};
   }
-  position: relative; // Ensure SlideBox positions relative to this row
+  position: relative;
 `;
 
 const StyledBodyTableCell = styled(TableCell)`
-
   font-size: 16px;
   line-height: 19px;
   padding: 16px 24px;
@@ -110,12 +114,131 @@ const StyledArrowUpwardIcon = styled(ArrowUpwardIcon)`
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
   }
 `;
+const StyledArrowDownwardIcon = styled(ArrowDownwardIcon)`
+  && {
+    font-size: 18px;
+    color: ${colors.navyBlue500};
+    margin-left: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
+  }
+`;
 
-const headerData = ["Company Name", "Market Cap(in Cr)", "TTM PE", "Date of Info", "Remarks"];
+const wordsStr = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+  "AA",
+  "AB",
+  "AC",
+  "AD",
+  "AE",
+  "AF",
+  "AG",
+  "AH",
+  "AI",
+  "AJ",
+  "AK",
+  "AL",
+  "AM",
+  "AN",
+  "AO",
+  "AP",
+  "AQ",
+  "AR",
+  "AS",
+  "AT",
+  "AU",
+  "AV",
+  "AW",
+  "AX",
+  "AY",
+  "AZ",
+  "BA",
+  "BB",
+  "BC",
+  "BD",
+  "BE",
+  "BF",
+  "BG",
+  "BH",
+  "BI",
+  "BJ",
+  "BK",
+  "BL",
+  "BM",
+  "BN",
+  "BO",
+  "BP",
+  "BQ",
+  "BR",
+  "BS",
+  "BT",
+  "BU",
+  "BV",
+  "BW",
+  "BX",
+  "BY",
+  "BZ",
+  "CA",
+  "CB",
+  "CC",
+  "CD",
+  "CE",
+  "CF",
+  "CG",
+  "CH",
+  "CI",
+  "CJ",
+  "CK",
+  "CL",
+  "CM",
+  "CN",
+  "CO",
+  "CP",
+  "CQ",
+  "CR",
+  "CS",
+  "CT",
+  "CU",
+  "CV",
+  "CW",
+  "CX",
+  "CY",
+  "CZ",
+];
 
-export default function DiscoveryTable({ tableData,id }) {
+export default function DiscoveryTable({ tableData, id }) {
+  const dispatch = useDispatch();
   const [hoveredRow, setHoveredRow] = useState(null);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const { sortBy, sortOrder } = useSelector((state) => state.sorting);
+  const { userDetails } = useSelector((store) => store.auth);
+  const { isAuth } = useSelector((store) => store.auth);
   const totalPages = 20;
 
   const handleMouseEnter = (index) => {
@@ -126,8 +249,65 @@ export default function DiscoveryTable({ tableData,id }) {
     setHoveredRow(null);
   };
 
+  const handleSortChange = (field) => {
+    dispatch(setSortBy(field));
+
+    if (sortBy === field) {
+      dispatch(toggleSortOrder());
+    }
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  const articleRedirect = (ind, item) => {
+    if (
+      (ind % 2 === 0 && tableData?.basket?.avail_free) ||
+      userDetails?.subscriptions?.includes("full-access") ||
+      userDetails?.subscriptions?.includes("monthly") ||
+      userDetails?.subscriptions?.includes("quarterly") ||
+      userDetails?.subscriptions?.includes("life") ||
+      userDetails?.subscriptions?.includes("trial") ||
+      (userDetails?.subscriptions?.includes("basket") && isAuth)
+    ) {
+      return `/discovery/${id}/${item?.slug}`;
+    } else return "";
+  };
+
+  const handleRowClick = (index, item) => {
+    if (isAuth) {
+      const redirectUrl = articleRedirect(index, item);
+      if (redirectUrl) {
+        window.open(redirectUrl, "_blank");
+      }
+    } else {
+      setIsOpen(true);
+    }
+  };
+
+  const headerRowArray = [
+    {
+      name: "Company Name",
+      id: "company_name",
+    },
+    {
+      name: "Market Cap",
+      id: "market_cap",
+    },
+    {
+      name: "TTM PE",
+      id: "ttm_pe",
+    },
+    {
+      name: "Date of Info",
+      id: "date",
+    },
+  ];
+ 
   return (
     <>
+      <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <Box
         sx={{
           paddingX: 0,
@@ -135,10 +315,8 @@ export default function DiscoveryTable({ tableData,id }) {
           marginBottom: "200px",
           border: `1px solid ${colors.neutral600}`,
           borderRadius: 1,
-         overflowX:'hidden'
-         
-        
-      }}
+          overflowX: "hidden",
+        }}
       >
         <TableContainer
           component={Paper}
@@ -148,51 +326,113 @@ export default function DiscoveryTable({ tableData,id }) {
           <Table sx={{ borderCollapse: "separate" }}>
             <TableHead>
               <TableRow>
-                {headerData.map((header_name, index) => (
-                  <StyledTableCell
-                    key={index}
-                    onMouseEnter={() => handleMouseEnter(index)}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    <HeaderTextWrapper>
-                      {header_name}
-                      <StyledArrowUpwardIcon className="arrow-icon" />
-                    </HeaderTextWrapper>
-                  </StyledTableCell>
-                ))}
+                {headerRowArray?.map((item, index) => {
+                  return (
+                    <>
+                      <StyledTableCell key={index}>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          {item?.name}
+                          {sortBy === item.id ? (
+                            sortOrder === "inc" ? (
+                              <StyledArrowUpwardIcon
+                                className="arrow-icon"
+                                onClick={() => handleSortChange(item?.id)}
+                              />
+                            ) : (
+                              <StyledArrowDownwardIcon
+                                className="arrow-icon"
+                                onClick={() => handleSortChange(item?.id)}
+                              />
+                            )
+                          ) : (
+                            <StyledArrowUpwardIcon
+                              className="arrow-icon"
+                              onClick={() => handleSortChange(item?.id)}
+                            />
+                          )}
+                        </div>
+                      </StyledTableCell>
+                    </>
+                  );
+                })}
+
+                <StyledTableCell>
+                  <HeaderTextWrapper>
+                    Remarks
+                    <StyledArrowDownwardIcon className="arrow-icon" />
+                  </HeaderTextWrapper>
+                </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData.map((item, index) => (
+              {tableData?.companies?.map((item, index) => (
                 <StyledTableRow
                   key={index}
                   onMouseEnter={() => handleMouseEnter(index)}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <StyledBodyTableCell sx={{ color: colors.navyBlue500 ,fontWeight:'600'}} align="left">
-                    {item?.company_name}
+                  {(index % 2 === 0 && tableData?.basket?.avail_free) ||
+                  userDetails?.subscriptions?.includes("full-access") ||
+                  userDetails?.subscriptions?.includes("monthly") ||
+                  userDetails?.subscriptions?.includes("quarterly") ||
+                  userDetails?.subscriptions?.includes("life") ||
+                  userDetails?.subscriptions?.includes("trial") ||
+                  userDetails?.subscriptions?.includes("basket") ? (
+                    <StyledBodyTableCell
+                      sx={{ color: colors.navyBlue500, fontWeight: "600" }}
+                      align="left"
+                    >
+                      {item?.company_name}
+                    </StyledBodyTableCell>
+                  ) : (
+                    <StyledBodyTableCell
+                      sx={{ color: colors.navyBlue500, fontWeight: "600" }}
+                      align="left"
+                    >
+                      Company {wordsStr[index]}
+                    </StyledBodyTableCell>
+                  )}
+
+                  <StyledBodyTableCell
+                    sx={{ color: colors.neutral900, fontWeight: "400" }}
+                  >
+                    {item?.market_cap ? item?.market_cap : "NA"}
                   </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 ,fontWeight:'400' }}>
-                    {item?.market_cap}
+                  <StyledBodyTableCell
+                    sx={{ color: colors.neutral900, fontWeight: "400" }}
+                  >
+                    {item?.ttm_pe ? `${item?.ttm_pe}x` : "NA"}
                   </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900,fontWeight:'400' }}>
-                    {item?.ttm_pe}
+                  <StyledBodyTableCell
+                    sx={{ color: colors.neutral900, fontWeight: "400" }}
+                  >
+                    {item?.date ? moment(item.date).format("Do MMM YY") : "NA"}
                   </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 ,fontWeight:'400'}}>
-                    {item?.date}
-                  </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900, textAlign: 'justify', position: 'relative' }}>
-                    {item?.remark}
-                    <Link target="_blank" href={`/discovery/${id}/${item?.slug}`}>
+                  <StyledBodyTableCell
+                    sx={{ color: colors.neutral900, position: "relative" }}
+                    onClick={() => handleRowClick(index, item)}
+                  >
+                    {item?.remark || "NA"}
                     <SlideBox hovered={hoveredRow === index}>
-                      <Typography sx={{ fontWeight: 600, fontSize: '14px', lineHeight: '17px', marginRight: '8px' }}>
+                      <Typography
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: "14px",
+                          marginRight: "8px",
+                        }}
+                      >
                         Read More
                       </Typography>
                       <CustomIconButton>
-                        <ArrowForwardIosIcon fontSize='small' sx={{ color: colors.themeGreen, fontSize: '12px' }} />
+                        <ArrowForwardIosIcon
+                          fontSize="small"
+                          sx={{
+                            color: colors.themeGreen,
+                            fontSize: "12px",
+                          }}
+                        />
                       </CustomIconButton>
                     </SlideBox>
-                    </Link>
                   </StyledBodyTableCell>
                 </StyledTableRow>
               ))}
@@ -200,9 +440,9 @@ export default function DiscoveryTable({ tableData,id }) {
           </Table>
         </TableContainer>
       </Box>
-      <Box mt={2}>
+      {/* <Box mt={2}>
         <Pagination totalPages={totalPages} />
-      </Box>
+      </Box> */}
     </>
   );
 }

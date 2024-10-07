@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Drawer,
   Box,
@@ -16,32 +16,20 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { Close, Edit, Delete, ThumbUp } from "@mui/icons-material";
+import { Close, Delete } from "@mui/icons-material";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
-import { colors } from "../Constants/colors";
-import styled from "@emotion/styled";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
-
-const comments = [
-  {
-    id: 1,
-    name: "Ritik Sahu",
-    text: "Run into a roadblock... Can someone please help me out?",
-    time: "12h",
-  },
-  {
-    id: 2,
-    name: "Ronald Richards",
-    text: "Just wanted to give a shoutout to [team member] for their hard work on this task, it's really paying off!",
-    time: "12h",
-  },
-  {
-    id: 3,
-    name: "Floyd Miles",
-    text: "Can someone please provide me with more information about the target audience for this task? I want",
-    time: "12h",
-  },
-];
+import {
+  commentLikeApi,
+  commentunLikeApi,
+  commentDeleteApi,
+  postCommentApi,
+} from "@/app/Redux/Slices/discoverySlice";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "@emotion/styled";
+import { colors } from "../Constants/colors";
+import Snackbar from "../../components/Snackbar/SnackBar";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 23px;
@@ -49,6 +37,7 @@ const StyledTypography1 = styled(Typography)`
   line-height: 24px;
   letter-spacing: -0.02em;
 `;
+
 const StyledTypography2 = styled(Typography)`
   font-size: 16px;
   font-weight: 600;
@@ -84,12 +73,14 @@ const StyledButton1 = styled(Button)`
     background-color: ${colors.themeButtonHover};
   }
 `;
+
 const CustomDivider = styled(Divider)`
-  background-color: ${colors.neutral500}; /* Adjust the color as needed */
+  background-color: ${colors.neutral500};
   border-color: none;
   border-bottom-width: 0px;
-  height: 2px; /* Adjust the thickness as needed */
+  height: 2px;
 `;
+
 const StyledListItemText = styled(ListItemText)`
   .MuiTypography-root {
     font-size: 14px;
@@ -104,191 +95,326 @@ const CustomMenuItem = styled(MenuItem)`
   font-size: 12px;
   font-weight: 600;
   line-height: 14px;
-  padding: 4px 8px;
+  padding: 2px 4px;
+ 
 `;
 
-const CommentDrawer = () => {
+const CommentDrawer = ({
+  isCommentsModalOpen,
+  setIsCommentsModalOpen,
+  comments,
+  company_id,
+}) => {
   const [newComment, setNewComment] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [selectedCommentId, setSelectedCommentId] = useState(null);
+  const [avatarColors, setAvatarColors] = useState([]);
+  const [commentList, setCommentList] = useState([]);
+  const dispatch = useDispatch();
+  const { userDetails } = useSelector((store) => store.auth);
+
+  useEffect(() => {
+    const sortedComments = [...(comments?.comments || [])].sort(
+      (a, b) => a.timestamp - b.timestamp
+    );
+    setCommentList(sortedComments);
+
+    if (avatarColors.length === 0) {
+      const colors = sortedComments.map(() => getRandomColor());
+      setAvatarColors(colors);
+    }
+  }, [comments]);
+
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
 
   const handleAddComment = () => {
+    if (newComment.trim() === "") {
+      return;
+    }
+
+    dispatch(
+      postCommentApi({
+        comment: newComment,
+        company_id,
+        user_id: userDetails._id,
+      })
+    );
+
     setNewComment("");
   };
 
-  const handleMenuClick = (event) => {
+  const handleMenuClick = (event, commentId) => {
+    console.log("Menu Click Event:", event.currentTarget);
     setAnchorEl(event.currentTarget);
+    setSelectedCommentId(commentId);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
+  const handleDeleteComment = () => {
+    dispatch(
+      commentDeleteApi({
+        company_id: company_id,
+        comment_id: selectedCommentId,
+      })
+    );
+
+    setCommentList((prevList) =>
+      prevList.filter((c) => c._id !== selectedCommentId)
+    );
+
+    handleMenuClose();
+  };
+
   const onClose = () => {
-    setIsOpen(false);
+    setIsCommentsModalOpen(false);
+  };
+
+  const handleLikeToggle = (commentId) => {
+    const comment = commentList.find((c) => c._id === commentId);
+    if (comment.has_liked) {
+      dispatch(commentunLikeApi({ company_id, comment_id: commentId }));
+    } else {
+      dispatch(commentLikeApi({ company_id, comment_id: commentId }));
+    }
+
+    setCommentList((prevList) =>
+      prevList.map((c) =>
+        c._id === commentId
+          ? {
+              ...c,
+              has_liked: !c.has_liked,
+              total_likes: c.has_liked ? c.total_likes - 1 : c.total_likes + 1,
+            }
+          : c
+      )
+    );
   };
 
   return (
-    <Drawer
-      anchor="right"
-      open={isOpen}
-      onClose={onClose}
-      sx={{ zIndex: 1400 }}
-    >
-      <Box
-        sx={{
-          width: 425,
-          padding: 2,
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
+    <>
+      <Snackbar isCommentsModalOpen={isCommentsModalOpen} />
+      <Drawer
+        anchor="right"
+        open={isCommentsModalOpen}
+        onClose={onClose}
+        sx={{ zIndex: 1400 }}
+        PaperProps={{
+          sx: {
+            width: {
+              xs: '100%', 
+              sm: '425px', 
+            },
+          },
         }}
       >
         <Box
           sx={{
+           
+            padding: 2,
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            flexDirection: "column",
+            height: "100%",
           }}
         >
-          <StyledTypography1 variant="h1" color={colors.navyBlue500}>
-            Comments
-          </StyledTypography1>
-          <IconButton onClick={onClose} sx={{ color: "black" }}>
-            <Close />
-          </IconButton>
-        </Box>
-        <CustomDivider sx={{ marginBottom: 3 }} />
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Write what you think..."
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          multiline
-          rows={5}
-          InputProps={{
-            sx: {
-              color: colors.greyBlue200,
-              fontSize: "16px",
-              fontWeight: "400",
-              lineHeight: "19px",
-              padding: "8px",
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: colors.navyBlue200200,
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: colors.navyBlue200,
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: colors.navyBlue200,
-              },
-            },
-          }}
-        />
-        <Box sx={{ display: "flex", justifyContent: "flex-end", marginTop: 1 }}>
-          <StyledButton variant="outlined" onClick={() => setNewComment("")}>
-            Cancel
-          </StyledButton>
-          <StyledButton1
-            variant="contained"
-            color="primary"
-            onClick={handleAddComment}
-            sx={{ marginLeft: 1 }}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
           >
-            Comment
-          </StyledButton1>
+            <StyledTypography1 variant="h1" color={colors.navyBlue500}>
+              Comments
+            </StyledTypography1>
+            <IconButton onClick={onClose} sx={{ color: "black" }}>
+              <Close />
+            </IconButton>
+          </Box>
+          <CustomDivider sx={{ marginBottom: 3 }} />
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Write what you think..."
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            multiline
+            rows={5}
+            InputProps={{
+              sx: {
+                "& .MuiInputBase-input": {
+                  color: colors.navyBlue500, 
+                },
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "19px",
+                padding: "8px",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: colors.navyBlue200,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: colors.navyBlue200,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: colors.navyBlue200,
+                },
+              },
+            }}
+          />
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", marginTop: 1 }}
+          >
+            <StyledButton
+              variant="outlined"
+              onClick={() => {
+                setNewComment("");
+                onClose();
+              }}
+            >
+              Cancel
+            </StyledButton>
+            <StyledButton1
+              variant="contained"
+              color="primary"
+              onClick={handleAddComment}
+              sx={{ marginLeft: 1 }}
+            >
+              Comment
+            </StyledButton1>
+          </Box>
+          {
+            commentList?.length==0 ? <Box sx={{display:'flex',alignItems:'center',justifyContent:'center',flexGrow:1}}>
+            <Typography sx={{fontWeight:'600',fontSize:'14px',lineHeight:'17px'}} color={colors.neutral700}>There are no comments yet, be the first one to comment</Typography>
+          </Box> :
+           <List
+           sx={{
+             flexGrow: 1,
+             overflow: "auto",
+             "&::-webkit-scrollbar": { display: "none" },
+           }}
+         >
+           {commentList?.map((element, index) => (
+             <React.Fragment key={element._id}>
+               <ListItem
+                 alignItems="flex-start"
+                 sx={{
+                   display: "flex",
+                   justifyContent: "space-between",
+                   paddingX: 0,
+                   gap: 2,
+                 }}
+               >
+                 <Box sx={{ display: "flex" }}>
+                   <Avatar sx={{ backgroundColor: avatarColors[index] }}>
+                     {element.commenter
+                       .split(" ")
+                       .map((word, index) =>
+                         index === 0 || index === 1 ? word[0] : null
+                       )
+                       .join("")
+                       .toUpperCase()}
+                   </Avatar>
+                   <Box sx={{ marginLeft: 2, flexGrow: 1 }}>
+                     <Box
+                       sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                     >
+                       <StyledTypography2>
+                         {element.commenter}
+                       </StyledTypography2>
+                       <Typography
+                         variant="caption"
+                         color="#8EA7BB"
+                       ></Typography>
+                       <IconButton
+                         size="small"
+                         onClick={(event) =>
+                           handleMenuClick(event, element._id)
+                         }
+                       >
+                         <MoreHorizOutlinedIcon
+                           fontSize="small"
+                           sx={{ color: "black" }}
+                         />
+                       </IconButton>
+                     </Box>
+                     <StyledListItemText primary={element.comment} />
+                   </Box>
+                 </Box>
+                 <Box sx={{ display: "flex", flexDirection: "column" }}>
+                   <IconButton
+                     onClick={() => handleLikeToggle(element._id)}
+                     size="small"
+                     sx={{ padding: 0, color: colors.navyBlue500 }}
+                   >
+                     {element.has_liked ? (
+                       <ThumbUpIcon fontSize="small" />
+                     ) : (
+                       <ThumbUpOutlinedIcon fontSize="small" />
+                     )}
+                   </IconButton>
+                   <Typography
+                     sx={{
+                       fontSize: "12px",
+                       fontWeight: "400",
+                       lineHeight: "15px",
+                       marginTop: 1,
+                     }}
+                     color={colors.navyBlue500}
+                   >
+                     {element.total_likes}
+                   </Typography>
+                 </Box>
+               </ListItem>
+               <CustomDivider />
+             </React.Fragment>
+           ))}
+         </List>
+          }
+         
+         
         </Box>
-        <List
-          sx={{
-            flexGrow: 1,
-            overflow: "auto",
-            "&::-webkit-scrollbar": { display: "none" },
-          }}
-        >
-          {comments.map((comment) => (
-            <React.Fragment key={comment.id}>
-              <ListItem
-                alignItems="flex-start"
-                sx={{ display: "flex", gap: 5, paddingX: 0 }}
-              >
-                <Box sx={{ display: "flex" }}>
-                  <Avatar>{comment.name[0]}</Avatar>
-                  <Box sx={{ marginLeft: 2, flexGrow: 1 }}>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <StyledTypography2>{comment.name}</StyledTypography2>
-                      <Typography variant="caption" color="#8EA7BB">
-                        {comment.time}
-                      </Typography>
-                      <IconButton size="small" onClick={handleMenuClick}>
-                        <MoreHorizOutlinedIcon
-                          fontSize="small"
-                          sx={{ color: "black" }}
-                        />
-                      </IconButton>
-                    </Box>
-                    <StyledListItemText primary={comment.text} />
-                  </Box>
-                </Box>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <IconButton size="small">
-                    <ThumbUpOutlinedIcon
-                      fontSize="medium"
-                      sx={{ color: "black" }}
-                    />
-                  </IconButton>
-                  <Typography
-                    variant="caption"
-                    textAlign="center"
-                    color="#8EA7BB"
-                  >
-                    144
-                  </Typography>
-                </Box>
-              </ListItem>
-            </React.Fragment>
-          ))}
-        </List>
+        {/* Delete Comment Menu */}
         <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left",
-          }}
-          sx={{ zIndex: 1600 }}
-          PaperProps={{
-            sx: {
-              padding: 0,
-            },
-            component: Paper,
-          }}
-          MenuListProps={{
-            sx: {
-              padding: "4px",
-            },
-          }}
-        >
-          <CustomMenuItem
-            onClick={handleMenuClose}
-            style={{ color: colors.red500, margin: 0 }}
-          >
-            <Edit fontSize="small" /> Edit Comment
-          </CustomMenuItem>
-          <CustomMenuItem
-            onClick={handleMenuClose}
-            style={{ color: colors.navyBlue500, margin: 0 }}
-          >
-            <Delete fontSize="small" /> Delete Comment
-          </CustomMenuItem>
-        </Menu>
-      </Box>
-    </Drawer>
+  anchorEl={anchorEl}
+  open={Boolean(anchorEl)}
+  onClose={handleMenuClose}
+  PaperProps={{
+    elevation: 2,
+    sx: {
+      width: 132,
+      padding: {
+        xs: '4px -4px',
+        sm: '8px -4px', 
+      },
+      maxHeight: {
+        xs: '45px', 
+        overflow:'hidden',
+      },
+    },
+  }}
+  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+  transformOrigin={{ vertical: "top", horizontal: "center" }}
+  sx={{ zIndex: 1500 }}
+>
+  <CustomMenuItem
+    onClick={handleDeleteComment}
+    style={{ color: colors.red500, margin: 0 }}
+  >
+    <Delete fontSize="small" sx={{ marginRight: 1 }} />
+    Delete Comment
+  </CustomMenuItem>
+</Menu>
+      </Drawer>
+    </>
   );
 };
 

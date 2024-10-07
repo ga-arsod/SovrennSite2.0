@@ -6,6 +6,7 @@ import { useTheme } from "@mui/material/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { colors } from "../Constants/colors";
 import Snackbar from "../Snackbar/SnackBar";
+import { useRouter } from "next/navigation";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -33,14 +34,22 @@ const StyledTypography2 = styled(Typography)`
   }
 `;
 
-const DiscoveryHeading = () => {
+const DiscoveryHeading = ({headingObject}) => {
   const theme = useTheme();
+  const router=useRouter()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const lastSpaceIndex = headingObject?.heading?.lastIndexOf(" ");
 
+  const part1 = headingObject?.heading?.substring(0, lastSpaceIndex + 1);
+  const part2 = headingObject?.heading?.substring(lastSpaceIndex + 1);
+  const handleBackClick = () => {
+    router.back();  
+  };
+  
   return (
     <>
       <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "28px" }}>
-        <Snackbar />
+      <Snackbar />
         <Grid container alignItems="center">
           <Grid item paddingY={{ xs: 2, sm: 5 }}>
             <Box marginBottom={1} display="flex" alignItems="center">
@@ -51,6 +60,7 @@ const DiscoveryHeading = () => {
                     marginRight: { xs: 1, sm: 2 },
                     color: colors.navyBlue500,
                   }}
+                  onClick={handleBackClick}
                 />
               )}
               <StyledTypography1
@@ -58,18 +68,17 @@ const DiscoveryHeading = () => {
                 marginRight={1}
                 component="span"
               >
-                Stock
+             {part1}
               </StyledTypography1>
               <StyledTypography1
                 color={theme.palette.primary.main}
                 component="span"
               >
-                Discovery
+               {part2}
               </StyledTypography1>
             </Box>
             <StyledTypography2 color={colors.navyBlue400}>
-              Explore our thematic buckets of stocks for capturing the decadal
-              trends in your personal investment portfolio.
+              {headingObject?.description}
             </StyledTypography2>
           </Grid>
         </Grid>

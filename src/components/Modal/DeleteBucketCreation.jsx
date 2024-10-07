@@ -13,6 +13,7 @@ import { colors } from "../Constants/colors";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { deleteCustomBucketApi } from "@/app/Redux/Slices/discoverySlice";
+import { resetBucketModal } from "@/app/Redux/Slices/discoverySlice";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -127,7 +128,9 @@ const DeleteBucketCreation = ({ isOpen, setIsOpen ,handleClose}) => {
           }}
         >
           <IconButton
-            onClick={handleClosed}
+            onClick={()=>{handleClosed()
+            
+            }}
             sx={{ position: "absolute", top: "6px", right: "4px" }}
           >
             <CloseIcon sx={{ color: colors.black }} />
@@ -161,7 +164,9 @@ const DeleteBucketCreation = ({ isOpen, setIsOpen ,handleClose}) => {
                 <Grid item xs={6}>
                   <StyledButton2
                     variant="contained"
-                   onClick={handleClose}
+                   onClick={()=>{handleClose()
+                    dispatch(resetBucketModal())
+                   }}
                   >
                  Yes, Cancel
                   </StyledButton2>

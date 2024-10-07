@@ -194,30 +194,37 @@ export const navItems = [
   {
     name: "Sign Up",
     link: "/signup",
+    description:""
   },
   {
     name: "Login",
     link: "/login",
+    description:""
   },
   {
     name: "Education",
     link: "/education",
+     description:"Detailed information about upcoming IPOs."
   },
   {
     name: "Times",
     link: "/times",
+    description:"Get daily newsletter covering updates on important events in smallcap and microcap space."
   },
   {
     name: "Prime",
     link: "/prime",
+    description:"Read detailed articles on promising smallcap and microcap companies."
   },
   {
     name: "Discovery",
     link: "/discovery",
+    description:"Get thematic buckets on themes like Solar, Railways, Defence, IT, Consumption, Electrification, etc."
   },
   {
     name: "IPO",
     link: "/ipo-zone",
+    description:"Detailed information about upcoming IPOs."
   },
   {
     name: "Knowledge",
@@ -226,10 +233,12 @@ export const navItems = [
   {
     name: "Self Help",
     link: "/self-help",
+    description:"Detailed information about upcoming IPOs."
   },
   {
     name: "Pricing",
     link: "/pricing",
+    description:""
   },
 ];
 
@@ -485,3 +494,110 @@ export const primeArticleDisclaimer =
   "This document is created for educational and informational purposes only and should not be construed as a Buy/Sell recommendation, investment advice or a research report. Although the document accurately reflects the personal views of the authors,there may be manual/ human errors in the document. The authors may also have equity shares in the companies mentioned in this report. Investor is advised to consult his/her investment advisor and undertake further due diligence before making any investment decision in the companies mentioned. Authors are not liable for any financial gains or losses due to investments made as per the information written in this document.";
 
   export const selfHelpDisclaimer="Self-help tool is a simplistic model to predict potential future share price. It is important to note that if used incorrectly, it may lead to erratic results. Further, investment decisions should not be made solely on the basis of this model as it is only to serve as a guide and hence must be supplemented with detailed fundamental research and analysis."
+ export const sovreenOfferArray = [
+    {
+      imagePath: "/pulseCarousel.png",
+      Info: {
+        heading: "Sovrenn Pulse",
+        listItems: [ "Create your personalized watchlist of stocks for easy tracking",  
+           "Get real-time company updates on important developments",  
+          "Stay informed with live alerts on the companies you follow"]
+      },
+      button: {
+        first: "Read Free Unlimited Articles",
+        second: "Buy Full Access @ ₹5000/yr",
+      },
+    },
+    {
+      imagePath: "/discoveryCarousel.png",
+      Info: {
+        heading: "Sovrenn Discovery",
+        listItems: ["Explore thematic buckets on key sectors like Solar, Railways, Defence, IT, Consumption, Electrification, and more",  
+          "Dive into curated themes to discover sector-specific opportunities",  
+          "Stay ahead with insights into trending industries and their growth drivers"
+          ],
+      },
+      button: {
+        first: "Read Free Unlimited Articles",
+        second: "Buy Full Access @ ₹5000/yr",
+      },
+    },
+    {
+      imagePath: "/timesCarousel.png",
+      Info: {
+        heading: "Sovrenn Times",
+        listItems: [ "Daily 5 articles covering key events in smallcap and microcap space",  
+          "Receive coverage on large orders, capacity expansions, fundraising, and more",  
+          "Stay updated with important information that matters every day"
+          ],
+      },
+      button: {
+        first: "Read Free Unlimited Articles",
+        second: "Buy Full Access @ ₹5000/yr",
+      },
+    },
+    {
+      imagePath: "/primeCarousel.png",
+      Info: {
+        heading: "Sovrenn Prime",
+        listItems: ["Read in-depth articles on promising smallcap and microcap companies",  
+          "Discover emerging opportunities and growth potential",  
+          "Stay informed with key insights into the companies that matter"
+          ],
+      },
+      button: {
+        first: "Read Free Unlimited Articles",
+        second: "Buy Full Access @ ₹5000/yr",
+      },
+    },
+
+    {
+      imagePath: "/ipoCarousel.png",
+      Info: {
+        heading: "Sovrenn IPO",
+        listItems: ["Access IPO stock articles to equip yourself with crucial information",  
+          "Stay informed before making investment decisions with in-depth IPO insights",  
+          "Get detailed coverage on upcoming IPOs to make informed choices"
+          
+          ],
+      },
+      button: {
+        first: "Read Free Unlimited Articles",
+        second: "Buy Full Access @ ₹5000/yr",
+      },
+    },
+    {
+      imagePath: "/selfhelpCarousel.png",
+      Info: {
+        heading: "Sovrenn Self-help",
+        listItems: ["The self-help tool offers a simple model to predict potential future share prices", 
+         "Gain insights into stock performance with an easy-to-use prediction tool",  
+          "Make informed investment decisions by analyzing potential future stock prices"
+          
+          
+          ],
+      },
+      button: {
+        first: "Read Free Unlimited Articles",
+        second: "Buy Full Access @ ₹5000/yr",
+      },
+    },
+    {
+      imagePath: "/knowledgeCarousel.png",
+      Info: {
+        heading: "Sovrenn Knowledge",
+        listItems: ["Explore our articles to deepen your knowledge of the finance world", 
+          "Gain valuable insights into financial trends and strategies" , 
+          "Stay informed with expert-driven content on the latest in finance"
+          
+          
+          
+          ],
+      },
+      button: {
+        first: "Read Free Unlimited Articles",
+        second: "Buy Full Access @ ₹5000/yr",
+      },
+    },
+    
+  ];

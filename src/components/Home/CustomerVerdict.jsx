@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import { Typography, Grid } from "@mui/material";
 import CustomerCard from "../Cards/CustomerCard";
 import Marquee from "react-fast-marquee";
-import { customerArray } from "@/utils/Data";
+
 import { gradientColors } from "../Constants/colors";
 import { customerReviewsApi } from "@/app/Redux/Slices/homeSlice";
 import { useDispatch } from "react-redux";
@@ -134,7 +134,7 @@ const CustomerVerdict = () => {
         sx={{ opacity: inView ? 1 : 0 }}
       >
         <Marquee pauseOnHover={true}>
-          {reviewData.map((element, index) => {
+          {reviewData?.map((element, index) => {
             return (
               <Grid
                 item

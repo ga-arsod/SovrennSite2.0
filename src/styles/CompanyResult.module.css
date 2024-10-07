@@ -1,0 +1,297 @@
+#MainContainer {
+    width: 100%;
+    padding: 14vh 10vw 20px;
+}
+
+
+
+#MainContainer>h3>span {
+    color: #FB8935;
+}
+
+#infoText>p {
+    font-size:20px;
+    font-weight: 600;
+    line-height:24px;
+    margin: 10px 0;
+    color:#627B8F;
+}
+
+#infoText>ol {
+    font-size: 20px;
+    font-weight: 600;
+    line-height:24px;
+    margin: 10px 0;
+    color:#627B8F;
+    list-style-position: outside;
+    padding-left: 20px;
+}
+#infoText>b {
+    font-size: 20px;
+    font-weight: 600;
+    line-height:24px;
+    
+    color:#011627;
+    
+}
+#infoText>a {
+    font-size: 20px;
+    font-weight: 600;
+    line-height:24px;
+    
+    color:#06A77D;
+    
+}
+
+
+#listMain {
+    width: 100%;
+}
+
+/* #listMain>h3 {
+    color: #39566d;
+} */
+
+#listContainer,
+#pulseContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 30px;
+    margin: 10px 0;
+}
+
+#pulseContainer {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.listItemDiv {
+    text-align: left;
+    padding: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.listItemDiv>a {
+    text-decoration: none;
+    font-size: large;
+    font-weight: bold;
+    color: #20385e;
+}
+
+.listItemDiv>a:hover {
+    color: #5b2c98;
+}
+
+.listItemDiv>a:hover {
+    text-decoration: underline;
+}
+
+.listItemDiv>h4 {
+    font-weight: 600;
+    font-size: medium;
+}
+
+.discoveryCard {
+    text-align: center;
+    padding: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.cardContent>h4 {
+    margin: 5px 0 0;
+}
+
+.cardContent>h4>span {
+    font-weight: 600;
+}
+
+.cardContent>p {
+    margin: 10px 0 15px;
+}
+
+.cardLink {
+    color: rgb(5, 5, 227);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.divider {
+    margin: 30px 0;
+}
+
+.newsDiv {
+    display: flex;
+    flex-direction: column;
+}
+
+.newsCard {
+    padding: 10px 20px;
+    border-radius: 4px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.newsCard>h4 {
+    font-weight: 600;
+    text-align: justify;
+}
+
+.titleDiv h3 {
+    text-decoration: underline;
+}
+
+.titleDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0 5px;
+}
+
+.date {
+    font-size: small;
+    margin-bottom: -5px;
+}
+
+.titleDivBtns {
+    display: flex;
+    gap: 10px;
+}
+
+.discoveryRouteBtn {
+    background-color: #cee3fa;
+    text-decoration: none;
+    padding: 3px 5px;
+    font-weight: 700;
+    border-radius: 10px;
+    min-height: 20px;
+    font-size: small;
+}
+
+.newsCard>a {
+    text-decoration: none;
+}
+
+.newsCard>h3 {
+    font-weight: 600;
+    font-size: 16px;
+    /* text-align: justify; */
+}
+
+/* Responsiveness for small laptops view */
+/* @media only screen and (max-width : 1200px) {
+    #MainContainer {
+        padding: 15vh 0 20px 10vw;
+        width: 70%;
+    }
+} */
+
+
+/* Responsiveness for large screens */
+@media (min-width: 1450px) {
+    #MainContainer {
+        padding: 12vh 15vw 30px;
+    }
+}
+
+/* Responsiveness for tablet view */
+@media only screen and (max-width : 920px) {
+    #MainContainer {
+        padding: 100px 20px 20px;
+        margin-bottom: 60px;
+    }
+
+    .divider {
+        margin: 20px 0;
+    }
+
+    .cardContent>h4 {
+        font-size: 0.9rem;
+    }
+
+    #listContainer {
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+    }
+}
+
+/* Responsiveness for mobile view */
+@media only screen and (max-width : 639px) {
+    #infoText>p {
+        font-size:16px;
+        font-weight: 600;
+        line-height:21px;
+        margin: 10px 0;
+        color:#627B8F;
+        white-space: wrap;
+    }
+    
+    #infoText>ol {
+        font-size: 16px;
+        font-weight:600;
+        line-height:21px;
+        margin: 10px 0;
+        color:#627B8F;
+        list-style-position: outside;
+       
+        white-space: wrap;
+    }
+    #MainContainer {
+        padding: 90px 10px 20px;
+        margin-bottom: 50px;
+    }
+
+    #listContainer,
+    #pulseContainer {
+        margin-top: 10px;
+        gap: 10px;
+    }
+
+    #MainContainer>h3 {
+        font-size: medium;
+    }
+
+    #listMain>h3 {
+        font-size: medium;
+    }
+
+    .listItemDiv>h4 {
+        font-size: small;
+    }
+
+    .listItemDiv>a {
+        font-size: medium;
+    }
+
+    .cardContent>h3 {
+        font-size: medium;
+    }
+
+    .cardContent>p {
+        font-size: small;
+    }
+
+    .cardLink {
+        font-size: small;
+    }
+
+    #listContainer,
+    #pulseContainer {
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 20px;
+    }
+
+    .newsCard>h4 {
+        font-weight: 500;
+        font-size: small;
+    }
+
+    .titleDiv h3 {
+        font-size: medium;
+    }
+}

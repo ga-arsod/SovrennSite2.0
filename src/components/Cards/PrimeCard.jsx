@@ -3,6 +3,7 @@ import React from "react";
 import { Grid, Typography, Box, Divider, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
+import moment from "moment";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -39,12 +40,12 @@ const StyledButton2 = styled(Button)`
   }
 `;
 
-const PrimeCard = () => {
+const PrimeCard = ({data}) => {
   return (
-    <Box sx={{ flexGrow: 1, padding: 2 }}>
+    <Box sx={{ flexGrow: 1, paddingY: 2 }}>
       <Grid
         container
-        marginBottom={5}
+        marginBottom={1}
         justifyContent="center"
         sx={{
           display: "grid",
@@ -56,7 +57,7 @@ const PrimeCard = () => {
           padding: { xs: 1 }, 
         }}
       >
-        {Array.from("abcderhjkjkk").map((item, index) => (
+        {data.map((ele, index) => (
           <Box
             key={index}
             sx={{
@@ -81,7 +82,7 @@ const PrimeCard = () => {
               sx={{ fontWeight: "600" }}
               component="span"
             >
-              {item?.date}
+             {moment(ele.createdAt).format("Do MMM YY")}
             </StyledTypography1>
             <StyledTypography2
               marginTop={1}

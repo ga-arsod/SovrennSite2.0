@@ -4,18 +4,25 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetSnackStatus } from '@/app/Redux/Slices/snackbarSlice';
 
-const CustomSnackbar = () => {
+const CustomSnackbar = ({ isCommentsModalOpen }) => {
   const dispatch = useDispatch();
   const { status, severity, message } = useSelector((store) => store.snackbar);
+
+  
 
   return (
     <Snackbar
       open={status}
       onClose={() => dispatch(resetSnackStatus())}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-    
-      style={{ marginTop: '60px' }} // Additional space from the top
-      autoHideDuration={2000}
+      anchorOrigin={{
+        vertical: isCommentsModalOpen ? 'bottom' : 'top',
+        horizontal: isCommentsModalOpen ? 'center' : 'right',
+      }}
+      style={{
+        marginTop: isCommentsModalOpen ? '0px' : '60px',
+        marginBottom: isCommentsModalOpen ? '20px' : '0px',
+      }}
+      autoHideDuration={4000}
     >
       <Alert
         severity={severity}

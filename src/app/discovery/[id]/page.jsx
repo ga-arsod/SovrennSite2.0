@@ -9,20 +9,26 @@ import {
   Select,
   Container,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import DiscoveryTableCard from "@/components/Cards/DiscoveryTableCard";
 import DiscoveryTable from "../../../components/Discovery/DiscoveryTable";
 import styled from "@emotion/styled";
 import { colors } from "@/components/Constants/colors";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { discoveryTableApi, discoveryFiltersApiCall } from "@/app/Redux/Slices/discoverySlice";
+import {
+  discoveryTableApi,
+  myBucketDiscoveryTableApi,
+  discoveryFiltersApiCall,
+} from "@/app/Redux/Slices/discoverySlice";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useParams } from "next/navigation";
-import LoginModal from "../../../components/Modal/LoginModal";
+
 import Spinner from "../../../components/Common/Spinner";
 import Head from "next/head";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Footer from "@/components/Home/Footer";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -49,16 +55,16 @@ const StyledInputLabel = styled(Typography)`
 const StyledSelectContainer = styled(Box)`
   display: flex;
   align-items: center;
-  width: 100%; 
-  justify-content:space-between;
+  width: 100%;
+  justify-content: space-between;
   max-width: 300px;
-  margin-bottom: 16px; /* Add margin at the bottom for spacing */
+  margin-bottom: 16px;
 `;
 
 const StyledSelect = styled(Select)`
-  width: 180px; 
+  width: 180px;
   font-size: 14px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   & .MuiInputBase-root {
     padding: 6px 12px;
     font-size: 14px;
@@ -82,23 +88,36 @@ const StyledMenuItem = styled(MenuItem)`
   font-size: 14px;
 `;
 
+const StyledTypography2 = styled(Typography)`
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align:center;
+`;
+
 const DiscoveryBucketContent = () => {
   const theme = useTheme();
- 
+  const router = useRouter();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-
   const { id } = useParams();
-  const [isOpen, setIsOpen] = useState(true);
-  const { title, isTableDataLoading } = useSelector((store) => store.discovery);
+  const formattedId = id
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+  const { sortBy, sortOrder } = useSelector((state) => state.sorting);
+
+  const { isTableDataLoading } = useSelector((store) => store.discovery);
   const dispatch = useDispatch();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const filtersData = useSelector((store) => store.discovery.filtersData);
-  const tableData = useSelector((store) => store.discovery.discoveryTableBucket);
-  const lastSpaceIndex = title.lastIndexOf(' ');
+  const tableData = useSelector(
+    (store) => store.discovery.discoveryTableBucket
+  );
+  const { userDetails } = useSelector((store) => store.auth);
+  const title = formattedId;
+  const lastSpaceIndex = title.lastIndexOf(" ");
 
-
-const part1 = title.substring(0, lastSpaceIndex + 1); 
-const part2 = title.substring(lastSpaceIndex + 1);
+  const part1 = title.substring(0, lastSpaceIndex + 1);
+  const part2 = title.substring(lastSpaceIndex + 1);
   const [filter, setFilter] = useState({
     company_type: "all",
     ttm_pe: "all",
@@ -137,16 +156,41 @@ const part2 = title.substring(lastSpaceIndex + 1);
       };
     }
 
-    dispatch(discoveryTableApi({ id: id, body: filterObj }));
-  }, [filter]);
+    if (typeof window !== "undefined") {
+      const fullPath = window.location.href;
 
-  const handleClose = () => {
-    setIsOpen(false);
-  };
+      const url = new URL(fullPath);
+
+      const bucketValue = url.searchParams.get("bucket");
+      if (bucketValue) {
+        dispatch(
+          myBucketDiscoveryTableApi({
+            id: id,
+            body: filterObj,
+            page: 1,
+            sort_by: sortBy,
+            sort_order: sortOrder,
+          })
+        );
+      } else {
+        dispatch(
+          discoveryTableApi({
+            id: id,
+            body: filterObj,
+            page: 1,
+            sort_by: sortBy,
+            sort_order: sortOrder,
+          })
+        );
+      }
+    }
+  }, [filter, sortBy, sortOrder, dispatch]);
 
   useEffect(() => {
     dispatch(discoveryFiltersApiCall());
-  }, []);
+  }, [dispatch]);
+
+  console.log(filtersData, "filtersData");
 
   if (isTableDataLoading) {
     return (
@@ -175,122 +219,162 @@ const part2 = title.substring(lastSpaceIndex + 1);
         />
       </Head>
       <Container>
-        {isOpen ? <LoginModal isOpen={!isOpen} handleClose={handleClose} /> : <></>}
         <Box sx={{ marginTop: "64px" }} marginBottom={{ xs: 3, sm: "28px" }}>
           <Grid container alignItems="center">
             <Grid item paddingY={{ xs: 2, sm: 5 }}>
-            <Box marginBottom={1} display="flex" alignItems="center">
-              {isSmallScreen && (
-                <ArrowBackIcon
+              <Box marginBottom={1} display="flex" alignItems="center">
+                {isSmallScreen && (
+                  <ArrowBackIcon
+                    sx={{
+                      fontSize: { xs: 23, sm: 48 },
+                      marginRight: { xs: 1, sm: 2 },
+                      color: colors.navyBlue500,
+                    }}
+                  />
+                )}
+                <StyledTypography1
+                  color={colors.navyBlue500}
+                  marginRight={1}
+                  component="span"
+                >
+                  {part1}
+                </StyledTypography1>
+                <StyledTypography1
+                  color={theme.palette.primary.main}
+                  component="span"
+                >
+                  {part2}
+                </StyledTypography1>
+              </Box>
+            </Grid>
+          </Grid>
+          {tableData?.bucket?.avail_free ||
+          userDetails?.subscriptions?.includes("full-access") ||
+          userDetails?.subscriptions?.includes("monthly") ||
+          userDetails?.subscriptions?.includes("quarterly") ||
+          userDetails?.subscriptions?.includes("life") ||
+          userDetails?.subscriptions?.includes("basket") ||
+          userDetails?.subscriptions?.includes("trial") ? (
+            <Grid container justifyContent="flex-end" alignItems="center">
+              <Grid item>
+                <FormControl
                   sx={{
-                    fontSize: { xs: 23, sm: 48 },
-                    marginRight: { xs: 1, sm: 2 },
-                    color: colors.navyBlue500,
+                    display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
+                    alignItems: { xs: "flex-end", md: "flex-end" },
+                    justifyContent: { xs: "flex-start", md: "flex-end" },
+                    gap: { xs: 0, md: 2 },
                   }}
-                />
-              )}
-              <StyledTypography1
-                color={colors.navyBlue500}
-                marginRight={1}
-                component="span"
-              >
-           {part1}
-              </StyledTypography1>
-              <StyledTypography1
-                color={theme.palette.primary.main}
-                component="span"
-              >
-             {part2}
-              </StyledTypography1>
-            </Box>
-            </Grid>
-          </Grid>
-          <Grid container justifyContent="flex-end" alignItems="center">
-            <Grid item>
-              <FormControl
-                sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", md: "row" },
-                  alignItems: { xs: "flex-end", md: "flex-end" }, 
-                  justifyContent: { xs: "flex-start", md: "flex-end" },
-                  gap: {xs:0,md:2},
-                }}
-              >
-                {/* Market Cap */}
-                <StyledSelectContainer>
-                  <StyledInputLabel>{`Market Cap `}</StyledInputLabel>
-                  <StyledSelect
-                    name="market_cap"
-                    value={filter.market_cap}
-                    onChange={handleFilterChange}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    IconComponent={ExpandMoreIcon}
-                  >
-                    {filtersData[0]?.options?.map((element, index) => (
-                      <StyledMenuItem
-                        key={index}
-                        value={index === 0 ? "all" : index === 1 ? "$lte" : "$gt"}
-                      >
-                        {element.placeholder}
-                      </StyledMenuItem>
-                    ))}
-                  </StyledSelect>
-                </StyledSelectContainer>
+                >
+                  {/* Market Cap */}
+                  <StyledSelectContainer>
+                    <StyledInputLabel>{`Market Cap `}</StyledInputLabel>
+                    <StyledSelect
+                      name="market_cap"
+                      value={filter.market_cap}
+                      onChange={handleFilterChange}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                      IconComponent={ExpandMoreIcon}
+                    >
+                      {filtersData[0]?.options?.map((element, index) => (
+                        <StyledMenuItem
+                          key={index}
+                          value={
+                            index === 0 ? "all" : index === 1 ? "lte" : "gt"
+                          }
+                        >
+                          {element.placeholder}
+                        </StyledMenuItem>
+                      ))}
+                    </StyledSelect>
+                  </StyledSelectContainer>
 
-                {/* PE */}
-                <StyledSelectContainer>
-                  <StyledInputLabel>{`PE `}</StyledInputLabel>
-                  <StyledSelect
-                    name="ttm_pe"
-                    value={filter.ttm_pe}
-                    onChange={handleFilterChange}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    IconComponent={ExpandMoreIcon}
-                  >
-                    {filtersData[1]?.options?.map((element, index) => (
-                      <StyledMenuItem
-                        key={index}
-                        value={index === 0 ? "all" : index === 1 ? "$lte" : "$gt"}
-                      >
-                        {element.placeholder}
-                      </StyledMenuItem>
-                    ))}
-                  </StyledSelect>
-                </StyledSelectContainer>
+                  {/* PE */}
+                  <StyledSelectContainer>
+                    <StyledInputLabel>{`PE `}</StyledInputLabel>
+                    <StyledSelect
+                      name="ttm_pe"
+                      value={filter.ttm_pe}
+                      onChange={handleFilterChange}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                      IconComponent={ExpandMoreIcon}
+                    >
+                      {filtersData[1]?.options?.map((element, index) => (
+                        <StyledMenuItem
+                          key={index}
+                          value={
+                            index === 0 ? "all" : index === 1 ? "lte" : "gt"
+                          }
+                        >
+                          {element.placeholder}
+                        </StyledMenuItem>
+                      ))}
+                    </StyledSelect>
+                  </StyledSelectContainer>
 
-                {/* SME/Non-SME */}
-                <StyledSelectContainer>
-                  <StyledInputLabel>{`SME/Non-SME `}</StyledInputLabel>
-                  <StyledSelect
-                    name="company_type"
-                    value={filter.company_type}
-                    onChange={handleFilterChange}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    IconComponent={ExpandMoreIcon}
-                  >
-                    {filtersData[2]?.options?.map((element, index) => (
-                      <StyledMenuItem
-                        key={index}
-                        value={index === 0 ? "all" : index === 1 ? "SME" : "Non SME"}
-                      >
-                        {element.placeholder}
-                      </StyledMenuItem>
-                    ))}
-                  </StyledSelect>
-                </StyledSelectContainer>
-              </FormControl>
+                  {/* SME/Non-SME */}
+                  <StyledSelectContainer>
+                    <StyledInputLabel>{`SME/Non-SME `}</StyledInputLabel>
+                    <StyledSelect
+                      name="company_type"
+                      value={filter.company_type}
+                      onChange={handleFilterChange}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Without label" }}
+                      IconComponent={ExpandMoreIcon}
+                    >
+                      {filtersData[2]?.options?.map((element, index) => (
+                        <StyledMenuItem
+                          key={index}
+                          value={
+                            index === 0
+                              ? "all"
+                              : index === 1
+                              ? "SME"
+                              : "Non SME"
+                          }
+                        >
+                          {element.placeholder}
+                        </StyledMenuItem>
+                      ))}
+                    </StyledSelect>
+                  </StyledSelectContainer>
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            ""
+          )}
         </Box>
         {isSmallerThanMd ? (
-          <DiscoveryTableCard tableData={tableData} id={id} />
+          tableData.length === 0 ? (
+            <StyledTypography2
+              color={colors.navyBlue500}
+              marginRight={1}
+              component="span"
+              marginTop={3}
+            >
+              No result found
+            </StyledTypography2>
+          ) : (
+            <DiscoveryTableCard tableData={tableData} id={id} />
+          )
+        ) : tableData.length === 0 ? (
+          <StyledTypography2
+            color={colors.navyBlue500}
+            marginRight={1}
+            component="span"
+            marginTop={3}
+          >
+            No result found
+          </StyledTypography2>
         ) : (
           <DiscoveryTable tableData={tableData} id={id} />
         )}
       </Container>
+      {!isSmallerThanMd && <Footer />}
     </>
   );
 };

@@ -22,6 +22,7 @@ import { useDispatch } from "react-redux";
 import { loginSuccess } from "@/app/Redux/Slices/authSlice";
 import { store } from "@/app/Redux/store";
 import { doSocialLogin } from "@/app/actions";
+import { useSearchParams } from "next/navigation";
 
 const StyledInputLabel = styled(InputLabel)`
   font-weight: 400;
@@ -100,6 +101,9 @@ const Login = ({component}) => {
   const [message, setMessage] = useState("");
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const extra = searchParams.get('extra');
+    const from = searchParams.get('from');
   const handleChange = (prop) => (event) => {
     formInputChange(event);
     setValues({ ...values, [prop]: event.target.value });
@@ -143,14 +147,13 @@ const Login = ({component}) => {
 
       dispatch(loginSuccess(data));
 
-      // if (router.query.extra) {
-      //     router.replace(`/discovery/${router.query.extra}`);
-      //     return;
-      // }
-
-      router.replace("/");
-      return;
-    }
+      if (extra) {
+        router.push(`/discovery/${extra}`);
+        return;
+      }
+  
+      router.push(from || "/");
+    };
 
     setMessage(data.message);
     setValidate(false);
@@ -271,7 +274,11 @@ const Login = ({component}) => {
               ""
             )}
             <Grid item width="100%">
-              <StyledButton1 type="submit" variant="contained">
+              <StyledButton1 type="submit" variant="contained" 
+              // onClick={() =>
+              //   router.push(`/login?from=${router.asPath}&extra=${router.query.basket}`, { scroll: false })
+              // }
+              >
                 Sign In
               </StyledButton1>
             </Grid>

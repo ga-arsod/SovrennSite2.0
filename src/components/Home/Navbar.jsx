@@ -15,12 +15,18 @@ import {
   Menu,
   MenuItem,
   Divider,
+  Autocomplete,
+  InputAdornment,
+  TextField,
+ 
 } from "@mui/material";
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import styled from "@emotion/styled";
 import SearchIcon from "@mui/icons-material/Search";
+
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -37,7 +43,10 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
 import { doLogout } from "../../app/actions/index";
 import { logout } from "@/app/Redux/Slices/authSlice";
-
+import { userDetailsApi } from "@/app/Redux/Slices/authSlice";
+import NavbarSearch from "../Home/NavbarSearch"
+import { googleLogin } from "@/app/Redux/Slices/authSlice";
+// Styled Components
 const StyledListItem = styled(ListItem)`
   position: relative;
   width: 100%;
@@ -50,10 +59,38 @@ const StyledListItem = styled(ListItem)`
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100vw; /* Ensure the full width is covered */
+    width: 100vw;
     border-bottom: 1px solid ${colors.neutral500};
   }
 `;
+
+const CustomTextField = styled(TextField)(({ theme }) => ({
+  "& .MuiOutlinedInput-root": {
+    padding: "8px 13px",
+    "@media (max-width: 639px)": {
+      padding: "5px 16px",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    border: "none",
+  },
+  "& .MuiInputBase-input": {
+    padding: "2px 12px",
+    fontSize: "12px",
+    color: "black",
+    "&::placeholder": {
+      fontSize: "12px",
+    },
+  },
+}));
+
+
 
 const StyledListItemText = styled(ListItemText)`
   && .MuiTypography-root {
@@ -61,16 +98,8 @@ const StyledListItemText = styled(ListItemText)`
     font-size: 14px;
     line-height: 17px;
     text-align: center;
-    color: ${(props) => (props.isFirst ? colors.themeGreen : colors.black)};
+    color: ${(props) => (props.isFirst ? (props.isXsOrSm ? colors.themeGreen : colors.black) : colors.black)};
   }
-`;
-
-const SearchContainer = styled.div`
-  position: relative;
-  border-radius: 4px;
-  background-color: white;
-  width: 100%;
-  display: flex;
 `;
 
 const StyledGrid1 = styled(Grid)`
@@ -91,7 +120,7 @@ const StyledGrid2 = styled(Grid)`
 `;
 
 const StyledGrid3 = styled(Grid)`
-  @media (min-width: 1120px) {
+  @media (min-width: 1040px) {
     display: none;
   }
   @media (max-width: 639px) {
@@ -103,12 +132,6 @@ const StyledGrid4 = styled(Grid)`
   @media (min-width: 501px) {
     display: none;
   }
-`;
-
-const SearchIconWrapper = styled.div`
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
 `;
 
 const StyledButton1 = styled(Button)`
@@ -126,23 +149,20 @@ const SearchInput = styled(InputBase)`
   padding: 4px 4px 4px 0;
 `;
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  display: block;
-  width: 100%;
-`;
 const StyledMenuItem = styled(MenuItem)`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
   color: black;
 `;
+
 const StyledMenuItem2 = styled(MenuItem)`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
   color: #f83a3a;
 `;
+
 const StyledMenu = styled((props) => (
   <Menu
     elevation={0}
@@ -182,16 +202,48 @@ const StyledMenu = styled((props) => (
     },
   },
 }));
+
+const LightTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.white,
+    color: 'black',
+    boxShadow: "0px 2px 7px 0px #0000001F"
+    ,
+    fontSize: "12px",
+    lineHeight:"14px",
+    
+  },
+}));
+
+const TooltipContent = ({ heading, description }) => (
+  <Box>
+    <Typography variant="body2" fontWeight="bold">
+      {heading}
+    </Typography>
+    <Typography color="black" variant="body2">{description}</Typography>
+  </Box>
+);
+
 const Navbar = ({ session }) => {
   const theme = useTheme();
   const isGreaterThanMd = useMediaQuery(theme.breakpoints.up("md"));
+  const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const { isAuth, user } = useSelector((store) => store.auth);
   const router = useRouter();
+  const isXsOrSm = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  const handleSearchClick = () => {
+    setSearchOpen(!searchOpen);
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
   const opens = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -202,16 +254,32 @@ const Navbar = ({ session }) => {
 
   useEffect(() => {
     setIsLoaded(true);
-  }, []);
+    dispatch(userDetailsApi());
+    
+  }, [dispatch]);
+
+ 
+  useEffect(() => {
+   if(session?.user)
+   {
+    dispatch(googleLogin())
+   }
+    
+  }, [session]);
 
   if (!isLoaded) return null;
 
   const toggleDrawer = () => {
-    setOpen(!open);
+    if (isXsOrSm) {
+      setOpen(!open);
+    }
   };
 
   const filteredNavItems = isGreaterThanMd ? navItems.slice(2) : navItems;
+  const options = ["KP Green", "Nescafe"];
+  
 
+  
   return (
     <>
       <AppBar
@@ -229,26 +297,50 @@ const Navbar = ({ session }) => {
             alignItems="center"
             justifyContent="space-between"
             spacing={0}
+            width="100%"
           >
-            <StyledGrid1 item>
+            <Grid item sx={{ display: { xs: "block", sm: "none", md: "block" } }}>
               <Link href="/" passHref>
-                <Image src="/logo.svg" width={146} height={25} alt="logo" />
+                {!searchOpen && (
+                  <Image src="/logo.svg" width={146} height={25} alt="logo" />
+                )}
               </Link>
-            </StyledGrid1>
+            </Grid>
+
             <StyledGrid3 item>
               <IconButton onClick={toggleDrawer}>
                 {open ? <CloseIcon /> : <MenuIcon />}
               </IconButton>
             </StyledGrid3>
+
             <StyledGrid1 item>
               <Box>
                 <List
                   sx={{ display: "flex", flexDirection: "row", padding: 0 }}
                 >
                   {filteredNavItems.map((item) => (
-                    <StyledLink key={item} href={item.link} passHref>
+                    <LightTooltip
+                      key={item.name}
+                      sx={{
+                        "& .MuiTooltip-tooltip": {
+                          backgroundColor: "white", 
+                          color: "black", 
+                        },
+                      }}
+                      title={
+                        <TooltipContent
+                          heading={item.name}
+                          description={item.description}
+                        />
+                      }
+                      placement="bottom"
+                      arrow
+                      disablePortal={false}
+                    >
                       <ListItem
-                        onClick={() => setOpen(false)}
+                        component={Link}
+                        href={item.link}
+                        onClick={toggleDrawer}
                         sx={{
                           px: 1,
                           whiteSpace: "nowrap",
@@ -258,28 +350,31 @@ const Navbar = ({ session }) => {
                       >
                         <StyledListItemText
                           primary={item.name}
-                        ></StyledListItemText>
+                          isFirst={filteredNavItems.indexOf(item) === 0}
+                        />
                       </ListItem>
-                    </StyledLink>
+                    </LightTooltip>
                   ))}
                 </List>
               </Box>
             </StyledGrid1>
-            <StyledGrid2 item>
+
+            <Grid
+              item
+              width="300px"
+              sx={{
+                display: { xs: "none", sm: "flex", md: "none" },
+                justifyContent: "flex-end",
+              }}
+            >
               <Image src="/logo.svg" width={136} height={30} alt="logo" />
-            </StyledGrid2>
+            </Grid>
+
             <StyledGrid1 item width="22%">
-              <SearchContainer>
-                <SearchIconWrapper>
-                  <SearchIcon sx={{ color: "#64748B" }} />
-                </SearchIconWrapper>
-                <SearchInput
-                  placeholder="Search for a company"
-                  inputProps={{ "aria-label": "search" }}
-                />
-              </SearchContainer>
+             <NavbarSearch/>
             </StyledGrid1>
-            <StyledGrid1
+
+            <StyledGrid5
               item
               sx={{
                 display: isAuth || session?.user ? "flex" : "none",
@@ -388,7 +483,10 @@ const Navbar = ({ session }) => {
                   disableRipple
                 >
                   <IconButton
-                    sx={{ "& svg path": { fill: colors.red400 }, padding: 0 }}
+                    sx={{
+                      "& svg path": { fill: colors.red400 },
+                      padding: 0,
+                    }}
                     type="submit"
                   >
                     <LogoutOutlinedIcon />
@@ -396,53 +494,86 @@ const Navbar = ({ session }) => {
                   Logout
                 </StyledMenuItem2>
               </StyledMenu>
-            </StyledGrid1>
-            <StyledGrid5
+            </StyledGrid5>
+
+            <Grid
               item
               sx={{
-                display: isAuth || session?.user ? "none" : "flex",
+                display: "flex",
                 alignItems: "center",
+                justifyContent: "start",
+                width: isSmallerThanSm && searchOpen ? "100%" : "auto",
               }}
             >
-              <IconButton>
-                <SearchIcon />
-              </IconButton>
-              <StyledButton1
-                sx={{ marginRight: "16px" }}
-                variant="contained"
-                onClick={() => {
-                  router.push("login");
-                }}
-              >
-                Sign Up
-              </StyledButton1>
-              <Typography
-                color={colors.navyBlue500}
-                sx={{
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  lineHeight: "17px",
-                  cursor: "pointer",
-                }}
-                onClick={() => {
-                  router.push("login");
-                }}
-                disableElevation
-              >
-                Login
-              </Typography>
-            </StyledGrid5>
-            <StyledGrid4 item>
-              {/* <IconButton>
-                <SearchIcon />
-              </IconButton> */}
-              <IconButton onClick={toggleDrawer}>
-                {open ? <CloseIcon sx={{ color: "black" }} /> : <MenuIcon />}
-              </IconButton>
-            </StyledGrid4>
+              {/* Icon to toggle the search input */}
+              {!searchOpen && (
+                <IconButton
+                  onClick={handleSearchClick}
+                  sx={{ display: { xs: "none", sm: "block", md: "none" } }}
+                >
+                  <SearchIcon />
+                </IconButton>
+              )}
+
+              
+              {searchOpen && <NavbarSearch/>
+               
+              }
+
+              {!isSmallerThanSm && (
+                <>
+                  <StyledButton1
+                    sx={{
+                      marginRight: "16px",
+                      display: isAuth || session?.user ? "none" : "",
+                    }}
+                    variant="contained"
+                    onClick={() => {
+                      router.push("login");
+                    }}
+                  >
+                    Sign Up
+                  </StyledButton1>
+
+                  <Typography
+                    color={colors.navyBlue500}
+                    sx={{
+                      fontWeight: "600",
+                      fontSize: "14px",
+                      lineHeight: "17px",
+                      cursor: "pointer",
+                      display: isAuth || session?.user ? "none" : "",
+                    }}
+                    onClick={() => {
+                      router.push("login");
+                    }}
+                    disableElevation
+                  >
+                    Login
+                  </Typography>
+                </>
+              )}
+            </Grid>
+
+            {!searchOpen && (
+              <StyledGrid4 item>
+                <IconButton onClick={handleSearchClick}>
+                  <SearchIcon />
+                </IconButton>
+
+                <IconButton onClick={toggleDrawer}>
+                  {open ? (
+                    <CloseIcon sx={{ color: "black" }} />
+                  ) : (
+                    <MenuIcon />
+                  )}
+                </IconButton>
+              </StyledGrid4>
+            )}
           </Grid>
         </Toolbar>
       </AppBar>
+
       <Drawer
         ModalProps={{
           keepMounted: true,
@@ -459,7 +590,6 @@ const Navbar = ({ session }) => {
         sx={{
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
-           
             top: "55px",
           },
         }}
@@ -478,22 +608,45 @@ const Navbar = ({ session }) => {
         >
           <List>
             {filteredNavItems.map((item, index) => (
-              <StyledLink key={item} href={item.link} passHref>
-                <StyledListItem
-                  sx={{
-                    px: 1,
-                    whiteSpace: "nowrap",
-                    textOverflow: "ellipsis",
-                    cursor: "pointer",
-                  }}
-                  onClick={toggleDrawer}
-                >
-                  <StyledListItemText
-                    primary={item.name}
-                    isFirst={index === 0}
-                  ></StyledListItemText>
-                </StyledListItem>
-              </StyledLink>
+          <LightTooltip
+          key={item.name}
+          title={
+            <TooltipContent
+              heading={item.name}
+              description={item.description}
+            />
+          }
+          placement="bottom"
+          arrow
+          disablePortal={false}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                backgroundColor: "white",
+                color: "black",
+                borderRadius: "4px",
+                padding: "8px",
+              },
+            },
+          }}
+        >
+            <ListItem
+              component={Link}
+              href={item.link}
+              onClick={toggleDrawer}
+              sx={{
+                px: 1,
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+                cursor: "pointer",
+              }}
+            >
+              <StyledListItemText
+                primary={item.name}
+                isFirst={index === 0}
+              />
+            </ListItem>
+          </LightTooltip>
             ))}
           </List>
         </Box>
