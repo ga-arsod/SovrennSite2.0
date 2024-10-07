@@ -1,28 +1,22 @@
-import LiveSession from "@/components/Education/LiveSession";
-import LiveSessionInfo from "@/components/Education/LiveSessionInfo";
-import LiveSessionSteps from "@/components/Education/LiveSessionSteps";
 import MainHeading from "@/components/Education/MainHeading";
 import TutorialSection from "@/components/Education/TutorialSection";
-import Faq from "@/components/Home/Faq";
+import AppInfo from "@/components/Home/AppInfo";
+import Footer from "@/components/Home/Footer";
+import EducationTrialCard from "../../components/Cards/EducationTrialCard";
 
 import FoundersInfo from "@/components/Home/FoundersInfo";
 
+const Education = () => {
+  return (
+    <>
+      <MainHeading />
+      <TutorialSection />
 
-const Education=()=>{
-   
-    return(
-        <>
-        <MainHeading/>
-        <TutorialSection/>
-        <LiveSession/>
-       <LiveSessionInfo/>
-       <FoundersInfo/>
-       <LiveSessionSteps/>
-       <Faq/>
-       <LiveSession button={true}/>
-      
-      
-        </>
-    )
-}
+      <FoundersInfo />
+      <AppInfo />
+      <EducationTrialCard />
+      <Footer />
+    </>
+  );
+};
 export default Education;

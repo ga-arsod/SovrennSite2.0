@@ -27,6 +27,7 @@ import Spinner from "../../../../components/Common/Spinner";
 import LoginModal from "../../../../components/Modal/LoginModal";
 import Head from "next/head";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Footer from "@/components/Home/Footer";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -85,12 +86,19 @@ const StyledSelect = styled(Select)`
 const StyledMenuItem = styled(MenuItem)`
   font-size: 14px;
 `;
+const StyledTypography2 = styled(Typography)`
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-aling:center;
+`;
 
 const ChildBucketCompanyContent = () => {
   const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname(); 
   const pathSegments = pathname ? decodeURIComponent(pathname).split("/") : [];
+  
   
   const title = pathSegments?.[2] || ""; 
   const bucketName = pathSegments?.[3] || ""; 
@@ -297,11 +305,30 @@ const ChildBucketCompanyContent = () => {
           </Grid>
         </Box>
         {isSmallerThanMd ? (
+          tableData.length===0 ? <StyledTypography2
+          color={colors.navyBlue500}
+          marginRight={1}
+          component="span"
+          marginTop={3}
+        >
+          No result found
+        </StyledTypography2>:
           <DiscoveryTableCard tableData={tableData} id={title}  />
         ) : (
+         tableData.length===0 ?  <StyledTypography2
+         color={colors.navyBlue500}
+         marginRight={1}
+         component="span"
+         marginTop={3}
+       >
+         No result found
+       </StyledTypography2>:
           <DiscoveryTable tableData={tableData} id={title}/>
         )}
       </Container>
+      {
+        !isSmallerThanMd && <Footer/>
+      }
     </>
   );
 };

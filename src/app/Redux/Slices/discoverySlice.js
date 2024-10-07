@@ -9,7 +9,9 @@ const initialState = {
   isNestedBucketTableDataLoading:false,
   isArticleDataLoading: false,
   isParentsBucketLoading:false,
- 
+  isCreateBucketModalOpen:false,
+  customBucketData:null,
+ commonCompanyList:[],
   isError: false,
   myBuckets: [],
   parentsBucket:[],
@@ -32,6 +34,8 @@ const initialState = {
     pe_remark: "",
     company_id: "",
   },
+
+ 
 };
 
 export const bucketsApiCall = createAsyncThunk(
@@ -70,6 +74,20 @@ export const discoveryFiltersApiCall = createAsyncThunk(
   }
 );
 
+export const commonCompanyListApi = createAsyncThunk(
+  "commonCompanyListApi",
+  async () => {
+    const response = await fetch(`${url}/buckets/buckets-names`, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+    });
+    return response.json();
+  }
+);
+
 export const deleteCustomBucketApi = createAsyncThunk(
   "deleteCustomBucketApi",
   async (id, { dispatch }) => {
@@ -97,7 +115,7 @@ export const deleteCustomBucketApi = createAsyncThunk(
 );
 
 export const createCustomBucketApi = createAsyncThunk(
-  "customBucketApi",
+  "createCustomBucketApi",
   async (data, { dispatch }) => {
     const response = await fetch(`${url}/my-buckets/`, {
       method: "POST",
@@ -112,6 +130,7 @@ export const createCustomBucketApi = createAsyncThunk(
 
     if (response.ok) {
       dispatch(myBucketsApiCall());
+   
       dispatch(
         setSnackStatus({
           status: true,
@@ -121,15 +140,17 @@ export const createCustomBucketApi = createAsyncThunk(
       );
     }
 
+   
+
     return result;
   }
 );
 
 export const discoveryTableApi = createAsyncThunk(
   "discoveryTableApi",
-  async ({ id, body, page }) => {
+  async ({ id, body, page,sort_by,sort_order }) => {
     const response = await fetch(
-      `${url}/buckets/companies/${id}?page=${page}&page_size=200&sort_by=company_name&sort_order=inc&platform=website`,
+      `${url}/buckets/companies/${id}?page=${page}&page_size=200&sort_by=${sort_by}&sort_order=${sort_order}&platform=website`,
       {
         method: "POST",
         headers: {
@@ -165,9 +186,9 @@ export const nestedBucketDiscoveryTableApi = createAsyncThunk(
 
 export const myBucketDiscoveryTableApi = createAsyncThunk(
   "myBucketDiscoveryTableApi",
-  async ({ id, body, page }) => {
+  async ({ id, body, page,sort_by,sort_order }) => {
     const response = await fetch(
-      `${url}/my-buckets/companies/${id}?page=${page}&page_size=200&sort_by=company_name&sort_order=inc&platform=website`,
+      `${url}/my-buckets/companies/${id}?page=${page}&page_size=200&sort_by=${sort_by}&sort_order=${sort_order}&platform=website`,
       {
         method: "POST",
         headers: {
@@ -452,6 +473,12 @@ const discoverySlice = createSlice({
     changeModalState: (state) => {
       state.isModalOpen = !state.isModalOpen;
     },
+    resetBucketModal: (state) => {
+      state.isCreateBucketModalOpen = false;
+      state.customBucketData = "";
+      
+    },
+    
   },
   extraReducers: (builder) => {
     builder.addCase(bucketsApiCall.pending, (state, action) => {
@@ -472,12 +499,18 @@ const discoverySlice = createSlice({
     });
     builder.addCase(createCustomBucketApi.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.isCreateBucketModalOpen=!action.payload.success;
+      state.customBucketData=action.payload
+     
     });
     builder.addCase(createCustomBucketApi.rejected, (state, action) => {
       state.isError = true;
       state.isLoading = false;
+    });  
+      
      
-    });
+     
+   
 
     // GET request for My buckets
     builder.addCase(myBucketsApiCall.pending, (state, action) => {
@@ -490,6 +523,16 @@ const discoverySlice = createSlice({
     builder.addCase(myBucketsApiCall.rejected, (state, action) => {
       state.isError = true;
       state.isMyBucketsLoading = false;
+    });
+    //Common Company List Api
+    
+    builder.addCase(commonCompanyListApi.fulfilled, (state, action) => {
+      
+      state.commonCompanyList = action.payload.data;
+    });
+    builder.addCase(commonCompanyListApi.rejected, (state, action) => {
+      state.isError = true;
+      
     });
     // Delete custom buckets
     builder.addCase(deleteCustomBucketApi.pending, (state, action) => {
@@ -517,7 +560,7 @@ const discoverySlice = createSlice({
     builder.addCase(discoveryTableApi.fulfilled, (state, action) => {
       state.isTableDataLoading = false;
       state.discoveryTableBucket = action.payload.data;
-      // state.title = action.payload.data.bucket.title;
+      state.title = action.payload.data.bucket.title;
     });
     builder.addCase(discoveryTableApi.rejected, (state, action) => {
       state.isError = true;
@@ -531,7 +574,7 @@ const discoverySlice = createSlice({
     builder.addCase(nestedBucketDiscoveryTableApi.fulfilled, (state, action) => {
       state.isNestedBucketTableDataLoading = false;
       state.nestedBucketDiscoveryTableBucket = action.payload.data;
-      // state.title = action.payload.data.bucket.title;
+      state.title = action.payload.data.bucket.title;
     });
     builder.addCase(nestedBucketDiscoveryTableApi.rejected, (state, action) => {
       state.isError = true;
@@ -667,5 +710,5 @@ const discoverySlice = createSlice({
     });
   },
 });
-export const { changeModalState } = discoverySlice.actions;
+export const { changeModalState ,resetBucketModal} = discoverySlice.actions;
 export default discoverySlice.reducer;

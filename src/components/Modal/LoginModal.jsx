@@ -11,8 +11,8 @@ import {
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import CloseIcon from "@mui/icons-material/Close";
-import { useDispatch } from "react-redux";
-import { deleteCustomBucketApi } from "@/app/Redux/Slices/discoverySlice";
+
+
 import Login from '../Auth/Login';
 
 const StyledTypography1 = styled(Typography)`
@@ -50,15 +50,12 @@ const StyledBox = styled(Box)`
 `;
 
 const LoginModal = ({ isOpen,handleClose}) => {
-  const dispatch = useDispatch();
-  const handleClosed = () => {
-    setIsOpen(false);
-  };
+ 
 
   return (
     <Modal
       open={isOpen}
-      onClose={handleClosed}
+      onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{ zIndex: 12000, border: "none", outline: "none" }}

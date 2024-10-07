@@ -8,7 +8,7 @@ const StyledTypography = styled(Typography)`
 
 const Disclaimer = ({ margin, text, width }) => {
   return (
-    <Box marginBottom={4} marginTop={margin} width={width ? width : "100%"}>
+    <Box marginBottom={4} marginTop={margin} width={width ? width : "100%"} paddingX={2}>
       <StyledTypography sx={{ color: '#657785', fontWeight: '600', display: 'inline' }}>
         DISCLAIMER:
       </StyledTypography>

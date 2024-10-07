@@ -1,7 +1,10 @@
 #MainContainer {
     font-family: sans-serif;
+    font-weight:400;
+    font-size:16px;
+    line-height:19px;
 }
-#MainContainer>p {
+/* #MainContainer>p {
     text-align: justify;
     margin: 20px 0;
     font-size: 14px;
@@ -34,4 +37,80 @@
 #MainContainer img {
     max-width: 100%;
     max-height: 300px;
+} */
+
+#MainContainer>p {
+    text-align: justify;
+    margin: 20px 0;
+    font-weight:400;
+    font-size:16px;
+    line-height:19px;
+}
+
+#MainContainer ul {
+    margin: 20px 0 10px 50px;
+}
+
+#MainContainer li {
+    margin: 5px 0;
+}
+
+#MainContainer table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 30px;
+}
+
+#MainContainer th,
+#MainContainer td {
+    text-align: left;
+    padding: 5px 10px;
+    border-bottom: 1px solid #39566d;
+}
+
+#MainContainer img {
+    max-width: 100%;
+    max-height: 300px;
+}
+
+/* Responsiveness for small screen laptops */
+@media only screen and (max-width : 1050px) {
+    #MainContainer table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+/* Responsiveness for tablet view */
+@media only screen and (max-width : 920px) {
+    
+
+    #MainContainer img {
+        display: block;
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    #MainContainer table {
+        width: 100%;
+        margin-bottom: 40px;
+        overflow-x: auto;
+        white-space: nowrap;
+        display: block;
+    }
+
+    #notLoggedinDiv {
+        margin: 100px auto auto;
+    }
+}
+
+/* Responsiveness for mobile view */
+@media only screen and (max-width : 440px) {
+    
+
+    #MainContainer ul {
+        margin: 20px 0 20px 30px;
+    }
+
 }

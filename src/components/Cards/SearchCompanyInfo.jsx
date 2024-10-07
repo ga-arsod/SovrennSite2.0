@@ -1,26 +1,26 @@
 "use client";
-import React from 'react';
-import { Box, Grid, IconButton, Typography } from '@mui/material';
-import { colors } from '../Constants/colors';
+import React from "react";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { colors } from "../Constants/colors";
 import styled from "@emotion/styled";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import Link from "next/link";
 
 const GridContainer = styled(Box)`
   display: grid;
   gap: 24px 16px;
 
   @media (min-width: 1025px) {
-    grid-template-columns: repeat(3, minmax(280px, 419px)); /* 3 cards per row, max 419px */
+    grid-template-columns: repeat(3, minmax(280px, 419px));
     justify-content: center; /* Centering the grid items */
   }
 
   @media (min-width: 640px) and (max-width: 1024px) {
-    grid-template-columns: repeat(2, minmax(280px, 332px)); /* 2 cards per row, max 332px */
-    justify-content: center;
+  grid-template-columns: repeat(2, minmax(350px, 332px));
   }
 
   @media (max-width: 639px) {
-    grid-template-columns: repeat(1, 1fr); /* 1 card per row, full width */
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
 
@@ -35,7 +35,7 @@ const StyledTypography3 = styled(Typography)`
   font-size: 23px;
   line-height: 28px;
   letter-spacing: -0.02em;
-  white-space: nowrap; 
+  white-space: nowrap;
 `;
 
 const StyledGrid = styled(Box)`
@@ -97,32 +97,65 @@ const CustomIconButton = styled(IconButton)`
   }
 `;
 
-const SearchCompanyInfo = () => {
+const stripHtmlTags = (text) => {
+  text = text
+    .replaceAll("&nbsp;", " ")
+    .replaceAll("&amp;", "&")
+    .replaceAll(/<\/?[^>]+(>|$)/g, "");
+
+  return text;
+};
+
+const SearchCompanyInfo = ({ content, textSearch }) => {
+  const getLinkHref = (ele) => {
+    let baseUrl = `/${ele.data.page2 + "/data/" + ele.data.params.slug}`;
+    let baseUrl2 = `/company?q=${ele._id}`;
+    if (textSearch === "textSearch") {
+      return baseUrl2;
+    } else {
+      return baseUrl;
+    }
+  };
   return (
     <>
       <Box marginTop={2}>
         <GridContainer>
-          {Array.from("abc").map((item, index) => (
+          {content?.map((ele, index) => (
             <StyledGrid key={index}>
-              <Box className="content">
-                <Grid container direction="column" paddingY="12px" paddingX="20px">
-                  <Grid item>
-                    <StyledTypography3>KPI Green Energy Ltd.</StyledTypography3>
-                  </Grid>
+              <Link target="_blank" href={getLinkHref(ele)} style={{textDecoration:"none"}}>
+                <Box className="content">
+                  <Grid
+                    container
+                    direction="column"
+                    paddingY="12px"
+                    paddingX="20px"
+                  >
+                    <Grid item>
+                      <StyledTypography3 color={colors.navyBlue500}>{ele.company_name}</StyledTypography3>
+                    </Grid>
 
-                  <Grid item display="flex" justifyContent="flex-end">
-                    <CustomIconButton className="icon-button">
-                      <ArrowForwardIcon fontSize="small" className="arrow-icon" sx={{ color: "#3C464F" }} />
-                    </CustomIconButton>
-                  </Grid>
+                    <Grid item display="flex" justifyContent="flex-end">
+                      <CustomIconButton className="icon-button">
+                        <ArrowForwardIcon
+                          fontSize="small"
+                          className="arrow-icon"
+                          sx={{ color: "#3C464F" }}
+                        />
+                      </CustomIconButton>
+                    </Grid>
 
-                  <Grid item marginTop={2}>
-                    <StyledTypography1 color="#627B8F" sx={{ fontWeight: 400 }} marginBottom={1}>
-                      Several Institutions are subscribing to the QIP including Quant Mutual Fund, Societe Generale, Goldman Sachs, Morgan Stanley, BoFA Securities, Yes Bank, Bengal Finance, etc...
-                    </StyledTypography1>
+                    <Grid item marginTop={2}>
+                      <StyledTypography1
+                        color="#627B8F"
+                        sx={{ fontWeight: 400 }}
+                        marginBottom={1}
+                      >
+                        {stripHtmlTags(ele.sentence)}
+                      </StyledTypography1>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Box>
+                </Box>
+              </Link>
             </StyledGrid>
           ))}
         </GridContainer>

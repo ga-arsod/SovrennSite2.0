@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Grid,
@@ -13,6 +13,7 @@ import {
   MenuItem,
   Chip,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
@@ -23,6 +24,7 @@ import { useTheme } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { createCustomBucketApi } from "@/app/Redux/Slices/discoverySlice";
 import DeleteBucketCreation from "../../components/Modal/DeleteBucketCreation"
+import { commonCompanyListApi } from "@/app/Redux/Slices/discoverySlice";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -107,6 +109,15 @@ const CreateBucketModal = ({ open, handleClose }) => {
   const theme = useTheme();
   const [isOpen,setIsOpen]=useState(false)
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const options = useSelector(
+    (store) => store.discovery.commonCompanyList
+  );
+  
+  const {customBucketData,isCreateBucketModalOpen} = useSelector(
+    (store) => store.discovery
+  );
+
+  
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     title: "",
@@ -135,6 +146,11 @@ const CreateBucketModal = ({ open, handleClose }) => {
     setSelectedOptions(selectedOptions.filter((item) => item !== option));
   };
 
+  useEffect(()=>{
+    dispatch(commonCompanyListApi())
+  },[])
+console.log(isCreateBucketModalOpen,"isCreateBucketModalOpen")
+console.log(customBucketData,"customBucketData")
   const renderField = (field) => {
     switch (field.type) {
       case "text":
@@ -222,19 +238,19 @@ const CreateBucketModal = ({ open, handleClose }) => {
               fullWidth
               MenuProps={{
                 PaperProps: {
-                  elevation: 0, // Remove the shadow
+                  elevation: 0, 
                   sx: {
-                    zIndex: 1400, // Ensure it is above the modal backdrop
+                    zIndex: 1400, 
                   },
                 },
               }}
             >
-              {field.options.map((option, index) => (
+              {options?.map((elem, index) => (
                 <MenuItem
-                  key={option.value}
-                  value={option.label}
+                  key={elem.bucket_name}
+                  value={elem.bucket_name}
                   sx={{
-                    color: selectedOptions.includes(option.label)
+                    color: selectedOptions.includes(elem.bucket_name)
                       ? colors.navyBlue100
                       : colors.navyBlue900, 
                     borderWidth: "1px 1px 0 1px", 
@@ -261,7 +277,7 @@ const CreateBucketModal = ({ open, handleClose }) => {
                     alignItems="center"
                     width="100%"
                   >
-                    <Grid item>{option.label}</Grid>
+                    <Grid item>{elem.bucket_name}</Grid>
                     <Grid item>
                       <Typography
                         sx={{
@@ -271,7 +287,7 @@ const CreateBucketModal = ({ open, handleClose }) => {
                         }}
                         color={colors.green500}
                       >
-                        2 common
+                       {elem.companies_in_common}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -334,7 +350,7 @@ const CreateBucketModal = ({ open, handleClose }) => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{ border: "none", outline: "none" }} // Set modal's z-index higher than navbar's z-index
+        sx={{ border: "none", outline: "none" }} 
         BackdropProps={{
           sx: {
             backgroundColor: "rgba(0, 0, 0, 0.25)",
@@ -359,7 +375,9 @@ const CreateBucketModal = ({ open, handleClose }) => {
             <IconButton
              
               sx={{ position: "absolute", top: "6px", right: "4px" }}
-              onClick={()=>{setIsOpen(true)}}
+              onClick={()=>{
+               
+                setIsOpen(true)}}
             >
               <CloseIcon sx={{ color: colors.black, zIndex: 1400 }} />
             </IconButton>
@@ -389,14 +407,25 @@ const CreateBucketModal = ({ open, handleClose }) => {
                   ))}
                 </Grid>
               </Grid>
-              <Grid item width="100%" marginTop={5}>
+             
+              <Grid item width="100%" marginTop={{xs:1,sm:3}} >
+              {
+                        !customBucketData?.success ? <Typography style={{ color: "red"}} paddingBottom={1} textAlign="center">
+                            {customBucketData?.message}
+                        </Typography>
+                            :
+                            ""}
+                
                 <StyledButton2
                   variant="contained"
-                  onClick={() => {
-               
-                  handleClose()
-               
-                    dispatch(createCustomBucketApi(formData));
+                  onClick={async () => {
+                   
+                    const result = await dispatch(createCustomBucketApi(formData));
+                    
+                   
+                    if (isCreateBucketModalOpen) {
+                      handleClose();
+                    }
                   }}
                   disabled={selectedOptions.length < 2}
                 >

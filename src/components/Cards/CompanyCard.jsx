@@ -5,22 +5,22 @@ import Image from 'next/image';
 import { colors } from '../Constants/colors';
 import styled from "@emotion/styled";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Link from 'next/link';
 
 const GridContainer = styled(Box)`
   display: grid;
-  gap: 24px 16px; /* Row gap, Column gap */
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Ensures responsive layout */
+  gap: 24px 16px;
 
   @media (min-width: 1025px) {
-    grid-template-columns: repeat(4, minmax(280px, 332px)); /* 4 items per row, max 332px */
+    grid-template-columns: repeat(4, 1fr);
   }
 
   @media (min-width: 640px) and (max-width: 1024px) {
-    grid-template-columns: repeat(3, minmax(280px, 332px)); /* 3 items per row, max 332px */
+    grid-template-columns: repeat(3, 1fr);
   }
 
   @media (max-width: 639px) {
-    grid-template-columns: repeat(1, 1fr); /* 1 item per row, full width */
+    flex: 1 1 100%;
   }
 `;
 
@@ -42,32 +42,28 @@ const StyledGrid = styled(Box)`
   border-radius: 3px;
   display: flex;
   flex-direction: column;
-  height: 300px;
-  @media (max-width: 639px) {
-   height: 330px;
-  }
   position: relative;
-  transition: background-color 0.8s; 
+  transition: background-color 0.8s;
 
   &:hover {
     background-color: ${colors.green50};
 
     .arrow-icon {
-      transform: rotate(-45deg); 
-      color:white;
-      font-size:14px
+      transform: rotate(-45deg);
+      color: white;
+      font-size: 14px;
     }
 
     .icon-button {
-      background-color: ${colors.themeGreen}; 
-      border-color: ${colors.navyBlue900}; 
+      background-color: ${colors.themeGreen};
+      border-color: ${colors.navyBlue900};
     }
   }
 
   .content {
-    flex: 1; 
     display: flex;
     flex-direction: column;
+    flex: 1;  // Allow content to grow and fill the available space
     justify-content: space-between;
   }
 
@@ -76,7 +72,7 @@ const StyledGrid = styled(Box)`
     justify-content: space-between;
     align-items: center;
     padding: 12px 11px;
-    margin-top: auto;
+    margin-top: auto;  // Pushes it to the bottom
   }
 `;
 
@@ -97,49 +93,60 @@ const CustomIconButton = styled(IconButton)`
   }
 `;
 
-const CompanyCard = () => {
+const DefaultImageContainer = styled(Box)`
+  background-color: ${colors.green900};
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 140px; 
+  border-radius: 3px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+`;
+
+const CompanyCard = ({data,slug}) => {
+  console.log(data,"data")
   return (
     <Box marginTop={2}>
-      {/* Moved GridContainer outside the loop */}
+     
       <GridContainer>
-        {Array.from("abc").map((item, index) => (
+        {data?.map((ele, index) => (
           <StyledGrid key={index}>
+              {/* <Link target="_blank" href={`/discovery/${ele.slug}/${slug}`} style={{textDecoration:'none'}}> */}
             <Box className="content">
               <Grid container>
                 <Grid item paddingY={2} paddingX="20px" width="100%">
-                  <Box
-                    sx={{
-                      borderRadius: '3px',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <Image
-                      src="/discovery.jpg"
-                      width={274}
-                      height={140}
-                      alt="poster"
-                      layout="responsive"
-                    />
-                  </Box>
+                <Box sx={{ borderRadius: "3px", overflow: "hidden" }}>
+                        {ele?.thumb_url ? (
+                          <Image src={ele.thumb_url} width={274} height={140} alt="poster" layout="responsive" />
+                        ) : (
+                          <DefaultImageContainer>
+                            <Typography variant="h6">{ele?.title}</Typography>
+                          </DefaultImageContainer>
+                        )}
+                      </Box>
                 </Grid>
                 <Grid item paddingX="11px">
                   <StyledTypography1 gutterBottom>
-                    Preferential Issuance
+                    {ele.title}
                   </StyledTypography1>
                   <StyledTypography2 color={colors.navyBlue400} sx={{ fontWeight: 500 }} marginBottom={1}>
-                    List of interesting stocks in the process of raising capital via Preferential Issuance
+                   {ele.description}
                   </StyledTypography2>
                 </Grid>
               </Grid>
               <Box className="bottom-section">
                 <StyledTypography2 component="span" color={colors.themeGreen} sx={{ fontWeight: 600 }}>
-                  Bucket- Functional
+                  {`Bucket- ${ele.type}`}
                 </StyledTypography2>
                 <CustomIconButton className="icon-button">
                   <ArrowForwardIcon fontSize="small" className="arrow-icon" sx={{ color: "#3C464F" }} />
                 </CustomIconButton>
               </Box>
             </Box>
+            {/* </Link> */}
           </StyledGrid>
         ))}
       </GridContainer>

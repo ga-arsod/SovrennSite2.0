@@ -179,7 +179,8 @@ const CustomDiscoveryCard = ({ title, data }) => {
     setIsGridOpen(!isGridOpen);
   };
 
-  const handleDeleteClick = (id, title) => {
+  const handleDeleteClick = (event,id, title) => {
+    event.stopPropagation(); 
     setSelectedItemObject({
       ...selectedItemObject,
       id: id,
@@ -238,7 +239,7 @@ const CustomDiscoveryCard = ({ title, data }) => {
             {data?.map((item, index) => (
               <StyledGrid key={index} onClick={() => router.push(`/discovery/${item?.slug}?bucket=my_bucket`)}>
                 <Box
-                  onClick={() => handleDeleteClick(item._id, item.title)}
+                  onClick={(e) => handleDeleteClick(e,item._id, item.title)}
                   sx={{
                     display: "flex",
                     justifyContent: "flex-end",

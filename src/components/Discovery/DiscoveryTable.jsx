@@ -18,8 +18,12 @@ import Pagination from "../Pagination/Pagination";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import Link from "next/link";
+
 import moment from "moment";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import LoginModal from "../Modal/LoginModal";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import { setSortBy, toggleSortOrder } from "@/app/Redux/Slices/sortingSlice";
 
 const StyledTableCell = styled(TableCell)`
   font-weight: 600;
@@ -89,7 +93,7 @@ const StyledTableRow = styled(TableRow)`
   &:hover {
     background-color: ${colors.neutral600};
   }
-  position: relative; 
+  position: relative;
 `;
 
 const StyledBodyTableCell = styled(TableCell)`
@@ -101,6 +105,16 @@ const StyledBodyTableCell = styled(TableCell)`
 `;
 
 const StyledArrowUpwardIcon = styled(ArrowUpwardIcon)`
+  && {
+    font-size: 18px;
+    color: ${colors.navyBlue500};
+    margin-left: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
+  }
+`;
+const StyledArrowDownwardIcon = styled(ArrowDownwardIcon)`
   && {
     font-size: 18px;
     color: ${colors.navyBlue500};
@@ -219,10 +233,12 @@ const wordsStr = [
 ];
 
 export default function DiscoveryTable({ tableData, id }) {
+  const dispatch = useDispatch();
   const [hoveredRow, setHoveredRow] = useState(null);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const { sortBy, sortOrder } = useSelector((state) => state.sorting);
   const { userDetails } = useSelector((store) => store.auth);
-
+  const { isAuth } = useSelector((store) => store.auth);
   const totalPages = 20;
 
   const handleMouseEnter = (index) => {
@@ -233,8 +249,65 @@ export default function DiscoveryTable({ tableData, id }) {
     setHoveredRow(null);
   };
 
+  const handleSortChange = (field) => {
+    dispatch(setSortBy(field));
+
+    if (sortBy === field) {
+      dispatch(toggleSortOrder());
+    }
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  const articleRedirect = (ind, item) => {
+    if (
+      (ind % 2 === 0 && tableData?.basket?.avail_free) ||
+      userDetails?.subscriptions?.includes("full-access") ||
+      userDetails?.subscriptions?.includes("monthly") ||
+      userDetails?.subscriptions?.includes("quarterly") ||
+      userDetails?.subscriptions?.includes("life") ||
+      userDetails?.subscriptions?.includes("trial") ||
+      (userDetails?.subscriptions?.includes("basket") && isAuth)
+    ) {
+      return `/discovery/${id}/${item?.slug}`;
+    } else return "";
+  };
+
+  const handleRowClick = (index, item) => {
+    if (isAuth) {
+      const redirectUrl = articleRedirect(index, item);
+      if (redirectUrl) {
+        window.open(redirectUrl, "_blank");
+      }
+    } else {
+      setIsOpen(true);
+    }
+  };
+
+  const headerRowArray = [
+    {
+      name: "Company Name",
+      id: "company_name",
+    },
+    {
+      name: "Market Cap",
+      id: "market_cap",
+    },
+    {
+      name: "TTM PE",
+      id: "ttm_pe",
+    },
+    {
+      name: "Date of Info",
+      id: "date",
+    },
+  ];
+ 
   return (
     <>
+      <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <Box
         sx={{
           paddingX: 0,
@@ -253,68 +326,52 @@ export default function DiscoveryTable({ tableData, id }) {
           <Table sx={{ borderCollapse: "separate" }}>
             <TableHead>
               <TableRow>
-                <StyledTableCell
+                {headerRowArray?.map((item, index) => {
+                  return (
+                    <>
+                      <StyledTableCell key={index}>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          {item?.name}
+                          {sortBy === item.id ? (
+                            sortOrder === "inc" ? (
+                              <StyledArrowUpwardIcon
+                                className="arrow-icon"
+                                onClick={() => handleSortChange(item?.id)}
+                              />
+                            ) : (
+                              <StyledArrowDownwardIcon
+                                className="arrow-icon"
+                                onClick={() => handleSortChange(item?.id)}
+                              />
+                            )
+                          ) : (
+                            <StyledArrowUpwardIcon
+                              className="arrow-icon"
+                              onClick={() => handleSortChange(item?.id)}
+                            />
+                          )}
+                        </div>
+                      </StyledTableCell>
+                    </>
+                  );
+                })}
 
-                // onMouseEnter={() => handleMouseEnter(index)}
-                // onMouseLeave={handleMouseLeave}
-                >
-                  <HeaderTextWrapper>
-                    Company Name
-                    <StyledArrowUpwardIcon className="arrow-icon" />
-                  </HeaderTextWrapper>
-                </StyledTableCell>
-                <StyledTableCell
-
-                // onMouseEnter={() => handleMouseEnter(index)}
-                // onMouseLeave={handleMouseLeave}
-                >
-                  <HeaderTextWrapper>
-                    Market Cap(in Cr)
-                    <StyledArrowUpwardIcon className="arrow-icon" />
-                  </HeaderTextWrapper>
-                </StyledTableCell>
-                <StyledTableCell
-
-                // onMouseEnter={() => handleMouseEnter(index)}
-                // onMouseLeave={handleMouseLeave}
-                >
-                  <HeaderTextWrapper>
-                    TTM PE
-                    <StyledArrowUpwardIcon className="arrow-icon" />
-                  </HeaderTextWrapper>
-                </StyledTableCell>
-
-                <StyledTableCell
-
-                // onMouseEnter={() => handleMouseEnter(index)}
-                // onMouseLeave={handleMouseLeave}
-                >
-                  <HeaderTextWrapper>
-                    Date of Info
-                    <StyledArrowUpwardIcon className="arrow-icon" />
-                  </HeaderTextWrapper>
-                </StyledTableCell>
-
-                <StyledTableCell
-
-                // onMouseEnter={() => handleMouseEnter(index)}
-                // onMouseLeave={handleMouseLeave}
-                >
+                <StyledTableCell>
                   <HeaderTextWrapper>
                     Remarks
-                    <StyledArrowUpwardIcon className="arrow-icon" />
+                    <StyledArrowDownwardIcon className="arrow-icon" />
                   </HeaderTextWrapper>
                 </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {(tableData?.companies)?.map((item, index) => (
+              {tableData?.companies?.map((item, index) => (
                 <StyledTableRow
                   key={index}
                   onMouseEnter={() => handleMouseEnter(index)}
                   onMouseLeave={handleMouseLeave}
                 >
-                  {(index % 2 === 0 && tableData?.avail_free) ||
+                  {(index % 2 === 0 && tableData?.basket?.avail_free) ||
                   userDetails?.subscriptions?.includes("full-access") ||
                   userDetails?.subscriptions?.includes("monthly") ||
                   userDetails?.subscriptions?.includes("quarterly") ||
@@ -352,36 +409,30 @@ export default function DiscoveryTable({ tableData, id }) {
                     {item?.date ? moment(item.date).format("Do MMM YY") : "NA"}
                   </StyledBodyTableCell>
                   <StyledBodyTableCell
-                    sx={{
-                      color: colors.neutral900,
-                      textAlign: "justify",
-                      position: "relative",
-                    }}
+                    sx={{ color: colors.neutral900, position: "relative" }}
+                    onClick={() => handleRowClick(index, item)}
                   >
-                    {item?.remark ? item?.remark : "NA"}
-                    <Link
-                      target="_blank"
-                      href={`/discovery/${id}/${item?.slug}`}
-                    >
-                      <SlideBox hovered={hoveredRow === index}>
-                        <Typography
+                    {item?.remark || "NA"}
+                    <SlideBox hovered={hoveredRow === index}>
+                      <Typography
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: "14px",
+                          marginRight: "8px",
+                        }}
+                      >
+                        Read More
+                      </Typography>
+                      <CustomIconButton>
+                        <ArrowForwardIosIcon
+                          fontSize="small"
                           sx={{
-                            fontWeight: 600,
-                            fontSize: "14px",
-                            lineHeight: "17px",
-                            marginRight: "8px",
+                            color: colors.themeGreen,
+                            fontSize: "12px",
                           }}
-                        >
-                          Read More
-                        </Typography>
-                        <CustomIconButton>
-                          <ArrowForwardIosIcon
-                            fontSize="small"
-                            sx={{ color: colors.themeGreen, fontSize: "12px" }}
-                          />
-                        </CustomIconButton>
-                      </SlideBox>
-                    </Link>
+                        />
+                      </CustomIconButton>
+                    </SlideBox>
                   </StyledBodyTableCell>
                 </StyledTableRow>
               ))}
@@ -389,9 +440,9 @@ export default function DiscoveryTable({ tableData, id }) {
           </Table>
         </TableContainer>
       </Box>
-      <Box mt={2}>
+      {/* <Box mt={2}>
         <Pagination totalPages={totalPages} />
-      </Box>
+      </Box> */}
     </>
   );
 }

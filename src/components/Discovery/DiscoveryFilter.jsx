@@ -30,7 +30,8 @@ const StyledButton = styled(Button)`
 const DiscoveryFilter = () => {
     const [open, setOpen] = useState(false);
     const {userDetails} = useSelector((store) => store.auth);
-  
+   
+    
  
     const handleClose = () => {
       setOpen(false);

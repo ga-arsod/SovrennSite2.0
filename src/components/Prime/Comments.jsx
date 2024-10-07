@@ -96,6 +96,7 @@ const CustomMenuItem = styled(MenuItem)`
   font-weight: 600;
   line-height: 14px;
   padding: 2px 4px;
+ 
 `;
 
 const CommentDrawer = ({
@@ -207,10 +208,18 @@ const CommentDrawer = ({
         open={isCommentsModalOpen}
         onClose={onClose}
         sx={{ zIndex: 1400 }}
+        PaperProps={{
+          sx: {
+            width: {
+              xs: '100%', 
+              sm: '425px', 
+            },
+          },
+        }}
       >
         <Box
           sx={{
-            width: 425,
+           
             padding: 2,
             display: "flex",
             flexDirection: "column",
@@ -243,7 +252,7 @@ const CommentDrawer = ({
             InputProps={{
               sx: {
                 "& .MuiInputBase-input": {
-                  color: colors.navyBlue500, // Set the text color to red
+                  color: colors.navyBlue500, 
                 },
                 fontSize: "14px",
                 fontWeight: "400",
@@ -375,22 +384,35 @@ const CommentDrawer = ({
         </Box>
         {/* Delete Comment Menu */}
         <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-          PaperProps={{ elevation: 2, sx: { width: 132 } }}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          transformOrigin={{ vertical: "top", horizontal: "center" }}
-          sx={{ zIndex: 1500 }} // Ensure the menu appears on top of other elements
-        >
-          <CustomMenuItem
-            onClick={handleDeleteComment}
-            style={{ color: colors.red500, margin: 0 }}
-          >
-            <Delete fontSize="small" sx={{ marginRight: 1 }} />
-            Delete Comment
-          </CustomMenuItem>
-        </Menu>
+  anchorEl={anchorEl}
+  open={Boolean(anchorEl)}
+  onClose={handleMenuClose}
+  PaperProps={{
+    elevation: 2,
+    sx: {
+      width: 132,
+      padding: {
+        xs: '4px -4px',
+        sm: '8px -4px', 
+      },
+      maxHeight: {
+        xs: '45px', 
+        overflow:'hidden',
+      },
+    },
+  }}
+  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+  transformOrigin={{ vertical: "top", horizontal: "center" }}
+  sx={{ zIndex: 1500 }}
+>
+  <CustomMenuItem
+    onClick={handleDeleteComment}
+    style={{ color: colors.red500, margin: 0 }}
+  >
+    <Delete fontSize="small" sx={{ marginRight: 1 }} />
+    Delete Comment
+  </CustomMenuItem>
+</Menu>
       </Drawer>
     </>
   );

@@ -4,7 +4,8 @@ import DiscoveryHeading from "@/components/Discovery/DiscoveryHeading";
 import { Container, Grid, Typography, IconButton, Box } from "@mui/material";
 import styled from "@emotion/styled";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import Image from "next/image"; // Ensure the correct import
+import Image from "next/image"; 
+
 import { colors } from "@/components/Constants/colors";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
@@ -69,7 +70,7 @@ const StyledGrid = styled(Box)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%; /* Allows the card to grow with its content */
+    height: 100%; 
   }
 
   .bottom-section {
@@ -111,6 +112,7 @@ const DefaultImageContainer = styled(Box)`
 `;
 
 const Discovery = () => {
+ 
   const { title } = useParams();
   const { isParentsBucketLoading, parentsBucket } = useSelector((store) => store.discovery);
   const dispatch = useDispatch();

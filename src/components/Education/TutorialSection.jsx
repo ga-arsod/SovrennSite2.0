@@ -135,89 +135,92 @@ const TutorialSection = () => {
                     item
                     key={index}
                     sm={5.7}
-                    sx={{ border:  "1px solid #E4E7EC", borderRadius: "12px" }}
+                    sx={{ border: "1px solid #E4E7EC", borderRadius: "12px" }}
                   >
-                    {
-                      isPlaying===index && language!==null ? 
-                      <Box
-                      sx={{
-                        width: "100%",
-                        height: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        position: "relative",
-                        zIndex:"10"
-                      }}
-                    >
-                      <video
-                        width="100%"
-                        height="100%"
-                        controls
-                        autoPlay
-                        style={{ borderRadius: "12px" }}
-                      >
-                        <source
-                          src={
-                            language === "hindi"
-                              ? element?.hindiUrl
-                              : element?.englishUrl
-                          }
-                          type="video/mp4"
-                        />
-                        Your browser does not support the video tag.
-                      </video>
-                    </Box>
-                      :<>
-                    <Box
-                      sx={{
-                        position: "relative",
-                        borderRadius: "12px",
-                        overflow: "hidden",
-                        zIndex:"5"
-                      }}
-                    >
-                      <Image
-                        src={element?.thumbUrl}
-                        alt="..."
-                        width={380}
-                        height={350}
-                        layout="responsive"
-                      />
+                    {isPlaying === index && language !== null ? (
                       <Box
                         sx={{
-                          position: "absolute",
-                          top: "50%",
-                          left: "50%",
-                          transform: "translate(-50%, -50%)",
-                          width: "80px",
-                          height: "80px",
-                          cursor: "pointer",
+                          width: "100%",
+                          height: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          position: "relative",
+                          zIndex: "10",
                         }}
-                        onClick={handleOpen}
                       >
-                        <Image
-                          src="/play.svg"
-                          alt="overlay"
-                          layout="fill"
-                          objectFit="contain"
-                          onClick={() => {
-                            setIsPlaying(index);
-                          }}
-                        />
+                        <video
+                          width="100%"
+                          height="100%"
+                          controls
+                          autoPlay
+                          style={{ borderRadius: "12px" }}
+                        >
+                          <source
+                            src={
+                              language === "hindi"
+                                ? element?.hindiUrl
+                                : element?.englishUrl
+                            }
+                            type="video/mp4"
+                          />
+                          Your browser does not support the video tag.
+                        </video>
                       </Box>
-                    </Box>
+                    ) : (
+                      <>
+                        <Box
+                          sx={{
+                            position: "relative",
+                            borderRadius: "12px",
+                            overflow: "hidden",
+                            zIndex: "5",
+                          }}
+                        >
+                          <Image
+                            src={element?.thumbUrl}
+                            alt="..."
+                            width={380}
+                            height={350}
+                            layout="responsive"
+                          />
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              width: "80px",
+                              height: "80px",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              handleOpen();
 
-                    <StyledTypography3
-                      color="#101828"
-                      marginLeft={3}
-                      paddingY={3}
-                    >
-                      {element?.title}
-                    </StyledTypography3>
-                    </>
-                    }
-                   
+                              setLanguage(null);
+                            }}
+                          >
+                            <Image
+                              src="/play.svg"
+                              alt="overlay"
+                              layout="fill"
+                              objectFit="contain"
+                              onClick={() => {
+                                setIsPlaying(index);
+                              }}
+                            />
+                          </Box>
+                        </Box>
+
+                        <StyledTypography3
+                          color="#101828"
+                          marginLeft={3}
+                          paddingY={3}
+                        >
+                          {element?.title}
+                        </StyledTypography3>
+                      </>
+                    )}
                   </Grid>
                 );
               })}

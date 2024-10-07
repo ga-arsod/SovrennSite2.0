@@ -1,12 +1,19 @@
-"use client"
-import React from 'react'
-import { Grid, Typography,Divider } from '@mui/material';
+"use client";
+import React, { useState, useEffect } from "react";
+import { Grid, Typography, Divider, IconButton } from "@mui/material";
 import styled from "@emotion/styled";
-import { colors } from '../Constants/colors';
-import SearchCompanyInfo from '../Cards/SearchCompanyInfo';
+import { colors } from "../Constants/colors";
+import SearchCompanyInfo from "../Cards/SearchCompanyInfo";
 import CompanyCard from "../Cards/CompanyCard";
-import SearchCompanyPulseAdd from "../Cards/SearchCompanyPulseAdd"
-
+import SearchCompanyPulseAdd from "../Cards/SearchCompanyPulseAdd";
+import convertToHTML from "@/utils/convertToHtml";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import Head from "next/head";
+import styles from "../../styles/CompanyResult.module.css";
+import ArrowBack from "@mui/icons-material/ArrowBack";
+import { useMediaQuery } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 23px;
@@ -22,47 +29,6 @@ const StyledTypography2 = styled(Typography)`
   letter-spacing: -0.02em;
 `;
 
-const StyledTypography3 = styled(Typography)`
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 24px;
-  letter-spacing: -0.02em;
-  color: ${colors.neutral800};
-`;
-
-const StyledList = styled('ol')`
-  list-style-type: none;
-  
-  counter-reset: list-counter;
-`;
-
-const StyledListItem = styled('li')`
-  counter-increment: list-counter;
-  margin-bottom: 8px;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 24px;
-  color: ${colors.neutral800};
-  letter-spacing: -0.02em;
-  font-family: Inter, sans-serif;
-
-  &::before {
-    content: "(" counter(list-counter, lower-roman) ") ";
-    font-weight: 400;
-    margin-right: 4px;
-  }
-`;
-
-const StyledYesBank = styled('span')`
-  color: ${colors.navyBlue500};
-  font-weight: 600;
-`;
-
-const StyledEmail = styled('span')`
-  color: ${colors.themeGreen};
-  text-decoration: underline;
-  cursor: pointer;
-`;
 const CustomDivider = styled(Divider)`
   background-color: ${colors.neutral500};
   border-color: none;
@@ -70,18 +36,49 @@ const CustomDivider = styled(Divider)`
   height: 2px;
 `;
 
-const companyNotListedArray = [
-  "cyclical in nature",
-  "loss making",
-  "large cap (more than INR 30,000 Crore market capitalisation)",
-  "not demonstrating profit uptrend",
-];
-
 const Search = () => {
+  const router = useRouter();
+  const [data, setData] = useState({});
+  const searchParams = useSearchParams();
+  const q = searchParams.get("q");
+  
+ 
+  const isXsOrSm = useMediaQuery((theme) => theme.breakpoints.down("md"));
+
+  useEffect(() => {
+    if (q) {
+      getCompanies(q);
+    }
+    return () => {};
+  }, [q]);
+
+  const getCompanies = async (query) => {
+    const res = await fetch(
+      `https://api.sovrenn.com/company/text-search?q=${query}`
+    );
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setData(data.data);
+    }
+    return;
+  };
+
   return (
     <>
-      <Grid container marginTop="60px" flexDirection="column">
-        <Grid item paddingY={{ xs: 2, sm: 5 }}>
+      <Head>
+        <title>Search results for {q}</title>
+      </Head>
+      <Grid container marginTop="60px" flexDirection="column" >
+        <Grid item paddingY={{ xs: 2, sm: 5 }} sx={{display:"flex",alignItems:"center"}}>
+        
+          {isXsOrSm && (
+            <IconButton onClick={() => router.back()} aria-label="go back">
+              <ArrowBackIcon sx={{color:colors.navyBlue500}} />
+            </IconButton>
+          )}
+
           <StyledTypography1
             color={colors.navyBlue500}
             marginRight={1}
@@ -90,50 +87,65 @@ const Search = () => {
             Search Result for:
           </StyledTypography1>
           <StyledTypography1 color={colors.themeGreen} component="span">
-            Yes Bank
+            {q}
           </StyledTypography1>
         </Grid>
         <Grid item marginBottom={3}>
           <StyledTypography2 color={colors.red400} textAlign="center">
-            Yes Bank is not covered by Sovrenn.
+            {` ${q} is not covered by Sovrenn.`}
           </StyledTypography2>
         </Grid>
+
         <Grid item>
-          <StyledTypography3 color={colors.neutral800}>
-            Sovrenn is a curated stock platform where we pick only high potential stocks. We do not cover stocks which are:
-          </StyledTypography3>
-        </Grid>
-        <Grid item>
-          <StyledList>
-            {companyNotListedArray.map((item, index) => (
-              <StyledListItem key={index}>{item}</StyledListItem>
-            ))}
-          </StyledList>
+          {data?.text ? (
+            <div id={styles.infoText}>{convertToHTML(data?.text)}</div>
+          ) : (
+            ""
+          )}
         </Grid>
         <Grid item paddingTop={4}>
-          <StyledTypography3 fontSize="16px" lineHeight="24px" color={colors.neutral900}>
-            In case you think <StyledYesBank>Yes Bank</StyledYesBank> is not falling under any of the above criteria, please let us know at: <StyledEmail>help@sovrenn.com</StyledEmail>, and we will be happy to consider if we should add <StyledYesBank>Yes Bank</StyledYesBank> on the platform.
-          </StyledTypography3>
           <CustomDivider sx={{ mt: 4, mb: 4 }} />
         </Grid>
         <Grid item>
-            <StyledTypography1 color={colors.navyBlue400}>Keyword Found in</StyledTypography1>
-           <SearchCompanyInfo/>
-           <CustomDivider sx={{ mt: 4, mb: 4 }} />
+          {data?.available_data?.data?.length ? (
+            <>
+              <StyledTypography1 color={colors.navyBlue400}>
+                {data.available_data?.header}
+              </StyledTypography1>
+              <SearchCompanyInfo content={data?.available_data?.data} />
+              <CustomDivider sx={{ mt: 4, mb: 4 }} />
+            </>
+          ) : (
+            ""
+          )}
         </Grid>
-        <Grid item>
-            <StyledTypography1 color={colors.navyBlue400}>Explore High Profit Growth Companies in Discovery</StyledTypography1>
-          <CompanyCard/>
-           <CustomDivider sx={{ mt: 4, mb: 4 }} />
-        </Grid>
-        <Grid item marginBottom={6}>
-            <StyledTypography1 color={colors.navyBlue400}>Track Latest Updates of this company using Sovrenn Pulse</StyledTypography1>
-          <SearchCompanyPulseAdd/>
-           
-        </Grid>
+        {data?.discovery ? (
+          <Grid item>
+            <StyledTypography1 color={colors.navyBlue400}>
+              {data?.discovery?.header}
+            </StyledTypography1>
+            <CompanyCard
+              data={data?.discovery?.data ? [data.discovery.data] : []}
+            />
+            <CustomDivider sx={{ mt: 4, mb: 4 }} />
+          </Grid>
+        ) : (
+          ""
+        )}
+
+        {data?.pulse?.data?.length ? (
+          <Grid item marginBottom={6}>
+            <StyledTypography1 color={colors.navyBlue400}>
+              {data?.pulse?.header}
+            </StyledTypography1>
+            <SearchCompanyPulseAdd content={data?.pulse?.data} />
+          </Grid>
+        ) : (
+          ""
+        )}
       </Grid>
     </>
   );
-}
+};
 
 export default Search;

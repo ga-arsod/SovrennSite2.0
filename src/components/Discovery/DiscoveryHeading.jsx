@@ -6,6 +6,7 @@ import { useTheme } from "@mui/material/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { colors } from "../Constants/colors";
 import Snackbar from "../Snackbar/SnackBar";
+import { useRouter } from "next/navigation";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -35,11 +36,15 @@ const StyledTypography2 = styled(Typography)`
 
 const DiscoveryHeading = ({headingObject}) => {
   const theme = useTheme();
+  const router=useRouter()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const lastSpaceIndex = headingObject?.heading?.lastIndexOf(" ");
 
   const part1 = headingObject?.heading?.substring(0, lastSpaceIndex + 1);
   const part2 = headingObject?.heading?.substring(lastSpaceIndex + 1);
+  const handleBackClick = () => {
+    router.back();  
+  };
   
   return (
     <>
@@ -55,6 +60,7 @@ const DiscoveryHeading = ({headingObject}) => {
                     marginRight: { xs: 1, sm: 2 },
                     color: colors.navyBlue500,
                   }}
+                  onClick={handleBackClick}
                 />
               )}
               <StyledTypography1

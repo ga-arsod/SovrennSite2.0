@@ -60,14 +60,14 @@ const FoundersCard = ({ item }) => {
           </Grid>
           <Grid container justifyContent="center" alignItems='center' sx={{position:'absolute',bottom:{xs:"20px",sm:pathname=="/"?"48px":"20px",md:"48px"}}} width={pathname==="/" ? "80%" : "90%"} >
             <Grid item component="span">
-              <Link href={item.twitter}  passHref>
+              <Link href={item.twitter}  passHref target="_blank">
               <IconButton sx={{ color: "#98A2B3" }}>
                 <TwitterIcon />
               </IconButton>
               </Link>
             </Grid>
             <Grid item component="span">
-            <Link href={item.linkedin}  passHref>
+            <Link href={item.linkedin}  passHref target="_blank">
               <IconButton sx={{ color: "#98A2B3" }}>
                 <LinkedInIcon />
               </IconButton>

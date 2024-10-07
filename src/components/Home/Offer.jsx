@@ -19,7 +19,7 @@ import Image from "next/image";
 import { colors } from "../Constants/colors";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-
+import { sovreenOfferArray } from "@/utils/Data";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -100,52 +100,7 @@ const StyledButton2 = styled(Button)`
   }
 `;
 
-const sovreenOfferArray = [
-  {
-    imagePath: "/content.png",
-    Info: {
-      heading: "Sovrenn discovery",
-      listItems: ["Daily updates on", "Daily updates on", "Daily updates on"],
-    },
-    button: {
-      first: "Read Free Unlimited Articles",
-      second: "Buy Full Access @ ₹5000/yr",
-    },
-  },
-  {
-    imagePath: "/content.png",
-    Info: {
-      heading: "Sovrenn education",
-      listItems: ["Daily updates on", "Daily updates on", "Daily updates on"],
-    },
-    button: {
-      first: "Read Free Unlimited Articles",
-      second: "Buy Full Access @ ₹5000/yr",
-    },
-  },
-  {
-    imagePath: "/content.png",
-    Info: {
-      heading: "Sovrenn discovery",
-      listItems: ["Daily updates on", "Daily updates on", "Daily updates on"],
-    },
-    button: {
-      first: "Read Free Unlimited Articles",
-      second: "Buy Full Access @ ₹5000/yr",
-    },
-  },
-  {
-    imagePath: "/content.png",
-    Info: {
-      heading: "Sovrenn education",
-      listItems: ["Daily updates on", "Daily updates on", "Daily updates on"],
-    },
-    button: {
-      first: "Read Free Unlimited Articles",
-      second: "Buy Full Access @ ₹5000/yr",
-    },
-  },
-];
+
 
 const FadeInBox = styled(Box)(({ theme }) => ({
   opacity: 0,
@@ -245,7 +200,7 @@ const Offer = () => {
       <Grid
         container
         paddingY={{ xs: "10px", sm: 5 }}
-        spacing={2}
+       
         direction="column"
         justifyContent="center"
       >
@@ -302,6 +257,7 @@ const Offer = () => {
                     <Grid
                       container
                       paddingTop={4}
+                      spacing={2}
                       justifyContent="center"
                       alignItems="center"
                       direction={{ xs: "column", sm: "row" }}
@@ -314,11 +270,12 @@ const Offer = () => {
                         md={4.8}
                         sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
                         marginTop={{ xs: 0, sm: 0 }}
+                        paddingRight={3}
                       >
                         <Image
                           src={element?.imagePath}
                           alt="offer"
-                          width={560}
+                          width={550}
                           height={351}
                           layout="responsive"
                           priority

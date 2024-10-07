@@ -34,6 +34,9 @@ const authSlice = createSlice({
       state.token=action.payload.token
      
     },
+    googleLogin:(state,action)=>{
+      state.isAuth = true;
+    },
    
     logout: (state) => {
       state.isAuth = false;
@@ -55,5 +58,5 @@ const authSlice = createSlice({
   }
 });
 
-export const { loginSuccess,  logout } = authSlice.actions;
+export const { loginSuccess,  logout,googleLogin } = authSlice.actions;
 export default authSlice.reducer;

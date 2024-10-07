@@ -1,20 +1,18 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import {
-  Grid,
-  Typography,
-  Container,
-  Box,
-  Button,
-} from "@mui/material";
+import { Grid, Typography, Container, Box, Button } from "@mui/material";
 import { colors } from "../../components/Constants/colors";
-import TableData from "../../components/Prime/TableData";
+import SearchTableData from "../../components/HomeSearch/SearchTableData"
 import CompanyCard from "../../components/Cards/CompanyCard";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import PrimeCard from "../../components/Cards/PrimeCard";
+import SearchPrimeCard from "../../components/Cards/SearchPrimeCard";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import Head from "next/head";
+
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -66,19 +64,83 @@ const StyledArrowForwardIosIcon = styled(ArrowForwardIosIcon)`
 const CompanyInfo = () => {
   const theme = useTheme();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
-  const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm")); // Query for screen sizes smaller than 'sm'
+  const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const q = searchParams.get("q");
+
+  const [companyData, setCompanyData] = useState({
+    company: {},
+    news: [],
+    prime: [],
+    discovery: [],
+    ipo: [],
+    is_ipo_company: false,
+  });
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    company_name: "",
+    sector: "",
+    industry: "",
+    one_month_return: 0,
+    one_week_return: 0,
+    price: 0,
+  });
+
+  useEffect(() => {
+    getCompanyData(q);
+
+    return () => {};
+  }, [q]);
+
+  const getCompanyData = async (q) => {
+    const res = await fetch(
+      `https://api.sovrenn.com/company/search/company-data/${q}`
+    );
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setCompanyData({
+        company: data.company,
+        news: data.news,
+        prime: data.prime,
+        discovery: data.discovery,
+        ipo: data.ipo,
+        is_ipo_company: data.is_ipo_company,
+      });
+    }
+  };
+  console.log(companyData, "companyData");
   return (
     <>
+      <Head>
+        <title>{companyData.company.company_name}</title>
+
+        <link
+          rel="canonical"
+          href="https://www.sovrenn.com/company"
+          key="canonical"
+        />
+      </Head>
       <Container>
-        <Grid container marginTop={{ xs: "90px", sm: "100px" }}>
+        <Grid
+          container
+          marginTop={{ xs: "90px", sm: "100px" }}
+          flexDirection="column"
+        >
           <Grid item>
             <StyledTypography1 color={colors.navyBlue500}>
-              KP Green Engineering Limited
+              {companyData.company.company_name}
             </StyledTypography1>
           </Grid>
           <Grid item marginTop={3}>
-            <Grid container spacing={{ xs: 2, md: 4 }} direction={{ xs: "column", sm: "row" }}>
+            <Grid
+              container
+              spacing={{ xs: 2, md: 4 }}
+              direction={{ xs: "column", sm: "row" }}
+            >
               <Grid item>
                 <StyledTypography3
                   color={colors.navyBlue500}
@@ -92,7 +154,7 @@ const CompanyInfo = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                  ₹506.65
+                  {companyData.company.share_price}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -108,7 +170,7 @@ const CompanyInfo = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                  Capital Goods - Electrical Equipment
+                  {companyData.company.sector}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -124,7 +186,7 @@ const CompanyInfo = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                  Diversified
+                  {companyData.company.industry}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -140,7 +202,7 @@ const CompanyInfo = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                  ₹2533 Cr
+                  {companyData.company.market_cap}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -156,55 +218,71 @@ const CompanyInfo = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                  71.2x
+                  {companyData.company.ttm_pe}
                 </StyledTypography3>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item marginTop={4} width="100%">
-            <StyledTypography2>Prime Articles</StyledTypography2>
-            {isSmallerThanMd ? <PrimeCard /> : <TableData />}
-          </Grid>
-          <Grid item width="100%">
-            <StyledTypography2>Discovery</StyledTypography2>
-            <CompanyCard />
-          </Grid>
-          <Grid item marginTop={4} width="100%">
-            <StyledTypography2>Times</StyledTypography2>
-            <Box
-              sx={{
-                paddingX: 2,
-                marginY: 3,
-                border: `1px solid ${colors.neutral600}`,
-                borderRadius: 1,
-              }}
-            >
-              <Grid
-                container
-                spacing={2}
-                direction={isSmallerThanSm ? "column" : "row"} // Adjust direction based on screen size
-              // Align items vertically in the center for better alignment
-                paddingY={2}
+          {companyData?.prime.length ? (
+            <Grid item marginTop={4} width="100%">
+              <StyledTypography2>Prime Articles</StyledTypography2>
+              {isSmallerThanMd ? (
+                <SearchPrimeCard data={companyData?.prime} />
+              ) : (
+                <SearchTableData data={companyData?.prime} />
+              )}
+            </Grid>
+          ):""}
+
+          {companyData?.discovery.length ? (
+            <Grid item width="100%" marginTop={4}>
+              <StyledTypography2>Discovery</StyledTypography2>
+             
+              <CompanyCard data={companyData?.discovery} slug={companyData.company.slug}/>
+            
+            </Grid>
+          ):""}
+
+          {companyData?.news.length ? (
+            <Grid item marginTop={4} width="100%">
+              <StyledTypography2>Times</StyledTypography2>
+              <Box
+                sx={{
+                  paddingX: 2,
+                  marginY: 3,
+                  border: `1px solid ${colors.neutral600}`,
+                  borderRadius: 1,
+                }}
               >
-                <Grid item xs>
-                  <StyledTypography3
-                    sx={{ color: colors.navyBlue500, fontWeight: "600" }}
+                <Grid
+                  container
+                  spacing={2}
+                  direction={isSmallerThanSm ? "column" : "row"}
+                  paddingY={2}
+                >
+                  <Grid item xs>
+                    <StyledTypography3
+                      sx={{ color: colors.navyBlue500, fontWeight: "600" }}
+                    >
+                      {`Read the ${companyData.news.length} latest news related to ${companyData.company?.company_name}.`}
+                    </StyledTypography3>
+                  </Grid>
+                  <Grid
+                    item
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
                   >
-                    Read the 2 latest news related to KP Green Engineering Ltd.
-                  </StyledTypography3>
+                    <StyledButton
+                      variant="outlined"
+                      endIcon={<StyledArrowForwardIosIcon />}
+                      size="small"
+                    >
+                      Read
+                    </StyledButton>
+                  </Grid>
                 </Grid>
-                <Grid item sx={{display:"flex",justifyContent:"flex-end"}}>
-                  <StyledButton
-                    variant="outlined"
-                    endIcon={<StyledArrowForwardIosIcon />}
-                    size="small"
-                  >
-                    Read
-                  </StyledButton>
-                </Grid>
-              </Grid>
-            </Box>
-          </Grid>
+              </Box>
+            </Grid>
+          ):""}
         </Grid>
       </Container>
     </>

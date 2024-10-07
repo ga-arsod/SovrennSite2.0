@@ -3,6 +3,8 @@ import React from "react";
 import { Grid, Typography, Box, Divider, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
+import { useDispatch,useSelector } from "react-redux";
+import moment from "moment";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -44,7 +46,40 @@ const StyledButton2 = styled(Button)`
   }
 `;
 
-const DiscoveryTableCard = ({ tableData }) => {
+const DiscoveryTableCard = ({ tableData, id }) => {
+  const dispatch = useDispatch();
+ 
+  
+ 
+  const { userDetails } = useSelector((store) => store.auth);
+  const { isAuth } = useSelector((store) => store.auth);
+  const totalPages = 20;
+
+  const articleRedirect = (ind, item) => {
+    if (
+      (ind % 2 === 0 && tableData?.basket?.avail_free) ||
+      userDetails?.subscriptions?.includes("full-access") ||
+      userDetails?.subscriptions?.includes("monthly") ||
+      userDetails?.subscriptions?.includes("quarterly") ||
+      userDetails?.subscriptions?.includes("life") ||
+      userDetails?.subscriptions?.includes("trial") ||
+      (userDetails?.subscriptions?.includes("basket") && isAuth)
+    ) {
+      return `/discovery/${id}/${item?.slug}`;
+    } else return "";
+  };
+
+  const handleRowClick = (index, item) => {
+    if (isAuth) {
+      const redirectUrl = articleRedirect(index, item);
+      if (redirectUrl) {
+        window.open(redirectUrl, "_blank");
+      }
+    } else {
+      setIsOpen(true);
+    }
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid
@@ -85,15 +120,33 @@ const DiscoveryTableCard = ({ tableData }) => {
               sx={{ fontWeight: "600" }}
               component="span"
             >
-              {item?.date}
+              {item?.date ? moment(item.date).format("Do MMM YY") : "NA"}
             </StyledTypography1>
-            <StyledTypography2
-              marginTop={1}
-              color={colors.navyBlue500}
-              component="div"
-            >
-              {item?.company_name}
-            </StyledTypography2>
+
+            {(index % 2 === 0 && tableData?.basket?.avail_free) ||
+                  userDetails?.subscriptions?.includes("full-access") ||
+                  userDetails?.subscriptions?.includes("monthly") ||
+                  userDetails?.subscriptions?.includes("quarterly") ||
+                  userDetails?.subscriptions?.includes("life") ||
+                  userDetails?.subscriptions?.includes("trial") ||
+                  userDetails?.subscriptions?.includes("basket") ? (
+                    <StyledTypography2
+                    marginTop={1}
+                    color={colors.navyBlue500}
+                    component="div"
+                  >
+                    {item?.company_name}
+                  </StyledTypography2>
+                  ) : (
+                    <StyledTypography2
+                    marginTop={1}
+                    color={colors.navyBlue500}
+                    component="div"
+                  >
+                   Company {wordsStr[index]}
+                  </StyledTypography2>
+                  )}
+           
             <Box marginTop={1}>
               <Grid container justifyContent="space-between">
                 <Grid item>
@@ -109,7 +162,7 @@ const DiscoveryTableCard = ({ tableData }) => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    {item?.market_cap}
+                    {item?.market_cap ? item?.market_cap : "NA"}
                   </StyledTypography3>
                 </Grid>
                 <Grid item>
@@ -125,14 +178,14 @@ const DiscoveryTableCard = ({ tableData }) => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    {item?.ttm_pe}
+                      {item?.ttm_pe ? `${item?.ttm_pe}x` : "NA"}
                   </StyledTypography3>
                 </Grid>
               </Grid>
             </Box>
             <Divider sx={{ paddingBottom: "8px", borderColor: "#E6E6E6" }} />
             <StyledTypography4 textAlign="justify" marginTop={1}>
-              {item?.remark}
+            {item?.remark || "NA"}
             </StyledTypography4>
             <Divider sx={{ paddingTop: "8px", borderColor: "#E6E6E6" }} />
             <Grid
@@ -141,7 +194,9 @@ const DiscoveryTableCard = ({ tableData }) => {
               marginBottom={0.5}
               marginTop={1}
             >
-              <StyledButton2 variant="contained">Read</StyledButton2>
+              <StyledButton2
+              onClick={() => handleRowClick(index, item)}
+              variant="contained">Read</StyledButton2>
             </Grid>
           </Box>
         ))}

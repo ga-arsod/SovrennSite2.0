@@ -1,7 +1,7 @@
 "use client";
 import styled from "@emotion/styled";
 import { Box, Typography, Divider, Grid, Chip } from "@mui/material";
-import { CalendarToday } from "@mui/icons-material";
+
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import Comments from "../../../../components/Prime/Comments";
 
@@ -30,6 +30,11 @@ const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   line-height: 56px;
   letter-spacing: -0.02em;
+  @media (max-width: 639px) {
+    font-size: 26px;
+    line-height: 28px;
+   
+  }
 `;
 const StyledTypography2 = styled(Typography)`
   font-size: 16px;
@@ -45,9 +50,9 @@ const StyledTypography3 = styled(Typography)`
 `;
 const StyledLink = styled(Link)`
   color: ${colors.themeGreen};
-  margin: 0 8px;
+ 
   text-decoration: none;
-  font-family: '"Roboto", "Helvetica", "Arial", sans-serif';
+  font-family: '"Inter", "Helvetica", "Arial", sans-serif';
   cursor: pointer;
 
   &:hover {
@@ -60,6 +65,7 @@ const StyledChip = styled(Chip)`
   line-height: 14px;
   color: ${colors.greyBlue400};
   transition: background-color 0.3s ease;
+   font-family: Inter, sans-serif;
   cursor: pointer;
   &:hover {
     background-color: #034635;
@@ -185,7 +191,7 @@ const DiscoveryArticle = () => {
         />
       </Head>
       <article>
-        <Box sx={{ maxWidth: 915, margin: "84px auto 0px auto", padding: 1 }}>
+        <Box sx={{ maxWidth: 915, margin: "84px auto 0px auto", padding: 2 }}>
         <Snackbar/>  
           <StyledTypography1>{title}</StyledTypography1>
          
@@ -235,17 +241,21 @@ const DiscoveryArticle = () => {
               {otherBucketsCompanyPresent?.map((item, index) => {
                 return (
                   <>
-                    <StyledChip label={item.title} variant="outlined" />
+                  <Link href={`/discovery/${item.slug}`}>
+                    <StyledChip label={item.title} variant="outlined" key={index} />
+                    </Link>
                   </>
                 );
               })}
             </Box>
             <CustomDivider2 />
+            <Box sx={{display:"flex",flexDirection:{xs:"column",sm:"rows"}}}>
             <Grid
               container
-              justifyContent="space-between"
+              rowGap={1}
               width="60%"
               marginTop={2}
+              flexDirection={{xs:"column",sm:"row"}}
             >
               <Grid item xs={6}>
                 <StyledTypography3
@@ -282,11 +292,13 @@ const DiscoveryArticle = () => {
             </Grid>
             <Grid
               container
-              justifyContent="space-between"
+              rowGap={1}
               marginTop={1}
               width="60%"
+              flexDirection={{xs:"column",sm:"row"}}
+              
             >
-              <Grid item xs={6}>
+              <Grid item xs={6} >
                 <StyledTypography3
                   color={colors.navyBlue500}
                   sx={{ fontWeight: "600" }}
@@ -321,9 +333,11 @@ const DiscoveryArticle = () => {
             </Grid>
             <Grid
               container
-              justifyContent="space-between"
+              rowGap={1}
+              flexDirection={{xs:"column",sm:"row"}}
               marginTop={1}
               width="60%"
+            
             >
               <Grid item xs={6}>
                 <StyledTypography3
@@ -358,6 +372,8 @@ const DiscoveryArticle = () => {
                 </StyledTypography3>
               </Grid>
             </Grid>
+              </Box>
+          
           </Box>
           <CustomDivider2 />
 
@@ -373,12 +389,14 @@ const DiscoveryArticle = () => {
               display: "flex",
               justifyContent: "space-between",
               width: "80%",
+              gap:"12px",
+              flexDirection:{xs:"column",sm:"row"}
             }}
           >
-            <StyledTypography2 color="#8198AA" sx={{ cursor: "pointer" }}>
+            <StyledTypography2 color="#8198AA" sx={{ cursor: "pointer" }} marginBottom={{xs:0.5,sm:0}}>
               Read More about this company
             </StyledTypography2>
-            <StyledLink href="#" sx={{ mx: 1 }}>
+            <StyledLink href="#" >
               <StyledTypography3
                 color={colors.themeGreen}
                 sx={{ fontWeight: "400" }}
@@ -386,7 +404,7 @@ const DiscoveryArticle = () => {
                 View in Discovery
               </StyledTypography3>
             </StyledLink>
-            <StyledLink href="#" sx={{ mx: 1 }}>
+            <StyledLink href="#" >
               <StyledTypography3
                 color={colors.themeGreen}
                 sx={{ fontWeight: "400" }}
@@ -394,7 +412,7 @@ const DiscoveryArticle = () => {
                 View in Prime
               </StyledTypography3>
             </StyledLink>
-            <StyledLink href="#" sx={{ mx: 1 }}>
+            <StyledLink href="#" >
               <StyledTypography3
                 color={colors.themeGreen}
                 sx={{ fontWeight: "400" }}
