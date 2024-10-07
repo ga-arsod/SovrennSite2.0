@@ -274,7 +274,7 @@ const Filters = ({ isOpen, setIsOpen }) => {
             <Grid item>
               <UnderlinedTypography
                 color={colors.navyBlue500}
-                sx={{ fontWeight: "600", fontSize: "14px", lineHeight: "17px" }}
+                sx={{ fontWeight: "600", fontSize: "14px", lineHeight: "17px",cursor:"pointer" }}
                 component="span"
               >
                 Reset Filter

@@ -132,6 +132,10 @@ const ChildBucketCompanyContent = () => {
     });
   };
 
+  const handleBackClick = () => {
+    router.back();  
+  };
+
   useEffect(() => {
     const filterObj = {};
     if (filter.company_type === "all") {
@@ -202,6 +206,7 @@ const ChildBucketCompanyContent = () => {
                       marginRight: { xs: 1, sm: 2 },
                       color: colors.navyBlue500,
                     }}
+                    onClick={handleBackClick}
                   />
                 )}
                 <StyledTypography1

@@ -46,7 +46,7 @@ import { logout } from "@/app/Redux/Slices/authSlice";
 import { userDetailsApi } from "@/app/Redux/Slices/authSlice";
 import NavbarSearch from "../Home/NavbarSearch"
 import { googleLogin } from "@/app/Redux/Slices/authSlice";
-// Styled Components
+
 const StyledListItem = styled(ListItem)`
   position: relative;
   width: 100%;
@@ -256,7 +256,7 @@ const Navbar = ({ session }) => {
     setIsLoaded(true);
     dispatch(userDetailsApi());
     
-  }, [dispatch]);
+  }, []);
 
  
   useEffect(() => {

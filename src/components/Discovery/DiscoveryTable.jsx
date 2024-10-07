@@ -359,7 +359,7 @@ export default function DiscoveryTable({ tableData, id }) {
                 <StyledTableCell>
                   <HeaderTextWrapper>
                     Remarks
-                    <StyledArrowDownwardIcon className="arrow-icon" />
+                   
                   </HeaderTextWrapper>
                 </StyledTableCell>
               </TableRow>
