@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import { useDispatch,useSelector } from "react-redux";
 import moment from "moment";
+import LoginModal from "../Modal/LoginModal";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -155,8 +156,11 @@ const wordsStr = [
 
 const DiscoveryTableCard = ({ tableData, id }) => {
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
  
-  
+  const handleClose=()=>{
+    setIsOpen(false)
+  }
  
   const { userDetails } = useSelector((store) => store.auth);
   const { isAuth } = useSelector((store) => store.auth);
@@ -190,6 +194,8 @@ const DiscoveryTableCard = ({ tableData, id }) => {
   };
 console.log(isAuth,"isAuth")
   return (
+    <>
+    <LoginModal isOpen={isOpen} handleClose={handleClose} />
     <Box sx={{ flexGrow: 1 }}>
       <Grid
         container
@@ -311,6 +317,7 @@ console.log(isAuth,"isAuth")
         ))}
       </Grid>
     </Box>
+    </>
   );
 };
 

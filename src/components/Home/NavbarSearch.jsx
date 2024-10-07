@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { Autocomplete, InputAdornment, TextField } from '@mui/material'
+import React, { useState, useEffect } from 'react';
+import { Autocomplete, InputAdornment, TextField } from '@mui/material';
 import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear"; // Import ClearIcon
 import styled from "@emotion/styled";
 import { useRouter } from 'next/navigation'; // Correct useRouter import for next/navigation
 
@@ -30,10 +31,10 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const NavbarSearch = () => {
+const NavbarSearch = ({ handleSearchClick }) => {
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const router = useRouter(); 
+  const router = useRouter();
 
   const getSearchResults = async () => {
     const res = await fetch(`https://api.sovrenn.com/company/search?q=${searchText}`);
@@ -44,7 +45,7 @@ const NavbarSearch = () => {
     } else {
       console.error('Error fetching data:', data);
     }
-  }
+  };
 
   useEffect(() => {
     if (searchText.length === 0) {
@@ -52,22 +53,26 @@ const NavbarSearch = () => {
     } else {
       const debounce = setTimeout(() => {
         getSearchResults();
-      }, 300); 
+      }, 300);
 
       return () => clearTimeout(debounce);
     }
   }, [searchText]);
 
   const handleOptionChange = (event, option) => {
-    if(option.company_name.includes("Search for:"))
-    {
-      router.push(`/text-search?q=${option._id}`); 
-    }
-    else if (option?.is_company_covered) {
-      router.push(`/company?q=${option._id}`); 
+    if (option.company_name.includes("Search for:")) {
+      router.push(`/text-search?q=${option._id}`);
+    } else if (option?.is_company_covered) {
+      router.push(`/company?q=${option._id}`);
     } else {
       router.push(`/company/result?q=${option.company_name}`);
     }
+  };
+
+  const handleClearSearch = () => {
+    setSearchText('');
+    setSearchResults([]);
+    handleSearchClick();
   };
 
   return (
@@ -77,6 +82,10 @@ const NavbarSearch = () => {
         id="combo-box-demo"
         freeSolo
         disableClearable
+        inputValue={searchText} // Control input value
+        onInputChange={(event, newInputValue) => {
+          setSearchText(newInputValue); // Update searchText when input changes
+        }}
         options={searchResults}
         getOptionLabel={(option) => option.company_name || ""}
         renderOption={(props, option) => (
@@ -86,7 +95,7 @@ const NavbarSearch = () => {
         )}
         filterOptions={() => searchResults}
         sx={{ width: { xs: "100%", sm: "230px" }, height: "50px" }}
-        onChange={handleOptionChange} 
+        onChange={handleOptionChange}
 
         renderInput={(params) => (
           <CustomTextField
@@ -94,21 +103,25 @@ const NavbarSearch = () => {
             placeholder="Search for a company"
             InputProps={{
               ...params.InputProps,
-              endAdornment: null,
+              endAdornment: searchText ? (
+                <InputAdornment position="end">
+                  <ClearIcon
+                    onClick={handleClearSearch}
+                    sx={{ cursor: 'pointer' }}
+                  />
+                </InputAdornment>
+              ) : null,
               startAdornment: (
                 <InputAdornment position="start">
                   <SearchIcon />
                 </InputAdornment>
               ),
             }}
-            onChange={(e) => {
-              setSearchText(e.target.value);
-            }}
           />
         )}
       />
     </>
   );
-}
+};
 
 export default NavbarSearch;

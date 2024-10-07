@@ -99,6 +99,7 @@ const DiscoveryBucketContent = () => {
   const theme = useTheme();
   const router = useRouter();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  
   const { id } = useParams();
   const formattedId = id
     .replace(/-/g, " ")
@@ -253,105 +254,7 @@ const DiscoveryBucketContent = () => {
               </Box>
             </Grid>
           </Grid>
-          {tableData?.bucket?.avail_free ||
-          userDetails?.subscriptions?.includes("full-access") ||
-          userDetails?.subscriptions?.includes("monthly") ||
-          userDetails?.subscriptions?.includes("quarterly") ||
-          userDetails?.subscriptions?.includes("life") ||
-          userDetails?.subscriptions?.includes("basket") ||
-          userDetails?.subscriptions?.includes("trial") ? (
-            <Grid container justifyContent="flex-end" alignItems="center">
-              <Grid item>
-                <FormControl
-                  sx={{
-                    display: "flex",
-                    flexDirection: { xs: "column", md: "row" },
-                    alignItems: { xs: "flex-end", md: "flex-end" },
-                    justifyContent: { xs: "flex-start", md: "flex-end" },
-                    gap: { xs: 0, md: 2 },
-                  }}
-                >
-                  {/* Market Cap */}
-                  <StyledSelectContainer>
-                    <StyledInputLabel>{`Market Cap `}</StyledInputLabel>
-                    <StyledSelect
-                      name="market_cap"
-                      value={filter.market_cap}
-                      onChange={handleFilterChange}
-                      displayEmpty
-                      inputProps={{ "aria-label": "Without label" }}
-                      IconComponent={ExpandMoreIcon}
-                    >
-                      {filtersData[0]?.options?.map((element, index) => (
-                        <StyledMenuItem
-                          key={index}
-                          value={
-                            index === 0 ? "all" : index === 1 ? "lte" : "gt"
-                          }
-                        >
-                          {element.placeholder}
-                        </StyledMenuItem>
-                      ))}
-                    </StyledSelect>
-                  </StyledSelectContainer>
-
-                  {/* PE */}
-                  <StyledSelectContainer>
-                    <StyledInputLabel>{`PE `}</StyledInputLabel>
-                    <StyledSelect
-                      name="ttm_pe"
-                      value={filter.ttm_pe}
-                      onChange={handleFilterChange}
-                      displayEmpty
-                      inputProps={{ "aria-label": "Without label" }}
-                      IconComponent={ExpandMoreIcon}
-                    >
-                      {filtersData[1]?.options?.map((element, index) => (
-                        <StyledMenuItem
-                          key={index}
-                          value={
-                            index === 0 ? "all" : index === 1 ? "lte" : "gt"
-                          }
-                        >
-                          {element.placeholder}
-                        </StyledMenuItem>
-                      ))}
-                    </StyledSelect>
-                  </StyledSelectContainer>
-
-                  {/* SME/Non-SME */}
-                  <StyledSelectContainer>
-                    <StyledInputLabel>{`SME/Non-SME `}</StyledInputLabel>
-                    <StyledSelect
-                      name="company_type"
-                      value={filter.company_type}
-                      onChange={handleFilterChange}
-                      displayEmpty
-                      inputProps={{ "aria-label": "Without label" }}
-                      IconComponent={ExpandMoreIcon}
-                    >
-                      {filtersData[2]?.options?.map((element, index) => (
-                        <StyledMenuItem
-                          key={index}
-                          value={
-                            index === 0
-                              ? "all"
-                              : index === 1
-                              ? "SME"
-                              : "Non SME"
-                          }
-                        >
-                          {element.placeholder}
-                        </StyledMenuItem>
-                      ))}
-                    </StyledSelect>
-                  </StyledSelectContainer>
-                </FormControl>
-              </Grid>
-            </Grid>
-          ) : (
-            ""
-          )}
+         
         </Box>
         {isSmallerThanMd ? (
           tableData.length === 0 ? (

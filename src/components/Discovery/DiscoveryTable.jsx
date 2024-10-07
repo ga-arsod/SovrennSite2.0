@@ -304,7 +304,7 @@ export default function DiscoveryTable({ tableData, id }) {
       id: "date",
     },
   ];
- 
+ console.log(isAuth,"isAuth")
   return (
     <>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />

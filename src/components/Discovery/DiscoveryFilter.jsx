@@ -77,9 +77,9 @@ const DiscoveryFilter = () => {
             }
           
           </Grid>
-          <Grid item order={{ xs: 1, sm: 2 }}>
+          {/* <Grid item order={{ xs: 1, sm: 2 }}>
             <SearchBar placeholder="Search for a bucket"/>
-          </Grid>
+          </Grid> */}
         </Grid>
       
     </div>
