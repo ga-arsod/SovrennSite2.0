@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import { useDispatch,useSelector } from "react-redux";
 import moment from "moment";
+import LoginModal from "../Modal/LoginModal";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -46,16 +47,127 @@ const StyledButton2 = styled(Button)`
   }
 `;
 
+const wordsStr = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+  "AA",
+  "AB",
+  "AC",
+  "AD",
+  "AE",
+  "AF",
+  "AG",
+  "AH",
+  "AI",
+  "AJ",
+  "AK",
+  "AL",
+  "AM",
+  "AN",
+  "AO",
+  "AP",
+  "AQ",
+  "AR",
+  "AS",
+  "AT",
+  "AU",
+  "AV",
+  "AW",
+  "AX",
+  "AY",
+  "AZ",
+  "BA",
+  "BB",
+  "BC",
+  "BD",
+  "BE",
+  "BF",
+  "BG",
+  "BH",
+  "BI",
+  "BJ",
+  "BK",
+  "BL",
+  "BM",
+  "BN",
+  "BO",
+  "BP",
+  "BQ",
+  "BR",
+  "BS",
+  "BT",
+  "BU",
+  "BV",
+  "BW",
+  "BX",
+  "BY",
+  "BZ",
+  "CA",
+  "CB",
+  "CC",
+  "CD",
+  "CE",
+  "CF",
+  "CG",
+  "CH",
+  "CI",
+  "CJ",
+  "CK",
+  "CL",
+  "CM",
+  "CN",
+  "CO",
+  "CP",
+  "CQ",
+  "CR",
+  "CS",
+  "CT",
+  "CU",
+  "CV",
+  "CW",
+  "CX",
+  "CY",
+  "CZ",
+];
+
 const DiscoveryTableCard = ({ tableData, id }) => {
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
  
-  
+  const handleClose=()=>{
+    setIsOpen(false)
+  }
  
   const { userDetails } = useSelector((store) => store.auth);
   const { isAuth } = useSelector((store) => store.auth);
   const totalPages = 20;
 
   const articleRedirect = (ind, item) => {
+    
     if (
       (ind % 2 === 0 && tableData?.basket?.avail_free) ||
       userDetails?.subscriptions?.includes("full-access") ||
@@ -72,6 +184,7 @@ const DiscoveryTableCard = ({ tableData, id }) => {
   const handleRowClick = (index, item) => {
     if (isAuth) {
       const redirectUrl = articleRedirect(index, item);
+      console.log(redirectUrl,"redirectUrl")
       if (redirectUrl) {
         window.open(redirectUrl, "_blank");
       }
@@ -79,8 +192,10 @@ const DiscoveryTableCard = ({ tableData, id }) => {
       setIsOpen(true);
     }
   };
-
+console.log(isAuth,"isAuth")
   return (
+    <>
+    <LoginModal isOpen={isOpen} handleClose={handleClose} />
     <Box sx={{ flexGrow: 1 }}>
       <Grid
         container
@@ -195,13 +310,14 @@ const DiscoveryTableCard = ({ tableData, id }) => {
               marginTop={1}
             >
               <StyledButton2
-              onClick={() => handleRowClick(index, item)}
+              onClick={() =>{ handleRowClick(index, item)}}
               variant="contained">Read</StyledButton2>
             </Grid>
           </Box>
         ))}
       </Grid>
     </Box>
+    </>
   );
 };
 

@@ -203,7 +203,7 @@ const SignUp = ({ isSignIn, setIsSignIn }) => {
     }).then((response) => response.json());
 
     if (data.success) {
-      localStorage.setItem("sov_user", data.token);
+      localStorage.setItem("token", data.token);
       dispatch(
         authAction({
           isAuth: true,

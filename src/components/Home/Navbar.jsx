@@ -46,7 +46,7 @@ import { logout } from "@/app/Redux/Slices/authSlice";
 import { userDetailsApi } from "@/app/Redux/Slices/authSlice";
 import NavbarSearch from "../Home/NavbarSearch"
 import { googleLogin } from "@/app/Redux/Slices/authSlice";
-// Styled Components
+
 const StyledListItem = styled(ListItem)`
   position: relative;
   width: 100%;
@@ -229,7 +229,9 @@ const TooltipContent = ({ heading, description }) => (
 const Navbar = ({ session }) => {
   const theme = useTheme();
   const isGreaterThanMd = useMediaQuery(theme.breakpoints.up("md"));
+  const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const isGeaterThanSm = useMediaQuery(theme.breakpoints.up("sm"));
   const { isAuth, user } = useSelector((store) => store.auth);
   const router = useRouter();
   const isXsOrSm = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -256,7 +258,7 @@ const Navbar = ({ session }) => {
     setIsLoaded(true);
     dispatch(userDetailsApi());
     
-  }, [dispatch]);
+  }, []);
 
  
   useEffect(() => {
@@ -301,9 +303,10 @@ const Navbar = ({ session }) => {
           >
             <Grid item sx={{ display: { xs: "block", sm: "none", md: "block" } }}>
               <Link href="/" passHref>
-                {!searchOpen && (
+                {!searchOpen && (isSmallerThanSm ) ? (
                   <Image src="/logo.svg" width={146} height={25} alt="logo" />
-                )}
+                ):
+                 isGeaterThanSm ? <Image src="/logo.svg" width={146} height={25} alt="logo" />:""}
               </Link>
             </Grid>
 
@@ -371,7 +374,7 @@ const Navbar = ({ session }) => {
             </Grid>
 
             <StyledGrid1 item width="22%">
-             <NavbarSearch/>
+             <NavbarSearch handleSearchClick={handleSearchClick} />
             </StyledGrid1>
 
             <StyledGrid5
@@ -505,7 +508,7 @@ const Navbar = ({ session }) => {
                 width: isSmallerThanSm && searchOpen ? "100%" : "auto",
               }}
             >
-              {/* Icon to toggle the search input */}
+              
               {!searchOpen && (
                 <IconButton
                   onClick={handleSearchClick}
@@ -516,7 +519,7 @@ const Navbar = ({ session }) => {
               )}
 
               
-              {searchOpen && <NavbarSearch/>
+              {(searchOpen && isSmallerThanMd) && <NavbarSearch handleSearchClick={handleSearchClick} />
                
               }
 

@@ -304,7 +304,7 @@ export default function DiscoveryTable({ tableData, id }) {
       id: "date",
     },
   ];
- 
+ console.log(isAuth,"isAuth")
   return (
     <>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />
@@ -359,7 +359,7 @@ export default function DiscoveryTable({ tableData, id }) {
                 <StyledTableCell>
                   <HeaderTextWrapper>
                     Remarks
-                    <StyledArrowDownwardIcon className="arrow-icon" />
+                   
                   </HeaderTextWrapper>
                 </StyledTableCell>
               </TableRow>
