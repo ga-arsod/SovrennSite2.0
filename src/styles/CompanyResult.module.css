@@ -11,7 +11,7 @@
 
 #infoText>p {
     font-size:20px;
-    font-weight: 400;
+    font-weight: normal;
     line-height:24px;
     margin: 10px 0;
     color:#627B8F;
@@ -19,8 +19,8 @@
 }
 
 #infoText>ol {
-    font-size: 20px;
-    font-weight: 400;
+    font-size: 22px;
+    font-weight: normal;
     line-height:24px;
     margin: 10px 0;
     color:#627B8F;
@@ -227,21 +227,23 @@
 /* Responsiveness for mobile view */
 @media only screen and (max-width : 639px) {
     #infoText>p {
-        font-size:14px;
-        font-weight: 600;
+        font-size:16px;
+        font-weight: 400;
         line-height:21px;
         margin: 10px 0;
-        color:#627B8F;
+        color:#868686;
         white-space: wrap;
+        font-family: 'Inter', sans-serif;
     }
     
     #infoText>ol {
-        font-size: 14px;
-        font-weight:600;
+        font-size: 16px;
+        font-weight:400;
         line-height:21px;
         margin: 10px 0;
-        color:#627B8F;
+        color:#868686;
         list-style-position: outside;
+        font-family: 'Inter', sans-serif;
        
         white-space: wrap;
     }

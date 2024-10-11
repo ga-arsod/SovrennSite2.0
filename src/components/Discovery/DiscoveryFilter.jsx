@@ -37,7 +37,7 @@ const DiscoveryFilter = () => {
     setOpen(false);
   };
   useEffect(() => {
-    if (customBucketData.success) {
+    if (customBucketData?.success) {
       setOpen(false);
     }
   }, [customBucketData]);

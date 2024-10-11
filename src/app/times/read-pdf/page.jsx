@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 
 import Spinner from "../../../components/Common/Spinner.jsx";
 import { timesPdfDataApi } from "../../Redux/Slices/timesSlice.js";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 
 const ReadPDF = () => {
@@ -17,7 +17,16 @@ const ReadPDF = () => {
     const searchParams = useSearchParams();
   const path = searchParams.get('path');
   const id = searchParams.get('id'); 
-   console.log(pdfData,"pdfdata")
+  
+
+   useEffect(() => {
+    if (path && router.isReady) {
+        setPdfUrl(`https://api.sovrenn.com/news/pdf/read?path=${path}`);
+    };
+    
+    return () => {
+    };
+}, [router]);
    
 useEffect(()=>{
 dispatch(timesPdfDataApi(id))

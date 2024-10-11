@@ -199,7 +199,7 @@ const DiscoveryBucketContent = () => {
    
   }, [dispatch,isAuth]);
 
- console.log(isAuth,"isAuth")
+
 
   if (isTableDataLoading) {
     return (
@@ -342,7 +342,8 @@ const DiscoveryBucketContent = () => {
                 </StyledSelectContainer>
               </FormControl>
             </Grid>
-          </Grid>:"" 
+          </Grid>
+          :"" 
           }
           
          

@@ -285,6 +285,10 @@ const resetFilters = () => {
     filter.sector_id.length === 0 && filter.byMonths.length === 0 && filter.industry.length === 0 && filter.company_name.length === 0
     &&  filter.market_cap.length === 0  &&  filter.ttm_pe.length === 0 &&  filter.company_type.length === 0;
 
+    if (!timesFilter.length) {
+      return <></>;
+    }
+    
   return (
     <Box>
       <Drawer
@@ -342,19 +346,19 @@ const resetFilters = () => {
           <CustomDivider sx={{ mt: 1, mb: 3 }} />
           <FormControl component="fieldset" sx={{ width: "100%", padding: 2 }}>
            
-                  <StyledTypography1>{timesFilter[0].category}</StyledTypography1>
+                  <StyledTypography1>{timesFilter[0]?.category}</StyledTypography1>
                   <Grid
                     container
                     justifyContent="space-between"
                     sx={{ width: "80%" }}
                   >
-                    {timesFilter[0].options.map((item, index) => {
+                    {timesFilter[0]?.options.map((item, index) => {
                       return (
                         <>
                           <Grid item xs={12} key={index}>
                             <CustomFormControlLabel
                            checked={filter[item.key]?.includes(item.value)}
-                           onChange={handleChange(timesFilter[0].key, item.value)}
+                           onChange={handleChange(timesFilter[0]?.key, item.value)}
                               control={<CustomCheckbox />}
                               label={item.placeholder}
                             
@@ -368,19 +372,19 @@ const resetFilters = () => {
                 
 
 
-                  <StyledTypography1>{timesFilter[1].category}</StyledTypography1>
+                  <StyledTypography1>{timesFilter[1]?.category}</StyledTypography1>
                   <Grid
                     container
                     justifyContent="space-between"
                     sx={{ width: "80%" }}
                   >
-                    {timesFilter[1].options.map((item, index) => {
+                    {timesFilter[1]?.options.map((item, index) => {
                       return (
                         <>
                           <Grid item xs={6} key={index}>
                             <CustomFormControlLabel
                              checked={filter[item.key]?.includes(item.value)}
-                             onChange={handleChange(timesFilter[1].key, item.value)}
+                             onChange={handleChange(timesFilter[1]?.key, item.value)}
                               control={<CustomCheckbox />}
                               label={item.placeholder}
                             />
@@ -396,7 +400,7 @@ const resetFilters = () => {
                     justifyContent="space-between"
                     sx={{ width: "80%" }}
                   >
-                    {timesFilter[2].options.map((item, index) => {
+                    {timesFilter[2]?.options.map((item, index) => {
                       return (
                         <>
                           <Grid item xs={6} key={index}>
@@ -404,7 +408,7 @@ const resetFilters = () => {
                               control={<CustomCheckbox />}
                               label={item.placeholder}
                               checked={filter[item.key]?.includes(item.value)}
-                             onChange={handleChange(timesFilter[2].key, item.value)}
+                             onChange={handleChange(timesFilter[2]?.key, item.value)}
                             />
                           </Grid>
                         </>
@@ -415,7 +419,7 @@ const resetFilters = () => {
                
                   
                   <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-            {timesFilter[3].category}
+            {timesFilter[3]?.category}
             </StyledTypography1>
             <Box display="flex" marginBottom={2}>
               <StyledTextField
@@ -441,7 +445,7 @@ const resetFilters = () => {
                     justifyContent="space-between"
                     sx={{ width: "80%" }}
                   >
-            {(showAllSectors ? timesFilter[3].options : timesFilter[3].options.slice(0, 5)).map(
+            {(showAllSectors ? timesFilter[3]?.options : timesFilter[3]?.options.slice(0, 5)).map(
               (sector, index) => (
                 <Grid item  key={index} xs={12}>
                 <CustomFormControlLabel
@@ -449,7 +453,7 @@ const resetFilters = () => {
                   control={
                     <CustomCheckbox
                     checked={filter[sector.key]?.includes(sector.value)}
-                             onChange={handleChange(timesFilter[3].key, sector.value)}
+                             onChange={handleChange(timesFilter[3]?.key, sector.value)}
                      
                     />
                   }
@@ -478,7 +482,7 @@ const resetFilters = () => {
             <CustomDivider sx={{ mt: 2, mb: 2 }} />
 
             <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-               {timesFilter[4].category}
+               {timesFilter[4]?.category}
             </StyledTypography1>
             <Box display="flex" marginBottom={2}>
               <StyledTextField
@@ -499,14 +503,14 @@ const resetFilters = () => {
               />
               <StyledButton2 variant="contained">Search</StyledButton2>
             </Box>
-            {(showAllIndustries ? timesFilter[4].options : timesFilter[4].options.slice(0, 5)).map(
+            {(showAllIndustries ? timesFilter[4]?.options : timesFilter[4]?.options.slice(0, 5)).map(
               (industries, index) => (
                 <CustomFormControlLabel
                   key={index}
                   control={
                     <CustomCheckbox
                     checked={filter[industries.key]?.includes(industries.value)}
-                             onChange={handleChange(timesFilter[4].key, industries.value)}
+                             onChange={handleChange(timesFilter[4]?.key, industries.value)}
                       
                     />
                   }
@@ -530,17 +534,17 @@ const resetFilters = () => {
             </Grid>
             <CustomDivider sx={{ mt: 2, mb: 2 }} />
             <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-             {timesFilter[5].category}
+             {timesFilter[5]?.category}
             </StyledTypography1>
            
-            {(showAllMonths ? timesFilter[5].options : timesFilter[5].options.slice(0, 5)).map(
+            {(showAllMonths ? timesFilter[5]?.options : timesFilter[5]?.options.slice(0, 5)).map(
               (month, index) => (
                 <CustomFormControlLabel
                   key={index}
                   control={
                     <CustomCheckbox
                     checked={filter[month.key]?.includes(month.value)}
-                    onChange={handleChange(timesFilter[5].key, month.value)}
+                    onChange={handleChange(timesFilter[5]?.key, month.value)}
                       
                     />
                   }
@@ -564,7 +568,7 @@ const resetFilters = () => {
             </Grid>
             <CustomDivider sx={{ mt: 2, mb: 2 }} />
             <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              {timesFilter[6].category}
+              {timesFilter[6]?.category}
             </StyledTypography1>
             <Box display="flex" marginBottom={2}>
               <StyledTextField
@@ -591,8 +595,8 @@ const resetFilters = () => {
               sx={{ width: "80%" }}
             >
               {(showAllCompanies
-                ? timesFilter[6].options
-                : timesFilter[6].options.slice(0, 5)
+                ? timesFilter[6]?.options
+                : timesFilter[6]?.options.slice(0, 5)
               ).map((company, index) => (
                 <Grid item key={index} xs={12}>
                   <CustomFormControlLabel
@@ -600,7 +604,7 @@ const resetFilters = () => {
                       <CustomCheckbox
                         checked={filter[company.key]?.includes(company.value)}
                         onChange={handleChange(
-                          timesFilter[6].key,
+                          timesFilter[6]?.key,
                           company.value
                         )}
                       />
