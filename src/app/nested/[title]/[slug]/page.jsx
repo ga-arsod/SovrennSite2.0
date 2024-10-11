@@ -28,6 +28,7 @@ import LoginModal from "../../../../components/Modal/LoginModal";
 import Head from "next/head";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Footer from "@/components/Home/Footer";
+import NoData from "../../../../components/NoData/NoData"
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -310,24 +311,14 @@ const ChildBucketCompanyContent = () => {
           </Grid>
         </Box>
         {isSmallerThanMd ? (
-          tableData.length===0 ? <StyledTypography2
-          color={colors.navyBlue500}
-          marginRight={1}
-          component="span"
-          marginTop={3}
-        >
-          No result found
-        </StyledTypography2>:
+          tableData.length===0 ?
+          <NoData text="No data available for this bucket currently."/>
+          :
           <DiscoveryTableCard tableData={tableData} id={title}  />
         ) : (
-         tableData.length===0 ?  <StyledTypography2
-         color={colors.navyBlue500}
-         marginRight={1}
-         component="span"
-         marginTop={3}
-       >
-         No result found
-       </StyledTypography2>:
+         tableData.length===0 ? 
+         <NoData text="No data available for this bucket currently."/>
+       :
           <DiscoveryTable tableData={tableData} id={title}/>
         )}
       </Container>

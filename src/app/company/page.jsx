@@ -12,7 +12,8 @@ import SearchPrimeCard from "../../components/Cards/SearchPrimeCard";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import Head from "next/head";
-
+import Spinner from "@/components/Common/Spinner";
+import NoData from "../../components/NoData/NoData"
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -65,6 +66,7 @@ const CompanyInfo = () => {
   const theme = useTheme();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const [isLoading,setIsLoading]=useState(true)
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -102,6 +104,7 @@ const CompanyInfo = () => {
     const data = await res.json();
 
     if (res.ok) {
+      setIsLoading(false)
       setCompanyData({
         company: data.company,
         news: data.news,
@@ -112,7 +115,24 @@ const CompanyInfo = () => {
       });
     }
   };
-  console.log(companyData, "companyData");
+   
+
+  if (isLoading ) {
+    return (
+      <>
+        <Head>
+        <title>{companyData.company.company_name}</title>
+
+        <link
+          rel="canonical"
+          href="https://www.sovrenn.com/company"
+          key="canonical"
+        />
+      </Head>
+        <Spinner margin={15} />
+      </>
+    );
+  }
   return (
     <>
       <Head>
@@ -223,30 +243,41 @@ const CompanyInfo = () => {
               </Grid>
             </Grid>
           </Grid>
-          {companyData?.prime.length ? (
+          
             <Grid item marginTop={4} width="100%">
               <StyledTypography2>Prime Articles</StyledTypography2>
-              {isSmallerThanMd ? (
+              {!companyData?.prime.length ?  <NoData text="No Prime article available."/>:
+              isSmallerThanMd ? (
                 <SearchPrimeCard data={companyData?.prime} />
               ) : (
                 <SearchTableData data={companyData?.prime} />
               )}
             </Grid>
-          ):""}
+          
+         
+          
 
-          {companyData?.discovery.length ? (
+          
             <Grid item width="100%" marginTop={4}>
               <StyledTypography2>Discovery</StyledTypography2>
+              {
+                !companyData?.discovery.length ? <NoData text="No bucket available currently."/>
+                :  <CompanyCard data={companyData?.discovery} slug={companyData.company.slug}/>
+              }
              
-              <CompanyCard data={companyData?.discovery} slug={companyData.company.slug}/>
+             
             
             </Grid>
-          ):""}
+         
+          
+          
 
-          {companyData?.news.length ? (
+         
             <Grid item marginTop={4} width="100%">
               <StyledTypography2>Times</StyledTypography2>
-              <Box
+              {
+                !companyData?.news.length ? <NoData text="No Times article available."/>:
+                <Box
                 sx={{
                   paddingX: 2,
                   marginY: 3,
@@ -281,8 +312,10 @@ const CompanyInfo = () => {
                   </Grid>
                 </Grid>
               </Box>
+              }
+              
             </Grid>
-          ):""}
+        
         </Grid>
       </Container>
     </>

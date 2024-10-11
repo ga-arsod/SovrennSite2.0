@@ -29,7 +29,7 @@ const convertToHTML = (blocks) => {
                 return React.createElement(`h${block.data.level}`, { key: index }, block.data.text);
 
             case 'paragraph':
-                return <p key={index}>{renderHTMLContent(block.data.text)}</p>;
+                return <p key={index}>{renderHTMLContentWithFirstWordHighlight(block.data.text)}</p>;
 
             case 'list':
                 return block.data.style === 'ordered' ? (
@@ -70,12 +70,27 @@ const convertToHTML = (blocks) => {
     });
 };
 
+// Function to wrap the first word in a <span> with class "highlight"
+const renderHTMLContentWithFirstWordHighlight = (content) => {
+    if (typeof content === 'string') {
+        const words = content.split(' ');
+        const firstWord = words[0]; // Get the first word
+        const restOfText = words.slice(1).join(' '); // Join the remaining words back
+
+        return (
+            <span>
+                <span className="highlight">{firstWord}</span> {restOfText}
+            </span>
+        );
+    }
+
+    return content;
+};
+
 const renderHTMLContent = (content) => {
-    // Check if the content is a string, if so, render it as HTML
     if (typeof content === 'string') {
         return <div dangerouslySetInnerHTML={{ __html: content }} />;
     }
-    // If not a string, render the content as is
     return content;
 };
 

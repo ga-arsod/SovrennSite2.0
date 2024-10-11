@@ -90,6 +90,7 @@ const SlideBox = styled(Box)`
 `;
 
 const StyledTableRow = styled(TableRow)`
+  cursor:pointer;
   &:hover {
     background-color: ${colors.neutral600};
   }
@@ -329,25 +330,27 @@ export default function DiscoveryTable({ tableData, id }) {
                 {headerRowArray?.map((item, index) => {
                   return (
                     <>
-                      <StyledTableCell key={index}>
+                      <StyledTableCell key={index}
+                       onClick={() => handleSortChange(item?.id)}
+                      >
                         <div style={{ display: "flex", alignItems: "center" }}>
                           {item?.name}
                           {sortBy === item.id ? (
                             sortOrder === "inc" ? (
                               <StyledArrowUpwardIcon
                                 className="arrow-icon"
-                                onClick={() => handleSortChange(item?.id)}
+                               
                               />
                             ) : (
                               <StyledArrowDownwardIcon
                                 className="arrow-icon"
-                                onClick={() => handleSortChange(item?.id)}
+                               
                               />
                             )
                           ) : (
                             <StyledArrowUpwardIcon
                               className="arrow-icon"
-                              onClick={() => handleSortChange(item?.id)}
+                             
                             />
                           )}
                         </div>
@@ -370,6 +373,7 @@ export default function DiscoveryTable({ tableData, id }) {
                   key={index}
                   onMouseEnter={() => handleMouseEnter(index)}
                   onMouseLeave={handleMouseLeave}
+                  onClick={() => handleRowClick(index, item)}
                 >
                   {(index % 2 === 0 && tableData?.basket?.avail_free) ||
                   userDetails?.subscriptions?.includes("full-access") ||
@@ -410,7 +414,7 @@ export default function DiscoveryTable({ tableData, id }) {
                   </StyledBodyTableCell>
                   <StyledBodyTableCell
                     sx={{ color: colors.neutral900, position: "relative" }}
-                    onClick={() => handleRowClick(index, item)}
+                   
                   >
                     {item?.remark || "NA"}
                     <SlideBox hovered={hoveredRow === index}>

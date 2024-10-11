@@ -114,7 +114,7 @@ const data = [
 
 const SearchTableData = ({data}) => {
   const router=useRouter();
-  console.log(data,"searchtabledata")
+  
   return (
     <>
       <Box sx={{ paddingX: 2, marginTop: 3, border: `1px solid ${colors.neutral600}`, borderRadius: 1 }}>

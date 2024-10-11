@@ -5,6 +5,7 @@ import React, { useState,useEffect } from "react";
 import Image from "next/image";
 import { useTheme } from "@mui/material/styles";
 import { keyframes } from '@emotion/react';
+import { useSelector } from "react-redux";
 
 import { colors } from "../Constants/colors";
 const headingsArray = [
@@ -157,6 +158,8 @@ opacity: 0;
 const MainPoster = () => {
   const theme = useTheme();
   const [hovered, setHovered] = useState(false);
+  const { userDetails,isAuth} =
+    useSelector((store) => store.auth);
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -279,18 +282,45 @@ const MainPoster = () => {
                 container
                 direction={{ xs: "column", sm: "row" }}
                 spacing={2}
-               
+                justifyContent={{xs:"center",md:"start"}}
+               width="100%"
               >
-                <Grid item>
+                {/* <Grid item>
                   <StyledButton1 variant="outlined">
-                    Buy Trial for 2 months @ ₹400
+                    {`Buy Trial for ${userDetails.trial_validity} @ ₹${userDetails.to_pay_for_trial==0 ? "0" :userDetails.to_pay_for_trial}`}
                   </StyledButton1>
-                </Grid>
-                <Grid item>
+                </Grid> */}
+                
+
+                {
+                  !isAuth ?
+                  <Grid item>
+                  
+                    
                   <StyledButton2 variant="contained">
-                    Buy Full Access @ ₹5000/yr
+                  {`Buy Full Access @ ₹5000/yr`}
+                </StyledButton2>
+                
+                
+              </Grid>:
+              isAuth && 
+                (userDetails?.subscriptions?.includes("full-access") ||
+                  
+                   
+                    userDetails?.subscriptions?.includes("life") ) ? "" 
+                    : 
+                    <Grid item>
+                  
+                    
+                    <StyledButton2 variant="contained">
+                    {`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
                   </StyledButton2>
+                  
+                  
                 </Grid>
+                
+                    } 
+               
               </Grid>
             </Grid>
           </SlideInLeftBox>

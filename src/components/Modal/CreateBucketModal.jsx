@@ -23,7 +23,7 @@ import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { createCustomBucketApi } from "@/app/Redux/Slices/discoverySlice";
-import DeleteBucketCreation from "../../components/Modal/DeleteBucketCreation"
+import DeleteBucketCreation from "../../components/Modal/DeleteBucketCreation";
 import { commonCompanyListApi } from "@/app/Redux/Slices/discoverySlice";
 
 const StyledTypography1 = styled(Typography)`
@@ -107,17 +107,14 @@ const StyledChip = styled(Chip)`
 
 const CreateBucketModal = ({ open, handleClose }) => {
   const theme = useTheme();
-  const [isOpen,setIsOpen]=useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const options = useSelector(
-    (store) => store.discovery.commonCompanyList
-  );
-  
-  const {customBucketData,isCreateBucketModalOpen} = useSelector(
+  const options = useSelector((store) => store.discovery.commonCompanyList);
+
+  const { customBucketData, isCreateBucketModalOpen } = useSelector(
     (store) => store.discovery
   );
 
-  
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     title: "",
@@ -146,11 +143,11 @@ const CreateBucketModal = ({ open, handleClose }) => {
     setSelectedOptions(selectedOptions.filter((item) => item !== option));
   };
 
-  useEffect(()=>{
-    dispatch(commonCompanyListApi())
-  },[])
-console.log(isCreateBucketModalOpen,"isCreateBucketModalOpen")
-console.log(customBucketData,"customBucketData")
+  useEffect(() => {
+    dispatch(commonCompanyListApi(formData.bucket_list));
+  }, [formData,dispatch]);
+  console.log(isCreateBucketModalOpen, "isCreateBucketModalOpen");
+  console.log(customBucketData, "customBucketData");
   const renderField = (field) => {
     switch (field.type) {
       case "text":
@@ -238,9 +235,9 @@ console.log(customBucketData,"customBucketData")
               fullWidth
               MenuProps={{
                 PaperProps: {
-                  elevation: 0, 
+                  elevation: 0,
                   sx: {
-                    zIndex: 1400, 
+                    zIndex: 1400,
                   },
                 },
               }}
@@ -252,20 +249,20 @@ console.log(customBucketData,"customBucketData")
                   sx={{
                     color: selectedOptions.includes(elem.bucket_name)
                       ? colors.navyBlue100
-                      : colors.navyBlue900, 
-                    borderWidth: "1px 1px 0 1px", 
+                      : colors.navyBlue900,
+                    borderWidth: "1px 1px 0 1px",
                     borderStyle: "solid",
                     borderColor: "#DEDDDD",
                     "&:last-child": {
                       borderWidth: "1px",
                     },
                     "&:hover": {
-                      backgroundColor: colors.navyBlue50, 
+                      backgroundColor: colors.navyBlue50,
                     },
                     ...(index === 0 && {
-                      backgroundColor: "transparent !important", 
+                      backgroundColor: "transparent !important",
                       "&:hover": {
-                        backgroundColor: `${colors.navyBlue50} !important`, 
+                        backgroundColor: `${colors.navyBlue50} !important`,
                       },
                     }),
                   }}
@@ -278,6 +275,7 @@ console.log(customBucketData,"customBucketData")
                     width="100%"
                   >
                     <Grid item>{elem.bucket_name}</Grid>
+                    
                     <Grid item>
                       <Typography
                         sx={{
@@ -287,7 +285,10 @@ console.log(customBucketData,"customBucketData")
                         }}
                         color={colors.green500}
                       >
-                       {elem.companies_in_common}
+                        {
+                      formData.bucket_list.length!==0 ? elem.companies_in_common :''
+                    }
+                        
                       </Typography>
                     </Grid>
                   </Grid>
@@ -342,15 +343,21 @@ console.log(customBucketData,"customBucketData")
 
   return (
     <>
-    {
-      open ? <DeleteBucketCreation isOpen={isOpen} setIsOpen={setIsOpen} handleClose={handleClose}/>:<></>
-    }
+      {open ? (
+        <DeleteBucketCreation
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          handleClose={handleClose}
+        />
+      ) : (
+        <></>
+      )}
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{ border: "none", outline: "none" }} 
+        sx={{ border: "none", outline: "none" }}
         BackdropProps={{
           sx: {
             backgroundColor: "rgba(0, 0, 0, 0.25)",
@@ -368,16 +375,15 @@ console.log(customBucketData,"customBucketData")
               boxShadow: "0px 12px 24px 0px #0000001A",
               position: "relative",
               borderRadius: "8px",
-              border: "none", 
-              outline: "none", 
+              border: "none",
+              outline: "none",
             }}
           >
             <IconButton
-             
               sx={{ position: "absolute", top: "6px", right: "4px" }}
-              onClick={()=>{
-               
-                setIsOpen(true)}}
+              onClick={() => {
+                setIsOpen(true);
+              }}
             >
               <CloseIcon sx={{ color: colors.black, zIndex: 1400 }} />
             </IconButton>
@@ -407,25 +413,28 @@ console.log(customBucketData,"customBucketData")
                   ))}
                 </Grid>
               </Grid>
-             
-              <Grid item width="100%" marginTop={{xs:1,sm:3}} >
-              {
-                        !customBucketData?.success ? <Typography style={{ color: "red"}} paddingBottom={1} textAlign="center">
-                            {customBucketData?.message}
-                        </Typography>
-                            :
-                            ""}
-                
+
+              <Grid item width="100%" marginTop={{ xs: 1, sm: 3 }}>
+                {!customBucketData?.success ? (
+                  <Typography
+                    style={{ color: "red" }}
+                    paddingBottom={1}
+                    textAlign="center"
+                  >
+                    {customBucketData?.message}
+                  </Typography>
+                ) : (
+                  ""
+                )}
+
                 <StyledButton2
                   variant="contained"
-                  onClick={async () => {
+                  onClick={() => {
+                     dispatch(
+                      createCustomBucketApi(formData)
+                    );
+
                    
-                    const result = await dispatch(createCustomBucketApi(formData));
-                    
-                   
-                    if (isCreateBucketModalOpen) {
-                      handleClose();
-                    }
                   }}
                   disabled={selectedOptions.length < 2}
                 >

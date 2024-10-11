@@ -8,6 +8,7 @@ import discoveryReducer from './Slices/discoverySlice';
 import educationReducer from './Slices/educationSlice';
 import snackbarReducer from "./Slices/snackbarSlice"
 import sortingReducer from "./Slices/sortingSlice"
+import timesReducer from "./Slices/timesSlice"
 
 // Configuration for redux-persist
 const persistConfig = {
@@ -23,9 +24,10 @@ const rootReducer = combineReducers({
   education: educationReducer,
   snackbar:snackbarReducer,
   sorting: sortingReducer,
+  times:timesReducer
 });
 
-// Persist the root reducer
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({

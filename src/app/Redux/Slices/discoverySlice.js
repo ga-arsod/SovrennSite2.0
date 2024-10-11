@@ -76,13 +76,18 @@ export const discoveryFiltersApiCall = createAsyncThunk(
 
 export const commonCompanyListApi = createAsyncThunk(
   "commonCompanyListApi",
-  async () => {
+  async (companyArray) => {
     const response = await fetch(`${url}/buckets/buckets-names`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(
+        {
+          selected_buckets:companyArray
+        }
+      ),
     });
     return response.json();
   }
@@ -138,6 +143,10 @@ export const createCustomBucketApi = createAsyncThunk(
           message: result.message,
         })
       );
+    }
+    else{
+      dispatch(resetBucketModal())
+     
     }
 
    
@@ -499,7 +508,7 @@ const discoverySlice = createSlice({
     });
     builder.addCase(createCustomBucketApi.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.isCreateBucketModalOpen=!action.payload.success;
+     
       state.customBucketData=action.payload
      
     });
