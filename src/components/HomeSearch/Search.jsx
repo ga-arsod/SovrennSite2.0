@@ -14,12 +14,19 @@ import styles from "../../styles/CompanyResult.module.css";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import { useMediaQuery } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Spinner from "../Common/Spinner";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 23px;
   font-weight: 600;
   line-height: 28px;
   letter-spacing: -0.02em;
+ 
+   @media (max-width: 639px) {
+    font-size: 19px;
+    line-height: 17px;
+   
+  }
 `;
 
 const StyledTypography2 = styled(Typography)`
@@ -27,6 +34,11 @@ const StyledTypography2 = styled(Typography)`
   font-weight: 600;
   line-height: 23px;
   letter-spacing: -0.02em;
+   @media (max-width: 639px) {
+    font-size: 16px;
+    line-height: 17px;
+   
+  }
 `;
 
 const CustomDivider = styled(Divider)`
@@ -39,6 +51,7 @@ const CustomDivider = styled(Divider)`
 const Search = () => {
   const router = useRouter();
   const [data, setData] = useState({});
+  const [isLoading,setIsLoading]=useState(true)
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
   
@@ -60,10 +73,24 @@ const Search = () => {
     const data = await res.json();
 
     if (res.ok) {
+      setIsLoading(false)
+
       setData(data.data);
     }
     return;
   };
+
+  if (isLoading ) {
+    return (
+      <>
+        <Head>
+          <title>Search results for {q}</title>
+         
+        </Head>
+        <Spinner margin={15} />
+      </>
+    );
+  }
 
   return (
     <>

@@ -258,7 +258,7 @@ const Navbar = ({ session }) => {
     setIsLoaded(true);
     dispatch(userDetailsApi());
     
-  }, []);
+  }, [isAuth]);
 
  
   useEffect(() => {
@@ -292,14 +292,21 @@ const Navbar = ({ session }) => {
           zIndex: 1300,
         }}
       >
+         <Box
+    sx={{
+      maxWidth: "1900px", // Set your desired maxWidth here
+      width: "100%",
+      margin: "0 auto", // Centers the toolbar horizontally
+    }}
+  >
         <Toolbar>
           <Grid
             container
             direction="row"
             alignItems="center"
             justifyContent="space-between"
-            spacing={0}
-            width="100%"
+           
+            
           >
             <Grid item sx={{ display: { xs: "block", sm: "none", md: "block" } }}>
               <Link href="/" passHref>
@@ -380,19 +387,79 @@ const Navbar = ({ session }) => {
             <StyledGrid5
               item
               sx={{
-                display: isAuth || session?.user ? "flex" : "none",
+                display: (isAuth || session?.user) && !isSmallerThanMd ? "flex" : "none",
                 alignItems: "center",
-                width: "100px",
+                
               }}
             >
-              <Box
+             
+            </StyledGrid5>
+
+            <Grid
+              item
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "start",
+                width: isSmallerThanSm && searchOpen ? "100%" : "auto",
+              }}
+            >
+              
+              
+
+              
+              {(searchOpen && isSmallerThanMd) && <NavbarSearch handleSearchClick={handleSearchClick} />
+               
+              }
+
+              {!isSmallerThanSm && (
+                <>
+                {!searchOpen && (
+                <IconButton
+                  onClick={handleSearchClick}
+                  sx={{ display: { xs: "none", sm: "block", md: "none" } }}
+                >
+                  <SearchIcon />
+                </IconButton>
+              )}
+                  <StyledButton1
+                    sx={{
+                      marginRight: "16px",
+                      display: isAuth || session?.user ? "none" : "",
+                    }}
+                    variant="contained"
+                    onClick={() => {
+                      router.push("login");
+                    }}
+                  >
+                    Sign Up
+                  </StyledButton1>
+
+                  <Typography
+                    color={colors.navyBlue500}
+                    sx={{
+                      fontWeight: "600",
+                      fontSize: "14px",
+                      lineHeight: "17px",
+                      cursor: "pointer",
+                      display: isAuth || session?.user ? "none" : "",
+                    }}
+                    onClick={() => {
+                      router.push("login");
+                    }}
+                    disableElevation
+                  >
+                    Login
+                  </Typography>
+                  
+                  <Box
                 sx={{
                   backgroundColor: "#172641",
                   borderRadius: "50%",
                   padding: "2px",
                   width: "30px",
                   height: "30px",
-                  display: "flex",
+                  display:  isAuth || session?.user ? "flex" : "none",
                   justifyContent: "center",
                   alignItems: "center",
                   overflow: "hidden",
@@ -428,6 +495,7 @@ const Navbar = ({ session }) => {
                 variant="contained"
                 disableElevation
                 onClick={handleClick}
+                sx={{display:  isAuth || session?.user ? "flex" : "none",}}
               >
                 <KeyboardArrowDownOutlinedIcon />
               </IconButton>
@@ -497,63 +565,6 @@ const Navbar = ({ session }) => {
                   Logout
                 </StyledMenuItem2>
               </StyledMenu>
-            </StyledGrid5>
-
-            <Grid
-              item
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "start",
-                width: isSmallerThanSm && searchOpen ? "100%" : "auto",
-              }}
-            >
-              
-              {!searchOpen && (
-                <IconButton
-                  onClick={handleSearchClick}
-                  sx={{ display: { xs: "none", sm: "block", md: "none" } }}
-                >
-                  <SearchIcon />
-                </IconButton>
-              )}
-
-              
-              {(searchOpen && isSmallerThanMd) && <NavbarSearch handleSearchClick={handleSearchClick} />
-               
-              }
-
-              {!isSmallerThanSm && (
-                <>
-                  <StyledButton1
-                    sx={{
-                      marginRight: "16px",
-                      display: isAuth || session?.user ? "none" : "",
-                    }}
-                    variant="contained"
-                    onClick={() => {
-                      router.push("login");
-                    }}
-                  >
-                    Sign Up
-                  </StyledButton1>
-
-                  <Typography
-                    color={colors.navyBlue500}
-                    sx={{
-                      fontWeight: "600",
-                      fontSize: "14px",
-                      lineHeight: "17px",
-                      cursor: "pointer",
-                      display: isAuth || session?.user ? "none" : "",
-                    }}
-                    onClick={() => {
-                      router.push("login");
-                    }}
-                    disableElevation
-                  >
-                    Login
-                  </Typography>
                 </>
               )}
             </Grid>
@@ -575,7 +586,9 @@ const Navbar = ({ session }) => {
             )}
           </Grid>
         </Toolbar>
+        </Box>
       </AppBar>
+      
 
       <Drawer
         ModalProps={{

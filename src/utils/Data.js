@@ -583,7 +583,7 @@ export const primeArticleDisclaimer =
       },
     },
     {
-      imagePath: "/knowledgeCarousel.png",
+      imagePath: "/ledgeCarousel.png",
       Info: {
         heading: "Sovrenn Knowledge",
         listItems: ["Explore our articles to deepen your knowledge of the finance world", 

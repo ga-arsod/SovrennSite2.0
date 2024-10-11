@@ -1,13 +1,30 @@
-"use client"
-import React, { useState } from 'react';
-import { Box, Drawer, Grid, Typography, FormControl, FormControlLabel, Divider, Button, TextField, InputAdornment, IconButton, Checkbox } from '@mui/material';
+"use client";
+import React, { useState } from "react";
+import {
+  Box,
+  Drawer,
+  Grid,
+  Typography,
+  FormControl,
+  FormControlLabel,
+  Divider,
+  Button,
+  TextField,
+  InputAdornment,
+  IconButton,
+  Checkbox,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import FilterComponent from "../Common/FilterComponent";
+import { useSelector } from "react-redux";
+import  {timesArticleApi} from "../../app/Redux/Slices/timesSlice"
+import { useDispatch } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -78,13 +95,13 @@ const StyledButton3 = styled(Button)`
   }
 `;
 
-
 const CustomFormControlLabel = styled(FormControlLabel)`
   & .MuiFormControlLabel-label {
     color: ${colors.navyBlue900};
     font-size: 14px;
     font-weight: 400;
     line-height: 17px;
+    white-space:nowrap;
   }
   & .MuiCheckbox-root {
     padding: 8px;
@@ -117,7 +134,7 @@ const CustomDivider = styled(Divider)`
 
 const StyledTextField = styled(TextField)`
   .MuiOutlinedInput-root {
-    border-color: ${colors.navyBlue300}; 
+    border-color: ${colors.navyBlue300};
     &:hover .MuiOutlinedInput-notchedOutline {
       border-color: ${colors.navyBlue300};
     }
@@ -136,7 +153,7 @@ const StyledTextField = styled(TextField)`
     }
   }
   .MuiOutlinedInput-input::placeholder {
-    color: #64748B;
+    color: #64748b;
     font-weight: 400;
     font-size: 11px;
     line-height: 17px;
@@ -145,7 +162,7 @@ const StyledTextField = styled(TextField)`
 `;
 
 const CustomSearchIcon = styled(SearchIcon)`
-  color: #64748B;
+  color: #64748b;
 `;
 
 const ScrollableBox = styled(Box)`
@@ -154,18 +171,17 @@ const ScrollableBox = styled(Box)`
   overflow: auto;
   padding-bottom: 80px;
 
-  
   &::-webkit-scrollbar {
-    width: 4px; 
+    width: 4px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${colors.neutral700}; 
-    border-radius: 2px; 
+    background-color: ${colors.neutral700};
+    border-radius: 2px;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: ${colors.greyBlue100}; 
+    background-color: ${colors.greyBlue100};
   }
 `;
 const StyledButton = styled(Button)`
@@ -177,12 +193,10 @@ const StyledButton = styled(Button)`
   padding-top: 12px;
   padding-bottom: 12px;
   border-color: ${colors.themeGreen};
-  
 
   &:hover {
     color: ${colors.themeGreen};
     border-color: ${colors.themeGreen};
-   
   }
 `;
 
@@ -210,34 +224,66 @@ const industries = [
 ];
 
 const TimesFilter = ({ isOpen, setIsOpen }) => {
-  const theme=useTheme();
+  const theme = useTheme();
+  const dispatch=useDispatch()
   const [showAllSectors, setShowAllSectors] = useState(false);
+  const [showAllCompanies, setShowAllCompanies] = useState(false);
+  const [showAllMonths,setShowAllMonths]=useState(false);
+  const [selectedMonths,setSelectedMonths]=useState(false);
   const [showAllIndustries, setShowAllIndustries] = useState(false);
   const [selectedSectors, setSelectedSectors] = useState([]);
   const [selectedIndustries, setSelectedIndustries] = useState([]);
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const { timesFilter } = useSelector((store) => store.times);
 
   const toggleDrawer = (open) => () => {
     setIsOpen(open);
   };
 
-  const handleSectorChange = (sector) => {
-    setSelectedSectors((prev) =>
-      prev.includes(sector)
-        ? prev.filter((item) => item !== sector)
-        : [...prev, sector]
-    );
-  };
+  const [filter, setFilter] = useState({
+    sector_id: [],
+    industry: [],
+    company_name: [],
+    byMonths: [],
+    
+    market_cap: [],
+    ttm_pe: [],
+    company_type: []
+});
 
-  const handleIndustryChange = (industry) => {
-    setSelectedIndustries((prev) =>
-      prev.includes(industry)
-        ? prev.filter((item) => item !== industry)
-        : [...prev, industry]
-    );
-  };
 
-  const isApplyButtonDisabled = selectedSectors.length === 0 && selectedIndustries.length === 0;
+const handleChange = (category, option) => (event) => {
+  console.log(category,"category")
+  const { checked } = event.target;
+
+  setFilter((prevFilter) => {
+    const updatedOptions = prevFilter[category] || []; 
+    const newOptions = checked
+      ? [...updatedOptions, option]
+      : updatedOptions.filter((item) => item !== option);
+
+    return {
+      ...prevFilter,
+      [category]: newOptions,
+    };
+  });
+};
+
+const resetFilters = () => {
+  setFilter({
+    sector_id: [],
+    industry: [],
+    company_name: [],
+    byMonths: [],
+    
+    market_cap: [],
+    ttm_pe: [],
+    company_type: []
+  });
+};
+  const isApplyButtonDisabled =
+    filter.sector_id.length === 0 && filter.byMonths.length === 0 && filter.industry.length === 0 && filter.company_name.length === 0
+    &&  filter.market_cap.length === 0  &&  filter.ttm_pe.length === 0 &&  filter.company_type.length === 0;
 
   return (
     <Box>
@@ -248,15 +294,21 @@ const TimesFilter = ({ isOpen, setIsOpen }) => {
         sx={{
           zIndex: 1400,
           "& .MuiDrawer-paper": {
-            width: isSmallerThanSm ? "100%" :"350px",
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
+            width: isSmallerThanSm ? "100%" : "350px",
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
           },
         }}
       >
         <ScrollableBox>
-          <Grid container justifyContent="space-between" alignItems="center" marginTop={3} padding={2}>
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            marginTop={3}
+            padding={2}
+          >
             <Grid item>
               <Typography
                 color={colors.navyBlue500}
@@ -267,6 +319,7 @@ const TimesFilter = ({ isOpen, setIsOpen }) => {
                   letterSpacing: "-0.02em",
                 }}
                 component="span"
+                onClick={resetFilters}
               >
                 Filter
               </Typography>
@@ -274,7 +327,12 @@ const TimesFilter = ({ isOpen, setIsOpen }) => {
             <Grid item>
               <UnderlinedTypography
                 color={colors.navyBlue500}
-                sx={{ fontWeight: "600", fontSize: "14px", lineHeight: "17px",cursor:"pointer" }}
+                sx={{
+                  fontWeight: "600",
+                  fontSize: "14px",
+                  lineHeight: "17px",
+                  cursor: "pointer",
+                }}
                 component="span"
               >
                 Reset Filter
@@ -283,51 +341,87 @@ const TimesFilter = ({ isOpen, setIsOpen }) => {
           </Grid>
           <CustomDivider sx={{ mt: 1, mb: 3 }} />
           <FormControl component="fieldset" sx={{ width: "100%", padding: 2 }}>
-            <StyledTypography1>Company type</StyledTypography1>
-            <Grid container justifyContent="space-between" sx={{ width: "80%" }}>
-              <Grid item>
-                <CustomFormControlLabel
-                  control={<CustomCheckbox checked={selectedSectors.includes("SME")} onChange={() => handleSectorChange("SME")} />}
-                  label="SME"
-                />
-              </Grid>
-              <Grid item>
-                <CustomFormControlLabel
-                  control={<CustomCheckbox checked={selectedSectors.includes("Non-SME")} onChange={() => handleSectorChange("Non-SME")} />}
-                  label="Non-SME"
-                />
-              </Grid>
-            </Grid>
-            <CustomDivider sx={{ mt: 2, mb: 2 }} />
-            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-             Market Cap
-            </StyledTypography1>
-            {(showAllSectors ? sectors : sectors.slice(0, 5)).map((sector, index) => (
-              <CustomFormControlLabel
-                key={index}
-                control={<CustomCheckbox checked={selectedSectors.includes(sector)} onChange={() => handleSectorChange(sector)} />}
-                label={sector}
-              />
-            ))}
-            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-             TTM PE
-            </StyledTypography1>
-            {(showAllSectors ? sectors : sectors.slice(0, 5)).map((sector, index) => (
-              <CustomFormControlLabel
-                key={index}
-                control={<CustomCheckbox checked={selectedSectors.includes(sector)} onChange={() => handleSectorChange(sector)} />}
-                label={sector}
-              />
-            ))}
            
-            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              Sector
+                  <StyledTypography1>{timesFilter[0].category}</StyledTypography1>
+                  <Grid
+                    container
+                    justifyContent="space-between"
+                    sx={{ width: "80%" }}
+                  >
+                    {timesFilter[0].options.map((item, index) => {
+                      return (
+                        <>
+                          <Grid item xs={12} key={index}>
+                            <CustomFormControlLabel
+                           checked={filter[item.key]?.includes(item.value)}
+                           onChange={handleChange(timesFilter[0].key, item.value)}
+                              control={<CustomCheckbox />}
+                              label={item.placeholder}
+                            
+                            />
+                          </Grid>
+                        </>
+                      );
+                    })}
+                  </Grid>
+                  <CustomDivider sx={{ mt: 2, mb: 2 }} />
+                
+
+
+                  <StyledTypography1>{timesFilter[1].category}</StyledTypography1>
+                  <Grid
+                    container
+                    justifyContent="space-between"
+                    sx={{ width: "80%" }}
+                  >
+                    {timesFilter[1].options.map((item, index) => {
+                      return (
+                        <>
+                          <Grid item xs={6} key={index}>
+                            <CustomFormControlLabel
+                             checked={filter[item.key]?.includes(item.value)}
+                             onChange={handleChange(timesFilter[1].key, item.value)}
+                              control={<CustomCheckbox />}
+                              label={item.placeholder}
+                            />
+                          </Grid>
+                        </>
+                      );
+                    })}
+                  </Grid>
+                  <CustomDivider sx={{ mt: 2, mb: 2 }} />
+                  <StyledTypography1>{timesFilter[2].category}</StyledTypography1>
+                  <Grid
+                    container
+                    justifyContent="space-between"
+                    sx={{ width: "80%" }}
+                  >
+                    {timesFilter[2].options.map((item, index) => {
+                      return (
+                        <>
+                          <Grid item xs={6} key={index}>
+                            <CustomFormControlLabel
+                              control={<CustomCheckbox />}
+                              label={item.placeholder}
+                              checked={filter[item.key]?.includes(item.value)}
+                             onChange={handleChange(timesFilter[2].key, item.value)}
+                            />
+                          </Grid>
+                        </>
+                      );
+                    })}
+                  </Grid>
+                  <CustomDivider sx={{ mt: 2, mb: 2 }} />
+               
+                  
+                  <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
+            {timesFilter[3].category}
             </StyledTypography1>
             <Box display="flex" marginBottom={2}>
               <StyledTextField
                 variant="outlined"
                 size="small"
-                placeholder="Search for Sector"
+                placeholder="Search for sector"
                 fullWidth
                 sx={{ mb: 1 }}
                 InputProps={{
@@ -342,30 +436,55 @@ const TimesFilter = ({ isOpen, setIsOpen }) => {
               />
               <StyledButton2 variant="contained">Search</StyledButton2>
             </Box>
-            {(showAllSectors ? sectors : sectors.slice(0, 5)).map((sector, index) => (
-              <CustomFormControlLabel
-                key={index}
-                control={<CustomCheckbox checked={selectedSectors.includes(sector)} onChange={() => handleSectorChange(sector)} />}
-                label={sector}
-              />
-            ))}
+            <Grid
+                    container
+                    justifyContent="space-between"
+                    sx={{ width: "80%" }}
+                  >
+            {(showAllSectors ? timesFilter[3].options : timesFilter[3].options.slice(0, 5)).map(
+              (sector, index) => (
+                <Grid item  key={index} xs={12}>
+                <CustomFormControlLabel
+                 
+                  control={
+                    <CustomCheckbox
+                    checked={filter[sector.key]?.includes(sector.value)}
+                             onChange={handleChange(timesFilter[3].key, sector.value)}
+                     
+                    />
+                  }
+                  label={sector.placeholder}
+
+                />
+                </Grid>
+              )
+            )}
+            </Grid>
+           
             <Grid container justifyContent="flex-start">
               <StyledViewAllButton
-                endIcon={showAllSectors ? <KeyboardArrowUpOutlinedIcon /> : <ExpandMoreIcon />}
+                endIcon={
+                 showAllSectors ? (
+                    <KeyboardArrowUpOutlinedIcon />
+                  ) : (
+                    <ExpandMoreIcon />
+                  )
+                }
                 onClick={() => setShowAllSectors(!showAllSectors)}
               >
                 {showAllSectors ? "Hide" : "View All"}
               </StyledViewAllButton>
             </Grid>
             <CustomDivider sx={{ mt: 2, mb: 2 }} />
+
             <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              Industry
+               {timesFilter[4].category}
             </StyledTypography1>
             <Box display="flex" marginBottom={2}>
               <StyledTextField
                 variant="outlined"
                 size="small"
-                placeholder="Search for Industry"
+                placeholder="Search for industry"
                 fullWidth
                 sx={{ mb: 1 }}
                 InputProps={{
@@ -380,62 +499,172 @@ const TimesFilter = ({ isOpen, setIsOpen }) => {
               />
               <StyledButton2 variant="contained">Search</StyledButton2>
             </Box>
-            {(showAllIndustries ? industries : industries.slice(0, 5)).map((industry, index) => (
-              <CustomFormControlLabel
-                key={index}
-                control={<CustomCheckbox checked={selectedIndustries.includes(industry)} onChange={() => handleIndustryChange(industry)} />}
-                label={industry}
-              />
-            ))}
+            {(showAllIndustries ? timesFilter[4].options : timesFilter[4].options.slice(0, 5)).map(
+              (industries, index) => (
+                <CustomFormControlLabel
+                  key={index}
+                  control={
+                    <CustomCheckbox
+                    checked={filter[industries.key]?.includes(industries.value)}
+                             onChange={handleChange(timesFilter[4].key, industries.value)}
+                      
+                    />
+                  }
+                  label={industries.placeholder}
+                />
+              )
+            )}
             <Grid container justifyContent="flex-start">
               <StyledViewAllButton
-                endIcon={showAllIndustries ? <KeyboardArrowUpOutlinedIcon /> : <ExpandMoreIcon />}
+                endIcon={
+                  showAllSectors ? (
+                    <KeyboardArrowUpOutlinedIcon />
+                  ) : (
+                    <ExpandMoreIcon />
+                  )
+                }
                 onClick={() => setShowAllIndustries(!showAllIndustries)}
               >
                 {showAllIndustries ? "Hide" : "View All"}
               </StyledViewAllButton>
             </Grid>
+            <CustomDivider sx={{ mt: 2, mb: 2 }} />
+            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
+             {timesFilter[5].category}
+            </StyledTypography1>
+           
+            {(showAllMonths ? timesFilter[5].options : timesFilter[5].options.slice(0, 5)).map(
+              (month, index) => (
+                <CustomFormControlLabel
+                  key={index}
+                  control={
+                    <CustomCheckbox
+                    checked={filter[month.key]?.includes(month.value)}
+                    onChange={handleChange(timesFilter[5].key, month.value)}
+                      
+                    />
+                  }
+                  label={month.placeholder}
+                />
+              )
+            )}
+            <Grid container justifyContent="flex-start">
+              <StyledViewAllButton
+                endIcon={
+                 showAllMonths ? (
+                    <KeyboardArrowUpOutlinedIcon />
+                  ) : (
+                    <ExpandMoreIcon />
+                  )
+                }
+                onClick={() => setShowAllMonths(!showAllMonths)}
+              >
+                {showAllMonths ? "Hide" : "View All"}
+              </StyledViewAllButton>
+            </Grid>
+            <CustomDivider sx={{ mt: 2, mb: 2 }} />
+            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
+              {timesFilter[6].category}
+            </StyledTypography1>
+            <Box display="flex" marginBottom={2}>
+              <StyledTextField
+                variant="outlined"
+                size="small"
+                placeholder="Search for company"
+                fullWidth
+                sx={{ mb: 1 }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      <IconButton>
+                        <CustomSearchIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <StyledButton2 variant="contained">Search</StyledButton2>
+            </Box>
+            <Grid
+              container
+              justifyContent="space-between"
+              sx={{ width: "80%" }}
+            >
+              {(showAllCompanies
+                ? timesFilter[6].options
+                : timesFilter[6].options.slice(0, 5)
+              ).map((company, index) => (
+                <Grid item key={index} xs={12}>
+                  <CustomFormControlLabel
+                    control={
+                      <CustomCheckbox
+                        checked={filter[company.key]?.includes(company.value)}
+                        onChange={handleChange(
+                          timesFilter[6].key,
+                          company.value
+                        )}
+                      />
+                    }
+                    label={company.placeholder}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+
+            <Grid container justifyContent="flex-start">
+              <StyledViewAllButton
+                endIcon={
+                  showAllCompanies ? (
+                    <KeyboardArrowUpOutlinedIcon />
+                  ) : (
+                    <ExpandMoreIcon />
+                  )
+                }
+                onClick={() => setShowAllCompanies(!showAllCompanies)}
+              >
+                {showAllCompanies ? "Hide" : "View All"}
+              </StyledViewAllButton>
+            </Grid>
+           
           </FormControl>
         </ScrollableBox>
         <Box
           sx={{
-            position: 'absolute',
+            position: "absolute",
             bottom: 0,
             left: 0,
             right: 0,
-            padding: '8px 12px',
-            boxShadow: '0px -2px 12px 0px #0000001F',
-            backgroundColor: 'white',
+            padding: "8px 12px",
+            boxShadow: "0px -2px 12px 0px #0000001F",
+            backgroundColor: "white",
             zIndex: 1401,
           }}
         >
           <Grid container spacing={2}>
-          <Grid item xs={6}>
-           <StyledButton
-            fullWidth
-            variant="outlined"
-            onClick={toggleDrawer(false)}
-          >
-         Cancel
-          </StyledButton>
-
-           </Grid>
-           <Grid item xs={6}>
-           <StyledButton3
-            fullWidth
-            variant="contained"
-            disabled={isApplyButtonDisabled} 
-          >
-            Apply Filter
-          </StyledButton3>
-
-           </Grid>
+            <Grid item xs={6}>
+              <StyledButton
+                fullWidth
+                variant="outlined"
+                onClick={toggleDrawer(false)}
+              >
+                Cancel
+              </StyledButton>
+            </Grid>
+            <Grid item xs={6}>
+              <StyledButton3
+                fullWidth
+                variant="contained"
+                disabled={isApplyButtonDisabled}
+                onClick={()=>{dispatch(timesArticleApi(filter))}}
+              >
+                Apply Filter
+              </StyledButton3>
+            </Grid>
           </Grid>
-         
         </Box>
       </Drawer>
     </Box>
   );
-}
+};
 
 export default TimesFilter;

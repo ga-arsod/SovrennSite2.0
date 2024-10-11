@@ -1,5 +1,5 @@
-"use client"
-import React, { useEffect } from "react";
+"use client";
+import React from "react";
 import { Box, Grid, Typography, IconButton } from "@mui/material";
 import { colors } from "../Constants/colors";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -11,7 +11,6 @@ const StyledTypography1 = styled(Typography)`
   line-height: 40px;
   text-align: center;
   letter-spacing: -0.02em;
- 
 `;
 
 const StyledTypography2 = styled(Typography)`
@@ -29,12 +28,36 @@ const CustomIconButton = styled(IconButton)`
   border: 1px solid #b0b7bc;
   border-radius: 50%;
   background-color: ${colors.white};
-  transition: background-color 0.3s, border-color 0.3s, transform 0.3s; /* Add transition for all properties */
+  transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+
+ 
+  &.custom-icon-button {
+   
+  }
+`;
+
+const StyledBox = styled(Box)`
+  border: 1px solid ${colors.neutral600};
+  border-radius: 4px;
+  height: 160px;
+
+  &:hover {
+    .custom-icon-button {
+      background-color: ${colors.themeGreen}; 
+      border-color: ${colors.navyBlue500};
+      transform: rotate(-45deg); 
+      
+      .arrow-icon {
+        color: ${colors.white};
+        font-size:14px;
+      }
+    }
+  }
 `;
 
 const UpdateBox = ({ name, number }) => {
   return (
-    <Box sx={{ border: `1px solid ${colors.neutral600}`, borderRadius: "4px" }} height="160px">
+    <StyledBox>
       <Grid container paddingY={3} paddingX={4} justifyContent={"center"}>
         <Grid item>
           <StyledTypography1 textAlign="center" color={colors.themeGreen}>
@@ -42,7 +65,11 @@ const UpdateBox = ({ name, number }) => {
           </StyledTypography1>
           <Typography
             color={colors.greyBlue500}
-            sx={{ fontWeight: "600", fontSize: {xs:"14px",sm:"20px"}, lineHeight:{xs:"17px",sm:"24px"} }}
+            sx={{
+              fontWeight: "600",
+              fontSize: { xs: "14px", sm: "20px" },
+              lineHeight: { xs: "17px", sm: "24px" },
+            }}
           >
             {name}
           </Typography>
@@ -62,12 +89,11 @@ const UpdateBox = ({ name, number }) => {
           <StyledTypography2
             component="span"
             color={colors.navyBlue500}
-            sx={{ fontWeight: '700' }}
-          
+            sx={{ fontWeight: "700" }}
           >
             Read More
           </StyledTypography2>
-          <CustomIconButton>
+          <CustomIconButton className="custom-icon-button">
             <ArrowForwardIcon
               fontSize="small"
               className="arrow-icon"
@@ -76,7 +102,7 @@ const UpdateBox = ({ name, number }) => {
           </CustomIconButton>
         </Grid>
       </Grid>
-    </Box>
+    </StyledBox>
   );
 };
 

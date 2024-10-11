@@ -153,9 +153,12 @@ const Login = ({component}) => {
       }
   
       router.push(from || "/");
-    };
+    }
+    else{
+      setMessage(data.message);
+    }
 
-    setMessage(data.message);
+   
     setValidate(false);
     return;
   };
@@ -323,7 +326,7 @@ const Login = ({component}) => {
           <Grid item width="100%" marginTop={3}>
             <Typography textAlign="center" sx={{ cursor: "pointer" }}>
               <StyledTypography component="span" color="#121E32">
-                Don’t have an account?
+                {`Don’t have an account? `}
               </StyledTypography>
               <StyledTypography
                 component="span"

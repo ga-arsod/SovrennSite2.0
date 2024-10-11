@@ -10,12 +10,14 @@ import { colors } from "@/components/Constants/colors";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import { useMediaQuery } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Spinner from "../../components/Common/Spinner";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 23px;
   font-weight: 600;
   line-height: 28px;
   letter-spacing: -0.02em;
+  white-space:nowrap;
 `;
 
 const StyledTypography2 = styled(Typography)`
@@ -36,6 +38,7 @@ const TextSearch = () => {
   const [companies, setCompanies] = useState([]);
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
+  const [isLoading,setIsLoading]=useState(true)
   
   const isXsOrSm = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -55,12 +58,23 @@ const TextSearch = () => {
     const data = await res.json();
 
     if (res.ok) {
+      setIsLoading(false)
       setCompanies(data.companies);
     }
     return;
   };
 
-  console.log(companies, "companies");
+  if (isLoading ) {
+    return (
+      <>
+        <Head>
+          <title>Search for companies</title>
+         
+        </Head>
+        <Spinner margin={15} />
+      </>
+    );
+  }
 
   if (!companies.length) {
     return (

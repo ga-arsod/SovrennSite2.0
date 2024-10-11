@@ -8,7 +8,7 @@ import { colors } from '../Constants/colors';
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-
+// Styled Components
 const ArrowBoxContainer = styled(Box)`
   display: flex;
   flex-direction: column;
@@ -57,6 +57,7 @@ const CustomTabs = styled(Tabs)({
 
 const TabLabel = ({ text, isActive }) => {
   const words = text.split(' ');
+
   return (
     <Box display="flex" alignItems="center">
       {words.map((word, index) => (
@@ -64,13 +65,17 @@ const TabLabel = ({ text, isActive }) => {
           key={index}
           variant="body1"
           sx={{
-            color: isActive ? (index === 0 ? colors.navyBlue500 : colors.themeGreen) : colors.neutral700,
+            color: isActive
+              ? index === 0
+                ? colors.navyBlue500
+                : colors.themeGreen
+              : colors.neutral700,
             fontWeight: '600',
-            fontSize: {xs:'16px',sm:'38px',md:'48px'},
-            lineHeight: {xs:'19px',sm:'56px'},
-            letterSpacing: {xs:0,sm:'-0.04em'},
+            fontSize: { xs: '16px', sm: '38px', md: '48px' },
+            lineHeight: { xs: '19px', sm: '56px' },
+            letterSpacing: { xs: 0, sm: '-0.04em' },
             whiteSpace: 'nowrap',
-            marginRight: index === 0 ? {xs:'0.3rem',sm:'0.5rem'} : '0',
+            marginRight: index === 0 || 1 ? { xs: '0.3rem', sm: '0.5rem' } : '0',
           }}
         >
           {word}
@@ -80,13 +85,15 @@ const TabLabel = ({ text, isActive }) => {
   );
 };
 
-const TimesHeader = () => {
+const TimesHeader = ({setActiveTab}) => {
   const [value, setValue] = useState('one');
   const theme = useTheme();
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  setActiveTab(newValue)
   };
 
   return (
@@ -101,7 +108,7 @@ const TimesHeader = () => {
                 left: { xs: 'calc(2% - 20px)',sm: 'calc(1% - 20px)', md: 'calc(5% - 20px)' },
                 top: '50%',
                 transform: 'translateY(-50%)',
-                fontSize: {  xs: '20px', sm: '24px' },
+                fontSize: { xs: '20px', sm: '24px' },
                 color: colors.navyBlue500,
               }}
             />
@@ -164,13 +171,10 @@ const TimesHeader = () => {
             />
           </CustomTabs>
         </Box>
-        {!isSmallerThanSm && (
-          <StyledTypography color={colors.navyBlue400} marginTop={1}>
-            We are bringing to you prime stock articles to make you better equipped with information before making investment decisions
-          </StyledTypography>
-        )}
+
+        
       </Box>
-      </Container>
+    </Container>
     </>
   );
 };
