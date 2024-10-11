@@ -250,7 +250,7 @@ const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
       const newOptions = checked
         ? [...updatedOptions, option]
         : updatedOptions.filter((item) => item !== option);
-  
+
       return {
         ...prevFilter,
         [category]: newOptions,
@@ -267,6 +267,10 @@ const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
 
   const isApplyButtonDisabled =
     filter.company_name.length === 0 && filter.byMonths.length === 0;
+
+  if (!timesPdfFilter.length) {
+    return <></>;
+  }
 
   return (
     <Box>
@@ -325,7 +329,7 @@ const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
           <CustomDivider sx={{ mt: 1, mb: 3 }} />
           <FormControl component="fieldset" sx={{ width: "100%", padding: 2 }}>
             <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              {timesPdfFilter[0].category}
+              {timesPdfFilter[0]?.category}
             </StyledTypography1>
             <Box display="flex" marginBottom={2}>
               <StyledTextField
@@ -352,8 +356,8 @@ const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
               sx={{ width: "80%" }}
             >
               {(showAllCompanies
-                ? timesPdfFilter[0].options
-                : timesPdfFilter[0].options.slice(0, 5)
+                ? timesPdfFilter[0]?.options
+                : timesPdfFilter[0]?.options.slice(0, 5)
               ).map((company, index) => (
                 <Grid item key={index} xs={12}>
                   <CustomFormControlLabel
@@ -361,7 +365,7 @@ const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
                       <CustomCheckbox
                         checked={filter[company.key]?.includes(company.value)}
                         onChange={handleChange(
-                          timesPdfFilter[0].key,
+                          timesPdfFilter[0]?.key,
                           company.value
                         )}
                       />
@@ -389,7 +393,7 @@ const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
             <CustomDivider sx={{ mt: 2, mb: 2 }} />
 
             <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              {timesPdfFilter[1].category}
+              {timesPdfFilter[1]?.category}
             </StyledTypography1>
             <Box display="flex" marginBottom={2}>
               <StyledTextField
@@ -411,15 +415,15 @@ const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
               <StyledButton2 variant="contained">Search</StyledButton2>
             </Box>
             {(showAllMonths
-              ? timesPdfFilter[1].options
-              : timesPdfFilter[1].options.slice(0, 5)
+              ? timesPdfFilter[1]?.options
+              : timesPdfFilter[1]?.options.slice(0, 5)
             ).map((month, index) => (
               <CustomFormControlLabel
                 key={index}
                 control={
                   <CustomCheckbox
                     checked={filter[month.key]?.includes(month.value)}
-                    onChange={handleChange(timesPdfFilter[1].key, month.value)}
+                    onChange={handleChange(timesPdfFilter[1]?.key, month.value)}
                   />
                 }
                 label={month.placeholder}
