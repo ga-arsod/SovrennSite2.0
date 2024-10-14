@@ -36,7 +36,14 @@ export const {
     async session({ session, token }) {
       // Include the access token in the session
       session.accessToken = token.accessToken;
+
+      // Store the access token in localStorage on the client-side
+      if (typeof window !== "undefined" && token.accessToken) {
+        localStorage.setItem("token", token.accessToken);
+      }
+
       return session;
     },
   },
+  
 });

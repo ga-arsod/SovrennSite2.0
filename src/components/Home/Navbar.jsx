@@ -262,7 +262,7 @@ const Navbar = ({ session }) => {
 
  
   useEffect(() => {
-   if(session?.user)
+   if(session)
    {
    
       localStorage.setItem("token", session.accessToken);
@@ -270,7 +270,7 @@ const Navbar = ({ session }) => {
     dispatch(googleLogin())
    }
     
-  }, [session?.user]);
+  }, [session,dispatch]);
 
   if (!isLoaded) return null;
 
@@ -281,7 +281,7 @@ const Navbar = ({ session }) => {
   };
 
   const filteredNavItems = isGreaterThanMd ? navItems.slice(2) : navItems;
-  const options = ["KP Green", "Nescafe"];
+  
   
 console.log(isAuth,"isAuth")
   console.log(session,"session")

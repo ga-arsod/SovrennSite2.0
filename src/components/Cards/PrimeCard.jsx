@@ -40,7 +40,7 @@ const StyledButton2 = styled(Button)`
   }
 `;
 
-const PrimeCard = ({data}) => {
+const PrimeCard = () => {
   return (
     <Box sx={{ flexGrow: 1, paddingY: 2 }}>
       <Grid
@@ -57,7 +57,7 @@ const PrimeCard = ({data}) => {
           padding: { xs: 1 }, 
         }}
       >
-        {data.map((ele, index) => (
+        {Array.from("abcdefgh").map((ele, index) => (
           <Box
             key={index}
             sx={{

@@ -153,9 +153,10 @@ const Login = ({component}) => {
 
       dispatch(loginSuccess(data));
 
-      
-  
-      router.push(redirectUrl || "/");
+     if(redirectUrl=='/login')
+      router.push("/");
+      else
+      router.push(redirectUrl);
     }
     else{
       setMessage(data.message);
