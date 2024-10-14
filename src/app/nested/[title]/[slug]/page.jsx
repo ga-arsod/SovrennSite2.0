@@ -311,12 +311,12 @@ const ChildBucketCompanyContent = () => {
           </Grid>
         </Box>
         {isSmallerThanMd ? (
-          tableData.length===0 ?
+          tableData?.length===0 ?
           <NoData text="No data available for this bucket currently."/>
           :
           <DiscoveryTableCard tableData={tableData} id={title}  />
         ) : (
-         tableData.length===0 ? 
+         tableData?.length===0 ? 
          <NoData text="No data available for this bucket currently."/>
        :
           <DiscoveryTable tableData={tableData} id={title}/>

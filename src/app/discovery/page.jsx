@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import {
   myBucketsApiCall,
   bucketsApiCall,
+  discoveryFiltersApiCall
 } from "../Redux/Slices/discoverySlice";
 
 import DiscoveryCard from "@/components/Cards/DiscoveryCard";
@@ -17,7 +18,7 @@ import CustomDiscoveryCard from "@/components/Cards/CustomDiscoveryCard";
 import DiscoveryFilter from "@/components/Discovery/DiscoveryFilter";
 
 const Discovery = () => {
-  const { isAllBucketsLoading, isMyBucketsLoading } = useSelector(
+  const { isAllBucketsLoading, isMyBucketsLoading,filtersData } = useSelector(
     (store) => store.discovery
   );
   const { userDetails } = useSelector((store) => store.auth);
@@ -33,6 +34,7 @@ const Discovery = () => {
 
   useEffect(() => {
     dispatch(bucketsApiCall());
+    dispatch(discoveryFiltersApiCall());
   }, [dispatch]);
 
   const headingObject = {
@@ -86,7 +88,7 @@ const Discovery = () => {
       </Head>
       <Container>
         <DiscoveryHeading headingObject={headingObject} />
-        <DiscoveryFilter />
+        <DiscoveryFilter filtersData={filtersData} />
         {(userDetails?.subscriptions?.includes("full-access") ||
           userDetails?.subscriptions?.includes("monthly") ||
           userDetails?.subscriptions?.includes("quarterly") ||

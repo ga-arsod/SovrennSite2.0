@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Grid,
   Typography,
@@ -88,6 +88,12 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
 const URL = "https://api.sovrenn.com";
 const Login = ({component}) => {
   const dispatch = useDispatch();
+  const [redirectUrl, setRedirectUrl] = useState("");
+
+  useEffect(() => {
+    const currentPath = window.location.pathname + window.location.search;
+    setRedirectUrl(currentPath); 
+  }, []);
  
   const [values, setValues] = useState({
     password: "",
@@ -147,12 +153,9 @@ const Login = ({component}) => {
 
       dispatch(loginSuccess(data));
 
-      if (extra) {
-        router.push(`/discovery/${extra}`);
-        return;
-      }
+      
   
-      router.push(from || "/");
+      router.push(redirectUrl || "/");
     }
     else{
       setMessage(data.message);

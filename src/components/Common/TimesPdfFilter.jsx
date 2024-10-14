@@ -22,7 +22,7 @@ import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 import { useSelector } from "react-redux";
-import { timesArticleApi } from "../../app/Redux/Slices/timesSlice";
+import { timesPdfListApi,togglePdfFilter } from "../../app/Redux/Slices/timesSlice";
 import { useDispatch } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
@@ -222,7 +222,7 @@ const industries = [
   "Event Management",
 ];
 
-const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
+const TimesPdfFilter = ({ isOpen }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllCompanies, setShowAllCompanies] = useState(false);
@@ -234,9 +234,11 @@ const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const { timesPdfFilter } = useSelector((store) => store.times);
 
-  const toggleDrawer = (open) => () => {
-    setIsOpen(open);
-  };
+ 
+    const toggleDrawer = () => {
+      dispatch(togglePdfFilter());
+    };
+ 
 
   const [filter, setFilter] = useState({
     company_name: [],
@@ -277,7 +279,7 @@ const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
       <Drawer
         anchor="left"
         open={isOpen}
-        onClose={toggleDrawer(false)}
+        onClose={toggleDrawer}
         sx={{
           zIndex: 1400,
           "& .MuiDrawer-paper": {
@@ -462,7 +464,7 @@ const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
               <StyledButton
                 fullWidth
                 variant="outlined"
-                onClick={toggleDrawer(false)}
+                onClick={toggleDrawer}
               >
                 Cancel
               </StyledButton>
@@ -473,7 +475,7 @@ const TimesPdfFilter = ({ isOpen, setIsOpen }) => {
                 variant="contained"
                 disabled={isApplyButtonDisabled}
                 onClick={() => {
-                  dispatch(timesArticleApi(filter));
+                  dispatch(timesPdfListApi(filter));
                 }}
               >
                 Apply Filter

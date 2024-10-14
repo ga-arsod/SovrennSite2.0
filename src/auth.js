@@ -19,9 +19,24 @@ export const {
           prompt: "consent",
           access_type: "offline",
           response_type: "code",
+          scope: "email profile openid",
         },
       },
     }),
   ],
   
+  callbacks: {
+    async jwt({ token, account }) {
+      if (account) {
+        // Save the access token from the account object
+        token.accessToken = account.access_token;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Include the access token in the session
+      session.accessToken = token.accessToken;
+      return session;
+    },
+  },
 });

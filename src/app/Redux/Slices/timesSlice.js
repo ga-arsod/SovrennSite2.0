@@ -6,6 +6,8 @@ const initialState = {
   timesFilter: [],
   timesPdfFilter:[],
   isError: false,
+  isArticleFilterOpen:false,
+  isPdfModalOpen:false,
   timesArticle:[],
   timesPdfList:[],
   isTimesArticleLoading:false,
@@ -32,7 +34,7 @@ export const timesPdfFilterApi = createAsyncThunk("timesPdfFilterApi", async () 
   return response.json();
 });
 
-export const timesPdfListApi = createAsyncThunk("timesPdfListApi", async (data) => {
+export const timesPdfListApi = createAsyncThunk("timesPdfListApi", async (data,{dispatch}) => {
   const response = await fetch(`${url}/news/pdf-data`, {
     method: "POST",
     headers: {
@@ -41,6 +43,11 @@ export const timesPdfListApi = createAsyncThunk("timesPdfListApi", async (data) 
     },
     body: JSON.stringify(data),
   });
+
+  if(response.ok && Object.keys(data).length !== 0)
+  {
+    dispatch(togglePdfFilter())
+  }
   return response.json();
 });
 
@@ -51,15 +58,18 @@ export const timesPdfDataApi = createAsyncThunk("timesPdfDataApi", async (pdfId)
       
       "Content-Type": "application/json",
     },
+  
     
   });
+
+  
   return response.json();
 });
 
 
 export const timesArticleApi = createAsyncThunk(
   "timesArticleApi",
-  async (data) => {
+  async (data,{dispatch}) => {
     const response = await fetch(`${url}/news/data`, {
       method: "POST",
       headers: {
@@ -68,6 +78,11 @@ export const timesArticleApi = createAsyncThunk(
       },
       body: JSON.stringify(data),
     });
+
+    if( response.ok && Object.keys(data).length !== 0)
+    {
+      dispatch(toggleArticleFilter())
+    }
     return response.json();
   }
 );
@@ -75,6 +90,16 @@ export const timesArticleApi = createAsyncThunk(
 const timesSlice = createSlice({
   name: "times",
   initialState,
+  reducers: {
+    toggleArticleFilter: (state) => {
+      state.isArticleFilterOpen = !state.isArticleFilterOpen;
+    },
+   togglePdfFilter: (state) => {
+      state.isPdfModalOpen= !state.isPdfModalOpen;
+      
+    },
+    
+  },
 
   extraReducers: (builder) => {
     builder.addCase(timesFilterApi.fulfilled, (state, action) => {
@@ -135,5 +160,6 @@ const timesSlice = createSlice({
   },
 });
 
+export const { toggleArticleFilter ,togglePdfFilter} = timesSlice.actions;
 
 export default timesSlice.reducer;

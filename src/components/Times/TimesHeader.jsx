@@ -8,31 +8,44 @@ import { colors } from '../Constants/colors';
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-// Styled Components
-const ArrowBoxContainer = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #29343C;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
-`;
+import { useRouter } from 'next/navigation';
 
-const StyledArrowForwardIcon = styled(ArrowForwardIcon)`
-  font-size: 14px;
-  color: ${colors.navyBlue500};
-`;
 
-const StyledArrowBackIcon = styled(ArrowBackIcon)`
-  font-size: 14px;
-  color: ${colors.navyBlue500};
-`;
+const ArrowBoxContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  border: '1px solid #29343C',
+  width: '30px',
+  height: '30px',
+  borderRadius: '8px',
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  zIndex: 1,
+  
+  [theme.breakpoints.down('xs')]: {
+    width: '20px',
+    height: '20px',
+  },
+}));
+
+const StyledArrowForwardIcon = styled(ArrowForwardIcon)(({ theme }) => ({
+  fontSize: '14px',
+  color: colors.navyBlue500,
+  [theme.breakpoints.down('xs')]: {
+    fontSize: '12px', 
+  },
+}));
+
+const StyledArrowBackIcon = styled(ArrowBackIcon)(({ theme }) => ({
+  fontSize: '14px',
+  color: colors.navyBlue500,
+  [theme.breakpoints.down('xs')]: {
+    fontSize: '12px', 
+  },
+}));
 
 const StyledTypography = styled(Typography)`
   font-weight: 600;
@@ -41,7 +54,7 @@ const StyledTypography = styled(Typography)`
   letter-spacing: -0.02em;
 `;
 
-const CustomTabs = styled(Tabs)({
+const CustomTabs = styled(Tabs)(({ theme }) => ({
   '& .MuiTabs-indicator': {
     height: '5px',
     backgroundColor: colors.themeGreen,
@@ -53,7 +66,7 @@ const CustomTabs = styled(Tabs)({
   '& .MuiButtonBase-root.MuiTab-root:nth-of-type(2)': {
     maxWidth: 'none',
   }
-});
+}));
 
 const TabLabel = ({ text, isActive }) => {
   const words = text.split(' ');
@@ -85,32 +98,45 @@ const TabLabel = ({ text, isActive }) => {
   );
 };
 
-const TimesHeader = ({setActiveTab}) => {
+const TimesHeader = ({ setActiveTab }) => {
   const [value, setValue] = useState('one');
   const theme = useTheme();
+  const router=useRouter();
+
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  setActiveTab(newValue)
+    setActiveTab(newValue);
+  };
+
+  const handleBackClick = () => {
+    router.back();  
   };
 
   return (
-    <>
     <Container>
-      <Box sx={{ width: '100%' }} marginTop="36px">
-        <Box sx={{ position: 'relative', display: 'inline-block', width: '900px' }}>
+      <Box sx={{ width: '100%' }} marginTop={{xs:"17px",sm:"36px"}}>
+        <Box
+          sx={{
+            position: 'relative',
+            display: 'inline-block',
+            width: { xs: '100%', sm: 'auto' },  
+            overflowX: 'auto',  
+          }}
+        >
           {isSmallerThanMd && (
             <StyledArrowBackIcon 
               sx={{
                 position: 'absolute',
-                left: { xs: 'calc(2% - 20px)',sm: 'calc(1% - 20px)', md: 'calc(5% - 20px)' },
+                left: { xs: 'calc(2% - 10px)', sm: 'calc(1% - 10px)', md: 'calc(5% - 20px)' },
                 top: '50%',
                 transform: 'translateY(-50%)',
                 fontSize: { xs: '20px', sm: '24px' },
                 color: colors.navyBlue500,
               }}
+              onClick={handleBackClick}
             />
           )}
           <CustomTabs
@@ -118,12 +144,12 @@ const TimesHeader = ({setActiveTab}) => {
             onChange={handleChange}
             aria-label="wrapped label tabs example"
             sx={{
-              marginLeft:{xs:'20px',sm:'20px',md:0},
+              marginLeft: { xs: '20px', sm: '30px', md: 0 }, 
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               '& .MuiTabs-flexContainer': {
-                gap: {xs:"40px",sm:"70px",md:"110px"},
+                gap: { xs: "20px", sm: "50px", md: "110px" },  
                 position: 'relative',
               },
               '& .MuiTab-root': {
@@ -152,7 +178,12 @@ const TimesHeader = ({setActiveTab}) => {
               }}
             />
             {!isSmallerThanSm && (
-              <ArrowBoxContainer sx={{ left:{xs:'calc(29% )',md:'calc(40% )'} , transform: 'translateX(-50%)' }}>
+              <ArrowBoxContainer
+                sx={{
+                  left: { xs: 'calc(50%)', sm: 'calc(40%)', md: 'calc(40%)' }, 
+                  transform: 'translateX(-50%)',
+                }}
+              >
                 <StyledArrowForwardIcon />
                 <StyledArrowBackIcon />
               </ArrowBoxContainer>
@@ -171,11 +202,8 @@ const TimesHeader = ({setActiveTab}) => {
             />
           </CustomTabs>
         </Box>
-
-        
       </Box>
     </Container>
-    </>
   );
 };
 
