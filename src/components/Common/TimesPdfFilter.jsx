@@ -222,7 +222,7 @@ const industries = [
   "Event Management",
 ];
 
-const TimesPdfFilter = ({ isOpen }) => {
+const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllCompanies, setShowAllCompanies] = useState(false);
@@ -475,7 +475,13 @@ const TimesPdfFilter = ({ isOpen }) => {
                 variant="contained"
                 disabled={isApplyButtonDisabled}
                 onClick={() => {
-                  dispatch(timesPdfListApi(filter));
+                  if(isAuth)
+                    dispatch(timesPdfListApi(filter))
+                  else
+                 {
+                  handleModalOpen()
+                  dispatch(togglePdfFilter())
+                 }
                 }}
               >
                 Apply Filter

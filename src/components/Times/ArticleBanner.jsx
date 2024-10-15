@@ -72,7 +72,7 @@ const ArticleBanner = () => {
                 {`Sovrenn Times-`}
               </StyledTypography1>
               <StyledTypography1 color="black" component="span">
-                {moment(elem.date).format('Do MMMM YYYY')}
+                {moment(elem?.date).format('Do MMMM YYYY')}
               </StyledTypography1>
             </Grid>
             <Grid item xs={12} sm={4} container justifyContent={{ xs: 'flex-end', sm: 'flex-end' }}>

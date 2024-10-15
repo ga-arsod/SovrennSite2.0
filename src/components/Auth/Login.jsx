@@ -86,7 +86,7 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const URL = "https://api.sovrenn.com";
-const Login = ({component}) => {
+const Login = ({component,handleClose}) => {
   const dispatch = useDispatch();
   const [redirectUrl, setRedirectUrl] = useState("");
 
@@ -152,12 +152,18 @@ const Login = ({component}) => {
       localStorage.setItem("token", data.token);
 
       dispatch(loginSuccess(data));
+      if(handleClose)
+      {
+        handleClose()
+      }
+     
 
      if(redirectUrl=='/login')
       router.push("/");
       else
       router.push(redirectUrl);
     }
+
     else{
       setMessage(data.message);
     }

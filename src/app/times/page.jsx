@@ -137,7 +137,7 @@ const StyledTypography3 = styled(Typography)`
 const Times = () => {
   const theme = useTheme();
   const [activeTab, setActiveTab] = useState("one");
- 
+  const [isOpen,setIsopen]=useState(false)
   const dispatch = useDispatch();
   const { isTimesArticleLoading, timesArticle, isArticleFilterOpen,isPdfModalOpen } = useSelector(
     (store) => store.times
@@ -145,6 +145,14 @@ const Times = () => {
   const { isAuth,userDetails } = useSelector(
     (store) => store.auth
   );
+
+  const handleModalOpen=()=>{
+    setIsopen(true)
+  }
+
+  const handleClose=()=>{
+    setIsopen(false)
+  }
 
   const toggleDrawer = () => {
     if (activeTab === 'one') {
@@ -186,7 +194,7 @@ const Times = () => {
     }
   }, [timesArticle]);
   
-
+console.log(isOpen,"isOpen")
   if (isTimesArticleLoading ) {
     return (
       <>
@@ -204,7 +212,7 @@ const Times = () => {
 
   return (
     <>
-     
+      <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <Grid container marginTop="60px" flexDirection="column">
         {!isSmallerThanMd ? 
         isAuth && 
@@ -275,7 +283,7 @@ const Times = () => {
                   <Grid container justifyContent="space-between" paddingY={0} paddingX="12px" alignItems="center">
                     <Grid item>
                       <StyledTypography3 className="header-text">
-                        {moment(item.date).format("Do MMMM YYYY")}
+                        {moment(item.createdAt).format("Do MMMM YYYY")}
                       </StyledTypography3>
                     </Grid>
                     <Grid item>
@@ -318,9 +326,9 @@ const Times = () => {
       </Grid>
 
       {activeTab === "one" ? (
-        <TimesFilter isOpen={isArticleFilterOpen} />
+        <TimesFilter isOpen={isArticleFilterOpen} handleModalOpen={handleModalOpen} />
       ) : activeTab === "two" ? (
-        <TimesPdfFilter isOpen={isPdfModalOpen} />
+        <TimesPdfFilter isOpen={isPdfModalOpen} handleModalOpen={handleModalOpen} />
       ) : null}
     </>
   );

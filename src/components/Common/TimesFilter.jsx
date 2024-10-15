@@ -22,6 +22,7 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import FilterComponent from "../Common/FilterComponent";
+
 import { useSelector } from "react-redux";
 import {
   timesArticleApi,
@@ -227,16 +228,16 @@ const industries = [
   "Event Management",
 ];
 
-const TimesFilter = ({ isOpen }) => {
+const TimesFilter = ({ isOpen ,handleModalOpen}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllSectors, setShowAllSectors] = useState(false);
   const [showAllCompanies, setShowAllCompanies] = useState(false);
   const [showAllMonths, setShowAllMonths] = useState(false);
-  const [selectedMonths, setSelectedMonths] = useState(false);
+  const [findSector, setFindSector] = useState("");
   const [showAllIndustries, setShowAllIndustries] = useState(false);
-  const [selectedSectors, setSelectedSectors] = useState([]);
-  const [selectedIndustries, setSelectedIndustries] = useState([]);
+ 
+ 
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const { timesFilter } = useSelector((store) => store.times);
   const { isAuth } = useSelector((store) => store.auth);
@@ -247,6 +248,13 @@ const TimesFilter = ({ isOpen }) => {
   };
   const handleClose=()=>{
     setOpen(false)
+  }
+  const searchOptions=(newArray,key)=>{
+    newArray.map((elem,index)=>{
+      return elem.placeholder
+    }).filter((elem,index)=>{
+       return elem.includes(key)
+    })
   }
 
   const [filter, setFilter] = useState({
@@ -261,7 +269,7 @@ const TimesFilter = ({ isOpen }) => {
   });
 
   const handleChange = (category, option) => (event) => {
-    console.log(category, "category");
+   
     const { checked } = event.target;
 
     setFilter((prevFilter) => {
@@ -276,6 +284,8 @@ const TimesFilter = ({ isOpen }) => {
       };
     });
   };
+
+  
 
   const resetFilters = () => {
     setFilter({
@@ -305,7 +315,7 @@ const TimesFilter = ({ isOpen }) => {
  
   return (
     <>
-    <LoginModal open={open} handleClose={handleClose} />
+    
     <Box>
       <Drawer
         anchor="left"
@@ -439,6 +449,7 @@ const TimesFilter = ({ isOpen }) => {
                 placeholder="Search for sector"
                 fullWidth
                 sx={{ mb: 1 }}
+                onChange={(ele) => setFindSector(ele.target.value)}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="start">
@@ -673,7 +684,10 @@ const TimesFilter = ({ isOpen }) => {
                   if(isAuth)
                   dispatch(timesArticleApi(filter))
                 else
-                setOpen(true)
+               {
+                handleModalOpen()
+                dispatch(toggleArticleFilter())
+               }
                 }}
               >
                 Apply Filter

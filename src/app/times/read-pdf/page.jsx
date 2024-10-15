@@ -20,8 +20,8 @@ const ReadPDF = () => {
             setIsPdfLoading(false);
         }
     }, [path]);
-
-    if (isPdfLoading) {
+console.log(pdfUrl,"pdfUrl")
+    if (isPdfLoading || !pdfUrl) {
         return (
            <>
                 <Head>
@@ -33,17 +33,21 @@ const ReadPDF = () => {
         );
     }
 
-    return (
-       <>
-            <Head>
-                <title>Sovrenn Times PDF View</title>
-                <link rel="canonical" href="https://www.sovrenn.com/times/read-pdf" key="canonical" />
-            </Head>
-            <div id={styles.MainContainer}>
-                {pdfUrl && <PdfViewer pdfPath={pdfUrl} />}
-            </div>
-        </>
-    );
+    if(pdfUrl)
+    {
+        return (
+            <>
+                 <Head>
+                     <title>Sovrenn Times PDF View</title>
+                     <link rel="canonical" href="https://www.sovrenn.com/times/read-pdf" key="canonical" />
+                 </Head>
+                 <div id={styles.MainContainer}>
+                     {pdfUrl && <PdfViewer pdfPath={pdfUrl} />}
+                 </div>
+             </>
+         );
+    }
+   
 };
 
 export default ReadPDF;

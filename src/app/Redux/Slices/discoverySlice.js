@@ -7,6 +7,7 @@ const initialState = {
   isMyBucketsLoading: false,
   isTableDataLoading: false,
   isNestedBucketTableDataLoading:false,
+  isCommentsDataLoading:false,
   isArticleDataLoading: false,
   isParentsBucketLoading:false,
   isCreateBucketModalOpen:false,
@@ -683,13 +684,17 @@ const discoverySlice = createSlice({
     });
 
     // GET comments Api
-   
-    builder.addCase(getCommentsApi.fulfilled, (state, action) => {
+    builder.addCase(getCommentsApi.pending, (state, action) => {
     
+      state.isCommentsDataLoading = true;
+    });
+    builder.addCase(getCommentsApi.fulfilled, (state, action) => {
+      state.isCommentsDataLoading = false;
       state.comments = action.payload;
     });
     builder.addCase(getCommentsApi.rejected, (state, action) => {
       state.isError = true;
+      state.isCommentsDataLoading = false;
       
     });
 

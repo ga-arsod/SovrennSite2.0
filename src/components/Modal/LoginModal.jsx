@@ -103,7 +103,7 @@ const LoginModal = ({ isOpen,handleClose}) => {
               </StyledTypography2>
             </Grid>
            <Grid item sx={{display:'flex',justifyContent:'center'}}>
-          <Login />
+          <Login handleClose={handleClose}/>
            </Grid>
           </Grid>
         </Box>
