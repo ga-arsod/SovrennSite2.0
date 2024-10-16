@@ -16,6 +16,7 @@ const StyledTypography1 = styled(Typography)`
 const StyledTypography2 = styled(Typography)`
   font-size: 14px;
   line-height: 24px;
+  white-space:nowrap;
 `;
 
 const CustomIconButton = styled(IconButton)`
@@ -69,6 +70,7 @@ const UpdateBox = ({ name, number }) => {
               fontWeight: "600",
               fontSize: { xs: "14px", sm: "20px" },
               lineHeight: { xs: "17px", sm: "24px" },
+              whiteSpace:"nowrap"
             }}
           >
             {name}

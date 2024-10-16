@@ -20,7 +20,7 @@ const StyledTypography4 = styled(Typography)`
   line-height: 17px;
   color: black;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Show only 2 lines */
+  -webkit-line-clamp: 2; 
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -184,7 +184,7 @@ const DiscoveryTableCard = ({ tableData, id }) => {
   const handleRowClick = (index, item) => {
     if (isAuth) {
       const redirectUrl = articleRedirect(index, item);
-      console.log(redirectUrl,"redirectUrl")
+     
       if (redirectUrl) {
         window.open(redirectUrl, "_blank");
       }
@@ -192,7 +192,7 @@ const DiscoveryTableCard = ({ tableData, id }) => {
       setIsOpen(true);
     }
   };
-console.log(isAuth,"isAuth")
+
   return (
     <>
     <LoginModal isOpen={isOpen} handleClose={handleClose} />
@@ -235,7 +235,7 @@ console.log(isAuth,"isAuth")
               sx={{ fontWeight: "600" }}
               component="span"
             >
-              {item?.date ? moment(item.date).format("Do MMM YY") : "NA"}
+              {item?.date ? moment(item?.date).format("Do MMM YY") : "NA"}
             </StyledTypography1>
 
             {(index % 2 === 0 && tableData?.basket?.avail_free) ||

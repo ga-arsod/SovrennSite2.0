@@ -216,7 +216,8 @@ const DiscoveryBucketContent = () => {
       </>
     );
   }
-
+console.log(filtersData,"filtersData")
+console.log(isAuth,"isAuth")
   return (
     <>
       <Head>
@@ -260,6 +261,7 @@ const DiscoveryBucketContent = () => {
           </Grid>
           {
             isAuth ? 
+            !filtersData ? <></>:
             <Grid container justifyContent="flex-end" alignItems="center">
             <Grid item>
               <FormControl
@@ -289,7 +291,7 @@ const DiscoveryBucketContent = () => {
                           index === 0 ? "all" : index === 1 ? "lte" : "gt"
                         }
                       >
-                        {element.placeholder}
+                        {element?.placeholder}
                       </StyledMenuItem>
                     ))}
                   </StyledSelect>
@@ -313,7 +315,7 @@ const DiscoveryBucketContent = () => {
                           index === 0 ? "all" : index === 1 ? "lte" : "gt"
                         }
                       >
-                        {element.placeholder}
+                        {element?.placeholder}
                       </StyledMenuItem>
                     ))}
                   </StyledSelect>
@@ -333,9 +335,9 @@ const DiscoveryBucketContent = () => {
                     {filtersData[2]?.options?.map((element, index) => (
                       <StyledMenuItem
                         key={index}
-                        value={index === 0 ? "all" : element.id}
+                        value={index === 0 ? "all" : element?.id}
                       >
-                        {element.placeholder}
+                        {element?.placeholder}
                       </StyledMenuItem>
                     ))}
                   </StyledSelect>
@@ -343,6 +345,7 @@ const DiscoveryBucketContent = () => {
               </FormControl>
             </Grid>
           </Grid>
+           
           :"" 
           }
           

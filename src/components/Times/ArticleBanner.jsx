@@ -6,7 +6,6 @@ import { timesPdfListApi } from '@/app/Redux/Slices/timesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 const StyledBox = styled(Box)({
   padding: '16px',
@@ -20,6 +19,12 @@ const StyledTypography1 = styled(Typography)`
   font-size: 23px;
   line-height: 28px;
   letter-spacing: -0.02em;
+   @media (max-width: 639px) {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 19px;
+    letter-spacing: -0.02em;
+  }
 `;
 
 const StyledButton1 = styled(Button)`
@@ -42,23 +47,23 @@ const StyledButton1 = styled(Button)`
 
 const ArticleBanner = () => {
   const dispatch = useDispatch();
-  const router=useRouter();
+  const router = useRouter();
   const { timesPdfList } = useSelector((store) => store.times);
 
   useEffect(() => {
     dispatch(timesPdfListApi({}));
-  }, []);
+  }, [dispatch]);
 
   const handleReadNowClick = (path, id) => {
-    router.push(`/times/read-pdf?path=${path}&id=${id}`);
+    router.push(`/times/read-pdf?path=${path}`);
   };
 
   return (
     <>
       {timesPdfList?.map((elem, index) => (
         <StyledBox key={index}>
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} sm={8}>
               <StyledTypography1
                 color={colors.greyBlue500}
                 marginRight={1}
@@ -67,18 +72,16 @@ const ArticleBanner = () => {
                 {`Sovrenn Times-`}
               </StyledTypography1>
               <StyledTypography1 color="black" component="span">
-                {moment(elem.date).format('Do MMMM YYYY')}
+                {moment(elem?.date).format('Do MMMM YYYY')}
               </StyledTypography1>
             </Grid>
-            <Grid item>
-            {/* <Link href={`/times/read-pdf?path=${ele?.pdf_file_key}`} target="_blank"> */}
+            <Grid item xs={12} sm={4} container justifyContent={{ xs: 'flex-end', sm: 'flex-end' }}>
               <StyledButton1
                 variant="contained"
                 onClick={() => handleReadNowClick(elem?.pdf_file_key, elem?._id)}
               >
                 Read Now
               </StyledButton1>
-              {/* </Link> */}
             </Grid>
           </Grid>
         </StyledBox>

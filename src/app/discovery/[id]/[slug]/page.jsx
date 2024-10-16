@@ -107,7 +107,7 @@ const CustomDivider2 = styled(Divider)`
 const DiscoveryArticle = () => {
   const dispatch = useDispatch();
   const { id, slug } = useParams();
-  const { isArticleDataLoading, articleData, otherBucketsCompanyPresent,isBookmarked,comments} =
+  const { isArticleDataLoading, articleData, otherBucketsCompanyPresent,isBookmarked,comments, isCommentsDataLoading} =
     useSelector((store) => store.discovery);
    
 
@@ -164,7 +164,7 @@ const DiscoveryArticle = () => {
     setIsInWatchlist((prev) => !prev);
   };
 
-  if (isArticleDataLoading ) {
+  if (isArticleDataLoading || isCommentsDataLoading ) {
     return (
       <>
         <Head>

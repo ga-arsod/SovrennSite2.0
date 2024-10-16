@@ -152,7 +152,7 @@ const IpoTableData = () => {
             <TableHead>
               <TableRow
                 sx={{
-                  "& th": { borderBottom: "none" }, // Remove bottom border
+                  "& th": { borderBottom: "none" }, 
                 }}
               >
                 {headerData.map((header_name, index) => {
