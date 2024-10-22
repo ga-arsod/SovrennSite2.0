@@ -194,7 +194,7 @@ const Times = () => {
     }
   }, [timesArticle]);
   
-console.log(isOpen,"isOpen")
+
   if (isTimesArticleLoading ) {
     return (
       <>

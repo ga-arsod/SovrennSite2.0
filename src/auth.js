@@ -25,25 +25,6 @@ export const {
     }),
   ],
   
-  callbacks: {
-    async jwt({ token, account }) {
-      if (account) {
-        // Save the access token from the account object
-        token.accessToken = account.access_token;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      // Include the access token in the session
-      session.accessToken = token.accessToken;
-
-      // Store the access token in localStorage on the client-side
-      if (typeof window !== "undefined" && token.accessToken) {
-        localStorage.setItem("token", token.accessToken);
-      }
-
-      return session;
-    },
-  },
+ 
   
 });

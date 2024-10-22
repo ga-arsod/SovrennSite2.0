@@ -29,19 +29,19 @@ const convertToHTML = (blocks) => {
                 return React.createElement(`h${block.data.level}`, { key: index }, block.data.text);
 
             case 'paragraph':
-                return <p key={index}>{renderHTMLContent(block.data.text)}</p>;
+                return <p key={index}>{renderStyledListItem(block.data.text)}</p>;
 
             case 'list':
                 return block.data.style === 'ordered' ? (
                     <ol key={index}>
                         {block.data.items.map((item, itemIndex) => (
-                            <li key={itemIndex}>{renderHTMLContent(item)}</li>
+                            <li key={itemIndex}>{renderStyledListItem(item)}</li>
                         ))}
                     </ol>
                 ) : (
                     <ul key={index}>
                         {block.data.items.map((item, itemIndex) => (
-                            <li key={itemIndex}>{renderHTMLContent(item)}</li>
+                            <li key={itemIndex}>{renderStyledListItem(item)}</li>
                         ))}
                     </ul>
                 );
@@ -68,6 +68,22 @@ const convertToHTML = (blocks) => {
                 return null;
         }
     });
+};
+
+const renderStyledListItem = (item) => {
+    // Check if the item contains a colon
+    const parts = item.split(':');
+    if (parts.length > 1) {
+        const boldText = parts[0]; // The part before the colon
+        const normalText = parts.slice(1).join(':'); // The rest after the colon
+        return (
+            <>
+                <strong>{boldText}:</strong> {normalText}
+            </>
+        );
+    }
+    // If there's no colon, return the item as is
+    return <>{item}</>;
 };
 
 const renderHTMLContent = (content) => {

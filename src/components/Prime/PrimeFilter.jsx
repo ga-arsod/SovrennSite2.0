@@ -21,15 +21,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import FilterComponent from "../Common/FilterComponent";
-
 import { useSelector } from "react-redux";
-import {
-  timesArticleApi,
-  toggleArticleFilter,
-} from "../../app/Redux/Slices/timesSlice";
+import { primeCompaniesListApi, togglePrimeFilter } from "@/app/Redux/Slices/primeSlice";
 import { useDispatch } from "react-redux";
-import LoginModal from "../../components/Modal/LoginModal";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -106,7 +100,6 @@ const CustomFormControlLabel = styled(FormControlLabel)`
     font-size: 14px;
     font-weight: 400;
     line-height: 17px;
-    white-space: nowrap;
   }
   & .MuiCheckbox-root {
     padding: 8px;
@@ -150,7 +143,6 @@ const StyledTextField = styled(TextField)`
     .MuiOutlinedInput-input {
       padding: 6px 14px;
       margin-left: 30px;
-      color:${colors.navyBlue500}
     }
     .MuiInputAdornment-root {
       position: absolute;
@@ -208,44 +200,29 @@ const StyledButton = styled(Button)`
 
 
 
-const TimesFilter = ({ isOpen ,handleModalOpen}) => {
+const PrimeFilter = ({ isOpen, handleModalOpen }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllSectors, setShowAllSectors] = useState(false);
   const [showAllCompanies, setShowAllCompanies] = useState(false);
-  const [showAllMonths, setShowAllMonths] = useState(false);
-  const [findSector, setFindSector] = useState("");
-  const [findIndustry, setFindIndustry] = useState("");
-  const [findCompany, setFindCompany] = useState("");
-  const [showAllIndustries, setShowAllIndustries] = useState(false);
- 
- 
-  const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const { timesFilter } = useSelector((store) => store.times);
-  const { isAuth } = useSelector((store) => store.auth);
-  const [open,setOpen]=useState(false)
 
-  const toggleDrawer = () => {
-    dispatch(toggleArticleFilter());
+  const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const { primeFilter } = useSelector((store) => store.prime);
+  const { isAuth } = useSelector((store) => store.auth);
+
+  const toggleFilter = () => {
+    dispatch(togglePrimeFilter());
   };
-  const handleClose=()=>{
-    setOpen(false)
-  }
-  
 
   const [filter, setFilter] = useState({
     sector_id: [],
-    industry: [],
-    company_name: [],
-    byMonths: [],
 
-    market_cap: [],
-    ttm_pe: [],
+    company_name: [],
+
     company_type: [],
   });
 
   const handleChange = (category, option) => (event) => {
-   
     const { checked } = event.target;
 
     setFilter((prevFilter) => {
@@ -261,52 +238,20 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
     });
   };
 
-  const optionsFilterArray=(arr,key)=>{
-    const newArray=arr.map((item)=>{
-      return {
-        placeholder:item.placeholder.toLowerCase(),
-        value:item.value
-      }
-    }).filter((item)=>{
-      return item.placeholder.includes(key.toLowerCase())
-    })
-    return newArray;
-  }
-
-  const resetFilters = () => {
-    setFilter({
-      sector_id: [],
-      industry: [],
-      company_name: [],
-      byMonths: [],
-
-      market_cap: [],
-      ttm_pe: [],
-      company_type: [],
-    });
-  };
-
   const isApplyButtonDisabled =
     filter.sector_id.length === 0 &&
-    filter.byMonths.length === 0 &&
-    filter.industry.length === 0 &&
     filter.company_name.length === 0 &&
-    filter.market_cap.length === 0 &&
-    filter.ttm_pe.length === 0 &&
     filter.company_type.length === 0;
 
-  if (!timesFilter.length) {
-    return <></>;
-  }
 
+    if(!primeFilter.length)
+        return <></>
   return (
-    <>
-    
     <Box>
       <Drawer
         anchor="left"
         open={isOpen}
-        onClose={toggleDrawer}
+        onClose={toggleFilter}
         sx={{
           zIndex: 1400,
           "& .MuiDrawer-paper": {
@@ -335,7 +280,6 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
                   letterSpacing: "-0.02em",
                 }}
                 component="span"
-                onClick={resetFilters}
               >
                 Filter
               </Typography>
@@ -357,19 +301,19 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
           </Grid>
           <CustomDivider sx={{ mt: 1, mb: 3 }} />
           <FormControl component="fieldset" sx={{ width: "100%", padding: 2 }}>
-            <StyledTypography1>{timesFilter[0]?.category}</StyledTypography1>
+            <StyledTypography1>{primeFilter[0]?.category}</StyledTypography1>
             <Grid
               container
               justifyContent="space-between"
               sx={{ width: "80%" }}
             >
-              {timesFilter[0]?.options.map((item, index) => {
+              {primeFilter[0]?.options.map((item, index) => {
                 return (
                   <>
                     <Grid item xs={12} key={index}>
                       <CustomFormControlLabel
                         checked={filter[item.key]?.includes(item.value)}
-                        onChange={handleChange(timesFilter[0]?.key, item.value)}
+                        onChange={handleChange(primeFilter[0]?.key, item.value)}
                         control={<CustomCheckbox />}
                         label={item.placeholder}
                       />
@@ -379,91 +323,26 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
               })}
             </Grid>
             <CustomDivider sx={{ mt: 2, mb: 2 }} />
-
-            <StyledTypography1>{timesFilter[1]?.category}</StyledTypography1>
-            <Grid
-              container
-              justifyContent="space-between"
-              sx={{ width: "80%" }}
-            >
-              {timesFilter[1]?.options.map((item, index) => {
-                return (
-                  <>
-                    <Grid item xs={6} key={index}>
-                      <CustomFormControlLabel
-                        checked={filter[item.key]?.includes(item.value)}
-                        onChange={handleChange(timesFilter[1]?.key, item.value)}
-                        control={<CustomCheckbox />}
-                        label={item.placeholder}
-                      />
-                    </Grid>
-                  </>
-                );
-              })}
-            </Grid>
-            <CustomDivider sx={{ mt: 2, mb: 2 }} />
-            <StyledTypography1>{timesFilter[2].category}</StyledTypography1>
-            <Grid
-              container
-              justifyContent="space-between"
-              sx={{ width: "80%" }}
-            >
-              {timesFilter[2]?.options.map((item, index) => {
-                return (
-                  <>
-                    <Grid item xs={6} key={index}>
-                      <CustomFormControlLabel
-                        control={<CustomCheckbox />}
-                        label={item.placeholder}
-                        checked={filter[item.key]?.includes(item.value)}
-                        onChange={handleChange(timesFilter[2]?.key, item.value)}
-                      />
-                    </Grid>
-                  </>
-                );
-              })}
-            </Grid>
-            <CustomDivider sx={{ mt: 2, mb: 2 }} />
-
             <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              {timesFilter[3]?.category}
+              {primeFilter[1]?.category}
             </StyledTypography1>
-            <Box display="flex" marginBottom={2}>
-              <StyledTextField
-                variant="outlined"
-                size="small"
-                placeholder="Search for sector"
-                fullWidth
-                sx={{ mb: 1 }}
-                onChange={(ele) => setFindSector(ele.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      <IconButton>
-                        <CustomSearchIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <StyledButton2 variant="contained">Search</StyledButton2>
-            </Box>
+
             <Grid
               container
               justifyContent="space-between"
               sx={{ width: "80%" }}
             >
               {(showAllSectors
-                ? optionsFilterArray(timesFilter[3]?.options,findSector)
-                : optionsFilterArray(timesFilter[3]?.options,findSector)?.slice(0, 5)
-              )?.map((sector, index) => (
+                ? primeFilter[1]?.options
+                : primeFilter[1]?.options.slice(0, 5)
+              ).map((sector, index) => (
                 <Grid item key={index} xs={12}>
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
                         checked={filter[sector.key]?.includes(sector.value)}
                         onChange={handleChange(
-                          timesFilter[3]?.key,
+                          primeFilter[1]?.key,
                           sector.value
                         )}
                       />
@@ -489,141 +368,31 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
               </StyledViewAllButton>
             </Grid>
             <CustomDivider sx={{ mt: 2, mb: 2 }} />
-
             <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              {timesFilter[4]?.category}
-            </StyledTypography1>
-            <Box display="flex" marginBottom={2}>
-              <StyledTextField
-                variant="outlined"
-                size="small"
-                placeholder="Search for industry"
-                fullWidth
-                onChange={(ele) => setFindIndustry(ele.target.value)}
-                sx={{ mb: 1 }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      <IconButton>
-                        <CustomSearchIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <StyledButton2 variant="contained">Search</StyledButton2>
-            </Box>
-            {(showAllIndustries
-              ? optionsFilterArray(timesFilter[4]?.options,findIndustry)
-              : optionsFilterArray(timesFilter[4]?.options,findIndustry)?.slice(0, 5)
-            )?.map((industries, index) => (
-              <CustomFormControlLabel
-                key={index}
-                control={
-                  <CustomCheckbox
-                    checked={filter[industries.key]?.includes(industries.value)}
-                    onChange={handleChange(
-                      timesFilter[4]?.key,
-                      industries.value
-                    )}
-                  />
-                }
-                label={industries.placeholder}
-              />
-            ))}
-            <Grid container justifyContent="flex-start">
-              <StyledViewAllButton
-                endIcon={
-                  showAllSectors ? (
-                    <KeyboardArrowUpOutlinedIcon />
-                  ) : (
-                    <ExpandMoreIcon />
-                  )
-                }
-                onClick={() => setShowAllIndustries(!showAllIndustries)}
-              >
-                {showAllIndustries ? "Hide" : "View All"}
-              </StyledViewAllButton>
-            </Grid>
-            <CustomDivider sx={{ mt: 2, mb: 2 }} />
-            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              {timesFilter[5]?.category}
+              {primeFilter[2]?.category}
             </StyledTypography1>
 
-            {(showAllMonths
-              ? timesFilter[5]?.options
-              : timesFilter[5]?.options.slice(0, 5)
-            ).map((month, index) => (
-              <CustomFormControlLabel
-                key={index}
-                control={
-                  <CustomCheckbox
-                    checked={filter[month.key]?.includes(month.value)}
-                    onChange={handleChange(timesFilter[5]?.key, month.value)}
-                  />
-                }
-                label={month.placeholder}
-              />
-            ))}
-            <Grid container justifyContent="flex-start">
-              <StyledViewAllButton
-                endIcon={
-                  showAllMonths ? (
-                    <KeyboardArrowUpOutlinedIcon />
-                  ) : (
-                    <ExpandMoreIcon />
-                  )
-                }
-                onClick={() => setShowAllMonths(!showAllMonths)}
-              >
-                {showAllMonths ? "Hide" : "View All"}
-              </StyledViewAllButton>
-            </Grid>
-            <CustomDivider sx={{ mt: 2, mb: 2 }} />
-            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              {timesFilter[6]?.category}
-            </StyledTypography1>
-            <Box display="flex" marginBottom={2}>
-              <StyledTextField
-                variant="outlined"
-                size="small"
-                placeholder="Search for company"
-                onChange={(ele) => setFindCompany(ele.target.value)}
-                fullWidth
-                sx={{ mb: 1 }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      <IconButton>
-                        <CustomSearchIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <StyledButton2 variant="contained">Search</StyledButton2>
-            </Box>
             <Grid
               container
               justifyContent="space-between"
               sx={{ width: "80%" }}
             >
               {(showAllCompanies
-                ? optionsFilterArray(timesFilter[6]?.options,findCompany)
-                : optionsFilterArray(timesFilter[6]?.options,findCompany).slice(0, 5)
-              ).map((company, index) => (
+                ? primeFilter[2]?.options
+                : primeFilter[2]?.options.slice(0, 5)
+              ).map((sector, index) => (
                 <Grid item key={index} xs={12}>
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
-                        checked={filter[company.key]?.includes(company.value)}
+                        checked={filter[sector.key]?.includes(sector.value)}
                         onChange={handleChange(
-                          timesFilter[6]?.key,
-                          company.value
+                          primeFilter[2]?.key,
+                          sector.value
                         )}
                       />
                     }
-                    label={company.placeholder}
+                    label={sector.placeholder}
                   />
                 </Grid>
               ))}
@@ -643,6 +412,7 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
                 {showAllCompanies ? "Hide" : "View All"}
               </StyledViewAllButton>
             </Grid>
+            <CustomDivider sx={{ mt: 2, mb: 2 }} />
           </FormControl>
         </ScrollableBox>
         <Box
@@ -659,7 +429,7 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
         >
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <StyledButton fullWidth variant="outlined" onClick={toggleDrawer}>
+              <StyledButton fullWidth variant="outlined" onClick={toggleFilter}>
                 Cancel
               </StyledButton>
             </Grid>
@@ -669,14 +439,14 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
                 variant="contained"
                 disabled={isApplyButtonDisabled}
                 onClick={()=>{
-                  if(isAuth)
-                  dispatch(timesArticleApi(filter))
-                else
-               {
-                handleModalOpen()
-                dispatch(toggleArticleFilter())
-               }
-                }}
+                    if(isAuth)
+                    dispatch(primeCompaniesListApi(filter))
+                  else
+                 {
+                  handleModalOpen()
+                  dispatch(togglePrimeFilter())
+                 }
+                  }}
               >
                 Apply Filter
               </StyledButton3>
@@ -685,8 +455,7 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
         </Box>
       </Drawer>
     </Box>
-    </>
   );
 };
 
-export default TimesFilter;
+export default PrimeFilter;
