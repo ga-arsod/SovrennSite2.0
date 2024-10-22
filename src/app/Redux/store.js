@@ -9,6 +9,8 @@ import educationReducer from './Slices/educationSlice';
 import snackbarReducer from "./Slices/snackbarSlice"
 import sortingReducer from "./Slices/sortingSlice"
 import timesReducer from "./Slices/timesSlice"
+import primeReducer from "./Slices/primeSlice"
+import ipoReducer from "./Slices/ipoSlice"
 
 // Configuration for redux-persist
 const persistConfig = {
@@ -24,7 +26,8 @@ const rootReducer = combineReducers({
   education: educationReducer,
   snackbar:snackbarReducer,
   sorting: sortingReducer,
-  times:timesReducer
+  times:timesReducer,
+  prime:primeReducer,
 });
 
 

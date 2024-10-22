@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.14",
     "@reduxjs/toolkit": "^2.2.5",
+    "dompurify": "^3.1.7",
     "gray-matter": "^4.0.3",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",

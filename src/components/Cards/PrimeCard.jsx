@@ -4,6 +4,7 @@ import { Grid, Typography, Box, Divider, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import moment from "moment";
+import NoData from "../../components/NoData/NoData"
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -40,9 +41,13 @@ const StyledButton2 = styled(Button)`
   }
 `;
 
-const PrimeCard = () => {
+const PrimeCard = ({ data, activeTab }) => {
   return (
-    <Box sx={{ flexGrow: 1, paddingY: 2 }}>
+    <>
+    {
+      data.length== 0 ?  <NoData text="No data available" />
+      :
+      <Box sx={{ flexGrow: 1, paddingY: 2 }}>
       <Grid
         container
         marginBottom={1}
@@ -57,7 +62,7 @@ const PrimeCard = () => {
           padding: { xs: 1 }, 
         }}
       >
-        {Array.from("abcdefgh").map((ele, index) => (
+        {data?.map((elem, index) => (
           <Box
             key={index}
             sx={{
@@ -82,14 +87,19 @@ const PrimeCard = () => {
               sx={{ fontWeight: "600" }}
               component="span"
             >
-             {moment(ele.createdAt).format("Do MMM YY")}
+            {elem.price === 0 ||
+                    (activeTab == "one" && elem?.is_promoter_interview_free)
+                      ? "Free Sample"
+                      : `${moment(elem.createdAt).format("Do MMM YY")}`}
             </StyledTypography1>
             <StyledTypography2
               marginTop={1}
               color={colors.navyBlue500}
               component="div"
             >
-             PhantomFX-SM
+            {elem.company_Id?.company_name
+                      ? elem.company_Id?.company_name
+                      : "NA"}
             </StyledTypography2>
             <Box marginTop={1}>
               <Grid container justifyContent="space-between">
@@ -106,7 +116,7 @@ const PrimeCard = () => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                   Entertainment
+                  {elem.company_Id?.sector ? elem.company_Id?.sector : "NA"}
                   </StyledTypography3>
                 </Grid>
                 <Grid item>
@@ -122,7 +132,9 @@ const PrimeCard = () => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    Miscellaneous
+                    {elem.company_Id?.industry
+                      ? elem.company_Id?.industry
+                      : "NA"}
                   </StyledTypography3>
                 </Grid>
               </Grid>
@@ -135,12 +147,16 @@ const PrimeCard = () => {
               marginBottom={0.5}
               marginTop={1}
             >
-              <StyledButton2 variant="contained">Read</StyledButton2>
+              <StyledButton2 variant="contained">    {elem.price === 0 ? "Read Free" : "Read"}</StyledButton2>
             </Grid>
           </Box>
         ))}
       </Grid>
     </Box>
+    }
+   
+   
+    </>
   );
 };
 

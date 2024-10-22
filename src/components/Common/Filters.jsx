@@ -8,6 +8,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { useSelector } from 'react-redux';
+
+import { useDispatch } from 'react-redux';
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -209,17 +212,31 @@ const industries = [
   "Event Management",
 ];
 
-const Filters = ({ isOpen, setIsOpen }) => {
+const Filters = ({ isOpen, handleModalOpen }) => {
   const theme=useTheme();
+  const dispatch=useDispatch()
   const [showAllSectors, setShowAllSectors] = useState(false);
   const [showAllIndustries, setShowAllIndustries] = useState(false);
   const [selectedSectors, setSelectedSectors] = useState([]);
   const [selectedIndustries, setSelectedIndustries] = useState([]);
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const { promoterFilter } = useSelector((store) => store.prime);
 
-  const toggleDrawer = (open) => () => {
-    setIsOpen(open);
+  const togglePrimeFilter =  () => {
+   dispatch(toggleFilter())
   };
+
+  const [filter, setFilter] = useState({
+    sector_id: [],
+    industry: [],
+    company_name: [],
+    byMonths: [],
+
+    market_cap: [],
+    ttm_pe: [],
+    company_type: [],
+  });
+
 
   const handleSectorChange = (sector) => {
     setSelectedSectors((prev) =>
@@ -244,7 +261,7 @@ const Filters = ({ isOpen, setIsOpen }) => {
       <Drawer
         anchor="left"
         open={isOpen}
-        onClose={toggleDrawer(false)}
+        onClose={togglePrimeFilter}
         sx={{
           zIndex: 1400,
           "& .MuiDrawer-paper": {
@@ -283,20 +300,26 @@ const Filters = ({ isOpen, setIsOpen }) => {
           </Grid>
           <CustomDivider sx={{ mt: 1, mb: 3 }} />
           <FormControl component="fieldset" sx={{ width: "100%", padding: 2 }}>
-            <StyledTypography1>Company type</StyledTypography1>
-            <Grid container justifyContent="space-between" sx={{ width: "80%" }}>
-              <Grid item>
-                <CustomFormControlLabel
-                  control={<CustomCheckbox checked={selectedSectors.includes("SME")} onChange={() => handleSectorChange("SME")} />}
-                  label="SME"
-                />
-              </Grid>
-              <Grid item>
-                <CustomFormControlLabel
-                  control={<CustomCheckbox checked={selectedSectors.includes("Non-SME")} onChange={() => handleSectorChange("Non-SME")} />}
-                  label="Non-SME"
-                />
-              </Grid>
+          <StyledTypography1>{promoterFilter[0]?.category}</StyledTypography1>
+            <Grid
+              container
+              justifyContent="space-between"
+              sx={{ width: "80%" }}
+            >
+              {promoterFilter[0]?.options.map((item, index) => {
+                return (
+                  <>
+                    <Grid item xs={12} key={index}>
+                      <CustomFormControlLabel
+                        checked={filter[item.key]?.includes(item.value)}
+                        onChange={handleChange(promoterFilter[0]?.key, item.value)}
+                        control={<CustomCheckbox />}
+                        label={item.placeholder}
+                      />
+                    </Grid>
+                  </>
+                );
+              })}
             </Grid>
             <CustomDivider sx={{ mt: 2, mb: 2 }} />
             <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
@@ -393,7 +416,7 @@ const Filters = ({ isOpen, setIsOpen }) => {
            <StyledButton
             fullWidth
             variant="outlined"
-            onClick={toggleDrawer(false)}
+            onClick={togglePrimeFilter}
           >
          Cancel
           </StyledButton>

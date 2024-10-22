@@ -199,28 +199,9 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const sectors = [
-  "Advertising",
-  "Beverages",
-  "Capital Goods",
-  "Chemicals",
-  "Energy",
-  "Capital Goods",
-  "Chemicals",
-  "Energy",
-];
 
-const industries = [
-  "Aquaculture",
-  "Breweries & Distilleries",
-  "Communications Equipment",
-  "Construction Materials",
-  "Diversified",
-  "Electrical Equipments",
-  "Engineering",
-  "Electronics",
-  "Event Management",
-];
+
+
 
 const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
   const theme = useTheme();
@@ -228,7 +209,8 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
   const [showAllCompanies, setShowAllCompanies] = useState(false);
   const [showAllMonths, setShowAllMonths] = useState(false);
   const [selectedMonths, setSelectedMonths] = useState(false);
-
+ 
+  const [findCompany, setFindCompany] = useState("");
   const [selectedCompanies, setSelectedCompanies] = useState([]);
 
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
@@ -239,6 +221,17 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
       dispatch(togglePdfFilter());
     };
  
+    const optionsFilterArray=(arr,key)=>{
+      const newArray=arr.map((item)=>{
+        return {
+          placeholder:item.placeholder.toLowerCase(),
+          value:item.value
+        }
+      }).filter((item)=>{
+        return item.placeholder.includes(key.toLowerCase())
+      })
+      return newArray;
+    }
 
   const [filter, setFilter] = useState({
     company_name: [],
@@ -338,6 +331,7 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
                 variant="outlined"
                 size="small"
                 placeholder="Search for company"
+                onChange={(ele) => setFindIndustry(ele.target.value)}
                 fullWidth
                 sx={{ mb: 1 }}
                 InputProps={{
@@ -358,8 +352,8 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
               sx={{ width: "80%" }}
             >
               {(showAllCompanies
-                ? timesPdfFilter[0]?.options
-                : timesPdfFilter[0]?.options.slice(0, 5)
+                ? optionsFilterArray(timesPdfFilter[0]?.options,findCompany)
+                : optionsFilterArray(timesPdfFilter[0]?.options,findCompany).slice(0, 5)
               ).map((company, index) => (
                 <Grid item key={index} xs={12}>
                   <CustomFormControlLabel
@@ -397,25 +391,7 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
             <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
               {timesPdfFilter[1]?.category}
             </StyledTypography1>
-            <Box display="flex" marginBottom={2}>
-              <StyledTextField
-                variant="outlined"
-                size="small"
-                placeholder="Search for month"
-                fullWidth
-                sx={{ mb: 1 }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="start">
-                      <IconButton>
-                        <CustomSearchIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <StyledButton2 variant="contained">Search</StyledButton2>
-            </Box>
+           
             {(showAllMonths
               ? timesPdfFilter[1]?.options
               : timesPdfFilter[1]?.options.slice(0, 5)
