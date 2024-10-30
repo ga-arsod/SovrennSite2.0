@@ -27,8 +27,8 @@ export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
     return response.json();
   });
 
-  export const primeCompaniesListApi = createAsyncThunk("primeCompaniesListApi", async (data,{dispatch}) => {
-    const response = await fetch(`${url}/prime-research/list?page=1&page_size=200`, {
+  export const primeCompaniesListApi = createAsyncThunk("primeCompaniesListApi", async ( { data, page,sort_by,sort_order},{dispatch}) => {
+    const response = await fetch(`${url}/prime-research/list??page=${page}&page_size=200&sort_by=${sort_by}&sort_order=${sort_order}`, {
       method: "POST",
       headers: {
        
@@ -44,8 +44,8 @@ export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
     return response.json();
   });
 
-  export const promoterCompaniesListApi = createAsyncThunk("promoterCompaniesListApi", async (data,{dispatch}) => {
-    const response = await fetch(`${url}/promoter-interviews/list?page=1&page_size=200`, {
+  export const promoterCompaniesListApi = createAsyncThunk("promoterCompaniesListApi", async ({ data, page,sort_by,sort_order},{dispatch}) => {
+    const response = await fetch(`${url}/promoter-interviews/list?page=${page}&page_size=200&sort_by=${sort_by}&sort_order=${sort_order}`, {
       method: "POST",
       headers: {
        

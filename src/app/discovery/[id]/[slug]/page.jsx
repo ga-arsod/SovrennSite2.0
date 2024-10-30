@@ -141,7 +141,7 @@ const DiscoveryArticle = () => {
   useEffect(() => {
    dispatch(isBookmarkedApi({company_id:company_id}))
    setIsInWatchlist(isBookmarked);
-   dispatch(getCommentsApi({company_id:company_id}))
+   dispatch(getCommentsApi({company_id:company_id,component:"discovery"}))
   }, []);
 
   useEffect(() => {

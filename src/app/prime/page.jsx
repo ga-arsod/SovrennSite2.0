@@ -48,6 +48,7 @@ const Prime = () => {
   const {  primeCompaniesList,promoterCompaniesList ,isPrimeFilterOpen,isPromoterFilterOpen} = useSelector(
     (store) => store.prime
   );
+  const { sortBy, sortOrder } = useSelector((state) => state.sorting);
 
   const handleModalOpen=()=>{
     setIsOpen(true)
@@ -63,8 +64,21 @@ const Prime = () => {
   useEffect(()=>{
     dispatch(primeFilterApi())
     dispatch(promoterFilterApi())
-    dispatch(primeCompaniesListApi({}))
-    dispatch(promoterCompaniesListApi({}))
+    dispatch(primeCompaniesListApi({
+     
+      body: {},
+      page: 1,
+      sort_by: sortBy,
+      sort_order: sortOrder,
+    }))
+    dispatch(promoterCompaniesListApi(
+      {
+        body: {},
+      page: 1,
+      sort_by: sortBy,
+      sort_order: sortOrder,
+      }
+    ))
   },[dispatch])
 
   return (

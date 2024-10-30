@@ -165,7 +165,7 @@ const PrimeArticles = () => {
     dispatch(getCommentsApi({company_id:articleData._id, component:"prime"}))
   },[articleData,dispatch])
  
-
+console.log(articleData,"articledata")
   useEffect(() => {
     const handleKeyDown = (event) => {
         if (event.ctrlKey && (event.key === 'p' || event.key === 'P')) {
@@ -322,7 +322,11 @@ if (isPromoterArticleLoading && isPrimeArticleLoading) {
           }
         </Box>
       </article>
-      <Comments  isCommentsModalOpen={isCommentsModalOpen} setIsCommentsModalOpen={setIsCommentsModalOpen} comments={comments} company_id={articleData._id } component="prime"/>
+      {
+        articleData ?  <Comments  isCommentsModalOpen={isCommentsModalOpen} setIsCommentsModalOpen={setIsCommentsModalOpen} comments={comments} company_id={articleData._id } component="prime"/>
+        : <></>
+      }
+     
     </>
   );
 };
