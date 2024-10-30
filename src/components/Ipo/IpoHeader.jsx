@@ -71,13 +71,9 @@ const IpoHeader = () => {
   const toggleDrawer = () => {
    dispatch(toggleIpoFilter())
   }
-  const { isIpoFilterOpen, } = useSelector(
-    (store) => store.ipo
-  );
+  
 
-  const handleModalOpen=()=>{
-    setIsOpen(true)
-  }
+ 
 
   return (
     <>
@@ -126,7 +122,7 @@ const IpoHeader = () => {
       </Box>
      
       </Container>
-      <IpoFilters isOpen={isIpoFilterOpen} handleModalOpen={handleModalOpen}/>
+      
       
     </>
   );
