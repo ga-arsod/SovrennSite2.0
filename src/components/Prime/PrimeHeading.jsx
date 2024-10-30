@@ -117,7 +117,7 @@ const PrimeHeading = ({ setActiveTab }) => {
 
   return (
    
-      <Box sx={{ width: '100%' }} marginTop={{xs:"17px",sm:"90px"}}>
+      <Box sx={{ width: '100%' }} marginTop={{xs:"70px",sm:"90px"}}>
         <Box
           sx={{
             position: 'relative',

@@ -181,8 +181,8 @@
 /* Responsiveness for tablet view */
 @media only screen and (max-width : 920px) {
     #MainContainer {
-        width: 70%;
-        margin: 80px auto 60px;
+        width: 100%;
+      
     }
 
     #MainContainer table {
@@ -206,9 +206,9 @@
 /* Responsiveness for mobile view */
 @media only screen and (max-width : 440px) {
     #MainContainer {
-        width: 90%;
+        width: 100%;
         padding: 10px 0;
-        margin: 60px auto 50px;
+        
     }
 
     #MainContainer>h1 {

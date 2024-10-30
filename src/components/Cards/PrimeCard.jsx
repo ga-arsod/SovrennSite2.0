@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import moment from "moment";
 import NoData from "../../components/NoData/NoData"
+import Link from "next/link";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -147,7 +148,9 @@ const PrimeCard = ({ data, activeTab }) => {
               marginBottom={0.5}
               marginTop={1}
             >
+               <Link target="_blank" href={activeTab == 'two' ? `/prime/${elem.slug}?s=promoter_interview` : `/prime/${elem.slug}`}>
               <StyledButton2 variant="contained">    {elem.price === 0 ? "Read Free" : "Read"}</StyledButton2>
+              </Link>
             </Grid>
           </Box>
         ))}

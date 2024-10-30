@@ -18,8 +18,15 @@ const Ipo = () => {
   const dispatch = useDispatch();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const [windowSize, setWindowSize] = useState(undefined);
-
+ 
   const { ipoCompaniesList } = useSelector((store) => store.ipo);
+  const { isIpoFilterOpen, } = useSelector(
+    (store) => store.ipo
+  );
+
+  const handleModalOpen=()=>{
+    setIsOpen(true)
+  }
 
   useEffect(() => {
     dispatch(ipoFilterApi())
@@ -67,7 +74,7 @@ const Ipo = () => {
         />
       </Head>
       <IpoHeader />
-     
+      <IpoFilters isOpen={isIpoFilterOpen} handleModalOpen={handleModalOpen}/>
       {isSmallerThanMd ? (
         <IpoCard data={ipoCompaniesList} />
       ) : (
