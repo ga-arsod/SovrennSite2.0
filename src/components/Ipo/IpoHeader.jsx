@@ -5,8 +5,13 @@ import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { colors } from "../Constants/colors";
 import SearchBar from "../Common/SearchBar";
-
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
+import Filters from "../Common/Filters"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'; 
+import IpoFilters from "../Common/IpoFilters"
+import { useSelector } from "react-redux";
+import { toggleIpoFilter } from "@/app/Redux/Slices/ipoSlice";
+import { useDispatch } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -32,27 +37,48 @@ const StyledTypography2 = styled(Typography)`
     letter-spacing: 0.02em;
   }
 `;
+
+
 const StyledButton = styled(Button)`
-  color: ${colors.navyBlue500};
-  background-color: transparent;
-  text-transform: none;
-  border: 1px solid ${colors.navyBlue500};
   font-weight: 600;
-  font-size: 16px;
-  line-height: 19px;
-  padding-left: 18px;
-  padding-right: 18px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  white-space: nowrap;
-  :hover {
-    background-color: ${colors.white};
+  font-size: 14px;
+  line-height: 17px;
+  color: ${colors.navyBlue500};
+  padding: 8px 16px;
+  text-transform: none;
+  border-color: ${colors.navyBlue500};
+  &:hover {
+    background-color: ${colors.navyBlue200};
+    color: white;
+    border-color: ${colors.navyBlue200};
+      & .MuiSvgIcon-root {
+      color: white; 
+    }
+  }
+`;
+const StyledFilterIcon = styled(FilterAltOutlinedIcon)`
+  && {
+    font-size: 16px;
+    color: ${colors.navyBlue500};
   }
 `;
 
 const IpoHeader = () => {
- 
+ const dispatch=useDispatch();
   const theme = useTheme();
+  const [isOpen,setIsOpen]=useState(false);
+
+  const toggleDrawer = () => {
+   dispatch(toggleIpoFilter())
+  }
+  const { isIpoFilterOpen, } = useSelector(
+    (store) => store.ipo
+  );
+
+  const handleModalOpen=()=>{
+    setIsOpen(true)
+  }
+
   return (
     <>
      <Container>
@@ -69,35 +95,39 @@ const IpoHeader = () => {
                   marginRight={1}
                   component="span"
                 >
-                  Sovrenn
+                IPO
                 </StyledTypography1>
                 <StyledTypography1
                   color={theme.palette.primary.main}
                   component="span"
                 >
-                  Knowledge
+                 Zone
                 </StyledTypography1>
               </Box>
             </Box>
             <StyledTypography2 color={colors.navyBlue400}>
-            We are bringing to you IPO stock articles to make you better equipped with information before making investment decisions
+            We are bringing to you IPO stock articles to make you better equipped with information before making investment decisions.
             </StyledTypography2>
           </Grid>
         </Grid>
-        <Grid
-          container
-          justifyContent="flex-end"
-          width="100%"
-          gap={{ xs: 3, sm: 4 }}
-          flexWrap="wrap"
-        >
+        <Grid container>
         
-          <Grid item order={{ xs: 1, sm: 2 }}>
-            <SearchBar placeholder="Search for company, or industry"/>
-          </Grid>
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+          <StyledButton
+            variant="outlined"
+            endIcon={<StyledFilterIcon />}
+            size="small"
+            onClick={toggleDrawer}
+          >
+            Filter
+          </StyledButton>
         </Grid>
+      </Grid>
       </Box>
+     
       </Container>
+      <IpoFilters isOpen={isIpoFilterOpen} handleModalOpen={handleModalOpen}/>
+      
     </>
   );
 };

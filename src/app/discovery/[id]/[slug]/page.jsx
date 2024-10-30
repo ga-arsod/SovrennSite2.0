@@ -9,8 +9,9 @@ import Head from "next/head";
 import Spinner from "../../../../components/Common/Spinner";
 import {
   discoveryArticleApi,
-  otherBucketsCompanyPresentApi,addToWatchlistApi,removeFromWatchlistApi,isBookmarkedApi,getCommentsApi
+  otherBucketsCompanyPresentApi,addToWatchlistApi,removeFromWatchlistApi,isBookmarkedApi
 } from "../../../Redux/Slices/discoverySlice";
+import { getCommentsApi } from "@/app/Redux/Slices/commentsSlice";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -107,8 +108,10 @@ const CustomDivider2 = styled(Divider)`
 const DiscoveryArticle = () => {
   const dispatch = useDispatch();
   const { id, slug } = useParams();
-  const { isArticleDataLoading, articleData, otherBucketsCompanyPresent,isBookmarked,comments, isCommentsDataLoading} =
+  const { isArticleDataLoading, articleData, otherBucketsCompanyPresent,isBookmarked} =
     useSelector((store) => store.discovery);
+
+    const { comments, isCommentsDataLoading} =useSelector((store) => store.comments);
    
 
   const {
@@ -131,14 +134,14 @@ const DiscoveryArticle = () => {
   useEffect(() => {
     if (slug) {
       dispatch(discoveryArticleApi(slug));
-      dispatch(otherBucketsCompanyPresentApi({ company_id: company_id }));
+      dispatch(otherBucketsCompanyPresentApi({ company_id: company_id ,component:"discovery"}));
     }
   }, [dispatch, slug]);
 
   useEffect(() => {
    dispatch(isBookmarkedApi({company_id:company_id}))
    setIsInWatchlist(isBookmarked);
-   dispatch(getCommentsApi({company_id:company_id}))
+   dispatch(getCommentsApi({company_id:company_id,component:"discovery"}))
   }, []);
 
   useEffect(() => {
@@ -164,7 +167,10 @@ const DiscoveryArticle = () => {
     setIsInWatchlist((prev) => !prev);
   };
 
-  if (isArticleDataLoading || isCommentsDataLoading ) {
+ 
+
+
+  if (isArticleDataLoading  ) {
     return (
       <>
         <Head>
@@ -179,6 +185,8 @@ const DiscoveryArticle = () => {
       </>
     );
   }
+
+ 
 
   return (
     <>
@@ -210,7 +218,7 @@ const DiscoveryArticle = () => {
               isInWatchlist={isInWatchlist}
               onClick={()=>{toggleWatchlist()
                 
-               isInWatchlist ? dispatch(removeFromWatchlistApi(company_id)):dispatch(addToWatchlistApi(company_id)) 
+               isInWatchlist ? dispatch(removeFromWatchlistApi(company_id)):dispatch(addToWatchlistApi({company_id:company_id,uptrend_potential:0,expected_price_after_1year:0})) 
               }
               }
 
@@ -447,7 +455,7 @@ const DiscoveryArticle = () => {
       <Box sx={{display:'flex',justifyContent:'center'}}>
       <Disclaimer margin="4" text={primeArticleDisclaimer} width="915px" />
       </Box>
-      <Comments  isCommentsModalOpen={isCommentsModalOpen} setIsCommentsModalOpen={setIsCommentsModalOpen} comments={comments} company_id={company_id}/>
+      <Comments  isCommentsModalOpen={isCommentsModalOpen} setIsCommentsModalOpen={setIsCommentsModalOpen} comments={comments} company_id={company_id} component="discovery"/>
     </>
   );
 };

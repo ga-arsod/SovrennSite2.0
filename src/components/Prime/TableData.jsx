@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,6 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { colors } from "../Constants/colors";
 import styled from "@emotion/styled";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -20,6 +21,9 @@ import { useRouter } from "next/navigation";
 import moment from "moment";
 import Link from "next/link";
 import NoData from "../../components/NoData/NoData"
+import { setSortBy,toggleSortOrder } from "@/app/Redux/Slices/sortingSlice";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const StyledTableCell = styled(TableCell)`
   font-weight: 600;
@@ -46,6 +50,16 @@ const HeaderTextWrapper = styled("div")`
 `;
 
 const StyledArrowUpwardIcon = styled(ArrowUpwardIcon)`
+  && {
+    font-size: 18px;
+    color: ${colors.navyBlue500};
+    margin-left: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
+  }
+`;
+const StyledArrowDownwardIcon = styled(ArrowDownwardIcon)`
   && {
     font-size: 18px;
     color: ${colors.navyBlue500};
@@ -90,10 +104,40 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const headerRowArray = [
+  {
+    name: "Date of Info",
+    id: "date",
+  },
+  {
+    name: "Company Name",
+    id: "company_name",
+  },
+  {
+    name: "Sector",
+    id: "sector",
+  },
+  {
+    name: "Industry",
+    id: "industry",
+  },
+];
 
 
 const TableData = ({ data, activeTab }) => {
   const router = useRouter();
+  const dispatch=useDispatch();
+  const { sortBy, sortOrder } = useSelector((state) => state.sorting);
+
+  const handleSortChange = (field) => {
+    dispatch(setSortBy(field));
+
+
+    if (sortBy === field) {
+      dispatch(toggleSortOrder());
+    }
+  };
+ 
   return (
     <>
     {
@@ -114,37 +158,43 @@ const TableData = ({ data, activeTab }) => {
       >
         <Table sx={{ borderCollapse: "separate" }}>
           <TableHead>
-            <TableRow
-              sx={{
-                "& th": { borderBottom: "none" },
-              }}
-            >
-              <StyledTableCell>
-                <HeaderTextWrapper>
-                  Date of Info
-                  <StyledArrowUpwardIcon className="arrow-icon" />
-                </HeaderTextWrapper>
-              </StyledTableCell>
-              <StyledTableCell>
-                <HeaderTextWrapper>
-                  Company Name
-                  <StyledArrowUpwardIcon className="arrow-icon" />
-                </HeaderTextWrapper>
-              </StyledTableCell>
-              <StyledTableCell>
-                <HeaderTextWrapper>
-                  Sector
-                  <StyledArrowUpwardIcon className="arrow-icon" />
-                </HeaderTextWrapper>
-              </StyledTableCell>
-              <StyledTableCell>
-                <HeaderTextWrapper>
-                  Industry
-                  <StyledArrowUpwardIcon className="arrow-icon" />
-                </HeaderTextWrapper>
-              </StyledTableCell>
-              <StyledTableCell></StyledTableCell>
-            </TableRow>
+          <TableRow>
+                {headerRowArray?.map((item, index) => {
+                  return (
+                    <>
+                      <StyledTableCell key={index}
+                       onClick={() => handleSortChange(item?.id)}
+                      >
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          {item?.name}
+                          {sortBy === item.id ? (
+                            sortOrder === "inc" ? (
+                              <StyledArrowUpwardIcon
+                                className="arrow-icon"
+                               
+                              />
+                            ) : (
+                              <StyledArrowDownwardIcon
+                                className="arrow-icon"
+                               
+                              />
+                            )
+                          ) : (
+                            <StyledArrowUpwardIcon
+                              className="arrow-icon"
+                             
+                            />
+                          )}
+                        </div>
+                      </StyledTableCell>
+                    </>
+                  );
+                })}
+
+                <StyledTableCell>
+                  
+                </StyledTableCell>
+              </TableRow>
           </TableHead>
           <TableBody>
             {data?.map((elem, index) => (

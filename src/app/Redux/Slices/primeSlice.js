@@ -6,17 +6,18 @@ const initialState = {
   promoterFilter:[],
   primeFilter:[],
   isError:false,
+  comments:[],
  isPrimeFilterOpen:false,
  isPromoterFilterOpen:false,
   primeCompaniesList:[],
   promoterCompaniesList:[],
   isPrimeCompanyListLoading:false,
-  primeArticle:null,
-  promoterArticle:null,
+ articleData:null,
   isPrimeArticleLoading:false,
   isPromoterArticleLoading:false,
   isPromoterCompanyListLoading:false,
   company_name:"",
+  isCommentsDataLoading:false,
 };
 
 export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
@@ -26,8 +27,8 @@ export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
     return response.json();
   });
 
-  export const primeCompaniesListApi = createAsyncThunk("primeCompaniesListApi", async (data,{dispatch}) => {
-    const response = await fetch(`${url}/prime-research/list?page=1&page_size=200`, {
+  export const primeCompaniesListApi = createAsyncThunk("primeCompaniesListApi", async ( { data, page,sort_by,sort_order},{dispatch}) => {
+    const response = await fetch(`${url}/prime-research/list??page=${page}&page_size=200&sort_by=${sort_by}&sort_order=${sort_order}`, {
       method: "POST",
       headers: {
        
@@ -43,8 +44,8 @@ export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
     return response.json();
   });
 
-  export const promoterCompaniesListApi = createAsyncThunk("promoterCompaniesListApi", async (data,{dispatch}) => {
-    const response = await fetch(`${url}/promoter-interviews/list?page=1&page_size=200`, {
+  export const promoterCompaniesListApi = createAsyncThunk("promoterCompaniesListApi", async ({ data, page,sort_by,sort_order},{dispatch}) => {
+    const response = await fetch(`${url}/promoter-interviews/list?page=${page}&page_size=200&sort_by=${sort_by}&sort_order=${sort_order}`, {
       method: "POST",
       headers: {
        
@@ -99,6 +100,10 @@ export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
       return response.json();
     }
   );
+
+ 
+
+ 
 
 const primeSlice = createSlice({
   name: 'prime',
@@ -156,7 +161,7 @@ const primeSlice = createSlice({
      });
     builder.addCase(primeArticleApi.fulfilled, (state, action) => {
     
-       state.primeArticle = action.payload.data;
+       state.articleData = action.payload.data;
        state.company_name=action.payload.data.company_Id.company_name
        state.isPrimeArticleLoading=false;
      });
@@ -173,9 +178,9 @@ const primeSlice = createSlice({
      });
     builder.addCase(promoterArticleApi.fulfilled, (state, action) => {
     
-       state.promoterArticle = action.payload.data;
+       state.articleData = action.payload.data;
        state.company_name=action.payload.data.company_Id.company_name
-       state.isPrimeArticleLoading=false;
+       state.isPromoterArticleLoading=false;
      });
      builder.addCase(promoterArticleApi.rejected, (state, action) => {
       
@@ -198,7 +203,11 @@ const primeSlice = createSlice({
            state.isError = true;
            state.isPromoterCompanyListLoading=false;
          });
+
+    
+    
   }
+
 });
 
 export const { togglePrimeFilter,togglePromoterFilter} = primeSlice.actions;

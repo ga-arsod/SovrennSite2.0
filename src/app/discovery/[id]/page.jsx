@@ -216,8 +216,7 @@ const DiscoveryBucketContent = () => {
       </>
     );
   }
-console.log(filtersData,"filtersData")
-console.log(isAuth,"isAuth")
+
   return (
     <>
       <Head>
@@ -352,12 +351,12 @@ console.log(isAuth,"isAuth")
          
         </Box>
         {isSmallerThanMd ? (
-          tableData?.companies.length === 0 ? (
+          tableData?.companies?.length === 0 ? (
            <NoData text="No data available for this bucket currently."/>
           ) : (
             <DiscoveryTableCard tableData={tableData} id={id} />
           )
-        ) : tableData?.companies.length === 0 ? (
+        ) : tableData?.companies?.length === 0 ? (
           <NoData text="No data available for this bucket currently."/>
         ) : (
           <DiscoveryTable tableData={tableData} id={id} />

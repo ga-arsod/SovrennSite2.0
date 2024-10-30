@@ -25,7 +25,7 @@ import {
   commentunLikeApi,
   commentDeleteApi,
   postCommentApi,
-} from "@/app/Redux/Slices/discoverySlice";
+} from "@/app/Redux/Slices/commentsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
@@ -104,6 +104,7 @@ const CommentDrawer = ({
   setIsCommentsModalOpen,
   comments,
   company_id,
+  component
 }) => {
   const [newComment, setNewComment] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
@@ -142,8 +143,9 @@ const CommentDrawer = ({
     dispatch(
       postCommentApi({
         comment: newComment,
-        company_id,
+        company_id:company_id,
         user_id: userDetails._id,
+        component:component
       })
     );
 
@@ -151,7 +153,7 @@ const CommentDrawer = ({
   };
 
   const handleMenuClick = (event, commentId) => {
-    console.log("Menu Click Event:", event.currentTarget);
+   
     setAnchorEl(event.currentTarget);
     setSelectedCommentId(commentId);
   };
@@ -165,6 +167,7 @@ const CommentDrawer = ({
       commentDeleteApi({
         company_id: company_id,
         comment_id: selectedCommentId,
+        component:component
       })
     );
 
@@ -182,9 +185,9 @@ const CommentDrawer = ({
   const handleLikeToggle = (commentId) => {
     const comment = commentList.find((c) => c._id === commentId);
     if (comment.has_liked) {
-      dispatch(commentunLikeApi({ company_id, comment_id: commentId }));
+      dispatch(commentunLikeApi({ company_id:company_id, comment_id: commentId,component:component }));
     } else {
-      dispatch(commentLikeApi({ company_id, comment_id: commentId }));
+      dispatch(commentLikeApi({ company_id:company_id, comment_id: commentId,component:component }));
     }
 
     setCommentList((prevList) =>

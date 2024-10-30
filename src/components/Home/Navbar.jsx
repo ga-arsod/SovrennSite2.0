@@ -215,6 +215,9 @@ const LightTooltip = styled(({ className, ...props }) => (
     lineHeight:"14px",
     
   },
+  [`& .MuiTooltip-arrow`]: {
+    color: 'white',
+  },
 }));
 
 const TooltipContent = ({ heading, description }) => (

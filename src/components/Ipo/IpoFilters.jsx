@@ -200,14 +200,14 @@ const StyledButton = styled(Button)`
 
 
 
-const PrimeFilter = ({ isOpen, handleModalOpen }) => {
+const IpoFilters = ({ isOpen, handleModalOpen }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllSectors, setShowAllSectors] = useState(false);
   const [showAllCompanies, setShowAllCompanies] = useState(false);
 
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const { ipoFilter } = useSelector((store) => store.ipo);
+  const {  ipoFilter } = useSelector((store) => store.ipo);
   const { isAuth } = useSelector((store) => store.auth);
 
   const toggleFilter = () => {
@@ -458,4 +458,4 @@ const PrimeFilter = ({ isOpen, handleModalOpen }) => {
   );
 };
 
-export default IpoFilter;
+export default IpoFilters;

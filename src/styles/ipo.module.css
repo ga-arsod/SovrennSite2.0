@@ -1,0 +1,178 @@
+#MainContainer {
+    width: 990px;
+    margin: 7vh auto auto;
+    padding: 10px 0;
+    font-family: 'Inter', sans-serif;
+    font-weight:400;
+    font-size:16px;
+    line-height:19px;
+
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#MainContainer>h1 {
+    text-align: center;
+    margin: 20px 30px 30px;
+    font-size: 1.8rem;
+}
+
+#MainContainer img {
+    display: block;
+    max-width: 100%;
+    margin: auto;
+}
+
+#MainContainer img[title="promoters"] {
+    display: block;
+    width: 200px;
+}
+
+
+#MainContainer h2 {
+    margin: 30px 0 10px;
+    text-decoration: underline;
+    font-weight: 700;
+    font-size: x-large;
+}
+
+#MainContainer h3 {
+    margin-top: 20px;
+}
+
+#MainContainer p {
+    text-align: justify;
+    margin-bottom: 20px;
+}
+
+#MainContainer table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+#MainContainer th,
+#MainContainer td {
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 1px solid #627b8e;
+}
+
+#MainContainer ol {
+    margin: 10px 20px 0;
+    font-weight: bold;
+}
+
+#MainContainer ul {
+    margin: 10px 30px 0;
+}
+
+
+#notLoggedinDiv {
+    margin: 14vh auto auto;
+    width: 50%;
+    text-align: center;
+}
+
+#notLoggedinDiv>button {
+    padding: 10px 30px;
+    margin-top: 15px;
+    background-color: #fb8135;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#notLoggedinDiv>button:hover {
+    background-color: #fe8d47;
+}
+
+#educationAd {
+    background-color: #cee3fa;
+    margin: 40px 0;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+#educationAd>h3 {
+    padding-bottom: 10px;
+    margin: 0;
+    text-align: center;
+}
+
+#educationAd a {
+    text-decoration: none;
+}
+
+#educationAd button {
+    display: block;
+    margin: 0 auto;
+    border: none;
+    background-color: #faeddd;
+    width: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: medium;
+    cursor: pointer;
+}
+
+#educationAd button:hover {
+    background-color: #ffecd3;
+}
+
+/* Responsiveness for tablet view */
+@media only screen and (max-width : 920px) {
+    #MainContainer {
+        width: 70%;
+        margin: 70px auto 50px;
+    }
+
+    #MainContainer table {
+        width: 100%;
+        margin-bottom: 40px;
+        overflow-x: auto;
+        display: block;
+    }
+
+    #notLoggedinDiv {
+        margin: 100px auto auto;
+    }
+}
+
+/* Responsiveness for mobile view */
+@media only screen and (max-width : 440px) {
+    #MainContainer {
+        width: 90%;
+        padding: 10px 0;
+        margin: 50px auto 40px;
+    }
+
+    #MainContainer>h1 {
+        margin: 20px 0;
+        font-size: 1.5rem;
+    }
+
+    #MainContainer h2 {
+        margin: 20px 0 10px;
+        font-size: larger;
+    }
+
+    #MainContainer h3 {
+        font-size: medium;
+    }
+
+    #MainContainer strong,
+    #MainContainer ol {
+        font-weight: 600;
+    }
+
+    #notLoggedinDiv {
+        margin: 100px auto auto;
+        width: 95%;
+    }
+}

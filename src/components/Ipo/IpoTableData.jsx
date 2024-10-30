@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import moment from "moment";
 import {
   Table,
   TableBody,
@@ -15,7 +16,8 @@ import {
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { colors } from "../Constants/colors";
 import styled from "@emotion/styled";
-
+import Link from "next/link";
+import NoData from "../NoData/NoData";
 
 
 const StyledTableCell = styled(TableCell)`
@@ -43,11 +45,11 @@ const HeaderTextWrapper = styled("div")`
 
 const StyledArrowUpwardIcon = styled(ArrowUpwardIcon)`
   && {
-    font-size: 18px; // Decrease the icon size
-    color: ${colors.navyBlue500}; // Ensure the icon color does not change
-    margin-left: 8px; // Space between text and icon
-    opacity: 0; // Hide the icon by default
-    transition: opacity 0.3s; // Smooth transition for showing/hiding
+    font-size: 18px; 
+    color: ${colors.navyBlue500}; 
+    margin-left: 8px; 
+    opacity: 0; 
+    transition: opacity 0.3s; 
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
   }
 `;
@@ -86,133 +88,99 @@ const headerData = [
   "LY Sales Growth",
   "Article",
 ];
-const data = [
-  {
-    opening_date: "7th Oct 23",
-    company_name: "Plada Infotech Services Pvt. Ltd. ",
-    sector: "Plastics",
-    industry: "Plastic Products",
-    closing_date: "8th Oct 23",
-    listing_date: "9th Oct 23",
-    offer_price_pe: "45.5x",
-    ly_sales_growth: "154%",
-  },
-  {
-    opening_date: "7th Oct 23",
-    company_name: "Maitreya Medicare Ltd. ",
-    sector: "Entertainment",
-    industry: "Software",
-    closing_date: "8th Oct 23",
-    listing_date: "9th Oct 23",
-    offer_price_pe: "45.5x",
-    ly_sales_growth: "154%",
-  },
-  {
-    opening_date: "7th Oct 23",
-    company_name: "On Door Concepts Ltd.",
-    sector: "Technology",
-    industry: "Electronics",
-    closing_date: "8th Oct 23",
-    listing_date: "9th Oct 23",
-    offer_price_pe: "45.5x",
-    offer_price_pe: "45.5x",
-    ly_sales_growth: "154%",
-  },
-  {
-    opening_date: "7th Oct 23",
-    company_name: "Plada Infotech Services Pvt. Ltd.",
-    sector: "Chemicals",
-    industry: "Fertilisers and Agrochem.",
-    closing_date: "8th Oct 23",
-    listing_date: "9th Oct 23",
-    offer_price_pe: "45.5x",
-    offer_price_pe: "45.5x",
-    ly_sales_growth: "154%",
-  },
-];
 
-const IpoTableData = () => {
+
+const IpoTableData = ({data}) => {
   return (
+   
      <Container>
-      <Box
-        sx={{
-          paddingX: 2,
-          marginTop: 3,
-          marginBottom: "200px",
-          border: `1px solid ${colors.neutral600}`,
-          borderRadius: 1,
-        }}
-      >
-        <TableContainer
-          component={Paper}
-          elevation={0}
-          sx={{ boxShadow: "none", paddingY: 0 }}
-        >
-          <Table sx={{ borderCollapse: "separate" }}>
-            <TableHead>
-              <TableRow
-                sx={{
-                  "& th": { borderBottom: "none" }, 
-                }}
-              >
-                {headerData.map((header_name, index) => {
-                  return (
-                    <>
-                      <StyledTableCell key={index}>
-                        <HeaderTextWrapper>
-                          {header_name}
-                          <StyledArrowUpwardIcon className="arrow-icon" />
-                        </HeaderTextWrapper>
-                      </StyledTableCell>
-                    </>
-                  );
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((row, index) => (
-                <TableRow
-                  key={index}
-                  sx={{
-                    "& td": {
-                      paddingX: 2,
-                      borderBottom: `1px solid ${colors.neutral700}`,
-                    },
-                    "&:last-child td": { borderBottom: "none" },
-                  }}
-                >
-                  <StyledBodyTableCell sx={{ color: colors.navyBlue500 }}>
-                    {row.company_name}
-                  </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                    {row.industry}
-                  </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                    {row.opening_date}
-                  </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                    {row.closing_date}
-                  </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                    {row.listing_date}
-                  </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                    {row.offer_price_pe}
-                  </StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                    {row.ly_sales_growth}
-                  </StyledBodyTableCell>
-                  <StyledBodyTableCell>
-                    <StyledButton variant="outlined" size="small">
-                      Read
-                    </StyledButton>
-                  </StyledBodyTableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+      {
+         data.length== 0 ?  <NoData text="No data available" />
+         :
+         <Box
+         sx={{
+           paddingX: 2,
+           marginTop: 3,
+           marginBottom: "200px",
+           border: `1px solid ${colors.neutral600}`,
+           borderRadius: 1,
+         }}
+       >
+         <TableContainer
+           component={Paper}
+           elevation={0}
+           sx={{ boxShadow: "none", paddingY: 0 }}
+         >
+           <Table sx={{ borderCollapse: "separate" }}>
+             <TableHead>
+               <TableRow
+                 sx={{
+                   "& th": { borderBottom: "none" }, 
+                 }}
+               >
+                 {headerData.map((header_name, index) => {
+                   return (
+                     <>
+                       <StyledTableCell key={index}>
+                         <HeaderTextWrapper>
+                           {header_name}
+                        
+                         </HeaderTextWrapper>
+                       </StyledTableCell>
+                     </>
+                   );
+                 })}
+               </TableRow>
+             </TableHead>
+             <TableBody>
+               {data.map((row, index) => (
+                 <TableRow
+                   key={index}
+                   sx={{
+                     "& td": {
+                       paddingX: 2,
+                       borderBottom: `1px solid ${colors.neutral700}`,
+                     },
+                     "&:last-child td": { borderBottom: "none" },
+                   }}
+                 >
+                   <StyledBodyTableCell sx={{ color: colors.navyBlue500 }}>
+                   {row.company_Id?.company_name}
+                   </StyledBodyTableCell>
+                   <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
+                   {row.company_Id?.industry}
+                   </StyledBodyTableCell>
+                   <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
+                   {moment(row.opening_date).format("Do MMM YY")}
+                   </StyledBodyTableCell>
+                   <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
+                   {moment(row.closing_date).format("Do MMM YY")}
+                   </StyledBodyTableCell>
+                   <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
+                   {moment(row.listing_date).format("Do MMM YY")}
+                   </StyledBodyTableCell>
+                   <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
+                   {row.company_Id?.offer_price_ttm_pe ? `${row.company_Id?.offer_price_ttm_pe}x` : "NA"}
+                   </StyledBodyTableCell>
+                   <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
+                   {row.company_Id?.revenue_growth ? `${row.company_Id?.revenue_growth}%` : "NA"}
+                   </StyledBodyTableCell>
+                   <StyledBodyTableCell>
+                     <Link target="_blank" href={decodeURIComponent(`/ipo-zone/${(row.slug)}`)}>
+                    
+                     <StyledButton variant="outlined" size="small">
+                       Read
+                     </StyledButton>
+                     </Link>
+                   </StyledBodyTableCell>
+                 </TableRow>
+               ))}
+             </TableBody>
+           </Table>
+         </TableContainer>
+       </Box>
+      }
+     
       </Container>
    
   );

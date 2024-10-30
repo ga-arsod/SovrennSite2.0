@@ -11,7 +11,8 @@ import sortingReducer from "./Slices/sortingSlice"
 import timesReducer from "./Slices/timesSlice"
 import primeReducer from "./Slices/primeSlice"
 import ipoReducer from "./Slices/ipoSlice"
-
+import commentsReducer from "./Slices/commentsSlice"
+import selfHelpReducer from "./Slices/selfHelpSlice"
 // Configuration for redux-persist
 const persistConfig = {
   key: 'root', 
@@ -28,6 +29,9 @@ const rootReducer = combineReducers({
   sorting: sortingReducer,
   times:timesReducer,
   prime:primeReducer,
+  ipo:ipoReducer,
+  comments:commentsReducer,
+  selfHelp:selfHelpReducer,
 });
 
 

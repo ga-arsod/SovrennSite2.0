@@ -75,10 +75,10 @@ const ipoSlice = createSlice({
       state.isIpoCompaniesListLoading = true;
     });
     builder.addCase(ipoCompaniesListApi.fulfilled, (state, action) => {
-      state.isIpoCompaniesListLoading = action.payload.list;
+      state.ipoCompaniesList = action.payload.list;
       state.isIpoCompaniesListLoading = false;
     });
-    builder.addCase(primeCompaniesListApi.rejected, (state, action) => {
+    builder.addCase(ipoCompaniesListApi.rejected, (state, action) => {
       state.isError = true;
       state.isIpoCompaniesListLoading = false;
     });

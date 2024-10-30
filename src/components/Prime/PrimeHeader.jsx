@@ -35,6 +35,9 @@ const StyledButton = styled(Button)`
     background-color: ${colors.navyBlue200};
     color: white;
     border-color: ${colors.navyBlue200};
+     & .MuiSvgIcon-root {
+      color: white; 
+    }
   }
 `;
 
