@@ -300,9 +300,9 @@ console.log(isAuth,"isAuth")
       >
          <Box
     sx={{
-      maxWidth: "1900px", // Set your desired maxWidth here
+      maxWidth: "1900px", 
       width: "100%",
-      margin: "0 auto", // Centers the toolbar horizontally
+      margin: "0 auto",
     }}
   >
         <Toolbar>
