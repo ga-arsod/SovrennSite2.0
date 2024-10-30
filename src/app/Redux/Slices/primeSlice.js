@@ -6,17 +6,18 @@ const initialState = {
   promoterFilter:[],
   primeFilter:[],
   isError:false,
+  comments:[],
  isPrimeFilterOpen:false,
  isPromoterFilterOpen:false,
   primeCompaniesList:[],
   promoterCompaniesList:[],
   isPrimeCompanyListLoading:false,
-  primeArticle:null,
-  promoterArticle:null,
+ articleData:null,
   isPrimeArticleLoading:false,
   isPromoterArticleLoading:false,
   isPromoterCompanyListLoading:false,
   company_name:"",
+  isCommentsDataLoading:false,
 };
 
 export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
@@ -100,6 +101,10 @@ export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
     }
   );
 
+ 
+
+ 
+
 const primeSlice = createSlice({
   name: 'prime',
   initialState,
@@ -156,7 +161,7 @@ const primeSlice = createSlice({
      });
     builder.addCase(primeArticleApi.fulfilled, (state, action) => {
     
-       state.primeArticle = action.payload.data;
+       state.articleData = action.payload.data;
        state.company_name=action.payload.data.company_Id.company_name
        state.isPrimeArticleLoading=false;
      });
@@ -173,9 +178,9 @@ const primeSlice = createSlice({
      });
     builder.addCase(promoterArticleApi.fulfilled, (state, action) => {
     
-       state.promoterArticle = action.payload.data;
+       state.articleData = action.payload.data;
        state.company_name=action.payload.data.company_Id.company_name
-       state.isPrimeArticleLoading=false;
+       state.isPromoterArticleLoading=false;
      });
      builder.addCase(promoterArticleApi.rejected, (state, action) => {
       
@@ -198,7 +203,11 @@ const primeSlice = createSlice({
            state.isError = true;
            state.isPromoterCompanyListLoading=false;
          });
+
+    
+    
   }
+
 });
 
 export const { togglePrimeFilter,togglePromoterFilter} = primeSlice.actions;

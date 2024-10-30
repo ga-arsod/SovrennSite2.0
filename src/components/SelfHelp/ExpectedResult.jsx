@@ -4,6 +4,11 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import styled from "@emotion/styled";
 import { colors } from '../Constants/colors';
 import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
+import { useSelector } from 'react-redux';
+import { validateWatchlist } from '@/app/Redux/Slices/selfHelpSlice';
+import { useDispatch } from 'react-redux';
+import { addToWatchlistApi } from '@/app/Redux/Slices/discoverySlice';
+import { setSnackStatus } from '@/app/Redux/Slices/snackbarSlice';
 
 // Custom Tooltip
 const CustomTooltip = styled(({ className, ...props }) => (
@@ -65,13 +70,40 @@ const StyledButton = styled(Button)(({ toggled }) => ({
   },
 }));
 
-const ExpectedResult = () => {
+const ExpectedResult = (company_id) => {
+  const dispatch=useDispatch();
   const [toggled, setToggled] = useState(false);
+  const {selfHelpCalculatedData,uptrend_potential,expected_price_after_1year} = useSelector(
+    (store) => store.selfHelp
+  );
 
-  const handleToggle = () => {
-    setToggled(!toggled);
+  const handleChange = () => {
+    if (!company_id.company_id) {
+     
+      dispatch(
+        setSnackStatus({
+          status: true,
+          severity: "error",
+          message: "Please select the company.",
+        })
+      );
+      return;
   };
 
+  if (!uptrend_potential || !expected_price_after_1year) {
+    dispatch(
+      setSnackStatus({
+        status: true,
+        severity: "error",
+        message: "Uptrend Potential and Expected Price should not be 0.",
+      })
+    );
+    
+      return;
+  };
+  dispatch(addToWatchlistApi({company_id:company_id.company_id,uptrend_potential:uptrend_potential,expected_price_after_1year:expected_price_after_1year}))
+  };
+console.log(company_id.company_id,"id")
   return (
     <Grid container justifyContent="center" sx={{ overflowX: 'hidden' }}>
       <Box
@@ -91,19 +123,13 @@ const ExpectedResult = () => {
         </StyledTypography1>
 
         <Grid container spacing={1.5} marginTop={6} direction={{xs:'column',sm:'row'}}>
-          {[
-            { label: 'Expected 1 Year Forward Sales', value: '12Cr' },
-            { label: 'Expected 1 Year Forward Net Profit', value: '12Cr' },
-            { label: 'Expected 1 Year Forward Market Cap', value: '12Cr' },
-            { label: 'Upside Potential', value: '70%' },
-            { label: 'Expected Price After 1 Year', value: '12Cr' },
-          ].map((item, index) => (
+          {selfHelpCalculatedData.map((item, index) => (
             <React.Fragment key={index}>
               <Grid item xs={9} sx={{ overflow: 'hidden' }}>
                 <StyledTypography2>
-                  {item.label}
+                  {`${item.heading}:`}
                   <CustomTooltip
-                    title={`This is the ${item.label.toLowerCase()}`}
+                    title={item.formula}
                     placement="right"
                     arrow
                   >
@@ -126,7 +152,7 @@ const ExpectedResult = () => {
               </Grid>
               <Grid item xs={3} textAlign={{xs:"left",sm:"right"}} sx={{ overflow: 'hidden' }}>
                 <StyledTypography3>
-                  {item.value}
+               <span>{item.currency}</span><span>{item.value ? item.value : 0}</span>{item.amount_in}
                 </StyledTypography3>
               </Grid>
             </React.Fragment>
@@ -138,9 +164,9 @@ const ExpectedResult = () => {
             variant="contained"
             startIcon={<TurnedInNotIcon />}
             toggled={toggled}
-            onClick={handleToggle}
+            onClick={handleChange}
           >
-            {toggled ? 'Remove from Watchlist' : 'Add to Watchlist'}
+            {'Add to Watchlist'}
           </StyledButton>
         </Box>
       </Box>

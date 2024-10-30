@@ -25,14 +25,29 @@ const StyledChip = styled(Chip)`
   `}
 `;
 
-const chipsArray = ["Large Order", "Preferential", "Uptrend", "Capacity Expansion"];
+const chipsArray = [{
+  name:"Large Order",
+  label:"large_order"
+},{
+  name:"Preferential",
+  label:"referential"
+},
+{
+  name:"Uptrend",
+  label:"uptrend"
+}, 
+{
+  name:"Capacity Expansion",
+  label:"capacity_expansion"
+},
+];
 
 const SelfHelpChips = ({ onChipSelect, selectedChip }) => {
   const [selectedChipComp, setSelectedChipComp] = useState(selectedChip);
 
   const handleChipClick = (chip) => {
-    setSelectedChipComp(chip);
-    onChipSelect(chip); 
+    setSelectedChipComp(chip.name);
+    onChipSelect(chip.name); 
   };
 
   return (
@@ -48,10 +63,10 @@ const SelfHelpChips = ({ onChipSelect, selectedChip }) => {
       {chipsArray.map((item, index) => (
         <StyledChip
           key={index}
-          label={item}
+          label={item.name}
           variant="outlined"
           onClick={() => handleChipClick(item)}
-          selected={selectedChipComp === item}
+          selected={selectedChipComp ==item.name}
         />
       ))}
     </Box>

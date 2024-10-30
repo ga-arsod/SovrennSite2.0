@@ -7,7 +7,7 @@ const initialState = {
   isMyBucketsLoading: false,
   isTableDataLoading: false,
   isNestedBucketTableDataLoading:false,
-  isCommentsDataLoading:false,
+ 
   isArticleDataLoading: false,
   isParentsBucketLoading:false,
   isCreateBucketModalOpen:false,
@@ -17,7 +17,7 @@ const initialState = {
   myBuckets: [],
   parentsBucket:[],
   isBookmarked: false,
-  comments: null,
+ 
   otherBucketsCompanyPresent: [],
   discoveryTableBucket: [],
   nestedBucketDiscoveryTableBucket:[],
@@ -263,7 +263,7 @@ export const isBookmarkedApi = createAsyncThunk(
 
 export const addToWatchlistApi = createAsyncThunk(
   "addToWatchlistApi",
-  async (company_id, { dispatch }) => {
+  async ({company_id,uptrend_potential,expected_price_after_1year}, { dispatch }) => {
     const response = await fetch(`${url}/user/add-to-watchlist`, {
       method: "PATCH",
       headers: {
@@ -272,8 +272,8 @@ export const addToWatchlistApi = createAsyncThunk(
       },
       body: JSON.stringify({
         company_id: company_id,
-        uptrend_potential: 0,
-        expected_price_after_1year: 0,
+        uptrend_potential: uptrend_potential,
+        expected_price_after_1year: expected_price_after_1year,
       }),
     });
     const result = await response.json();
@@ -284,6 +284,15 @@ export const addToWatchlistApi = createAsyncThunk(
           status: true,
           severity: "success",
           message: "The company added to your watchlist successfully!",
+        })
+      );
+    }
+    else{
+      dispatch(
+        setSnackStatus({
+          status: true,
+          severity: "warning",
+          message: result.message,
         })
       );
     }
@@ -323,133 +332,7 @@ export const removeFromWatchlistApi = createAsyncThunk(
 
 
 
-export const getCommentsApi = createAsyncThunk(
-  "getCommentsApi",
-  async ({ company_id }) => {
-    const response = await fetch(
-      `${url}/comments/discovery/${company_id}?page=1&page_size=100&sort_by=latest`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-          "Content-Type": "application/json",
-        },
-      }
-    );
 
-    return response.json();
-  }
-);
-
-export const postCommentApi = createAsyncThunk("postCommentApi", async ({comment,company_id,user_id},{dispatch}) => {
-  const response = await fetch(`${url}/comments`, {
-    method: "POST",
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(
-      {
-        "comment": comment,
-      "company_id": company_id,
-      "user_id":user_id
-}
-    ),
-  });
-
-  const result = await response.json();
-
-  if (response.ok) {
-    dispatch(getCommentsApi({company_id:company_id}));
-    dispatch(setSnackStatus({
-      status: true,
-       severity: "success",
-      message: "Added new comment",
-     
-    }));
-  };
-
-  return result;
-});
-
-export const commentLikeApi = createAsyncThunk(
-  "commentLikeApi",
-  async ({ company_id, comment_id }, { dispatch }) => {
-    const response = await fetch(
-      `${url}/comments/${comment_id}/like`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-          "Content-Type": "application/json",
-        },
-        body: "",
-      }
-    );
-    const result = await response.json();
-
-    if (response.ok) {
-      dispatch(getCommentsApi({company_id}));
-      
-    }
-
-    return result;
-  }
-);
-
-export const commentunLikeApi = createAsyncThunk(
-  "commentunLikeApi",
-  async ({ company_id, comment_id }, { dispatch }) => {
-    const response = await fetch(
-      `${url}/comments/${comment_id}/like`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-          "Content-Type": "text/plain",
-        },
-      }
-    );
-    if (response.ok) {
-      dispatch(getCommentsApi({company_id}));
-      
-    }
-
-    return response.json();
-  }
-);
-
-
-
-    export const commentDeleteApi = createAsyncThunk(
-      "commentDeleteApi",
-      async ({company_id,  comment_id },{dispatch}) => {
-        const response = await fetch(
-          `${url}/comments/${comment_id}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const result = await response.json();
-    
-        if (response.ok) {
-          dispatch(getCommentsApi({company_id}));
-          dispatch(
-            setSnackStatus({
-              status: true,
-              severity: "warning",
-              message: "Comment deleted",
-            })
-          );
-        }
-    
-      return result;
-      }
-    );
     
     export const getParentsBucketApi = createAsyncThunk(
       "getParentsBucketApi",
@@ -556,12 +439,7 @@ const discoverySlice = createSlice({
       state.isLoading = false;
     });
 
-    // Comment delete Api
     
-    builder.addCase(commentDeleteApi.rejected, (state, action) => {
-      state.isError = true;
-      
-    });
 
     // Get Discovery Table Data Api
     builder.addCase(discoveryTableApi.pending, (state, action) => {
@@ -650,21 +528,7 @@ const discoverySlice = createSlice({
     builder.addCase(isBookmarkedApi.rejected, (state, action) => {
       state.isError = true;
     });
-     // Comment Like Api
-     builder.addCase(commentLikeApi.fulfilled, (state, action) => {
-      state.isBookmarked = action.payload;
-    });
     
-    builder.addCase(commentLikeApi.rejected, (state, action) => {
-      state.isError = true;
-    });
-
-    // Comment unlike Api
-
-   
-    builder.addCase(commentunLikeApi.rejected, (state, action) => {
-      state.isError = true;
-    });
     // Add to watchlist Api
 
     builder.addCase(addToWatchlistApi.fulfilled, (state, action) => {
@@ -683,20 +547,7 @@ const discoverySlice = createSlice({
       state.isError = true;
     });
 
-    // GET comments Api
-    builder.addCase(getCommentsApi.pending, (state, action) => {
-    
-      state.isCommentsDataLoading = true;
-    });
-    builder.addCase(getCommentsApi.fulfilled, (state, action) => {
-      state.isCommentsDataLoading = false;
-      state.comments = action.payload;
-    });
-    builder.addCase(getCommentsApi.rejected, (state, action) => {
-      state.isError = true;
-      state.isCommentsDataLoading = false;
-      
-    });
+   
 
     // Get Discovery Article Data Api
     builder.addCase(discoveryArticleApi.pending, (state, action) => {

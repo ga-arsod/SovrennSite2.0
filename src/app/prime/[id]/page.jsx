@@ -5,11 +5,18 @@ import { useParams, useSearchParams } from "next/navigation";
 import convertToHtml from "@/utils/convertToHtml";
 import styles from "../../../styles/PrimeArticle.module.css";
 import Link from "next/link";
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import { colors } from "@/components/Constants/colors";
 import { primeArticleApi, promoterArticleApi } from "@/app/Redux/Slices/primeSlice";
+import { getCommentsApi } from "@/app/Redux/Slices/commentsSlice";
 import styled from "@emotion/styled";
-import { Box, Typography, Tab, Tabs } from "@mui/material";
+import { Box, Typography, Tab, Tabs,Divider } from "@mui/material";
 import Head from "next/head";
+import Spinner from "@/components/Common/Spinner";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import Comments from "../../../components/Prime/Comments"
+import Snackbar from "../../../components/Snackbar/SnackBar"
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -20,6 +27,43 @@ const StyledTypography1 = styled(Typography)`
     font-size: 26px;
     line-height: 28px;
   }
+`;
+const StyledTypography2 = styled(Typography)`
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: -0.02em;
+`;
+const HoverBox = styled(Box)`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${colors.neutral500};
+  }
+`;
+
+const WatchlistBox = styled(HoverBox)`
+  color: ${({ isInWatchlist }) => (isInWatchlist ? colors.red500 : "inherit")};
+
+  & .MuiSvgIcon-root,
+  & .MuiTypography-root {
+    color: ${({ isInWatchlist }) =>
+      isInWatchlist ? colors.red500 : "inherit"};
+  }
+`;
+const CustomDivider1 = styled(Divider)`
+  background-color: ${colors.neutral600};
+  border-color: none;
+  border-bottom-width: 0px;
+  height: 1px;
+`;
+const CustomDivider2 = styled(Divider)`
+  background-color: ${colors.neutral500};
+  border-color: none;
+  border-bottom-width: 0px;
+  height: 1px;
 `;
 
 const CustomTabs = styled(Tabs)(({ theme }) => ({
@@ -68,12 +112,16 @@ const TabLabel = ({ text, isActive }) => {
 const PrimeArticles = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const [isCommentsModalOpen,setIsCommentsModalOpen]=useState(false)
   const searchParams = useSearchParams();
   const search = searchParams.get('s');
 
   const isPromoterInterviewActive = search === 'promoter_interview';
-  const { promoterArticle, primeArticle, company_name } = useSelector(
+  const { articleData, company_name,isPromoterArticleLoading,isPrimeArticleLoading } = useSelector(
     (store) => store.prime
+  );
+  const { comments} = useSelector(
+    (store) => store.comments
   );
 
   const [value, setValue] = useState(isPromoterInterviewActive ? 'two' : 'one');
@@ -112,15 +160,78 @@ const PrimeArticles = () => {
     window.scrollTo({ top: 0, behavior: "auto" });
   };
 
+  useEffect(()=>{
+    if(articleData)
+    dispatch(getCommentsApi({company_id:articleData._id, component:"prime"}))
+  },[articleData,dispatch])
+ 
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+        if (event.ctrlKey && (event.key === 'p' || event.key === 'P')) {
+            event.preventDefault();
+        }
+    };
+
+    const handleContextMenu = (event) => {
+        event.preventDefault();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('contextmenu', handleContextMenu);
+
+    return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('contextmenu', handleContextMenu);
+    };
+}, []);
+
+if (isPromoterArticleLoading && isPrimeArticleLoading) {
+  return (
+      <>
+          <Head>
+              <title>{company_name}</title>
+
+              <link
+                  rel="canonical"
+                  href={`https://www.sovrenn.com/prime/${id.replace('&amp;','&')}`}
+                  key="canonical"
+              />
+          </Head>
+          <Spinner margin={15} />
+          
+      </>
+  );
+};
+
   return (
     <>
-      <Head>
-        {/* <title>{title}</title> */}
-        {/* <link rel="canonical" href={`https://www.sovrenn.com/discovery/${id}/${slug}`} key="canonical" /> */}
-      </Head>
+       <Head>
+                <title>{company_name}</title>
+
+                <link
+                    rel="canonical"
+                    href={`https://www.sovrenn.com/prime/${id}`}
+                    key="canonical"
+                />
+            </Head>
       <article>
         <Box sx={{ maxWidth: 915, margin: "84px auto 0px auto", padding: 2 }}>
+        <Snackbar/> 
           <StyledTypography1>{company_name}</StyledTypography1>
+          <CustomDivider1 sx={{ marginTop: 3, marginBottom: 1 }} />
+          <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+           
+            <HoverBox
+              sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+              onClick={()=>{setIsCommentsModalOpen(true)}}
+            >
+              <ChatBubbleOutlineOutlinedIcon sx={{ marginRight: 1 }} />
+              <StyledTypography2>{`${comments?.totalComments === "0"? "No" :comments?.totalComments} Comments`}</StyledTypography2>
+            </HoverBox>
+            
+          </Box>
+          <CustomDivider1 sx={{ marginTop: 1 }} />
           <Box sx={{ width: '100%' }} marginTop="17px">
             <Box
               sx={{
@@ -182,15 +293,36 @@ const PrimeArticles = () => {
                 />
               </CustomTabs>
             </Box>
+            <Box
+          sx={{
+            position: "fixed",
+            bottom: 50,
+            right: 16,
+            width: 48,
+            height: 48,
+            borderRadius: "50%",
+            backgroundColor: "#CED6DC",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: 3,
+            cursor: "pointer",
+            display: showScroll ? "flex" : "none",
+          }}
+          onClick={scrollTop}
+        >
+          <KeyboardArrowUpIcon />
+        </Box>
           </Box>
 
-          {isPromoterInterviewActive ? (
-            <div id={styles.MainContainer}>{convertToHtml(promoterArticle?.content)}</div>
-          ) : (
-            <div id={styles.MainContainer}>{convertToHtml(primeArticle?.content)}</div>
-          )}
+          {
+           articleData ? <div id={styles.MainContainer}>{convertToHtml(articleData?.content)}</div>
+         
+           : <></>
+          }
         </Box>
       </article>
+      <Comments  isCommentsModalOpen={isCommentsModalOpen} setIsCommentsModalOpen={setIsCommentsModalOpen} comments={comments} company_id={articleData._id } component="prime"/>
     </>
   );
 };

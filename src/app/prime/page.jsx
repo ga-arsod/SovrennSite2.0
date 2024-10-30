@@ -12,7 +12,7 @@ import {Grid,Button,Typography} from '@mui/material';
 import styled from "@emotion/styled";
 import { colors } from '@/components/Constants/colors'
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-
+import Head from 'next/head'
 import { Container } from '@mui/material'
 import { primeCompaniesListApi,promoterCompaniesListApi ,togglePrimeFilter,togglePromoterFilter,primeFilterApi,promoterFilterApi} from '../Redux/Slices/primeSlice'
 import { useDispatch } from 'react-redux'
@@ -69,6 +69,19 @@ const Prime = () => {
 
   return (
    <>
+    <Head>
+                <title>Understand The Role of a Prime in Stock Market</title>
+                <meta name="description" content="Upgrade your stock portfolio with Sovrenn prime stock. Get the latest insights and trends from Sovrenn. Invest with confidence today!" />
+
+                <meta property="og:title" content="Understand The Role of a Prime in Stock Market" />
+                <meta property="og:description" content="Upgrade your stock portfolio with Sovrenn prime stock. Get the latest insights and trends from Sovrenn. Invest with confidence today!" />
+
+                <link
+                    rel="canonical"
+                    href="https://www.sovrenn.com/prime"
+                    key="canonical"
+                />
+            </Head>
    <Container>
     <PrimeHeading setActiveTab={setActiveTab}/> 
     <Grid

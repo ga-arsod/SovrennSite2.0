@@ -281,13 +281,13 @@ export const fieldOptions = {
       {
         label: "Market Cap (In Crores)",
         type: "number",
-        name: "market_cap",
+        name: "current_market_cap",
         placeholder: "Enter only digits",
       },
       {
         label: "Share Price",
         type: "number",
-        name: "share_price",
+        name: "current_share_price",
         placeholder: "Enter only digits",
       },
       {
@@ -299,7 +299,7 @@ export const fieldOptions = {
       {
         label: "TTM Net Profit (In Crores)",
         type: "number",
-        name: "ttm_profit",
+        name: "ttm_net_profit",
         placeholder: "Enter only digits",
       },
     ],
@@ -307,7 +307,7 @@ export const fieldOptions = {
       {
         label: "Current Orderbook (In Crores)",
         type: "number",
-        name: "orderbook",
+        name: "current_orderbook",
         placeholder: "Enter only digits",
       },
       {
@@ -319,7 +319,7 @@ export const fieldOptions = {
       {
         label: "Fair PE (X)",
         type: "number",
-        name: "pe",
+        name:  "fair_pe",
         placeholder: "Enter only digits",
       },
     ],
@@ -329,31 +329,37 @@ export const fieldOptions = {
       {
         label: "Company Name",
         type: "text",
+        name:"company_name",
         placeholder: "Search for a company",
       },
       {
         label: "Market Cap (In Crores)",
         type: "number",
+        name: "current_market_cap",
         placeholder: "Enter only digits",
       },
       {
         label: "Share Price",
         type: "number",
+        name:"current_share_price",
         placeholder: "Enter only digits",
       },
       {
         label: "TTM Sales (In Crores)",
         type: "number",
+        name: "ttm_sales",
         placeholder: "Enter only digits",
       },
       {
         label: "TTM Net Profit (In Crores)",
         type: "number",
+        name:" ttm_net_profit",
         placeholder: "Enter only digits",
       },
       {
         label: "Fixed Asset Turnover (X)",
         type: "number",
+        name:"fixed_asset_turnover",
         placeholder: "Enter only digits",
       },
     ],
@@ -361,7 +367,7 @@ export const fieldOptions = {
       {
         label: "Preferential Number of Shares/Warrants",
         type: "number",
-        name: "preferential_shares",
+        name: "pref_no_of_shares",
         placeholder: "Enter only digits",
       },
       {
@@ -373,15 +379,16 @@ export const fieldOptions = {
       {
         label:
           "Percent Utilization of Raised Capital Towards Creation of Revenue Generating Asset (%)",
-        name: "utiliation_revenue",
+        name: " utilization_of_raised_capital",
         type: "number",
         placeholder: "Enter only digits",
       },
       {
         label: "Fair PE (X)",
         type: "number",
+        name:"fair_pe",
         placeholder: "Enter only digits",
-        name: "pe",
+       
       },
     ],
   },
@@ -391,6 +398,7 @@ export const fieldOptions = {
         label: "Company Name",
         type: "text",
         name: "company_name",
+       
         placeholder: "Search for a company",
       },
       {
@@ -402,7 +410,7 @@ export const fieldOptions = {
       {
         label: "Share Price",
         type: "number",
-        name: "share_price",
+        name: "current_share_price",
         placeholder: "Enter only digits",
       },
       {
@@ -414,7 +422,7 @@ export const fieldOptions = {
       {
         label: "TTM Net Profit (In Crores)",
         type: "number",
-        name: "ttm_profit",
+        name: "ttm_net_profit",
         placeholder: "Enter only digits",
       },
     ],
@@ -422,7 +430,7 @@ export const fieldOptions = {
       {
         label: "Last Quarter Profit (In Crores)",
         type: "number",
-        name: "orderbook",
+        name: "current_orderbook",
         placeholder: "Enter only digits",
       },
       {
@@ -434,7 +442,7 @@ export const fieldOptions = {
       {
         label: "Fair PE (X)",
         type: "number",
-        name: "pe",
+        name: "fair_pe",
         placeholder: "Enter only digits",
       },
     ],
@@ -456,7 +464,7 @@ export const fieldOptions = {
       {
         label: "Share Price",
         type: "number",
-        name: "share_price",
+        name: "current_share_price",
         placeholder: "Enter only digits",
       },
       {
@@ -476,14 +484,14 @@ export const fieldOptions = {
       {
         label: "Percent Increase In Capacity (%)",
         type: "number",
-        name: "capacity_percent",
+        name: "percent_increase_in_capacity",
         placeholder: "Enter only digits",
       },
 
       {
         label: "Fair PE (X)",
         type: "number",
-        name: "pe",
+        name: "fair_pe",
         placeholder: "Enter only digits",
       },
     ],
