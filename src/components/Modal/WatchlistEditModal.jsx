@@ -1,9 +1,12 @@
 "use client";
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Button, IconButton, Modal, Grid } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import styled from '@emotion/styled';
 import { colors } from '../Constants/colors';
+import { toggleEditModal } from '@/app/Redux/Slices/watchlistSlice';
+import { useDispatch } from 'react-redux';
+import { editWatchlistApi } from '@/app/Redux/Slices/watchlistSlice';
 
 const StyledTypography2 = styled(Typography)`
   font-size: 28px;
@@ -24,8 +27,8 @@ const StyledTextField = styled(TextField)`
 
   & .MuiInputBase-root {
     font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
+    font-size: 16px;
+    line-height: 19px;
     color:${colors.navyBlue900};
     border-radius: 8px;
   }
@@ -60,7 +63,7 @@ const StyledButton1 = styled(Button)`
   padding-bottom: 14px;
   text-transform: none;
   background-color: ${colors.white};
-  width: 100%; /* Added to make buttons take equal width */
+  width: 100%;
 
   :hover {
     background-color: ${colors.themeButtonHover};
@@ -80,7 +83,7 @@ const StyledButton2 = styled(Button)`
   padding-bottom: 14px;
   text-transform: none;
   background-color: ${colors.themeGreen};
-  width: 100%; /* Added to make buttons take equal width */
+  width: 100%;
 
   :hover {
     background-color: ${colors.themeButtonHover};
@@ -100,18 +103,31 @@ const StyledBox = styled(Box)`
   align-items: center;
   justify-content: center;
 `;
-const WatchlistEditModal = ({ isOpen,setIsOpen }) => {
-    const [uptrendPotential, setUptrendPotential] = useState('');
-    const [expectedPrice, setExpectedPrice] = useState('');
-    const [isSaveDisabled, setIsSaveDisabled] = useState(true);
-  
-    useEffect(() => {
-      setIsSaveDisabled(!(uptrendPotential && expectedPrice));
-    }, [uptrendPotential, expectedPrice]);
 
-const handleClosed=()=>{
-    setIsOpen(false);
-}
+const WatchlistEditModal = ({ isOpen, company }) => {
+  const [editedValues, setEditedValues] = useState({
+    uptrendPotential: '',
+    expectedPrice: ''
+  });
+  const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setIsSaveDisabled(!(editedValues.uptrendPotential && editedValues.expectedPrice));
+  }, [editedValues]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleClosed = () => {
+    dispatch(toggleEditModal());
+  };
+
   return (
     <Modal
       open={isOpen}
@@ -156,49 +172,49 @@ const handleClosed=()=>{
           >
             <Grid item paddingX={{ xs: 1, sm: 4 }}>
               <StyledTypography2>
-                Edit “KPI Green Energy Ltd.”
+                {`Edit “${company?.company_Id?.company_name}.”`}
               </StyledTypography2>
             </Grid>
             <Grid item width="100%">
               <Box component="form" noValidate autoComplete="off">
                 <Grid container alignItems="center" justifyContent='center' spacing={2} mb={2}>
                   <Grid item xs={4} >
-                    <StyledInputLabel htmlFor="uptrend_potential">Uptrend Potential:</StyledInputLabel>
+                    <StyledInputLabel htmlFor="uptrendPotential">Uptrend Potential:</StyledInputLabel>
                   </Grid>
                   <Grid item >
                     <StyledTextField
-                      placeholder="10%"
-                      id="uptrend_potential"
-                      name="uptrend_potential"
-                      value={uptrendPotential}
-                      onChange={(e) => setUptrendPotential(e.target.value)}
+                      placeholder={`${company?.uptrend_potential}%`}
+                      id="uptrendPotential"
+                      name="uptrendPotential"
+                      value={editedValues.uptrendPotential}
+                      onChange={handleChange}
                       required
                     />
                   </Grid>
                 </Grid>
                 <Grid container alignItems="center" justifyContent='center' spacing={2} mb={2}>
                   <Grid item xs={4} >
-                    <StyledInputLabel htmlFor="price">Expected Price:</StyledInputLabel>
+                    <StyledInputLabel htmlFor="expectedPrice">Expected Price:</StyledInputLabel>
                   </Grid>
                   <Grid item >
                     <StyledTextField
-                      placeholder="₹48"
-                      id="price"
-                      name="price"
-                      value={expectedPrice}
-                      onChange={(e) => setExpectedPrice(e.target.value)}
+                      placeholder={`₹${company?.expected_price_after_1year}`}
+                      id="expectedPrice"
+                      name="expectedPrice"
+                      value={editedValues.expectedPrice}
+                      onChange={handleChange}
                       required
                     />
                   </Grid>
                 </Grid>
                 <Grid container spacing={2} mt={3}>
                   <Grid item xs={6}>
-                    <StyledButton1 variant="outlined">
+                    <StyledButton1 variant="outlined" onClick={handleClosed}>
                       Cancel
                     </StyledButton1>
                   </Grid>
                   <Grid item xs={6}>
-                    <StyledButton2 variant="contained" disabled={isSaveDisabled}>
+                    <StyledButton2 variant="contained" disabled={isSaveDisabled} onClick={()=>{dispatch(editWatchlistApi({id:company?.company_Id._id,editedValues:editedValues}))}}>
                       Save
                     </StyledButton2>
                   </Grid>

@@ -94,15 +94,7 @@ const Login = ({ component, handleClose }) => {
   }, []);
 
  
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedToken = localStorage.getItem("token");
-      if (storedToken) {
-       
-        dispatch(loginSuccess({ token: storedToken }));
-      }
-    }
-  }, [dispatch]);
+  
 
   const handleChange = (prop) => (event) => {
     formInputChange(event);
