@@ -15,11 +15,12 @@ import {
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { colors } from '../Constants/colors';
 import styled from "@emotion/styled";
-
+import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-
+import { useDispatch } from 'react-redux';
+import { toggleEditModal } from '@/app/Redux/Slices/watchlistSlice';
 
 // Define styled components for table cells
 const StyledTableCell = styled(TableCell)`
@@ -113,8 +114,10 @@ const StyledButton2 = styled(Button)`
 
 
 
-const WatchlistTable = () => {
+const WatchlistTable = ({data,setCompanyData}) => {
   const router=useRouter();
+  const dispatch=useDispatch()
+
   return (
   
       <Box sx={{ paddingX: 2, marginTop: {xs:3,sm:5},marginBottom:"200px", border: `1px solid ${colors.neutral600}`, borderRadius: 1 }}>
@@ -129,32 +132,32 @@ const WatchlistTable = () => {
                 <StyledTableCell>
                   <HeaderTextWrapper>
                   Added On
-                    <StyledArrowUpwardIcon className="arrow-icon" />
+                   
                   </HeaderTextWrapper>
                 </StyledTableCell>
                 <StyledTableCell>
                   <HeaderTextWrapper>
                     Company Name
-                    <StyledArrowUpwardIcon className="arrow-icon" />
+                  
                   </HeaderTextWrapper>
                 </StyledTableCell>
                 <StyledTableCell>
                   <HeaderTextWrapper>
                   Uptrend Potential
-                    <StyledArrowUpwardIcon className="arrow-icon" />
+                    
                   </HeaderTextWrapper>
                 </StyledTableCell>
                 <StyledTableCell>
                   <HeaderTextWrapper>
                   Expected Price
-                    <StyledArrowUpwardIcon className="arrow-icon" />
+                   
                   </HeaderTextWrapper>
                 </StyledTableCell>
                 <StyledTableCell></StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {Array.from("abcdefgh").map(( index) => (
+              {data?.map(( ele,index) => (
                 <TableRow
                   key={index}
                   sx={{
@@ -162,13 +165,17 @@ const WatchlistTable = () => {
                     '&:last-child td': { borderBottom: 'none' }, 
                   }}
                 >
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>7th Oct 23</StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.navyBlue500 }}>KPI Green Energy Ltd.</StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>13%</StyledBodyTableCell>
-                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>₹48</StyledBodyTableCell>
+                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>{moment(ele.createdAt).format("Do MMM YY")}</StyledBodyTableCell>
+                  <StyledBodyTableCell sx={{ color: colors.navyBlue500 }}>{ele.company_Id.company_name}</StyledBodyTableCell>
+                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>{`${ele.uptrend_potential}%`}</StyledBodyTableCell>
+                  <StyledBodyTableCell sx={{ color: colors.neutral900 }}>{`₹${ele.expected_price_after_1year}`}</StyledBodyTableCell>
                   <StyledBodyTableCell>
                     <Grid container flexDirection="column" gap={1}>
                   <StyledButton1  
+                  onClick={()=>{
+                    dispatch(toggleEditModal())
+                    setCompanyData(ele)
+                  }}
                         variant="outlined" startIcon={<StyledEditIcon />} size="small">
                      Edit
                     </StyledButton1>

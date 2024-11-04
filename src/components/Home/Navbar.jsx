@@ -14,9 +14,7 @@ import {
   Drawer,
   Menu,
   MenuItem,
-  Divider,
-  Autocomplete,
-  InputAdornment,
+  
   TextField,
  
 } from "@mui/material";
@@ -26,7 +24,7 @@ import Image from "next/image";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import styled from "@emotion/styled";
 import SearchIcon from "@mui/icons-material/Search";
-
+import { usePathname } from "next/navigation";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -47,48 +45,9 @@ import { userDetailsApi } from "@/app/Redux/Slices/authSlice";
 import NavbarSearch from "../Home/NavbarSearch"
 import { googleLogin } from "@/app/Redux/Slices/authSlice";
 
-const StyledListItem = styled(ListItem)`
-  position: relative;
-  width: 100%;
 
-  &:not(:nth-of-type(1)) .MuiTypography-root {
-    color: #0d1726;
-  }
-  &:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100vw;
-    border-bottom: 1px solid ${colors.neutral500};
-  }
-`;
 
-const CustomTextField = styled(TextField)(({ theme }) => ({
-  "& .MuiOutlinedInput-root": {
-    padding: "8px 13px",
-    "@media (max-width: 639px)": {
-      padding: "5px 16px",
-    },
-    "&:hover .MuiOutlinedInput-notchedOutline": {
-      border: "none",
-    },
-    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-      border: "none",
-    },
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    border: "none",
-  },
-  "& .MuiInputBase-input": {
-    padding: "2px 12px",
-    fontSize: "12px",
-    color: "black",
-    "&::placeholder": {
-      fontSize: "12px",
-    },
-  },
-}));
+
 
 
 
@@ -143,11 +102,7 @@ const StyledButton1 = styled(Button)`
   text-transform: none;
 `;
 
-const SearchInput = styled(InputBase)`
-  color: black;
-  width: 100%;
-  padding: 4px 4px 4px 0;
-`;
+
 
 const StyledMenuItem = styled(MenuItem)`
   font-weight: 500;
@@ -237,6 +192,7 @@ const Navbar = ({ session }) => {
   const isGeaterThanSm = useMediaQuery(theme.breakpoints.up("sm"));
   const { isAuth, user } = useSelector((store) => store.auth);
   const router = useRouter();
+  const pathname=usePathname();
   const isXsOrSm = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -257,23 +213,22 @@ const Navbar = ({ session }) => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    setIsLoaded(true);
-    dispatch(userDetailsApi());
-    
-  }, [isAuth]);
-
+  useEffect(()=>{
+    setIsLoaded(true)
+    dispatch(userDetailsApi())
+  },[dispatch,isAuth,pathname])
  
-  useEffect(() => {
-   if(session)
-   {
+ 
+  // useEffect(() => {
+  //  if(session)
+  //  {
    
-      localStorage.setItem("token", session.accessToken);
+  //     localStorage.setItem("token", session.accessToken);
   
-    dispatch(googleLogin())
-   }
+  //   dispatch(googleLogin())
+  //  }
     
-  }, [session,dispatch]);
+  // }, [session,dispatch]);
 
   if (!isLoaded) return null;
 
@@ -286,7 +241,7 @@ const Navbar = ({ session }) => {
   const filteredNavItems = isGreaterThanMd ? navItems.slice(2) : navItems;
   
   
-console.log(isAuth,"isAuth")
+  console.log(isAuth,"isAuth")
   console.log(session,"session")
   return (
     <>

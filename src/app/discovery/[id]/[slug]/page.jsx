@@ -1,6 +1,6 @@
 "use client";
 import styled from "@emotion/styled";
-import { Box, Typography, Divider, Grid, Chip } from "@mui/material";
+import { Box, Typography, Divider, Grid, Chip, Container } from "@mui/material";
 
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import Comments from "../../../../components/Prime/Comments";
@@ -48,6 +48,11 @@ const StyledTypography3 = styled(Typography)`
 
   line-height: 19px;
   white-space: nowrap;
+   @media (max-width: 639px) {
+    font-size: 15px;
+    
+   
+  }
 `;
 const StyledLink = styled(Link)`
   color: ${colors.themeGreen};
@@ -453,7 +458,21 @@ const DiscoveryArticle = () => {
         </Box>
       </Box>
       <Box sx={{display:'flex',justifyContent:'center'}}>
-      <Disclaimer margin="4" text={primeArticleDisclaimer} width="915px" />
+        <Container>
+        <Grid container>
+          <Grid item
+           marginTop={0}
+           marginBottom={0}
+           sx={{ display: "flex", justifyContent: "center" }}
+          >
+             <Disclaimer margin="4" text={primeArticleDisclaimer}  />
+            </Grid>
+
+        </Grid>
+        </Container>
+       
+     
+     
       </Box>
       <Comments  isCommentsModalOpen={isCommentsModalOpen} setIsCommentsModalOpen={setIsCommentsModalOpen} comments={comments} company_id={company_id} component="discovery"/>
     </>
