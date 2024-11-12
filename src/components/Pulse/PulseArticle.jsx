@@ -119,11 +119,34 @@ const StyledTypography4 = styled(Typography)`
     line-height: 28px;
   }
 `;
+const StyledButton2 = styled(Button)`
+  color: white;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  padding: 8px 24px;
+ 
+  background-color: ${colors.themeGreen};
+  text-transform: none;
+
+ 
+  :hover {
+    background-color: ${colors.themeButtonHover};
+  }
+  @media (max-width: 700px) {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+`;
 
 const PulseArticle = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const { pulseArticleData } = useSelector((store) => store.pulse);
+  const [page,setPage]=useState(1);
+  const { pulseArticleData,pagination } = useSelector((store) => store.pulse);
   const [expanded, setExpanded] = useState({});
 
   useEffect(() => {
@@ -141,6 +164,15 @@ const PulseArticle = () => {
 
   const handleToggle = (date) => {
     setExpanded((prev) => ({ ...prev, [date]: !prev[date] }));
+  };
+
+  const setPaginate = () => {
+    setPage(page + 1);
+
+    
+      dispatch(pulseArticlesApi({page:page + 1, pageSize:20}));
+   
+   
   };
 
   const groupedByDate = pulseArticleData?.reduce((acc, article) => {
@@ -337,6 +369,18 @@ const PulseArticle = () => {
             </Collapse>
           </React.Fragment>
         ))}
+
+{pagination.total_pages === pagination.page || !pulseArticleData.length ?
+        ""
+        :
+        <Box sx={{display:"flex",justifyContent:"center"}} marginBottom={2} onClick={setPaginate}>
+
+        
+        <StyledButton2 variant="contained">
+       Load More
+      </StyledButton2>
+      </Box>
+      }
     </Container>
   );
 };
