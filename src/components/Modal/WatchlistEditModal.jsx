@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Button, IconButton, Modal, Grid } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -29,7 +28,7 @@ const StyledTextField = styled(TextField)`
     font-weight: 400;
     font-size: 16px;
     line-height: 19px;
-    color:${colors.navyBlue900};
+    color: ${colors.navyBlue900};
     border-radius: 8px;
   }
   & .MuiOutlinedInput-notchedOutline {
@@ -49,7 +48,7 @@ const StyledTextField = styled(TextField)`
     font-weight: 400;
     font-size: 16px;
     line-height: 19px;
-    color:${colors.greyBlue300}; 
+    color: ${colors.greyBlue300}; 
     opacity: 0.7;
   }
 `;
@@ -106,14 +105,14 @@ const StyledBox = styled(Box)`
 
 const WatchlistEditModal = ({ isOpen, company }) => {
   const [editedValues, setEditedValues] = useState({
-    uptrendPotential: '',
-    expectedPrice: ''
+    uptrend_potential: '',
+    expected_price_after_1year: ''
   });
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsSaveDisabled(!(editedValues.uptrendPotential && editedValues.expectedPrice));
+    setIsSaveDisabled(!(editedValues.uptrend_potential && editedValues.expected_price_after_1year));
   }, [editedValues]);
 
   const handleChange = (e) => {
@@ -127,7 +126,7 @@ const WatchlistEditModal = ({ isOpen, company }) => {
   const handleClosed = () => {
     dispatch(toggleEditModal());
   };
-
+  
   return (
     <Modal
       open={isOpen}
@@ -177,31 +176,31 @@ const WatchlistEditModal = ({ isOpen, company }) => {
             </Grid>
             <Grid item width="100%">
               <Box component="form" noValidate autoComplete="off">
-                <Grid container alignItems="center" justifyContent='center' spacing={2} mb={2}>
-                  <Grid item xs={4} >
+                <Grid container alignItems="center" spacing={2} mb={2}>
+                  <Grid item xs={4} sm={4}>
                     <StyledInputLabel htmlFor="uptrendPotential">Uptrend Potential:</StyledInputLabel>
                   </Grid>
-                  <Grid item >
+                  <Grid item xs={8} sm={8}>
                     <StyledTextField
                       placeholder={`${company?.uptrend_potential}%`}
-                      id="uptrendPotential"
-                      name="uptrendPotential"
-                      value={editedValues.uptrendPotential}
+                      id="uptrend_potential"
+                      name="uptrend_potential"
+                      value={editedValues.uptrend_potential}
                       onChange={handleChange}
                       required
                     />
                   </Grid>
                 </Grid>
-                <Grid container alignItems="center" justifyContent='center' spacing={2} mb={2}>
-                  <Grid item xs={4} >
+                <Grid container alignItems="center" spacing={2} mb={2}>
+                  <Grid item xs={4} sm={4}>
                     <StyledInputLabel htmlFor="expectedPrice">Expected Price:</StyledInputLabel>
                   </Grid>
-                  <Grid item >
+                  <Grid item xs={8} sm={8}>
                     <StyledTextField
                       placeholder={`₹${company?.expected_price_after_1year}`}
-                      id="expectedPrice"
-                      name="expectedPrice"
-                      value={editedValues.expectedPrice}
+                      id="expected_price_after_1year"
+                      name="expected_price_after_1year"
+                      value={editedValues.expected_price_after_1year}
                       onChange={handleChange}
                       required
                     />
@@ -214,7 +213,14 @@ const WatchlistEditModal = ({ isOpen, company }) => {
                     </StyledButton1>
                   </Grid>
                   <Grid item xs={6}>
-                    <StyledButton2 variant="contained" disabled={isSaveDisabled} onClick={()=>{dispatch(editWatchlistApi({id:company?.company_Id._id,editedValues:editedValues}))}}>
+                    <StyledButton2
+                      variant="contained"
+                      disabled={isSaveDisabled}
+                      onClick={() => {
+                        dispatch(editWatchlistApi({ id: company?.company_Id._id, editedValues }));
+                        setEditedValues({ uptrend_potential: '', expected_price_after_1year: '' });
+                      }}
+                    >
                       Save
                     </StyledButton2>
                   </Grid>

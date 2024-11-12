@@ -103,7 +103,7 @@ const PrimeCard = ({ data, activeTab }) => {
                       : "NA"}
             </StyledTypography2>
             <Box marginTop={1}>
-              <Grid container justifyContent="space-between">
+              <Grid container justifyContent="space-between" gap={1}>
                 <Grid item>
                   <StyledTypography3
                     color={colors.greyBlue900}

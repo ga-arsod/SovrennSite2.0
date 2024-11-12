@@ -146,6 +146,9 @@ const SelfHelp = () => {
 
   const handleChipSelect = (chip) => {
     setSelectedChip(chip);
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 0); 
   };
   useEffect(() => {
     dispatch(resetCalculatedData());

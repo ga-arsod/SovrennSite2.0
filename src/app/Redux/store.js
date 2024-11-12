@@ -14,6 +14,7 @@ import ipoReducer from "./Slices/ipoSlice"
 import commentsReducer from "./Slices/commentsSlice"
 import selfHelpReducer from "./Slices/selfHelpSlice"
 import watchlistReducer from "./Slices/watchlistSlice"
+import pulseReducer from "./Slices/pulseSlice"
 // Configuration for redux-persist
 const persistConfig = {
   key: 'root', 
@@ -33,7 +34,8 @@ const rootReducer = combineReducers({
   ipo:ipoReducer,
   comments:commentsReducer,
   selfHelp:selfHelpReducer,
-  watchlist:watchlistReducer
+  watchlist:watchlistReducer,
+  pulse:pulseReducer,
 });
 
 

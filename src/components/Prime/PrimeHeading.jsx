@@ -144,7 +144,7 @@ const PrimeHeading = ({ setActiveTab }) => {
             onChange={handleChange}
             aria-label="wrapped label tabs example"
             sx={{
-              marginLeft: { xs: '20px', sm: '30px', md: 0 }, 
+              marginLeft: { xs: '30px', sm: '30px', md: 0 }, 
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',

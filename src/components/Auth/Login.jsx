@@ -60,7 +60,7 @@ const StyledButton1 = styled(Button)`
 const StyledButton2 = styled(Button)`
   color: #20365b;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 30px;
   text-transform: none;
   width: 100%;

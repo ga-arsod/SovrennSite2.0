@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import Link from "next/link";
 import NoData from "../NoData/NoData";
+import moment from "moment";
 
 const StyledTypography3 = styled(Typography)`
   font-size: 12px;

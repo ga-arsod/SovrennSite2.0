@@ -21,8 +21,10 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { useDispatch } from 'react-redux';
 import { toggleEditModal } from '@/app/Redux/Slices/watchlistSlice';
+import DeleteModal from '../Modal/DeleteModal';
+import { removeFromWatchlistApi } from '@/app/Redux/Slices/discoverySlice';
 
-// Define styled components for table cells
+
 const StyledTableCell = styled(TableCell)`
   font-weight: 600;
   font-size: 16px;
@@ -117,10 +119,31 @@ const StyledButton2 = styled(Button)`
 const WatchlistTable = ({data,setCompanyData}) => {
   const router=useRouter();
   const dispatch=useDispatch()
+  const [open,setOpen]=useState(false)
+  const [selectedItemObject, setSelectedItemObject] = useState({
+    id: null,
+    title: "",
+  });
+  const handleDeleteClick = (event,id, title) => {
+    event.stopPropagation(); 
+    setSelectedItemObject({
+      ...selectedItemObject,
+      id: id,
+      title: title,
+    });
+    setOpen(true);
+  };
 
   return (
+  <>
   
-      <Box sx={{ paddingX: 2, marginTop: {xs:3,sm:5},marginBottom:"200px", border: `1px solid ${colors.neutral600}`, borderRadius: 1 }}>
+  <DeleteModal
+          open={open}
+          setOpen={setOpen}
+          selectedItemObject={selectedItemObject}
+          api={removeFromWatchlistApi}
+        />
+         <Box sx={{ paddingX: 2, marginTop: {xs:3,sm:5},marginBottom:"200px", border: `1px solid ${colors.neutral600}`, borderRadius: 1 }}>
         <TableContainer component={Paper} elevation={0} sx={{ boxShadow: 'none', paddingY: 0 }}>
           <Table sx={{ borderCollapse: 'separate' }}>
             <TableHead>
@@ -180,7 +203,13 @@ const WatchlistTable = ({data,setCompanyData}) => {
                      Edit
                     </StyledButton1>
                     <StyledButton2 
-                        variant="contained" startIcon={<StyledDeleteIcon />} size="small">
+                        variant="contained" startIcon={<StyledDeleteIcon />} size="small"
+                        onClick={(e)=>{
+                          setOpen(true);
+                          handleDeleteClick(e,ele.company_Id._id,ele.company_Id.company_name)
+
+                        }}
+                        >
                       Remove
                     </StyledButton2>
                     </Grid>
@@ -191,6 +220,8 @@ const WatchlistTable = ({data,setCompanyData}) => {
           </Table>
         </TableContainer>
       </Box>
+  </>
+     
    
   );
 };

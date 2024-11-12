@@ -74,7 +74,7 @@ const EmptyWatchlist = () => {
         <StyledTypography2 marginTop={0.5}>
           to add company in watch list
         </StyledTypography2>
-        <StyledLink href="#">
+        <StyledLink href="self-help">
           <StyledTypography3 marginTop={4}>
             <span>Go to Self Help &gt;</span>
           </StyledTypography3>

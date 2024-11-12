@@ -1,10 +1,14 @@
 "use client";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Grid, Typography, Box, Divider, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import { useDispatch } from "react-redux";
+import DeleteModal from "../Modal/DeleteModal";
+import moment from 'moment';
+import { removeFromWatchlistApi } from "@/app/Redux/Slices/discoverySlice";
+import { toggleEditModal } from "@/app/Redux/Slices/watchlistSlice";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -58,9 +62,31 @@ const StyledButton2 = styled(Button)`
    
   }
 `;
-const WatchlistCard = () => {
+const WatchlistCard = ({data,setCompanyData}) => {
+  const dispatch=useDispatch()
+  const [open,setOpen]=useState(false)
+  const [selectedItemObject, setSelectedItemObject] = useState({
+    id: null,
+    title: "",
+  });
+  const handleDeleteClick = (event,id, title) => {
+    event.stopPropagation(); 
+    setSelectedItemObject({
+      ...selectedItemObject,
+      id: id,
+      title: title,
+    });
+    setOpen(true);
+  };
   return (
-    <Box sx={{ flexGrow: 1 }} marginTop={5}>
+    <>
+     <DeleteModal
+          open={open}
+          setOpen={setOpen}
+          selectedItemObject={selectedItemObject}
+          api={removeFromWatchlistApi}
+        />
+         <Box sx={{ flexGrow: 1 }} marginTop={5}>
       <Grid
         container
         marginBottom={{xs:3,sm:5}}
@@ -75,7 +101,7 @@ const WatchlistCard = () => {
           padding: { xs: 1 },
         }}
       >
-        {Array.from("abcderhjkjkk").map((item, index) => (
+        {data.map((ele, index) => (
           <Box
             key={index}
             sx={{
@@ -100,14 +126,15 @@ const WatchlistCard = () => {
               sx={{ fontWeight: "600" }}
               component="span"
             >
-              30th Dec 22
+             {moment(ele.createdAt).format("Do MMM YY")}
             </StyledTypography1>
             <StyledTypography2 marginTop={1} color="#1F3356" component="div">
-              Systango Technologies Ltd.
+            {ele.company_Id.company_name}
             </StyledTypography2>
             <Box marginTop={1}>
-              <Grid container justifyContent="space-between">
-                <Grid item>
+              
+              <Grid container justifyContent="space-between" marginTop={1}>
+              <Grid item>
                   <StyledTypography3
                     color={colors.greyBlue900}
                     sx={{ fontWeight: "400" }}
@@ -120,25 +147,7 @@ const WatchlistCard = () => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    100%
-                  </StyledTypography3>
-                </Grid>
-              </Grid>
-              <Grid container justifyContent="space-between" marginTop={1}>
-                <Grid item xs={6}>
-                  <StyledTypography3
-                    color={colors.greyBlue900}
-                    sx={{ fontWeight: "400" }}
-                    component="span"
-                  >
-                    {`Current Price : `}
-                  </StyledTypography3>
-                  <StyledTypography3
-                    color={colors.navyBlue500}
-                    sx={{ fontWeight: "600" }}
-                    component="span"
-                  >
-                    ₹100
+                 {`${ele.uptrend_potential}%`}
                   </StyledTypography3>
                 </Grid>
                 <Grid item xs={6} sx={{ textAlign: "right" }}>
@@ -154,7 +163,7 @@ const WatchlistCard = () => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    ₹150
+                 {`₹${ele.expected_price_after_1year}`}
                   </StyledTypography3>
                 </Grid>
               </Grid>
@@ -172,10 +181,20 @@ const WatchlistCard = () => {
                 variant="outlined"
                 startIcon={<StyledEditIcon />}
                 size="small"
+                onClick={()=>{
+                  dispatch(toggleEditModal())
+                  setCompanyData(ele)
+                }}
               >
                 Edit
               </StyledButton1>
-              <StyledButton2 variant="contained" size="small">
+              <StyledButton2 variant="contained" size="small"
+              onClick={(e)=>{
+                setOpen(true);
+                handleDeleteClick(e,ele.company_Id._id,ele.company_Id.company_name)
+
+              }}
+              >
                 Delete
               </StyledButton2>
             </Grid>
@@ -183,6 +202,8 @@ const WatchlistCard = () => {
         ))}
       </Grid>
     </Box>
+    </>
+   
   );
 };
 

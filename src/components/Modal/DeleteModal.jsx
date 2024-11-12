@@ -93,7 +93,7 @@ const StyledBox = styled(Box)`
  
 `;
 
-const DeleteModal = ({ open, setOpen,selectedItemObject }) => {
+const DeleteModal = ({ open, setOpen,selectedItemObject ,api}) => {
   const dispatch = useDispatch();
   const handleClose = () => {
     setOpen(false);
@@ -129,7 +129,7 @@ const DeleteModal = ({ open, setOpen,selectedItemObject }) => {
         >
           <IconButton
             onClick={handleClose}
-            sx={{ position: "absolute", top: "6px", right: "4px" }}
+            sx={{ position: "absolute", top: "4px", right: "4px" }}
           >
             <CloseIcon sx={{ color: colors.black }} />
           </IconButton>
@@ -141,9 +141,9 @@ const DeleteModal = ({ open, setOpen,selectedItemObject }) => {
             justifyContent="center"
             gap={4}
           >
-            <Grid item paddingX={{ xs: 1, sm: 4 }}>
-              <StyledTypography1 color={colors.navyBlue500} textAlign="center">
-               {`Do you really want to delete “${selectedItemObject.title}”?`}
+            <Grid item paddingX={{ xs: 2, sm: 4 }}>
+              <StyledTypography1 color={colors.navyBlue500} textAlign="center" marginTop={1}>
+               {`Do you really want to delete “${selectedItemObject.title}” ?`}
               </StyledTypography1>
             </Grid>
             <Grid item width="100%">
@@ -164,7 +164,7 @@ const DeleteModal = ({ open, setOpen,selectedItemObject }) => {
                     variant="contained"
                     onClick={() => {
                        
-                      dispatch(deleteCustomBucketApi(selectedItemObject.id));
+                      dispatch(api(selectedItemObject.id));
                       setOpen(false)
                     }}
                   >

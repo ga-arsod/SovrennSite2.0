@@ -440,7 +440,11 @@ const PrimeFilter = ({ isOpen, handleModalOpen }) => {
                 disabled={isApplyButtonDisabled}
                 onClick={()=>{
                     if(isAuth)
-                    dispatch(primeCompaniesListApi(filter))
+                    dispatch(primeCompaniesListApi(
+                     { data: filter,
+                      page: 1,}
+                      
+                    ))
                   else
                  {
                   handleModalOpen()

@@ -22,7 +22,7 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
-import { ipoCompaniesListApi,toggleIpoFilter } from "@/app/Redux/Slices/ipoSlice";
+import { togglePulseFilter } from "@/app/Redux/Slices/pulseSlice";
 import { useDispatch } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
@@ -200,26 +200,26 @@ const StyledButton = styled(Button)`
 
 
 
-const IpoFilters = ({ isOpen, handleModalOpen }) => {
+const PulseFilter = ({ isOpen, handleModalOpen }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [showAllSectors, setShowAllSectors] = useState(false);
+ 
   const [showAllCompanies, setShowAllCompanies] = useState(false);
 
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const {  ipoFilter } = useSelector((store) => store.ipo);
+  const {  pulseFilter } = useSelector((store) => store.pulse);
   const { isAuth } = useSelector((store) => store.auth);
 
   const toggleFilter = () => {
-    dispatch(toggleIpoFilter());
+    dispatch(togglePulseFilter());
   };
 
   const [filter, setFilter] = useState({
-    sector_id: [],
+    byMonths: [],
 
     company_name: [],
 
-    company_type: [],
+    
   });
 
   const handleChange = (category, option) => (event) => {
@@ -237,14 +237,12 @@ const IpoFilters = ({ isOpen, handleModalOpen }) => {
       };
     });
   };
-
-  const isApplyButtonDisabled =
-    filter.sector_id.length === 0 &&
-    filter.company_name.length === 0 &&
-    filter.company_type.length === 0;
-
-
-    if(!ipoFilter?.length)
+  const isAnyOptionSelected = () => {
+    return Object.values(filter).some((options) => options.length > 0);
+  };
+  const isApplyButtonDisabled = !isAnyOptionSelected(); 
+ 
+    if(!pulseFilter?.length)
         return <></>
   return (
     <Box>
@@ -301,119 +299,86 @@ const IpoFilters = ({ isOpen, handleModalOpen }) => {
           </Grid>
           <CustomDivider sx={{ mt: 1, mb: 3 }} />
           <FormControl component="fieldset" sx={{ width: "100%", padding: 2 }}>
-            <StyledTypography1>{ipoFilter[0]?.category}</StyledTypography1>
-            <Grid
-              container
-              justifyContent="space-between"
-              sx={{ width: "80%" }}
+          
+         
+          <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
+            {pulseFilter[0]?.category}
+          </StyledTypography1>
+
+          <Grid
+            container
+            justifyContent="space-between"
+            sx={{ width: "80%" }}
+          >
+            {(
+               pulseFilter[0]?.options
+              
+            ).map((month, index) => (
+              <Grid item key={index} xs={12}>
+                <CustomFormControlLabel
+                  control={
+                    <CustomCheckbox
+                      checked={filter[month.key]?.includes(month.value)}
+                      onChange={handleChange(
+                        pulseFilter[0]?.key,
+                        month.value
+                      )}
+                    />
+                  }
+                  label={month.placeholder}
+                />
+              </Grid>
+            ))}
+          </Grid>
+
+         
+          <CustomDivider sx={{ mt: 2, mb: 2 }} />
+          <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
+            {pulseFilter[1]?.category}
+          </StyledTypography1>
+
+          <Grid
+            container
+            justifyContent="space-between"
+            sx={{ width: "80%" }}
+          >
+            {(showAllCompanies
+              ? pulseFilter[1]?.options
+              : pulseFilter[1]?.options.slice(0, 5)
+            ).map((company, index) => (
+              <Grid item key={index} xs={12}>
+                <CustomFormControlLabel
+                  control={
+                    <CustomCheckbox
+                      checked={filter[company.key]?.includes(company.value)}
+                      onChange={handleChange(
+                        pulseFilter[1]?.key,
+                        company.value
+                      )}
+                    />
+                  }
+                  label={company.placeholder}
+                />
+              </Grid>
+            ))}
+          </Grid>
+
+          <Grid container justifyContent="flex-start">
+            <StyledViewAllButton
+              endIcon={
+                showAllCompanies ? (
+                  <KeyboardArrowUpOutlinedIcon />
+                ) : (
+                  <ExpandMoreIcon />
+                )
+              }
+              onClick={() => setShowAllCompanies(!showAllCompanies)}
             >
-              {ipoFilter[0]?.options.map((item, index) => {
-                return (
-                  <>
-                    <Grid item xs={12} key={index}>
-                      <CustomFormControlLabel
-                        checked={filter[item.key]?.includes(item.value)}
-                        onChange={handleChange(ipoFilter[0]?.key, item.value)}
-                        control={<CustomCheckbox />}
-                        label={item.placeholder}
-                      />
-                    </Grid>
-                  </>
-                );
-              })}
-            </Grid>
-            <CustomDivider sx={{ mt: 2, mb: 2 }} />
-            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              {ipoFilter[1]?.category}
-            </StyledTypography1>
-
-            <Grid
-              container
-              justifyContent="space-between"
-              sx={{ width: "80%" }}
-            >
-              {(showAllSectors
-                ? ipoFilter[1]?.options
-                : ipoFilter[1]?.options.slice(0, 5)
-              ).map((sector, index) => (
-                <Grid item key={index} xs={12}>
-                  <CustomFormControlLabel
-                    control={
-                      <CustomCheckbox
-                        checked={filter[sector.key]?.includes(sector.value)}
-                        onChange={handleChange(
-                          ipoFilter[1]?.key,
-                          sector.value
-                        )}
-                      />
-                    }
-                    label={sector.placeholder}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-
-            <Grid container justifyContent="flex-start">
-              <StyledViewAllButton
-                endIcon={
-                  showAllSectors ? (
-                    <KeyboardArrowUpOutlinedIcon />
-                  ) : (
-                    <ExpandMoreIcon />
-                  )
-                }
-                onClick={() => setShowAllSectors(!showAllSectors)}
-              >
-                {showAllSectors ? "Hide" : "View All"}
-              </StyledViewAllButton>
-            </Grid>
-            <CustomDivider sx={{ mt: 2, mb: 2 }} />
-            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              {ipoFilter[2]?.category}
-            </StyledTypography1>
-
-            <Grid
-              container
-              justifyContent="space-between"
-              sx={{ width: "80%" }}
-            >
-              {(showAllCompanies
-                ? ipoFilter[2]?.options
-                : ipoFilter[2]?.options.slice(0, 5)
-              ).map((sector, index) => (
-                <Grid item key={index} xs={12}>
-                  <CustomFormControlLabel
-                    control={
-                      <CustomCheckbox
-                        checked={filter[sector.key]?.includes(sector.value)}
-                        onChange={handleChange(
-                          ipoFilter[2]?.key,
-                          sector.value
-                        )}
-                      />
-                    }
-                    label={sector.placeholder}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-
-            <Grid container justifyContent="flex-start">
-              <StyledViewAllButton
-                endIcon={
-                  showAllCompanies ? (
-                    <KeyboardArrowUpOutlinedIcon />
-                  ) : (
-                    <ExpandMoreIcon />
-                  )
-                }
-                onClick={() => setShowAllCompanies(!showAllCompanies)}
-              >
-                {showAllCompanies ? "Hide" : "View All"}
-              </StyledViewAllButton>
-            </Grid>
-            <CustomDivider sx={{ mt: 2, mb: 2 }} />
-          </FormControl>
+              {showAllCompanies ? "Hide" : "View All"}
+            </StyledViewAllButton>
+          </Grid>
+         
+        </FormControl>
         </ScrollableBox>
         <Box
           sx={{
@@ -429,7 +394,7 @@ const IpoFilters = ({ isOpen, handleModalOpen }) => {
         >
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <StyledButton fullWidth variant="outlined" onClick={toggleFilter}>
+              <StyledButton fullWidth variant="outlined" onClick={()=>{dispatch(togglePulseFilter())}}>
                 Cancel
               </StyledButton>
             </Grid>
@@ -438,15 +403,15 @@ const IpoFilters = ({ isOpen, handleModalOpen }) => {
                 fullWidth
                 variant="contained"
                 disabled={isApplyButtonDisabled}
-                onClick={()=>{
-                    if(isAuth)
-                    dispatch(ipoCompaniesListApi(filter))
-                  else
-                 {
-                  handleModalOpen()
-                  dispatch(toggleIpoFilter())
-                 }
-                  }}
+                // onClick={()=>{
+                //     if(isAuth)
+                //     dispatch(ipoCompaniesListApi(filter))
+                //   else
+                //  {
+                //   handleModalOpen()
+                //   dispatch(toggleIpoFilter())
+                //  }
+                //   }}
               >
                 Apply Filter
               </StyledButton3>
@@ -458,4 +423,4 @@ const IpoFilters = ({ isOpen, handleModalOpen }) => {
   );
 };
 
-export default IpoFilters;
+export default PulseFilter;

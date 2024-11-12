@@ -236,11 +236,13 @@ const wordsStr = [
 export default function DiscoveryTable({ tableData, id }) {
   const dispatch = useDispatch();
   const [hoveredRow, setHoveredRow] = useState(null);
+ 
   const [isOpen, setIsOpen] = useState(false);
   const { sortBy, sortOrder } = useSelector((state) => state.sorting);
   const { userDetails } = useSelector((store) => store.auth);
+ 
   const { isAuth } = useSelector((store) => store.auth);
-  const totalPages = 20;
+ 
 
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
@@ -313,7 +315,7 @@ export default function DiscoveryTable({ tableData, id }) {
         sx={{
           paddingX: 0,
           marginTop: 3,
-          marginBottom: "200px",
+          
           border: `1px solid ${colors.neutral600}`,
           borderRadius: 1,
           overflowX: "hidden",
@@ -444,9 +446,7 @@ export default function DiscoveryTable({ tableData, id }) {
           </Table>
         </TableContainer>
       </Box>
-      {/* <Box mt={2}>
-        <Pagination totalPages={totalPages} />
-      </Box> */}
+      
     </>
   );
 }

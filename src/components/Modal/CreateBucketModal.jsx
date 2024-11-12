@@ -86,8 +86,8 @@ const StyledButton2 = styled(Button)`
     font-size: 14px;
     font-weight: 600;
     line-height: 17px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 14px;
+    padding-bottom: 14px;
   }
 `;
 const StyledChip = styled(Chip)`

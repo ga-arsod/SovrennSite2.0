@@ -227,8 +227,8 @@ export const navItems = [
     description:"Detailed information about upcoming IPOs."
   },
   {
-    name: "Knowledge",
-    link: "/knowledge",
+    name: "Pulse",
+    link: "/pulse",
   },
   {
     name: "Self Help",

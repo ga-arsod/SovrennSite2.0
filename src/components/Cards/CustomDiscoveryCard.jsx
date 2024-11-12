@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { discoveryTableApi } from "../../app/Redux/Slices/discoverySlice";
 import DeleteModal from "../../components/Modal/DeleteModal";
+import { deleteCustomBucketApi } from "../../app/Redux/Slices/discoverySlice";
 
 const GridContainer = styled(Box)`
   display: grid;
@@ -196,6 +197,7 @@ const CustomDiscoveryCard = ({ title, data }) => {
           open={open}
           setOpen={setOpen}
           selectedItemObject={selectedItemObject}
+          api={deleteCustomBucketApi}
         />
       )}
       <Box marginBottom={6}>

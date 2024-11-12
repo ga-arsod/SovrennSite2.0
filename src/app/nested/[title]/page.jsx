@@ -104,11 +104,11 @@ const DefaultImageContainer = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 140px; /* Adjust as needed */
+  height: 140px; 
   border-radius: 3px;
   text-align: center;
   font-weight: 600;
-  font-size: 16px; /* Adjust as needed */
+  font-size: 16px;
 `;
 
 const Discovery = () => {
@@ -169,7 +169,7 @@ const Discovery = () => {
             {parentsBucket?.child_buckets?.map((item, index) => (
               
               <StyledGrid key={index} onClick={() => handleNavigation(item)}>
-                {console.log(item,"item")}
+               
                 <Box className="content">
                   <Grid container>
                     <Grid item paddingY={2} paddingX="20px" width="100%">
