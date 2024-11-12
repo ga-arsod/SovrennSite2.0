@@ -1,21 +1,19 @@
-"use client";
+"use client"
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams } from "next/navigation";
 import convertToHtml from "@/utils/convertToHtml";
 import styles from "../../../styles/PrimeArticle.module.css";
-import Link from "next/link";
-import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import { colors } from "@/components/Constants/colors";
 import { primeArticleApi, promoterArticleApi } from "@/app/Redux/Slices/primeSlice";
 import { getCommentsApi } from "@/app/Redux/Slices/commentsSlice";
 import styled from "@emotion/styled";
-import { Box, Typography, Tab, Tabs, Divider } from "@mui/material";
+import { Box, Typography, Tab, Tabs, Divider, Fade } from "@mui/material";
 import Head from "next/head";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Comments from "../../../components/Prime/Comments";
 import Snackbar from "../../../components/Snackbar/SnackBar";
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -93,20 +91,25 @@ const PrimeArticles = () => {
   const search = searchParams.get("s");
 
   const isPromoterInterviewActive = search === "promoter_interview";
-  const { articleData, company_name, isPromoterArticleLoading, isPrimeArticleLoading } = useSelector(
-    (store) => store.prime
-  );
+  const { articleData, company_name } = useSelector((store) => store.prime);
   const { comments } = useSelector((store) => store.comments);
 
   const [value, setValue] = useState(isPromoterInterviewActive ? "two" : "one");
   const [showScroll, setShowScroll] = useState(false);
   const [content, setContent] = useState(null);
+  const [fadeIn, setFadeIn] = useState(true);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setFadeIn(false);
+    setTimeout(() => {
+      setValue(newValue);
+      setFadeIn(true);
+    }, 300); 
+
     if (articleData && value === "one") {
       dispatch(promoterArticleApi(articleData?.pi_slug));
-    } else if (articleData && value === "two") {
+    }
+     else if (articleData && value === "two") {
       dispatch(primeArticleApi(articleData?.prime_slug));
     }
   };
@@ -117,7 +120,7 @@ const PrimeArticles = () => {
     } else {
       dispatch(primeArticleApi(id));
     }
-  }, [dispatch, id]);
+  }, []);
 
   useEffect(() => {
     const checkScrollTop = () => {
@@ -141,39 +144,14 @@ const PrimeArticles = () => {
   useEffect(() => {
     if (articleData) {
       dispatch(getCommentsApi({ company_id: articleData._id, component: "prime" }));
-      setContent(convertToHtml(articleData?.content)); // Cache the article content
+      setContent(convertToHtml(articleData?.content));
     }
   }, [articleData, dispatch]);
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.ctrlKey && (event.key === "p" || event.key === "P")) {
-        event.preventDefault();
-      }
-    };
-
-    const handleContextMenu = (event) => {
-      event.preventDefault();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("contextmenu", handleContextMenu);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("contextmenu", handleContextMenu);
-    };
-  }, []);
 
   return (
     <>
       <Head>
         <title>{company_name}</title>
-        <link
-          rel="canonical"
-          href={`https://www.sovrenn.com/prime/${id}`}
-          key="canonical"
-        />
       </Head>
       <article>
         <Box sx={{ maxWidth: 915, margin: "84px auto 0px auto", padding: 2 }}>
@@ -188,62 +166,44 @@ const PrimeArticles = () => {
           </Box>
           <CustomDivider1 sx={{ marginTop: 1 }} />
 
-          <Box sx={{ width: "100%", marginTop: "17px" }}>
-            <CustomTabs
-              value={value}
-              onChange={handleChange}
-              aria-label="wrapped label tabs example"
+          {(value === "one" && articleData?.has_pi_data) || (value === "two" && articleData?.has_prime_data) ? (
+            <Box sx={{ width: "100%", marginTop: "17px" }}>
+              <CustomTabs
+                value={value}
+                onChange={handleChange}
+                aria-label="wrapped label tabs example"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  "& .MuiTabs-flexContainer": { gap: "0px" },
+                }}
+              >
+                <Tab
+                  value="one"
+                  label={<TabLabel text="Prime Articles" isActive={value === "one"} />}
+                  sx={{ textTransform: "none", minWidth: "auto" }}
+                />
+                <Tab
+                  value="two"
+                  label={<TabLabel text="Promoter Interviews" isActive={value === "two"} />}
+                  sx={{ textTransform: "none", minWidth: "auto" }}
+                />
+              </CustomTabs>
+            </Box>
+          ) : <></>}
+
+<Fade in={fadeIn} timeout={1000}>
+            <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                "& .MuiTabs-flexContainer": {
-                  gap: "10px",
-                },
+                opacity: content ? 1 : 0,
+                transition: "visibility 0s, opacity 0.3s linear",
+                minHeight: "400px",
               }}
             >
-              <Tab
-                value="one"
-                label={<TabLabel text="Prime Articles" isActive={value === "one"} />}
-                sx={{ textTransform: "none", minWidth: "auto" }}
-              />
-              <Tab
-                value="two"
-                label={<TabLabel text="Promoter Interviews" isActive={value === "two"} />}
-                sx={{ textTransform: "none", minWidth: "auto" }}
-              />
-            </CustomTabs>
-          </Box>
-
-          <Box
-            sx={{
-              opacity: content ? 1 : 0,
-              transition: "opacity 0.3s ease-in-out",
-              minHeight: "400px",
-            }}
-          >
-            {content && <div id={styles.MainContainer}>{content}</div>}
-          </Box>
-
-          <Box
-            sx={{
-              position: "fixed",
-              bottom: 50,
-              right: 16,
-              width: 48,
-              height: 48,
-              borderRadius: "50%",
-              backgroundColor: "#CED6DC",
-              display: showScroll ? "flex" : "none",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: 3,
-              cursor: "pointer",
-            }}
-            onClick={scrollTop}
-          >
-            <KeyboardArrowUpIcon />
-          </Box>
+              {content && <div id={styles.MainContainer}>{content}</div>}
+            </Box>
+         </Fade>
         </Box>
       </article>
       {articleData && (

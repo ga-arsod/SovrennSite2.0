@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getWatchlistApi } from "./watchlistSlice";
 import { setSnackStatus } from "./snackbarSlice";
 const url = "https://api.sovrenn.com";
 const initialState = {
@@ -7,7 +8,7 @@ const initialState = {
   isMyBucketsLoading: false,
   isTableDataLoading: false,
   isNestedBucketTableDataLoading:false,
- 
+  pagination:{},
   isArticleDataLoading: false,
   isParentsBucketLoading:false,
   isCreateBucketModalOpen:false,
@@ -317,6 +318,7 @@ export const removeFromWatchlistApi = createAsyncThunk(
     const result = await response.json();
 
     if (response.ok) {
+      dispatch(getWatchlistApi())
       dispatch(
         setSnackStatus({
           status: true,
@@ -449,6 +451,7 @@ const discoverySlice = createSlice({
       state.isTableDataLoading = false;
       state.discoveryTableBucket = action.payload.data;
       state.title = action.payload.data.bucket.title;
+      state.pagination=action.payload.pagination
     });
     builder.addCase(discoveryTableApi.rejected, (state, action) => {
       state.isError = true;
@@ -463,6 +466,7 @@ const discoverySlice = createSlice({
       state.isNestedBucketTableDataLoading = false;
       state.nestedBucketDiscoveryTableBucket = action.payload.data;
       state.title = action.payload.data.bucket.title;
+      state.pagination=action.payload.pagination
     });
     builder.addCase(nestedBucketDiscoveryTableApi.rejected, (state, action) => {
       state.isError = true;
@@ -475,6 +479,7 @@ const discoverySlice = createSlice({
     builder.addCase(myBucketDiscoveryTableApi.fulfilled, (state, action) => {
       state.isTableDataLoading = false;
       state.discoveryTableBucket = action.payload.data;
+      state.pagination=action.payload.pagination
       // state.title = action.payload.data.bucket.title;
     });
     builder.addCase(myBucketDiscoveryTableApi.rejected, (state, action) => {

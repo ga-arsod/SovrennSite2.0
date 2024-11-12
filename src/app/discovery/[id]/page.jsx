@@ -30,6 +30,7 @@ import Spinner from "../../../components/Common/Spinner";
 import Head from "next/head";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Footer from "@/components/Home/Footer";
+import Pagination from "@/components/Pagination/Pagination";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -100,7 +101,7 @@ const DiscoveryBucketContent = () => {
   const theme = useTheme();
   const router = useRouter();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-  
+  const [currentPage, setCurrentPage] = useState(1);
   const { id } = useParams();
   const formattedId = id
     .replace(/-/g, " ")
@@ -116,10 +117,13 @@ const DiscoveryBucketContent = () => {
   );
   const { userDetails ,isAuth} = useSelector((store) => store.auth);
   const title = formattedId;
-  const lastSpaceIndex = title.lastIndexOf(" ");
+ 
 
-  const part1 = title.substring(0, lastSpaceIndex + 1);
-  const part2 = title.substring(lastSpaceIndex + 1);
+  
+
+  const firstSpaceIndex = title?.indexOf(" ");
+  const part1 = title.substring(0, firstSpaceIndex);
+  const part2 = title.substring(firstSpaceIndex + 1);
   const [filter, setFilter] = useState({
     company_type: "all",
     ttm_pe: "all",
@@ -173,7 +177,7 @@ const DiscoveryBucketContent = () => {
           myBucketDiscoveryTableApi({
             id: id,
             body: filterObj,
-            page: 1,
+            page: currentPage,
             sort_by: sortBy,
             sort_order: sortOrder,
           })
@@ -183,14 +187,14 @@ const DiscoveryBucketContent = () => {
           discoveryTableApi({
             id: id,
             body: filterObj,
-            page: 1,
+            page: currentPage,
             sort_by: sortBy,
             sort_order: sortOrder,
           })
         );
       }
     }
-  }, [filter, sortBy, sortOrder, dispatch,isAuth]);
+  }, [filter, sortBy, sortOrder, dispatch,isAuth,currentPage]);
 
   useEffect(() => {
    
@@ -361,6 +365,9 @@ const DiscoveryBucketContent = () => {
         ) : (
           <DiscoveryTable tableData={tableData} id={id} />
         )}
+        <Box mt={2}>
+        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      </Box>
       </Container>
       {!isSmallerThanMd && <Footer />}
     </>

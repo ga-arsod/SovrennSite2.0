@@ -243,7 +243,7 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
     ttm_pe: [],
     company_type: [],
   });
-
+console.log(filter,"filter")
   const handleChange = (category, option) => (event) => {
    
     const { checked } = event.target;
@@ -367,6 +367,7 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
                 return (
                   <>
                     <Grid item xs={12} key={index}>
+                   
                       <CustomFormControlLabel
                         checked={filter[item.key]?.includes(item.value)}
                         onChange={handleChange(timesFilter[0]?.key, item.value)}

@@ -441,7 +441,11 @@ const PromoterFilter = ({ isOpen, handleModalOpen }) => {
                 disabled={isApplyButtonDisabled}
                 onClick={()=>{
                     if(isAuth)
-                    dispatch(promoterCompaniesListApi(filter))
+                    dispatch(promoterCompaniesListApi(
+                      { data: filter,
+                        page: 1,}
+                        
+                    ))
                   else
                  {
                   handleModalOpen()

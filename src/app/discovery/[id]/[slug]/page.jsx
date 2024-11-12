@@ -137,17 +137,19 @@ const DiscoveryArticle = () => {
   const [isCommentsModalOpen,setIsCommentsModalOpen]=useState(false)
 
   useEffect(() => {
-    if (slug) {
+    if (slug && company_id) {
       dispatch(discoveryArticleApi(slug));
       dispatch(otherBucketsCompanyPresentApi({ company_id: company_id ,component:"discovery"}));
     }
   }, [dispatch, slug]);
 
   useEffect(() => {
-   dispatch(isBookmarkedApi({company_id:company_id}))
-   setIsInWatchlist(isBookmarked);
-   dispatch(getCommentsApi({company_id:company_id,component:"discovery"}))
-  }, []);
+    if (company_id) {
+      dispatch(isBookmarkedApi({ company_id }));
+      setIsInWatchlist(isBookmarked);
+      dispatch(getCommentsApi({ company_id, component: "discovery" }));
+    }
+  }, [company_id]);
 
   useEffect(() => {
     const checkScrollTop = () => {

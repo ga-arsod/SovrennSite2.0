@@ -14,7 +14,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useDispatch } from "react-redux";
 import { toggleEditModal } from "../Redux/Slices/watchlistSlice";
 import Snackbar from "../../components/Snackbar/SnackBar"
-
+import EmptyWatchlist from "../../components/Watchlist/EmptyWatchlist";
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
   font-weight: 600;
@@ -35,7 +35,7 @@ const WatchlistMainPage = () => {
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch=useDispatch();
   const { watchlistData,isEditModalOpen } = useSelector((state) => state.watchlist);
-
+  const [open,setOpen]=useState(false);
 
   useEffect(()=>{
     dispatch(getWatchlistApi())
@@ -43,10 +43,11 @@ const WatchlistMainPage = () => {
 
   return (
     <>
+    
       <WatchlistEditModal isOpen={isEditModalOpen}   company={companyData} />
       <Container>
         <Grid container justifyContent="space-between" alignItems="center" marginTop={{xs:"70px",sm:"104px"}} spacing={isSmallerThanMd ? 2 : 0}>
-        
+        <Snackbar/>
           <Grid item xs={12} md={6}>
             <Box marginBottom={1} display="flex" alignItems="center">
               {isSmallerThanMd && (
@@ -69,14 +70,17 @@ const WatchlistMainPage = () => {
                 color={theme.palette.primary.main}
                 component="span"
               >
-                Wishlist
+               Watchlist
               </StyledTypography1>
             </Box>
           </Grid>
           
         </Grid>
-        {/* <EmptyWatchlist/> */}
-        {isSmallerThanMd ? <WatchlistCard  data={watchlistData} setCompanyData={setCompanyData}/> : <WatchlistTable data={watchlistData} setCompanyData={setCompanyData}/>}
+        {
+          watchlistData.length==0 ? <EmptyWatchlist/> : isSmallerThanMd ? <WatchlistCard  data={watchlistData} setCompanyData={setCompanyData}/> : <WatchlistTable data={watchlistData} setCompanyData={setCompanyData}/>
+        }
+       
+        
       </Container>
     </>
   );

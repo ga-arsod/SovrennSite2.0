@@ -8,8 +8,9 @@ import {
   MenuItem,
   Select,
   Container,
+  Pagination,
 } from "@mui/material";
-import { useRouter, usePathname } from "next/navigation"; 
+import { useRouter, usePathname } from "next/navigation";
 import DiscoveryTable from "@/components/Discovery/DiscoveryTable";
 import DiscoveryTableCard from "@/components/Cards/DiscoveryTableCard";
 import styled from "@emotion/styled";
@@ -28,13 +29,14 @@ import LoginModal from "../../../../components/Modal/LoginModal";
 import Head from "next/head";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Footer from "@/components/Home/Footer";
-import NoData from "../../../../components/NoData/NoData"
+import NoData from "../../../../components/NoData/NoData";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 48px;
   line-height: 56px;
   letter-spacing: -0.04em;
+
   @media (max-width: 639px) {
     font-size: 23px;
     font-weight: 600;
@@ -91,20 +93,19 @@ const StyledTypography2 = styled(Typography)`
   font-size: 16px;
   font-weight: 400;
   line-height: 19px;
-  text-aling:center;
+  text-aling: center;
 `;
 
 const ChildBucketCompanyContent = () => {
   const theme = useTheme();
   const router = useRouter();
-  const pathname = usePathname(); 
+  const pathname = usePathname();
   const pathSegments = pathname ? decodeURIComponent(pathname).split("/") : [];
-  
-  
-  const title = pathSegments?.[2] || ""; 
-  const bucketName = pathSegments?.[3] || ""; 
+  const [currentPage,setCurrentPage]=useState(1)
+  const title = pathSegments?.[2] || "";
+  const bucketName = pathSegments?.[3] || "";
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-  
+
   const [isOpen, setIsOpen] = useState(true);
   const { isNestedBucketTableDataLoading } = useSelector(
     (store) => store.discovery
@@ -116,9 +117,9 @@ const ChildBucketCompanyContent = () => {
     (store) => store.discovery.nestedBucketDiscoveryTableBucket
   );
 
-  const lastSpaceIndex = tableData.bucket.title.lastIndexOf(" ");
-  const part1 = tableData.bucket.title.substring(0, lastSpaceIndex + 1);
-  const part2 = tableData.bucket.title.substring(lastSpaceIndex + 1);
+  const firstSpaceIndex = tableData?.bucket?.title?.indexOf(" ");
+  const part1 = tableData?.bucket?.title.substring(0, firstSpaceIndex);
+  const part2 = tableData?.bucket?.title.substring(firstSpaceIndex + 1);
   const [filter, setFilter] = useState({
     company_type: "all",
     ttm_pe: "all",
@@ -134,7 +135,7 @@ const ChildBucketCompanyContent = () => {
   };
 
   const handleBackClick = () => {
-    router.back();  
+    router.back();
   };
 
   useEffect(() => {
@@ -161,8 +162,14 @@ const ChildBucketCompanyContent = () => {
       };
     }
 
-    dispatch(nestedBucketDiscoveryTableApi({ id: bucketName, body: filterObj, page: 1 }));
-  }, [filter]);
+    dispatch(
+      nestedBucketDiscoveryTableApi({
+        id: bucketName,
+        body: filterObj,
+        page: currentPage,
+      })
+    );
+  }, [filter,currentPage]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -171,10 +178,6 @@ const ChildBucketCompanyContent = () => {
   useEffect(() => {
     dispatch(discoveryFiltersApiCall());
   }, []);
-
-  
-
-  
 
   if (isNestedBucketTableDataLoading) {
     return (
@@ -193,9 +196,7 @@ const ChildBucketCompanyContent = () => {
         <title>{title}</title>
       </Head>
       <Container>
-        {isOpen ? (
-          <LoginModal isOpen={!isOpen} handleClose={handleClose} />
-        ) : null}
+       
         <Box sx={{ marginTop: "64px" }} marginBottom={{ xs: 3, sm: "28px" }}>
           <Grid container alignItems="center">
             <Grid item paddingY={{ xs: 2, sm: 5 }}>
@@ -210,19 +211,23 @@ const ChildBucketCompanyContent = () => {
                     onClick={handleBackClick}
                   />
                 )}
-                <StyledTypography1
-                  color={colors.navyBlue500}
-                  marginRight={1}
-                  component="span"
-                >
-                  {part1}
-                </StyledTypography1>
-                <StyledTypography1
-                  color={theme.palette.primary.main}
-                  component="span"
-                >
-                  {part2}
-                </StyledTypography1>
+                <Box display="flex" flexWrap="wrap" alignItems="center">
+                  <StyledTypography1
+                    color={colors.navyBlue500}
+                    marginRight={1}
+                    component="span"
+                    sx={{ flexShrink: 0 }}
+                  >
+                    {part1}
+                  </StyledTypography1>
+                  <StyledTypography1
+                    color={theme.palette.primary.main}
+                    component="span"
+                    sx={{ whiteSpace: "normal" }}
+                  >
+                    {part2}
+                  </StyledTypography1>
+                </Box>
               </Box>
             </Grid>
           </Grid>
@@ -251,9 +256,7 @@ const ChildBucketCompanyContent = () => {
                     {filtersData[0]?.options?.map((element, index) => (
                       <StyledMenuItem
                         key={index}
-                        value={
-                          index === 0 ? "all" : index === 1 ? "lte" : "gt"
-                        }
+                        value={index === 0 ? "all" : index === 1 ? "lte" : "gt"}
                       >
                         {element.placeholder}
                       </StyledMenuItem>
@@ -275,9 +278,7 @@ const ChildBucketCompanyContent = () => {
                     {filtersData[1]?.options?.map((element, index) => (
                       <StyledMenuItem
                         key={index}
-                        value={
-                          index === 0 ? "all" : index === 1 ? "lte" : "gt"
-                        }
+                        value={index === 0 ? "all" : index === 1 ? "lte" : "gt"}
                       >
                         {element.placeholder}
                       </StyledMenuItem>
@@ -311,20 +312,21 @@ const ChildBucketCompanyContent = () => {
           </Grid>
         </Box>
         {isSmallerThanMd ? (
-          tableData?.length===0 ?
-          <NoData text="No data available for this bucket currently."/>
-          :
-          <DiscoveryTableCard tableData={tableData} id={title}  />
+          tableData?.length === 0 ? (
+            <NoData text="No data available for this bucket currently." />
+          ) : (
+            <DiscoveryTableCard tableData={tableData} id={title} />
+          )
+        ) : tableData?.length === 0 ? (
+          <NoData text="No data available for this bucket currently." />
         ) : (
-         tableData?.length===0 ? 
-         <NoData text="No data available for this bucket currently."/>
-       :
-          <DiscoveryTable tableData={tableData} id={title}/>
+          <DiscoveryTable tableData={tableData} id={title} />
         )}
+         <Box mt={2}>
+        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      </Box>
       </Container>
-      {
-        !isSmallerThanMd && <Footer/>
-      }
+      {!isSmallerThanMd && <Footer />}
     </>
   );
 };

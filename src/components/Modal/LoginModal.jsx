@@ -95,7 +95,7 @@ const LoginModal = ({ isOpen,handleClose}) => {
             gap={4}
           >
             <Grid item paddingX={{ xs: 1, sm: 4 }}>
-              <StyledTypography1 color={colors.navyBlue500} textAlign="center" marginTop={1}>
+              <StyledTypography1 color={colors.navyBlue500} textAlign="center" marginTop={2}>
               You need to Login to read free articles
               </StyledTypography1>
               <StyledTypography2 color={colors.navyBlue400} textAlign="center" marginTop={1}>

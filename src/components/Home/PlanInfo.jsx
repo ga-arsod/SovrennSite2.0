@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import { planData } from "../../utils/Data";
 import { colors } from "../Constants/colors";
 import { Fade } from "@mui/material";
+import PricingCard from "../Cards/PricingCard";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -123,18 +124,10 @@ const PlanInfo = () => {
           container
           ref={ref}
           sx={{ opacity: inView ? 1 : 0 }}
-          width="100vw"
-          gap={3}
-          justifyContent="center"
+         
          
         >
-          {planData.map((element, index) => {
-            return (
-              <Grid item width={{xs:"318px",sm:"293px",md:"370px"}} key={index} sx={{display:"flex",justifyContent:"center"}}>
-                <PlanCard element={element} />
-              </Grid>
-            );
-          })}
+         <PricingCard/>
         </Grid>
       </Fade>
     </Box>

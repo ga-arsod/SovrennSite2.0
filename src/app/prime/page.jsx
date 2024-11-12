@@ -66,21 +66,19 @@ const Prime = () => {
     dispatch(promoterFilterApi())
     dispatch(primeCompaniesListApi({
      
-      body: {},
+      data: {},
       page: 1,
-      sort_by: sortBy,
-      sort_order: sortOrder,
+     
     }))
     dispatch(promoterCompaniesListApi(
       {
-        body: {},
+        data: {},
       page: 1,
-      sort_by: sortBy,
-      sort_order: sortOrder,
+     
       }
     ))
   },[dispatch])
-
+console.log(isPrimeFilterOpen,"isPrimeFilterOpen")
   return (
    <>
     <Head>

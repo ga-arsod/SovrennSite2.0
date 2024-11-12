@@ -23,16 +23,16 @@ export const getWatchlistApi = createAsyncThunk(
 
 export const editWatchlistApi = createAsyncThunk(
     "editWatchlistApi",
-    async ({id,editValues},{dispatch}) => {
+    async ({id,editedValues},{dispatch}) => {
       const response = await fetch(`${url}/user/update-watchlist/${id}`, {
         method: "PATCH",
         headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(editValues),
+          body: JSON.stringify(editedValues),
       });
-      const data=await response.json();
+      const data= await response.json();
       if (response.ok) {
         dispatch(getWatchlistApi())
         dispatch(toggleEditModal())
@@ -43,6 +43,8 @@ export const editWatchlistApi = createAsyncThunk(
     }
   );
 
+  
+  
 const watchlistSlice = createSlice({
   name: 'watchlist',
   initialState,
