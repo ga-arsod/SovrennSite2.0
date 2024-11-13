@@ -161,7 +161,7 @@ const PulseArticle = () => {
       acc[date] = true;
       return acc;
     }, {});
-    setExpanded(initialExpandedState);
+    setExpanded(initialExpandedState || {});
   }, [pulseArticleData]);
 
   const handleToggle = (date) => {
