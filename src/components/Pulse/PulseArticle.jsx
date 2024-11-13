@@ -24,8 +24,9 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import {
   togglePulseFilter,
-  pulseArticlesApi,
+  pulseArticlesApi,pulseFilteredArticlesApi
 } from "@/app/Redux/Slices/pulseSlice";
+import PulseFilter from "../../components/Pulse/PulseFilter"
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -146,8 +147,9 @@ const PulseArticle = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const [page,setPage]=useState(1);
-  const { pulseArticleData,pagination } = useSelector((store) => store.pulse);
+  const { pulseArticleData,pagination, isPulseFilterOpen } = useSelector((store) => store.pulse);
   const [expanded, setExpanded] = useState({});
+  const [filterData,setFilterData]=useState({})
 
   useEffect(() => {
     dispatch(pulseArticlesApi({ page: 1, pageSize: 20 }));
@@ -155,7 +157,7 @@ const PulseArticle = () => {
 
   useEffect(() => {
     const initialExpandedState = pulseArticleData?.reduce((acc, article) => {
-      const date = moment(article.news_date).format("Do MMM YYYY");
+      const date = moment(article?.news_date).format("Do MMM YYYY");
       acc[date] = true;
       return acc;
     }, {});
@@ -169,14 +171,16 @@ const PulseArticle = () => {
   const setPaginate = () => {
     setPage(page + 1);
 
-    
-      dispatch(pulseArticlesApi({page:page + 1, pageSize:20}));
-   
-   
+    if(Object.entries(filterData).length)
+      dispatch(pulseFilteredArticlesApi({page:page + 1, pageSize:20,filters:filterData}));
+   else
+   dispatch(pulseArticlesApi({page:page + 1, pageSize:20}));
   };
-
+const handleModalOpen=()=>{
+    setIsOpen(false);
+}
   const groupedByDate = pulseArticleData?.reduce((acc, article) => {
-    const date = moment(article.news_date).format("Do MMM YYYY");
+    const date = moment(article?.news_date).format("Do MMM YYYY");
     if (!acc[date]) {
       acc[date] = [];
     }
@@ -185,7 +189,8 @@ const PulseArticle = () => {
   }, {});
 
   return (
-    <Container>
+    <>
+    <PulseFilter isOpen={isPulseFilterOpen} handleModalOpen={handleModalOpen} page={page} filterData={filterData} setFilterData={setFilterData}/>
       <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "28px" }}>
         <Grid container alignItems="center">
           <Grid item paddingY={{ xs: 2, sm: 5 }}>
@@ -222,7 +227,7 @@ const PulseArticle = () => {
             xs={12}
             sx={{ display: "flex", justifyContent: "space-between" }}
           >
-            {/* <StyledButton
+            <StyledButton
               variant="outlined"
               endIcon={
                 <FilterAltOutlinedIcon
@@ -233,7 +238,7 @@ const PulseArticle = () => {
               onClick={() => dispatch(togglePulseFilter())}
             >
               Filter
-            </StyledButton> */}
+            </StyledButton>
             <Typography></Typography>
 
             <Link href="/pulse/portfolio">
@@ -370,10 +375,10 @@ const PulseArticle = () => {
           </React.Fragment>
         ))}
 
-{pagination.total_pages === pagination.page || !pulseArticleData.length ?
+{pagination?.total_pages === pagination?.page || !pulseArticleData.length ?
         ""
         :
-        <Box sx={{display:"flex",justifyContent:"center"}} marginBottom={2} onClick={setPaginate}>
+        <Box sx={{display:"flex",justifyContent:"center"}} marginBottom={6} onClick={setPaginate}>
 
         
         <StyledButton2 variant="contained">
@@ -381,7 +386,7 @@ const PulseArticle = () => {
       </StyledButton2>
       </Box>
       }
-    </Container>
+    </>
   );
 };
 

@@ -119,10 +119,18 @@ const timesSlice = createSlice({
 
     //article api
     builder.addCase(timesArticleApi.pending, (state, action) => {
+      if (Object.keys(action.meta.arg).length !== 0) {
+        state.isTimesArticleLoading = false;
+      }
+      else
       state.isTimesArticleLoading = true;
+      
     });
     builder.addCase(timesArticleApi.fulfilled, (state, action) => {
-      state.isTimesArticleLoading = false;
+      
+        state.isTimesArticleLoading = false;
+      
+     
       state.timesArticle = action.payload.data;
       
     });

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Box,
   Drawer,
@@ -22,8 +22,9 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
-import { togglePulseFilter } from "@/app/Redux/Slices/pulseSlice";
+import { togglePulseFilter,pulseFilteredArticlesApi,setPulseFilters ,clearPulseFilters,pulseArticlesApi} from "@/app/Redux/Slices/pulseSlice";
 import { useDispatch } from "react-redux";
+
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -200,50 +201,96 @@ const StyledButton = styled(Button)`
 
 
 
-const PulseFilter = ({ isOpen, handleModalOpen }) => {
+const PulseFilter = ({ isOpen, handleModalOpen,page,filterData,setFilterData }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
  
   const [showAllCompanies, setShowAllCompanies] = useState(false);
 
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const {  pulseFilter } = useSelector((store) => store.pulse);
+  const {  pulseFilter ,savedFilters} = useSelector((store) => store.pulse);
   const { isAuth } = useSelector((store) => store.auth);
 
   const toggleFilter = () => {
     dispatch(togglePulseFilter());
   };
 
-  const [filter, setFilter] = useState({
-    byMonths: [],
-
-    company_name: [],
-
+ 
+  const [filter, setFilter] = useState({});
+  const [filterBody, setFilterBody] = useState({});
+ 
+  const updateFilter = (item, key, status) => {
     
-  });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
 
-  const handleChange = (category, option) => (event) => {
-    const { checked } = event.target;
+    const filterObj = new Object(filterBody);
 
-    setFilter((prevFilter) => {
-      const updatedOptions = prevFilter[category] || [];
-      const newOptions = checked
-        ? [...updatedOptions, option]
-        : updatedOptions.filter((item) => item !== option);
+    if (status) {
+      let arr = filterObj[key].filter(ele => ele !== item.value);
 
-      return {
-        ...prevFilter,
-        [category]: newOptions,
-      };
+      let arr2 = filter[key].filter(ele => ele !== item.placeholder);
+
+      filterObj[key] = arr;
+
+      setFilterBody(filterObj);
+
+      setFilter({
+        ...filter,
+        [key]: arr2
+      })
+    }
+    else {
+
+      filterObj[key] = filterObj[key] ? [...filterObj[key], item.value] : [item.value];
+
+      setFilterBody(filterObj);
+
+      setFilter({
+        ...filter,
+        [key]: filter[key] ? [...filter[key], item.placeholder] : [item.placeholder]
+      })
+    };
+
+    let flag = true;
+
+    Object.entries(filterObj).map(([key, value]) => {
+
+      if (filterObj[key].length) flag = false;
+    });
+
+setFilterData(filterObj)
+   
+
+    return;
+  };
+
+  const resetFilters = () => {
+   dispatch(togglePulseFilter())
+    dispatch(pulseArticlesApi({page:1,pageSize: 20}));
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    
+    Object.entries(filter).map(([key, value]) => {
+
+      filter[key] = []
+    });
+
+    Object.entries(filterBody).map(([key, value]) => {
+
+      filterBody[key] = []
     });
   };
-  const isAnyOptionSelected = () => {
-    return Object.values(filter).some((options) => options.length > 0);
-  };
-  const isApplyButtonDisabled = !isAnyOptionSelected(); 
+
+   
  
     if(!pulseFilter?.length)
         return <></>
+      console.log(filter,"filter")
   return (
     <Box>
       <Drawer
@@ -285,6 +332,7 @@ const PulseFilter = ({ isOpen, handleModalOpen }) => {
             <Grid item>
               <UnderlinedTypography
                 color={colors.navyBlue500}
+                onClick={resetFilters}
                 sx={{
                   fontWeight: "600",
                   fontSize: "14px",
@@ -318,11 +366,10 @@ const PulseFilter = ({ isOpen, handleModalOpen }) => {
                 <CustomFormControlLabel
                   control={
                     <CustomCheckbox
-                      checked={filter[month.key]?.includes(month.value)}
-                      onChange={handleChange(
-                        pulseFilter[0]?.key,
-                        month.value
-                      )}
+                    checked={filter[pulseFilter[0].key] ? filter[pulseFilter[0].key]?.includes(month.placeholder) : false}
+                      onChange={()=>{
+                        updateFilter(month, pulseFilter[0].key, filter[month.key] ? filter[month.key]?.includes(month.placeholder) : false);
+                      }}
                     />
                   }
                   label={month.placeholder}
@@ -350,11 +397,10 @@ const PulseFilter = ({ isOpen, handleModalOpen }) => {
                 <CustomFormControlLabel
                   control={
                     <CustomCheckbox
-                      checked={filter[company.key]?.includes(company.value)}
-                      onChange={handleChange(
-                        pulseFilter[1]?.key,
-                        company.value
-                      )}
+                    checked={filter[pulseFilter[1]?.key] && filter[pulseFilter[1]?.key]?.includes(company) || false}
+                    onChange={()=>{
+                        updateFilter(company, pulseFilter[0].key, filter[company.key] ? filter[company.key]?.includes(company.placeholder) : false);
+                      }}
                     />
                   }
                   label={company.placeholder}
@@ -402,16 +448,17 @@ const PulseFilter = ({ isOpen, handleModalOpen }) => {
               <StyledButton3
                 fullWidth
                 variant="contained"
-                disabled={isApplyButtonDisabled}
-                // onClick={()=>{
-                //     if(isAuth)
-                //     dispatch(ipoCompaniesListApi(filter))
-                //   else
-                //  {
-                //   handleModalOpen()
-                //   dispatch(toggleIpoFilter())
-                //  }
-                //   }}
+                // disabled={isApplyButtonDisabled}
+                onClick={()=>{
+                    if(isAuth)
+                   
+                    dispatch(pulseFilteredArticlesApi({page:1,pageSize:20,filters:filterData}))
+                  else
+                 {
+                  handleModalOpen()
+                  dispatch(togglePulseFilter())
+                 }
+                  }}
               >
                 Apply Filter
               </StyledButton3>
