@@ -15,7 +15,7 @@ const StyledTypography = styled(Typography)`
 
 const Pagination = ({ currentPage, setCurrentPage }) => {
   const { pagination } = useSelector((store) => store.discovery);
-  const totalPages = pagination.total_pages;
+  const totalPages = pagination?.total_pages;
 
   const handlePageClick = (page) => {
     setCurrentPage(page);

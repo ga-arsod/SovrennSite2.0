@@ -9,6 +9,7 @@ const initialState = {
   allCompanies:[],
   isPulseFilterOpen:false,
   pulseFilter:[],
+  savedFilters:{},
   pulseArticleData:null,
   pulseArticlePaginationData:null,
   pagination: {
@@ -102,13 +103,14 @@ export const getPortfolioCompanies = createAsyncThunk(
 
   export const pulseFilteredArticlesApi = createAsyncThunk("pulseFilteredArticlesApi", async ({page, pageSize,filters},{dispatch}) => {
     const response = await fetch(`${url}/corporate-updates/filtered-data?page=${page || 1}&page_size=${pageSize || 20}`, {
-      method: "GET",
+      method: "POST",
       headers: {
         'Content-Type': 'application/json',
          "Authorization": "Bearer " + localStorage.getItem("token")
     },
     body: JSON.stringify(filters)
     });
+    
    const data=await response.json();
   return data;
   });
@@ -117,6 +119,12 @@ const pulseSlice = createSlice({
   name: 'pulse',
   initialState,
   reducers: {
+    setPulseFilters:(state, action)=> {
+      state.savedFilters = action.payload;
+    },
+    clearPulseFilters: (state) => {
+      state.savedFilters = {};  
+    },
    
     togglePulseFilter: (state) => {
       state.isPulseFilterOpen = !state.isPulseFilterOpen;
@@ -205,6 +213,7 @@ const pulseSlice = createSlice({
         }
         state.pagination = action.payload.pagination;
         state.isCompaniesLoading = false;
+        state.isPulseFilterOpen=false;
       });
       builder.addCase(pulseFilteredArticlesApi.rejected, (state) => {
         state.isError = true;
@@ -214,5 +223,5 @@ const pulseSlice = createSlice({
   }
 });
 
-export const {clearAllCompanies,togglePulseFilter } = pulseSlice.actions;
+export const {clearAllCompanies,togglePulseFilter,setPulseFilters,clearPulseFilters } = pulseSlice.actions;
 export default pulseSlice.reducer;

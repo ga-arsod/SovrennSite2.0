@@ -15,7 +15,7 @@ import TimesFilter from "../../components/Common/TimesFilter";
 import TimesPdfFilter from "../../components/Common/TimesPdfFilter";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import ArticleBanner from "../../components/Times/ArticleBanner"
+import ArticleBanner from "../../components/Times/ArticleBanner";
 import moment from "moment";
 import {
   timesFilterApi,
@@ -25,7 +25,7 @@ import {
   togglePdfFilter,
 } from "../Redux/Slices/timesSlice";
 import { useMediaQuery } from "@mui/material";
-import LoginModal from "../../components/Modal/LoginModal"
+import LoginModal from "../../components/Modal/LoginModal";
 import { useTheme } from "@mui/material/styles";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -100,28 +100,26 @@ const HoverBox = styled(Box)`
   }
 `;
 
-const StyledButton = styled(Button)
-`font-weight: 600;
-font-size: 14px;
-line-height: 17px;
-color: ${colors.navyBlue500};
-padding: 8px 16px;
-text-transform: none;
-border-color: ${colors.navyBlue500};
-&:hover {
-  background-color: ${colors.navyBlue200};
-  color: white;
-  border-color: ${colors.navyBlue200};
-}`
-;
-
-const StyledFilterIcon = styled(FilterAltOutlinedIcon)
-`&& {
-  font-size: 16px;
+const StyledButton = styled(Button)`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
   color: ${colors.navyBlue500};
-}`
-;
-
+  padding: 8px 16px;
+  text-transform: none;
+  border-color: ${colors.navyBlue500};
+  &:hover {
+    background-color: ${colors.navyBlue200};
+    color: white;
+    border-color: ${colors.navyBlue200};
+  }
+`;
+const StyledFilterIcon = styled(FilterAltOutlinedIcon)`
+  && {
+    font-size: 16px;
+    color: ${colors.navyBlue500};
+  }
+`;
 const StyledTypography3 = styled(Typography)`
   font-weight: 600;
   font-size: 17px;
@@ -137,29 +135,30 @@ const StyledTypography3 = styled(Typography)`
 const Times = () => {
   const theme = useTheme();
   const [activeTab, setActiveTab] = useState("one");
-  const [isOpen,setIsopen]=useState(false)
+  const [isOpen, setIsopen] = useState(false);
   const dispatch = useDispatch();
-  const { isTimesArticleLoading, timesArticle, isArticleFilterOpen,isPdfModalOpen } = useSelector(
-    (store) => store.times
-  );
-  const { isAuth,userDetails } = useSelector(
-    (store) => store.auth
-  );
+  const {
+    isTimesArticleLoading,
+    timesArticle,
+    isArticleFilterOpen,
+    isPdfModalOpen,
+  } = useSelector((store) => store.times);
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
 
-  const handleModalOpen=()=>{
-    setIsopen(true)
-  }
+  const handleModalOpen = () => {
+    setIsopen(true);
+  };
 
-  const handleClose=()=>{
-    setIsopen(false)
-  }
+  const handleClose = () => {
+    setIsopen(false);
+  };
 
   const toggleDrawer = () => {
-    if (activeTab === 'one') {
+    if (activeTab === "one") {
       if (!isArticleFilterOpen) {
         dispatch(toggleArticleFilter());
       }
-    } else if (activeTab === 'two') {
+    } else if (activeTab === "two") {
       if (!isPdfModalOpen) {
         dispatch(togglePdfFilter());
       }
@@ -174,7 +173,6 @@ const Times = () => {
     }));
   };
 
- 
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
@@ -193,17 +191,29 @@ const Times = () => {
       setOpenArticles(initialOpenState);
     }
   }, [timesArticle]);
-  
 
-  if (isTimesArticleLoading ) {
+  if (isTimesArticleLoading) {
     return (
       <>
         <Head>
           <title>Be equipped with Sovrenn times Daily Bulletin</title>
-          <meta name="description" content="Stay informed with the latest news from Sovrenn times Daily Bulletin." />
-          <meta property="og:title" content="Be equipped with Sovrenn times Daily Bulletin" />
-          <meta property="og:description" content="Stay informed with the latest news from Sovrenn times Daily Bulletin." />
-          <link rel="canonical" href="https://www.sovrenn.com/times" key="canonical" />
+          <meta
+            name="description"
+            content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
+          />
+          <meta
+            property="og:title"
+            content="Be equipped with Sovrenn times Daily Bulletin"
+          />
+          <meta
+            property="og:description"
+            content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
+          />
+          <link
+            rel="canonical"
+            href="https://www.sovrenn.com/times"
+            key="canonical"
+          />
         </Head>
         <Spinner margin={15} />
       </>
@@ -214,46 +224,46 @@ const Times = () => {
     <>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <Grid container marginTop="60px" flexDirection="column">
-        {!isSmallerThanMd ? 
-        isAuth && 
-        (userDetails?.subscriptions?.includes("full-access") ||
-          
-           
-            userDetails?.subscriptions?.includes("life") ) ?""
-            :
-            (
-              <Grid
-                item
-                paddingY={1.5}
+        {!isSmallerThanMd ? (
+          isAuth &&
+          (userDetails?.subscriptions?.includes("full-access") ||
+            userDetails?.subscriptions?.includes("life")) ? (
+            ""
+          ) : (
+            <Grid
+              item
+              paddingY={1.5}
+              sx={{
+                backgroundColor: "#FCE1B3",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              width="100%"
+            >
+              <Box
+                width="1200px"
                 sx={{
-                  backgroundColor: "#FCE1B3",
                   display: "flex",
-                  justifyContent: "center",
+                  justifyContent: "space-between",
                   alignItems: "center",
                 }}
-                width="100%"
               >
-                <Box
-                  width="1200px"
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <StyledTypography1>
-                    You are only reading free Sovrenn Times Monday articles. To read daily Sovrenn Times articles, you need to buy a plan.
-                  </StyledTypography1>
-                  {
-                    isAuth ?  <StyledButton2 variant="contained">{`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}</StyledButton2>
-                    : <StyledButton2 variant="contained">{`Buy Full Access @ ₹5000/yr`}</StyledButton2>
-                  }
-                 
-                </Box>
-              </Grid>
-            ) 
-        :<></>
-        }
+                <StyledTypography1>
+                  You are only reading free Sovrenn Times Monday articles. To
+                  read daily Sovrenn Times articles, you need to buy a plan.
+                </StyledTypography1>
+                {isAuth ? (
+                  <StyledButton2 variant="contained">{`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}</StyledButton2>
+                ) : (
+                  <StyledButton2 variant="contained">{`Buy Full Access @ ₹5000/yr`}</StyledButton2>
+                )}
+              </Box>
+            </Grid>
+          )
+        ) : (
+          <></>
+        )}
 
         <Grid item>
           <TimesHeader setActiveTab={setActiveTab} />
@@ -271,64 +281,83 @@ const Times = () => {
           </Container>
         </Grid>
         <Container>
-          {
-            activeTab=='two' ? <ArticleBanner/> :
-            <Grid item >
-            {timesArticle?.map((item, index) => (
-              <div className={styles.newsDiv} key={index}>
-                <HoverBox
-                  onClick={() => toggleArticle(index)}
-                  className={openArticles[index] ? "" : "collapsed"}
-                >
-                  <Grid container justifyContent="space-between" paddingY={0} paddingX="12px" alignItems="center">
-                    <Grid item>
-                      <StyledTypography3 className="header-text">
-                        {moment(item.createdAt).format("Do MMMM YYYY")}
-                      </StyledTypography3>
+          {activeTab == "two" ? (
+            <ArticleBanner />
+          ) : (
+            <Grid item>
+              {timesArticle?.map((item, index) => (
+                <div className={styles.newsDiv} key={index}>
+                  <HoverBox
+                    onClick={() => toggleArticle(index)}
+                    className={openArticles[index] ? "" : "collapsed"}
+                  >
+                    <Grid
+                      container
+                      justifyContent="space-between"
+                      paddingY={0}
+                      paddingX="12px"
+                      alignItems="center"
+                    >
+                      <Grid item>
+                        <StyledTypography3 className="header-text">
+                          {moment(item.createdAt).format("Do MMMM YYYY")}
+                        </StyledTypography3>
+                      </Grid>
+                      <Grid item>
+                        <IconButton>
+                          {openArticles[index] ? (
+                            <KeyboardArrowUpIcon
+                              sx={{ color: colors.navyBlue900 }}
+                              fontSize="large"
+                              className="header-icon"
+                            />
+                          ) : (
+                            <KeyboardArrowDownIcon
+                              sx={{ color: colors.navyBlue900 }}
+                              fontSize="large"
+                              className="header-icon"
+                            />
+                          )}
+                        </IconButton>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <IconButton>
-                        {openArticles[index] ? (
-                          <KeyboardArrowUpIcon sx={{ color: colors.navyBlue900 }} fontSize="large" className="header-icon" />
-                        ) : (
-                          <KeyboardArrowDownIcon sx={{ color: colors.navyBlue900 }} fontSize="large" className="header-icon" />
-                        )}
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                </HoverBox>
+                  </HoverBox>
 
-                {openArticles[index] && (
-                  <div className={styles.newsCard}>
-                    <NewsDataView
-                      data={{
-                        company_name: item.company_name,
-                        company_slug: item.company_slug,
-                        content: item.content,
-                      }}
-                      isAuth={true}
-                      discovery_route={
-                        Object.keys(item.is_available_in_discovery).length === 0
-                          ? ""
-                          : `/discovery/${item.is_available_in_discovery?.slug}/${item.company_slug}`
-                      }
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
-          </Grid>
-          }
-
-         
-        
+                  {openArticles[index] && (
+                    <div className={styles.newsCard}>
+                      <NewsDataView
+                        data={{
+                          company_name: item.company_name,
+                          company_slug: item.company_slug,
+                          content: item.content,
+                        }}
+                        isAuth={true}
+                        discovery_route={
+                          Object.keys(item.is_available_in_discovery).length ===
+                          0
+                            ? ""
+                            : `/discovery/${item.is_available_in_discovery?.slug}/${item.company_slug}`
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </Grid>
+          )}
         </Container>
       </Grid>
 
       {activeTab === "one" ? (
-        <TimesFilter isOpen={isArticleFilterOpen} handleModalOpen={handleModalOpen} />
+        <TimesFilter
+          isOpen={isArticleFilterOpen}
+          handleModalOpen={handleModalOpen}
+        />
       ) : activeTab === "two" ? (
-        <TimesPdfFilter isOpen={isPdfModalOpen} handleModalOpen={handleModalOpen} />
+        <TimesPdfFilter
+          isOpen={isPdfModalOpen}
+          handleModalOpen={handleModalOpen}
+        />
       ) : null}
     </>
   );

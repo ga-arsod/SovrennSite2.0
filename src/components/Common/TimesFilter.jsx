@@ -232,33 +232,76 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
     setOpen(false)
   }
   
-
-  const [filter, setFilter] = useState({
-    sector_id: [],
-    industry: [],
-    company_name: [],
-    byMonths: [],
-
-    market_cap: [],
-    ttm_pe: [],
-    company_type: [],
-  });
-console.log(filter,"filter")
-  const handleChange = (category, option) => (event) => {
-   
-    const { checked } = event.target;
-
-    setFilter((prevFilter) => {
-      const updatedOptions = prevFilter[category] || [];
-      const newOptions = checked
-        ? [...updatedOptions, option]
-        : updatedOptions.filter((item) => item !== option);
-
-      return {
-        ...prevFilter,
-        [category]: newOptions,
-      };
+   const [filterData,setFilterData]=useState({})
+  const [filter, setFilter] = useState({});
+  const [filterBody, setFilterBody] = useState({});
+ 
+  const updateFilter = (item, key, status) => {
+    
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     });
+
+    const filterObj = new Object(filterBody);
+
+    if (status) {
+      let arr = filterObj[key].filter(ele => ele !== item.value);
+
+      let arr2 = filter[key].filter(ele => ele !== item.placeholder);
+
+      filterObj[key] = arr;
+
+      setFilterBody(filterObj);
+
+      setFilter({
+        ...filter,
+        [key]: arr2
+      })
+    }
+    else {
+
+      filterObj[key] = filterObj[key] ? [...filterObj[key], item.value] : [item.value];
+
+      setFilterBody(filterObj);
+
+      setFilter({
+        ...filter,
+        [key]: filter[key] ? [...filter[key], item.placeholder] : [item.placeholder]
+      })
+    };
+
+    let flag = true;
+
+    Object.entries(filterObj).map(([key, value]) => {
+
+      if (filterObj[key].length) flag = false;
+    });
+
+setFilterData(filterObj)
+  
+
+    return;
+  };
+
+  const resetFilters = () => {
+  
+   
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    
+    Object.entries(filter).map(([key, value]) => {
+
+      filter[key] = []
+    });
+
+    Object.entries(filterBody).map(([key, value]) => {
+
+      filterBody[key] = []
+    });
+    console.log(filter,"filter")
   };
 
   const optionsFilterArray=(arr,key)=>{
@@ -273,29 +316,11 @@ console.log(filter,"filter")
     return newArray;
   }
 
-  const resetFilters = () => {
-    setFilter({
-      sector_id: [],
-      industry: [],
-      company_name: [],
-      byMonths: [],
+  
 
-      market_cap: [],
-      ttm_pe: [],
-      company_type: [],
-    });
-  };
+  
 
-  const isApplyButtonDisabled =
-    filter.sector_id.length === 0 &&
-    filter.byMonths.length === 0 &&
-    filter.industry.length === 0 &&
-    filter.company_name.length === 0 &&
-    filter.market_cap.length === 0 &&
-    filter.ttm_pe.length === 0 &&
-    filter.company_type.length === 0;
-
-  if (!timesFilter.length) {
+  if (!timesFilter?.length) {
     return <></>;
   }
 
@@ -335,7 +360,7 @@ console.log(filter,"filter")
                   letterSpacing: "-0.02em",
                 }}
                 component="span"
-                onClick={resetFilters}
+               
               >
                 Filter
               </Typography>
@@ -343,6 +368,7 @@ console.log(filter,"filter")
             <Grid item>
               <UnderlinedTypography
                 color={colors.navyBlue500}
+                onClick={()=>{resetFilters()}}
                 sx={{
                   fontWeight: "600",
                   fontSize: "14px",
@@ -369,8 +395,10 @@ console.log(filter,"filter")
                     <Grid item xs={12} key={index}>
                    
                       <CustomFormControlLabel
-                        checked={filter[item.key]?.includes(item.value)}
-                        onChange={handleChange(timesFilter[0]?.key, item.value)}
+                        checked={filter[timesFilter[0].key] ? filter[timesFilter[0].key]?.includes(item.placeholder) : false}
+                        onChange={()=>{
+                          updateFilter(item, timesFilter[0].key, filter[item.key] ? filter[item.key]?.includes(item.placeholder) : false);
+                        }}
                         control={<CustomCheckbox />}
                         label={item.placeholder}
                       />
@@ -392,8 +420,10 @@ console.log(filter,"filter")
                   <>
                     <Grid item xs={6} key={index}>
                       <CustomFormControlLabel
-                        checked={filter[item.key]?.includes(item.value)}
-                        onChange={handleChange(timesFilter[1]?.key, item.value)}
+                        checked={filter[timesFilter[1].key] ? filter[timesFilter[1].key]?.includes(item.placeholder) : false}
+                        onChange={()=>{
+                          updateFilter(item, timesFilter[1].key, filter[item.key] ? filter[item.key]?.includes(item.placeholder) : false);
+                        }}
                         control={<CustomCheckbox />}
                         label={item.placeholder}
                       />
@@ -416,8 +446,10 @@ console.log(filter,"filter")
                       <CustomFormControlLabel
                         control={<CustomCheckbox />}
                         label={item.placeholder}
-                        checked={filter[item.key]?.includes(item.value)}
-                        onChange={handleChange(timesFilter[2]?.key, item.value)}
+                        checked={filter[timesFilter[2].key] ? filter[timesFilter[2].key]?.includes(item.placeholder) : false}
+                        onChange={()=>{
+                          updateFilter(item, timesFilter[2].key, filter[item.key] ? filter[item.key]?.includes(item.placeholder) : false);
+                        }}
                       />
                     </Grid>
                   </>
@@ -462,11 +494,10 @@ console.log(filter,"filter")
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
-                        checked={filter[sector.key]?.includes(sector.value)}
-                        onChange={handleChange(
-                          timesFilter[3]?.key,
-                          sector.value
-                        )}
+                      checked={filter[timesFilter[3].key] ? filter[timesFilter[3].key]?.includes(sector.placeholder) : false}
+                      onChange={()=>{
+                        updateFilter(sector, timesFilter[3].key, filter[sector.key] ? filter[sector.key]?.includes(sector.placeholder) : false);
+                      }}
                       />
                     }
                     label={sector.placeholder}
@@ -522,11 +553,10 @@ console.log(filter,"filter")
                 key={index}
                 control={
                   <CustomCheckbox
-                    checked={filter[industries.key]?.includes(industries.value)}
-                    onChange={handleChange(
-                      timesFilter[4]?.key,
-                      industries.value
-                    )}
+                  checked={filter[timesFilter[4].key] ? filter[timesFilter[4].key]?.includes(industries.placeholder) : false}
+                  onChange={()=>{
+                    updateFilter(industries, timesFilter[4].key, filter[industries.key] ? filter[industries.key]?.includes(industries.placeholder) : false);
+                  }}
                   />
                 }
                 label={industries.placeholder}
@@ -559,8 +589,10 @@ console.log(filter,"filter")
                 key={index}
                 control={
                   <CustomCheckbox
-                    checked={filter[month.key]?.includes(month.value)}
-                    onChange={handleChange(timesFilter[5]?.key, month.value)}
+                  checked={filter[timesFilter[5].key] ? filter[timesFilter[5].key]?.includes(month.placeholder) : false}
+                  onChange={()=>{
+                    updateFilter(month, timesFilter[5].key, filter[month.key] ? filter[month.key]?.includes(month.placeholder) : false);
+                  }}
                   />
                 }
                 label={month.placeholder}
@@ -617,11 +649,10 @@ console.log(filter,"filter")
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
-                        checked={filter[company.key]?.includes(company.value)}
-                        onChange={handleChange(
-                          timesFilter[6]?.key,
-                          company.value
-                        )}
+                      checked={filter[timesFilter[6].key] ? filter[timesFilter[6].key]?.includes(company.placeholder) : false}
+                      onChange={()=>{
+                        updateFilter(company, timesFilter[6].key, filter[company.key] ? filter[company.key]?.includes(company.placeholder) : false);
+                      }}
                       />
                     }
                     label={company.placeholder}
@@ -668,10 +699,10 @@ console.log(filter,"filter")
               <StyledButton3
                 fullWidth
                 variant="contained"
-                disabled={isApplyButtonDisabled}
+                // disabled={isApplyButtonDisabled}
                 onClick={()=>{
                   if(isAuth)
-                  dispatch(timesArticleApi(filter))
+                  dispatch(timesArticleApi(filterData))
                 else
                {
                 handleModalOpen()
