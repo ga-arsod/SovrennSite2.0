@@ -114,9 +114,8 @@ const PulseSearch = () => {
     throttle((text) => {
       dispatch(searchAllCompanies(text));
     }, THROTTLE_DELAY),
-    []
+    [dispatch]
   );
-
   
   const debouncedSearch = useCallback(
     debounce((text) => {
@@ -185,8 +184,7 @@ const PulseSearch = () => {
     setSearchText(""); 
     dispatch(clearAllCompanies());
   };
-console.log(recentlyAdded,"recentelyAdded")
-console.log(companies,"companies")
+
   return (
    
 <Container sx={{ paddingBottom: '80px' }}>

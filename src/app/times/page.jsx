@@ -176,7 +176,7 @@ const Times = () => {
     dispatch(timesPdfFilterApi());
     dispatch(timesFilterApi());
     dispatch(timesArticleApi({ page: page1, data: {} }));
-  }, [dispatch]);
+  }, []);
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const { isAuth, userDetails } = useSelector((store) => store.auth);
 
@@ -363,7 +363,7 @@ const Times = () => {
                   </HoverBox>
                   {!collapsedGroups[date] &&
                       groupedArticles[date].map((item, index) => (
-                        <div className={styles.newsCard}>
+                        <div className={styles.newsCard} key={index}>
                         <NewsDataView
                         data={{
                           company_name: item.company_name,
