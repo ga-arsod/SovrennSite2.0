@@ -1,3 +1,4 @@
+import { Pagination } from "@mui/material";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const url = "https://api.sovrenn.com";
@@ -14,6 +15,7 @@ const initialState = {
   isPdfListLoading:false,
   pdfData:null,
   isPdfDataLoading:false,
+  pagination:{},
 };
 
 export const timesFilterApi = createAsyncThunk("timesFilterApi", async () => {
@@ -34,8 +36,8 @@ export const timesPdfFilterApi = createAsyncThunk("timesPdfFilterApi", async () 
   return response.json();
 });
 
-export const timesPdfListApi = createAsyncThunk("timesPdfListApi", async (data,{dispatch}) => {
-  const response = await fetch(`${url}/news/pdf-data`, {
+export const timesPdfListApi = createAsyncThunk("timesPdfListApi", async ({page,data}) => {
+  const response = await fetch(`${url}/news/pdf-data?page=${page}&page_size=10`, {
     method: "POST",
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -44,10 +46,7 @@ export const timesPdfListApi = createAsyncThunk("timesPdfListApi", async (data,{
     body: JSON.stringify(data),
   });
 
-  if(response.ok && Object.keys(data).length !== 0)
-  {
-    dispatch(togglePdfFilter())
-  }
+ 
   return response.json();
 });
 
@@ -69,8 +68,8 @@ export const timesPdfDataApi = createAsyncThunk("timesPdfDataApi", async (pdfId)
 
 export const timesArticleApi = createAsyncThunk(
   "timesArticleApi",
-  async (data,{dispatch}) => {
-    const response = await fetch(`${url}/news/data`, {
+  async ({page,data},{dispatch}) => {
+    const response = await fetch(`${url}/news/data?page=${page}&page_size=10`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -79,10 +78,7 @@ export const timesArticleApi = createAsyncThunk(
       body: JSON.stringify(data),
     });
 
-    if( response.ok && Object.keys(data).length !== 0)
-    {
-      dispatch(toggleArticleFilter())
-    }
+    
     return response.json();
   }
 );
@@ -127,11 +123,20 @@ const timesSlice = createSlice({
       
     });
     builder.addCase(timesArticleApi.fulfilled, (state, action) => {
+      const { page } = action.meta.arg;
+      const newArticles = action.payload.data;
+      if (page === 1) {
+        
+        state.timesArticle = newArticles;
+      } else {
+       
+        state.timesArticle = [...state.timesArticle, ...newArticles];
+      }
       
         state.isTimesArticleLoading = false;
       
+     state.pagination=action.payload.pagination
      
-      state.timesArticle = action.payload.data;
       
     });
     builder.addCase(timesArticleApi.rejected, (state, action) => {
@@ -141,10 +146,20 @@ const timesSlice = createSlice({
      //times pdf list api
      builder.addCase(timesPdfListApi.pending, (state, action) => {
       state.isPdfListLoading = true;
+     
     });
     builder.addCase(timesPdfListApi.fulfilled, (state, action) => {
+      const { page } = action.meta.arg;
+      const newArticles = action.payload.data;
+      if (page === 1) {
+        
+        state.timesPdfList = newArticles;
+      } else {
+       
+        state.timesPdfList = [...state.timesPdfList, ...newArticles];
+      }
       state.isPdfListLoading = false;
-      state.timesPdfList = action.payload.data;
+      state.pagination=action.payload.pagination
       
     });
     builder.addCase(timesPdfListApi.rejected, (state, action) => {

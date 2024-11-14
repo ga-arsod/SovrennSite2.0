@@ -100,7 +100,7 @@ const IpoArticles = () => {
   return (
     <>
       <Head>
-        <title>{ipoArticle.title}</title>
+        <title>{ipoArticle?.title}</title>
         <link
           rel="canonical"
           href={`https://www.sovrenn.com/ipo-zone/${id.replace("&amp;", "&")}`}
@@ -109,7 +109,7 @@ const IpoArticles = () => {
       </Head>
       <article>
         <Box sx={{ maxWidth: 915, margin: "84px auto 0px auto", padding: 2 }}>
-          <StyledTypography1>{ipoArticle.title}</StyledTypography1>
+          <StyledTypography1>{ipoArticle?.title}</StyledTypography1>
 
           {ipoArticle ? (
             <div id={styles.MainContainer}>

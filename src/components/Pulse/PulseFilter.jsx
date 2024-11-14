@@ -1,5 +1,5 @@
 "use client";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Drawer,
@@ -22,9 +22,14 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
-import { togglePulseFilter,pulseFilteredArticlesApi,setPulseFilters ,clearPulseFilters,pulseArticlesApi} from "@/app/Redux/Slices/pulseSlice";
+import {
+  togglePulseFilter,
+  pulseFilteredArticlesApi,
+  setPulseFilters,
+  clearPulseFilters,
+  pulseArticlesApi,
+} from "@/app/Redux/Slices/pulseSlice";
 import { useDispatch } from "react-redux";
-
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -199,98 +204,86 @@ const StyledButton = styled(Button)`
   }
 `;
 
-
-
-const PulseFilter = ({ isOpen, handleModalOpen,page,filterData,setFilterData }) => {
+const PulseFilter = ({
+  isOpen,
+  handleModalOpen,
+  page,
+  setPage,
+  filterData,
+  setFilterData,
+}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
- 
+
   const [showAllCompanies, setShowAllCompanies] = useState(false);
 
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const {  pulseFilter ,savedFilters} = useSelector((store) => store.pulse);
+  const { pulseFilter, savedFilters } = useSelector((store) => store.pulse);
   const { isAuth } = useSelector((store) => store.auth);
 
   const toggleFilter = () => {
     dispatch(togglePulseFilter());
   };
 
- 
+  const [isFilterReset, setIsFilterReset] = useState(false);
   const [filter, setFilter] = useState({});
   const [filterBody, setFilterBody] = useState({});
- 
-  const updateFilter = (item, key, status) => {
-    
+
+  const updateFilter = (item, key) => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
 
-    const filterObj = new Object(filterBody);
+    const newFilterBody = { ...filterBody };
+    const newFilter = { ...filter };
 
-    if (status) {
-      let arr = filterObj[key].filter(ele => ele !== item.value);
+    const isItemSelected =
+      newFilter[key] && newFilter[key].includes(item.placeholder);
 
-      let arr2 = filter[key].filter(ele => ele !== item.placeholder);
-
-      filterObj[key] = arr;
-
-      setFilterBody(filterObj);
-
-      setFilter({
-        ...filter,
-        [key]: arr2
-      })
+    if (isItemSelected) {
+      newFilterBody[key] = newFilterBody[key].filter(
+        (ele) => ele !== item.value
+      );
+      newFilter[key] = newFilter[key].filter((ele) => ele !== item.placeholder);
+    } else {
+      newFilterBody[key] = newFilterBody[key]
+        ? [...newFilterBody[key], item.value]
+        : [item.value];
+      newFilter[key] = newFilter[key]
+        ? [...newFilter[key], item.placeholder]
+        : [item.placeholder];
     }
-    else {
 
-      filterObj[key] = filterObj[key] ? [...filterObj[key], item.value] : [item.value];
-
-      setFilterBody(filterObj);
-
-      setFilter({
-        ...filter,
-        [key]: filter[key] ? [...filter[key], item.placeholder] : [item.placeholder]
-      })
-    };
-
-    let flag = true;
-
-    Object.entries(filterObj).map(([key, value]) => {
-
-      if (filterObj[key].length) flag = false;
-    });
-
-setFilterData(filterObj)
-   
+    setFilterBody(newFilterBody);
+    setFilter(newFilter);
+    setFilterData(newFilterBody);
 
     return;
   };
 
   const resetFilters = () => {
-   dispatch(togglePulseFilter())
-    dispatch(pulseArticlesApi({page:1,pageSize: 20}));
+    setPage(1);
+    setIsFilterReset(true);
+   
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
-    
-    Object.entries(filter).map(([key, value]) => {
 
-      filter[key] = []
+    Object.entries(filter).map(([key, value]) => {
+      filter[key] = [];
     });
 
     Object.entries(filterBody).map(([key, value]) => {
-
-      filterBody[key] = []
+      filterBody[key] = [];
     });
   };
+  console.log(filter, "filter");
+  console.log(filterData, "filterData");
 
-   
- 
-    if(!pulseFilter?.length)
-        return <></>
-      console.log(filter,"filter")
+  if (!pulseFilter?.length) return <></>;
+  console.log(filter, "filter");
   return (
     <Box>
       <Drawer
@@ -347,84 +340,101 @@ setFilterData(filterObj)
           </Grid>
           <CustomDivider sx={{ mt: 1, mb: 3 }} />
           <FormControl component="fieldset" sx={{ width: "100%", padding: 2 }}>
-          
-         
-          <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-            {pulseFilter[0]?.category}
-          </StyledTypography1>
+            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
+              {pulseFilter[0]?.category}
+            </StyledTypography1>
 
-          <Grid
-            container
-            justifyContent="space-between"
-            sx={{ width: "80%" }}
-          >
-            {(
-               pulseFilter[0]?.options
-              
-            ).map((month, index) => (
-              <Grid item key={index} xs={12}>
-                <CustomFormControlLabel
-                  control={
-                    <CustomCheckbox
-                    checked={filter[pulseFilter[0].key] ? filter[pulseFilter[0].key]?.includes(month.placeholder) : false}
-                      onChange={()=>{
-                        updateFilter(month, pulseFilter[0].key, filter[month.key] ? filter[month.key]?.includes(month.placeholder) : false);
-                      }}
-                    />
-                  }
-                  label={month.placeholder}
-                />
-              </Grid>
-            ))}
-          </Grid>
-
-         
-          <CustomDivider sx={{ mt: 2, mb: 2 }} />
-          <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-            {pulseFilter[1]?.category}
-          </StyledTypography1>
-
-          <Grid
-            container
-            justifyContent="space-between"
-            sx={{ width: "80%" }}
-          >
-            {(showAllCompanies
-              ? pulseFilter[1]?.options
-              : pulseFilter[1]?.options.slice(0, 5)
-            ).map((company, index) => (
-              <Grid item key={index} xs={12}>
-                <CustomFormControlLabel
-                  control={
-                    <CustomCheckbox
-                    checked={filter[pulseFilter[1]?.key] && filter[pulseFilter[1]?.key]?.includes(company) || false}
-                    onChange={()=>{
-                        updateFilter(company, pulseFilter[0].key, filter[company.key] ? filter[company.key]?.includes(company.placeholder) : false);
-                      }}
-                    />
-                  }
-                  label={company.placeholder}
-                />
-              </Grid>
-            ))}
-          </Grid>
-
-          <Grid container justifyContent="flex-start">
-            <StyledViewAllButton
-              endIcon={
-                showAllCompanies ? (
-                  <KeyboardArrowUpOutlinedIcon />
-                ) : (
-                  <ExpandMoreIcon />
-                )
-              }
-              onClick={() => setShowAllCompanies(!showAllCompanies)}
+            <Grid
+              container
+              justifyContent="space-between"
+              sx={{ width: "80%" }}
             >
-              {showAllCompanies ? "Hide" : "View All"}
-            </StyledViewAllButton>
-          </Grid>
-         
-        </FormControl>
+              {(pulseFilter[0]?.options).map((month, index) => (
+                <Grid item key={index} xs={12}>
+                  <CustomFormControlLabel
+                    control={
+                      <CustomCheckbox
+                        checked={
+                          filter[pulseFilter[0].key]
+                            ? filter[pulseFilter[0].key]?.includes(
+                                month.placeholder
+                              )
+                            : false
+                        }
+                        onChange={() => {
+                          updateFilter(
+                            month,
+                            pulseFilter[0].key,
+                            filter[month.key]
+                              ? filter[month.key]?.includes(month.placeholder)
+                              : false
+                          );
+                        }}
+                      />
+                    }
+                    label={month.placeholder}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+
+            <CustomDivider sx={{ mt: 2, mb: 2 }} />
+            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
+              {pulseFilter[1]?.category}
+            </StyledTypography1>
+
+            <Grid
+              container
+              justifyContent="space-between"
+              sx={{ width: "80%" }}
+            >
+              {(showAllCompanies
+                ? pulseFilter[1]?.options
+                : pulseFilter[1]?.options.slice(0, 5)
+              ).map((company, index) => (
+                <Grid item key={index} xs={12}>
+                  <CustomFormControlLabel
+                    control={
+                      <CustomCheckbox
+                        checked={
+                          (filter[pulseFilter[1]?.key] &&
+                            filter[pulseFilter[1]?.key]?.includes(company)) ||
+                          false
+                        }
+                        onChange={() => {
+                          updateFilter(
+                            company,
+                            pulseFilter[0].key,
+                            filter[company.key]
+                              ? filter[company.key]?.includes(
+                                  company.placeholder
+                                )
+                              : false
+                          );
+                        }}
+                      />
+                    }
+                    label={company.placeholder}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+
+            <Grid container justifyContent="flex-start">
+              <StyledViewAllButton
+                endIcon={
+                  showAllCompanies ? (
+                    <KeyboardArrowUpOutlinedIcon />
+                  ) : (
+                    <ExpandMoreIcon />
+                  )
+                }
+                onClick={() => setShowAllCompanies(!showAllCompanies)}
+              >
+                {showAllCompanies ? "Hide" : "View All"}
+              </StyledViewAllButton>
+            </Grid>
+          </FormControl>
         </ScrollableBox>
         <Box
           sx={{
@@ -440,7 +450,13 @@ setFilterData(filterObj)
         >
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <StyledButton fullWidth variant="outlined" onClick={()=>{dispatch(togglePulseFilter())}}>
+              <StyledButton
+                fullWidth
+                variant="outlined"
+                onClick={() => {
+                  dispatch(togglePulseFilter());
+                }}
+              >
                 Cancel
               </StyledButton>
             </Grid>
@@ -449,16 +465,26 @@ setFilterData(filterObj)
                 fullWidth
                 variant="contained"
                 // disabled={isApplyButtonDisabled}
-                onClick={()=>{
-                    if(isAuth)
-                   
-                    dispatch(pulseFilteredArticlesApi({page:1,pageSize:20,filters:filterData}))
-                  else
-                 {
-                  handleModalOpen()
-                  dispatch(togglePulseFilter())
-                 }
-                  }}
+                onClick={() => {
+                  if (isAuth) {
+                    if (isFilterReset) {
+                      dispatch(pulseArticlesApi({ page: 1, pageSize: 20 }));
+                      dispatch(togglePulseFilter())
+                    } else {
+                        dispatch(togglePulseFilter())
+                      dispatch(
+                        pulseFilteredArticlesApi({
+                          page: 1,
+                          pageSize: 20,
+                          filters: filterData,
+                        })
+                      );
+                    }
+                  } else {
+                    handleModalOpen();
+                    dispatch(togglePulseFilter());
+                  }
+                }}
               >
                 Apply Filter
               </StyledButton3>

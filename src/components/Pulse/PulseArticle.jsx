@@ -24,9 +24,10 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import {
   togglePulseFilter,
-  pulseArticlesApi,pulseFilteredArticlesApi
+  pulseArticlesApi,
+  pulseFilteredArticlesApi,
 } from "@/app/Redux/Slices/pulseSlice";
-import PulseFilter from "../../components/Pulse/PulseFilter"
+import PulseFilter from "../../components/Pulse/PulseFilter";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -126,11 +127,10 @@ const StyledButton2 = styled(Button)`
   font-size: 18px;
   line-height: 21px;
   padding: 8px 24px;
- 
+
   background-color: ${colors.themeGreen};
   text-transform: none;
 
- 
   :hover {
     background-color: ${colors.themeButtonHover};
   }
@@ -146,10 +146,12 @@ const StyledButton2 = styled(Button)`
 const PulseArticle = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const [page,setPage]=useState(1);
-  const { pulseArticleData,pagination, isPulseFilterOpen } = useSelector((store) => store.pulse);
+  const [page, setPage] = useState(1);
+  const { pulseArticleData, pagination, isPulseFilterOpen } = useSelector(
+    (store) => store.pulse
+  );
   const [expanded, setExpanded] = useState({});
-  const [filterData,setFilterData]=useState({})
+  const [filterData, setFilterData] = useState({});
 
   useEffect(() => {
     dispatch(pulseArticlesApi({ page: 1, pageSize: 20 }));
@@ -171,14 +173,19 @@ const PulseArticle = () => {
   const setPaginate = () => {
     setPage(page + 1);
 
-    if(Object.entries(filterData).length)
-      dispatch(pulseFilteredArticlesApi({page:page + 1, pageSize:20,filters:filterData}));
-   else
-   dispatch(pulseArticlesApi({page:page + 1, pageSize:20}));
+    if (Object.entries(filterData).length)
+      dispatch(
+        pulseFilteredArticlesApi({
+          page: page + 1,
+          pageSize: 20,
+          filters: filterData,
+        })
+      );
+    else dispatch(pulseArticlesApi({ page: page + 1, pageSize: 20 }));
   };
-const handleModalOpen=()=>{
+  const handleModalOpen = () => {
     setIsOpen(false);
-}
+  };
   const groupedByDate = pulseArticleData?.reduce((acc, article) => {
     const date = moment(article?.news_date).format("Do MMM YYYY");
     if (!acc[date]) {
@@ -188,9 +195,39 @@ const handleModalOpen=()=>{
     return acc;
   }, {});
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && (event.key === "p" || event.key === "P")) {
+        event.preventDefault();
+      }
+    };
+
+    const handleContextMenu = (event) => {
+      event.preventDefault();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("contextmenu", handleContextMenu);
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("contextmenu", handleContextMenu);
+    };
+  }, []);
+
   return (
     <>
-    <PulseFilter isOpen={isPulseFilterOpen} handleModalOpen={handleModalOpen} page={page} filterData={filterData} setFilterData={setFilterData}/>
+      <PulseFilter
+        isOpen={isPulseFilterOpen}
+        handleModalOpen={handleModalOpen}
+        page={page}
+        setPage={setPage}
+        filterData={filterData}
+        setFilterData={setFilterData}
+      />
       <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "28px" }}>
         <Grid container alignItems="center">
           <Grid item paddingY={{ xs: 2, sm: 5 }}>
@@ -288,7 +325,7 @@ const handleModalOpen=()=>{
             </HeaderBox>
 
             <Collapse in={expanded[date]} timeout="auto" unmountOnExit>
-              {articles.map((article) => (
+              {articles?.map((article) => (
                 <Card
                   key={article.company_name}
                   variant="outlined"
@@ -375,17 +412,18 @@ const handleModalOpen=()=>{
           </React.Fragment>
         ))}
 
-{pagination?.total_pages === pagination?.page || !pulseArticleData.length ?
+      {pagination?.total_pages === pagination?.page ||
+      !pulseArticleData.length ? (
         ""
-        :
-        <Box sx={{display:"flex",justifyContent:"center"}} marginBottom={6} onClick={setPaginate}>
-
-        
-        <StyledButton2 variant="contained">
-       Load More
-      </StyledButton2>
-      </Box>
-      }
+      ) : (
+        <Box
+          sx={{ display: "flex", justifyContent: "center" }}
+          marginBottom={6}
+          onClick={setPaginate}
+        >
+          <StyledButton2 variant="contained">Load More</StyledButton2>
+        </Box>
+      )}
     </>
   );
 };

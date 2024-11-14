@@ -14,8 +14,9 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import TimesFilter from "../../components/Common/TimesFilter";
 import TimesPdfFilter from "../../components/Common/TimesPdfFilter";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
 import ArticleBanner from "../../components/Times/ArticleBanner";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import moment from "moment";
 import {
   timesFilterApi,
@@ -35,6 +36,7 @@ import NewsDataView from "../../components/Times/NewsDataView";
 import TimesHeader from "../../components/Times/TimesHeader";
 import Head from "next/head";
 import Spinner from "../../components/Common/Spinner";
+import Footer from "@/components/Home/Footer";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -136,17 +138,26 @@ const Times = () => {
   const theme = useTheme();
   const [activeTab, setActiveTab] = useState("one");
   const [isOpen, setIsopen] = useState(false);
+  const [page1, setPage1] = useState(1);
+  const [page2, setPage2] = useState(1);
+  const [showScroll, setShowScroll] = useState(false);
+  const [filterData, setFilterData] = useState({});
+  const [groupedArticles, setGroupedArticles] = useState({});
+  const [collapsedGroups, setCollapsedGroups] = useState({});
   const dispatch = useDispatch();
-  const {
-    isTimesArticleLoading,
+  const {   isTimesArticleLoading,
     timesArticle,
     isArticleFilterOpen,
     isPdfModalOpen,
-  } = useSelector((store) => store.times);
-  const { isAuth, userDetails } = useSelector((store) => store.auth);
+    pagination,} = useSelector(
+    (store) => store.times
+  );
 
   const handleModalOpen = () => {
     setIsopen(true);
+  };
+  const scrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "auto" });
   };
 
   const handleClose = () => {
@@ -155,42 +166,65 @@ const Times = () => {
 
   const toggleDrawer = () => {
     if (activeTab === "one") {
-      if (!isArticleFilterOpen) {
-        dispatch(toggleArticleFilter());
-      }
+      dispatch(toggleArticleFilter());
     } else if (activeTab === "two") {
-      if (!isPdfModalOpen) {
-        dispatch(togglePdfFilter());
-      }
+      dispatch(togglePdfFilter());
     }
   };
-  const [openArticles, setOpenArticles] = useState({});
-
-  const toggleArticle = (index) => {
-    setOpenArticles((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
-  };
-
-  const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     dispatch(timesPdfFilterApi());
     dispatch(timesFilterApi());
-    dispatch(timesArticleApi({}));
+    dispatch(timesArticleApi({ page: page1, data: {} }));
   }, [dispatch]);
+  const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
+
+  const groupArticlesByDate = (articles) => {
+    const grouped = articles.reduce((acc, item) => {
+      const formattedDate = moment(item.createdAt).format("Do MMMM YYYY");
+      if (!acc[formattedDate]) {
+        acc[formattedDate] = [];
+      }
+      acc[formattedDate].push(item);
+      return acc;
+    }, {});
+    return grouped;
+  };
 
   useEffect(() => {
-    if (timesArticle) {
-      // Initialize all articles as open
-      const initialOpenState = {};
-      timesArticle.forEach((_, index) => {
-        initialOpenState[index] = true;
-      });
-      setOpenArticles(initialOpenState);
+    if (!isTimesArticleLoading) {
+      setGroupedArticles(groupArticlesByDate(timesArticle));
     }
-  }, [timesArticle]);
+  }, [timesArticle, isTimesArticleLoading]);
+
+  const toggleGroupCollapse = (date) => {
+    setCollapsedGroups((prev) => ({
+      ...prev,
+      [date]: !prev[date],
+    }));
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && (event.key === "p" || event.key === "P")) {
+        event.preventDefault();
+      }
+    };
+
+    const handleContextMenu = (event) => {
+      event.preventDefault();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("contextmenu", handleContextMenu);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("contextmenu", handleContextMenu);
+    };
+  }, []);
+  
 
   if (isTimesArticleLoading) {
     return (
@@ -282,14 +316,19 @@ const Times = () => {
         </Grid>
         <Container>
           {activeTab == "two" ? (
-            <ArticleBanner />
+            <ArticleBanner
+              filterData2={filterData2}
+              page2={page2}
+              setPage2={setPage2}
+            />
           ) : (
             <Grid item>
-              {timesArticle?.map((item, index) => (
+              {Object.keys(groupedArticles)?.map((date, index) => (
                 <div className={styles.newsDiv} key={index}>
                   <HoverBox
-                    onClick={() => toggleArticle(index)}
-                    className={openArticles[index] ? "" : "collapsed"}
+                    // onClick={() => toggleArticle(index)}
+                    onClick={() => toggleGroupCollapse(date)}
+                    className={collapsedGroups[date] ? "collapsed" : ""}
                   >
                     <Grid
                       container
@@ -300,32 +339,32 @@ const Times = () => {
                     >
                       <Grid item>
                         <StyledTypography3 className="header-text">
-                          {moment(item.createdAt).format("Do MMMM YYYY")}
+                          {date}
                         </StyledTypography3>
                       </Grid>
                       <Grid item>
-                        <IconButton>
-                          {openArticles[index] ? (
+                        <IconButton className="header-icon">
+                          {collapsedGroups[date] ? (
                             <KeyboardArrowUpIcon
                               sx={{ color: colors.navyBlue900 }}
                               fontSize="large"
-                              className="header-icon"
+                            
                             />
                           ) : (
                             <KeyboardArrowDownIcon
                               sx={{ color: colors.navyBlue900 }}
                               fontSize="large"
-                              className="header-icon"
+                              
                             />
                           )}
                         </IconButton>
                       </Grid>
                     </Grid>
                   </HoverBox>
-
-                  {openArticles[index] && (
-                    <div className={styles.newsCard}>
-                      <NewsDataView
+                  {!collapsedGroups[date] &&
+                      groupedArticles[date].map((item, index) => (
+                        <div className={styles.newsCard}>
+                        <NewsDataView
                         data={{
                           company_name: item.company_name,
                           company_slug: item.company_slug,
@@ -338,27 +377,83 @@ const Times = () => {
                             ? ""
                             : `/discovery/${item.is_available_in_discovery?.slug}/${item.company_slug}`
                         }
-                      />
-                    </div>
-                  )}
+                        prime_route={
+                          Object.keys(item.is_available_in_prime).length ===
+                          0
+                            ? ""
+                            : `/prime/${item.is_available_in_prime?.slug}`
+                        }
+                      
+                        />
+                        </div>
+                      ))}
+
+                 
                 </div>
               ))}
+              {pagination?.total_pages === pagination?.page ||
+              !Object.keys(timesArticle)?.length ? (
+                ""
+              ) : (
+                <Box
+                  sx={{ display: "flex", justifyContent: "center" }}
+                  marginBottom={6}
+                >
+                  <StyledButton2
+                    variant="contained"
+                    onClick={() => {
+                      dispatch(
+                        timesArticleApi({ page: page1 + 1, data: filterData })
+                      );
+                      setPage1(page1 + 1);
+                    }}
+                  >
+                    Load More
+                  </StyledButton2>
+                </Box>
+              )}
             </Grid>
           )}
         </Container>
       </Grid>
-
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 50,
+          right: 16,
+          width: 48,
+          height: 48,
+          borderRadius: "50%",
+          backgroundColor: "#CED6DC",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: 3,
+          cursor: "pointer",
+          display: showScroll ? "flex" : "none",
+        }}
+        onClick={scrollTop}
+      >
+        <KeyboardArrowUpIcon />
+      </Box>
       {activeTab === "one" ? (
         <TimesFilter
           isOpen={isArticleFilterOpen}
           handleModalOpen={handleModalOpen}
+          page1={page1}
+          setPage1={setPage1}
+          setFilterData={setFilterData}
         />
       ) : activeTab === "two" ? (
         <TimesPdfFilter
           isOpen={isPdfModalOpen}
           handleModalOpen={handleModalOpen}
+          page2={page2}
+          setPage2={setPage2}
+          setFilterData2={setFilterData2}
         />
       ) : null}
+      <Footer />
     </>
   );
 };

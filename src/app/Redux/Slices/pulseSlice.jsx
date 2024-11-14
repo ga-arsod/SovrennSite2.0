@@ -185,10 +185,10 @@ const pulseSlice = createSlice({
         const { page } = action.meta.arg;
         const newArticles = action.payload.data;
         if (page === 1) {
-          // First page - replace existing data
+          
           state.pulseArticleData = newArticles;
         } else {
-          // Append new articles to existing data
+         
           state.pulseArticleData = [...state.pulseArticleData, ...newArticles];
         }
         state.pagination = action.payload.pagination;
@@ -205,10 +205,10 @@ const pulseSlice = createSlice({
         const { page } = action.meta.arg;
         const newArticles = action.payload.data;
         if (page === 1) {
-          // First page - replace existing data
+         
           state.pulseArticleData = newArticles;
         } else {
-          // Append new articles to existing data
+          
           state.pulseArticleData = [...state.pulseArticleData, ...newArticles];
         }
         state.pagination = action.payload.pagination;
