@@ -208,7 +208,7 @@ const StyledButton = styled(Button)`
 
 
 
-const TimesFilter = ({ isOpen ,handleModalOpen}) => {
+const TimesFilter = ({ isOpen ,handleModalOpen,page1,setPage1,setFilterData}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllSectors, setShowAllSectors] = useState(false);
@@ -232,12 +232,12 @@ const TimesFilter = ({ isOpen ,handleModalOpen}) => {
     setOpen(false)
   }
   
-   const [filterData,setFilterData]=useState({})
+   
   const [filter, setFilter] = useState({});
   const [filterBody, setFilterBody] = useState({});
  
   const updateFilter = (item, key, status) => {
-    
+    console.log(item,key,status)
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
@@ -292,16 +292,11 @@ setFilterData(filterObj)
       behavior: 'smooth'
     });
     
-    Object.entries(filter).map(([key, value]) => {
-
-      filter[key] = []
-    });
-
-    Object.entries(filterBody).map(([key, value]) => {
-
-      filterBody[key] = []
-    });
-    console.log(filter,"filter")
+    setFilter({});
+    setFilterBody({});
+    setFilterData({})
+    setPage1(1)
+    
   };
 
   const optionsFilterArray=(arr,key)=>{
@@ -396,8 +391,9 @@ setFilterData(filterObj)
                    
                       <CustomFormControlLabel
                         checked={filter[timesFilter[0].key] ? filter[timesFilter[0].key]?.includes(item.placeholder) : false}
-                        onChange={()=>{
-                          updateFilter(item, timesFilter[0].key, filter[item.key] ? filter[item.key]?.includes(item.placeholder) : false);
+                        onChange={() => {
+                          const isChecked = filter[timesFilter[0].key]?.includes(item.placeholder);
+                          updateFilter(item, timesFilter[0].key, isChecked);
                         }}
                         control={<CustomCheckbox />}
                         label={item.placeholder}
@@ -421,8 +417,9 @@ setFilterData(filterObj)
                     <Grid item xs={6} key={index}>
                       <CustomFormControlLabel
                         checked={filter[timesFilter[1].key] ? filter[timesFilter[1].key]?.includes(item.placeholder) : false}
-                        onChange={()=>{
-                          updateFilter(item, timesFilter[1].key, filter[item.key] ? filter[item.key]?.includes(item.placeholder) : false);
+                        onChange={() => {
+                          const isChecked = filter[timesFilter[1].key]?.includes(item.placeholder);
+                          updateFilter(item, timesFilter[1].key, isChecked);
                         }}
                         control={<CustomCheckbox />}
                         label={item.placeholder}
@@ -447,8 +444,9 @@ setFilterData(filterObj)
                         control={<CustomCheckbox />}
                         label={item.placeholder}
                         checked={filter[timesFilter[2].key] ? filter[timesFilter[2].key]?.includes(item.placeholder) : false}
-                        onChange={()=>{
-                          updateFilter(item, timesFilter[2].key, filter[item.key] ? filter[item.key]?.includes(item.placeholder) : false);
+                        onChange={() => {
+                          const isChecked = filter[timesFilter[2].key]?.includes(item.placeholder);
+                          updateFilter(item, timesFilter[2].key, isChecked);
                         }}
                       />
                     </Grid>
@@ -495,8 +493,9 @@ setFilterData(filterObj)
                     control={
                       <CustomCheckbox
                       checked={filter[timesFilter[3].key] ? filter[timesFilter[3].key]?.includes(sector.placeholder) : false}
-                      onChange={()=>{
-                        updateFilter(sector, timesFilter[3].key, filter[sector.key] ? filter[sector.key]?.includes(sector.placeholder) : false);
+                      onChange={() => {
+                        const isChecked = filter[timesFilter[3].key]?.includes(sector.placeholder);
+                        updateFilter(sector, timesFilter[3].key, isChecked);
                       }}
                       />
                     }
@@ -554,8 +553,9 @@ setFilterData(filterObj)
                 control={
                   <CustomCheckbox
                   checked={filter[timesFilter[4].key] ? filter[timesFilter[4].key]?.includes(industries.placeholder) : false}
-                  onChange={()=>{
-                    updateFilter(industries, timesFilter[4].key, filter[industries.key] ? filter[industries.key]?.includes(industries.placeholder) : false);
+                  onChange={() => {
+                    const isChecked = filter[timesFilter[4].key]?.includes(industries.placeholder);
+                    updateFilter(industries, timesFilter[4].key, isChecked);
                   }}
                   />
                 }
@@ -590,8 +590,9 @@ setFilterData(filterObj)
                 control={
                   <CustomCheckbox
                   checked={filter[timesFilter[5].key] ? filter[timesFilter[5].key]?.includes(month.placeholder) : false}
-                  onChange={()=>{
-                    updateFilter(month, timesFilter[5].key, filter[month.key] ? filter[month.key]?.includes(month.placeholder) : false);
+                  onChange={() => {
+                    const isChecked = filter[timesFilter[5].key]?.includes(month.placeholder);
+                    updateFilter(month, timesFilter[5].key, isChecked);
                   }}
                   />
                 }
@@ -650,8 +651,9 @@ setFilterData(filterObj)
                     control={
                       <CustomCheckbox
                       checked={filter[timesFilter[6].key] ? filter[timesFilter[6].key]?.includes(company.placeholder) : false}
-                      onChange={()=>{
-                        updateFilter(company, timesFilter[6].key, filter[company.key] ? filter[company.key]?.includes(company.placeholder) : false);
+                      onChange={() => {
+                        const isChecked = filter[timesFilter[6].key]?.includes(company.placeholder);
+                        updateFilter(company, timesFilter[6].key, isChecked);
                       }}
                       />
                     }
@@ -702,12 +704,18 @@ setFilterData(filterObj)
                 // disabled={isApplyButtonDisabled}
                 onClick={()=>{
                   if(isAuth)
-                  dispatch(timesArticleApi(filterData))
+                  {
+                    dispatch(timesArticleApi({page:1,data:filterBody}))
+                    setPage1(1)
+                  }
+                 
+                
                 else
                {
                 handleModalOpen()
-                dispatch(toggleArticleFilter())
+                
                }
+               dispatch(toggleArticleFilter())
                 }}
               >
                 Apply Filter

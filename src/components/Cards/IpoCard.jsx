@@ -33,11 +33,27 @@ const StyledButton2 = styled(Button)`
   }
 `;
 
+
 const IpoCard = ({ data }) => {
+
+  const categorizeIPO = (ipo) => {
+    const today = new Date();
+    const listingDate = new Date(ipo.listing_date);
+    const openingDate = new Date(ipo.opening_date);
+    const closingDate = new Date(ipo.closing_date);
+
+    if (today.toDateString() === listingDate.toDateString()) {
+        return "Listing Today";
+    } else if (today >= openingDate && today <= closingDate) {
+        return "Open";
+    } else if (today > closingDate) {
+        return "Closed";
+    }
+};
   return (
     <>
     {
-       data.length== 0 ?  <NoData text="No data available" />
+       data?.length== 0 ?  <NoData text="No data available" />
        :
        <Box sx={{ flexGrow: 1, padding: 2 }}>
       <Grid
@@ -54,7 +70,7 @@ const IpoCard = ({ data }) => {
           padding: { xs: 1 },
         }}
       >
-        {data.map((row, index) => {
+        {data?.map((row, index) => {
           return (
             <Box
               key={index}
@@ -94,8 +110,8 @@ const IpoCard = ({ data }) => {
                 </Typography>
               </Box>
 
-              <StyledTypography2 variant="h6" component="div" marginBottom={1}>
-                {row.company_Id?.company_name}
+              <StyledTypography2 width="70%" component="div" marginBottom={1}>
+                {row?.company_Id?.company_name}
               </StyledTypography2>
 
               <Grid container justifyContent="space-between">
@@ -112,7 +128,7 @@ const IpoCard = ({ data }) => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    {row.company_Id?.industry}
+                    {row?.company_Id?.industry}
                   </StyledTypography3>
                 </Grid>
                 <Grid item xs={6} sx={{ textAlign: "right" }}>
@@ -128,8 +144,8 @@ const IpoCard = ({ data }) => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    {row.company_Id?.offer_price_ttm_pe
-                      ? `${row.company_Id?.offer_price_ttm_pe}x`
+                    {row?.company_Id?.offer_price_ttm_pe
+                      ? `${row?.company_Id?.offer_price_ttm_pe}x`
                       : "NA"}
                   </StyledTypography3>
                 </Grid>
@@ -148,7 +164,7 @@ const IpoCard = ({ data }) => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    {moment(row.opening_date).format("Do MMM YY")}
+                    {moment(row?.opening_date).format("Do MMM YY")}
                   </StyledTypography3>
                 </Grid>
                 <Grid item xs={6} sx={{ textAlign: "right" }}>
@@ -164,7 +180,7 @@ const IpoCard = ({ data }) => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    {moment(row.closing_date).format("Do MMM YY")}
+                    {moment(row?.closing_date).format("Do MMM YY")}
                   </StyledTypography3>
                 </Grid>
               </Grid>
@@ -182,7 +198,7 @@ const IpoCard = ({ data }) => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    {moment(row.listing_date).format("Do MMM YY")}
+                    {moment(row?.listing_date).format("Do MMM YY")}
                   </StyledTypography3>
                 </Grid>
                 <Grid item xs={6} sx={{ textAlign: "right" }}>
@@ -198,8 +214,8 @@ const IpoCard = ({ data }) => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    {row.company_Id?.revenue_growth
-                      ? `${row.company_Id?.revenue_growth}%`
+                    {row?.company_Id?.revenue_growth
+                      ? `${row?.company_Id?.revenue_growth}%`
                       : "NA"}
                   </StyledTypography3>
                 </Grid>
@@ -208,11 +224,12 @@ const IpoCard = ({ data }) => {
               <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
                 <Link
                   target="_blank"
-                  href={decodeURIComponent(`/ipo-zone/${row.slug}`)}
-                ></Link>
+                  href={decodeURIComponent(`/ipo-zone/${row?.slug}`)}
+                >
                 <StyledButton2 variant="contained" color="primary">
                   Read
                 </StyledButton2>
+                </Link>
               </Box>
             </Box>
           );

@@ -203,7 +203,7 @@ const StyledButton = styled(Button)`
 
 
 
-const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
+const TimesPdfFilter = ({ isOpen,handleModalOpen,page2,setPage2,setFilterData2 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllCompanies, setShowAllCompanies] = useState(false);
@@ -215,7 +215,7 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
 
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const { timesPdfFilter } = useSelector((store) => store.times);
-
+  const { isAuth } = useSelector((store) => store.auth);
  
     const toggleDrawer = () => {
       dispatch(togglePdfFilter());
@@ -233,37 +233,74 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
       return newArray;
     }
 
-  const [filter, setFilter] = useState({
-    company_name: [],
-    byMonths: [],
-  });
-
-  const handleChange = (category, option) => (event) => {
-    const checked = event.target.checked;
-    setFilter((prevFilter) => {
-      const updatedOptions = prevFilter[category] || [];
-      const newOptions = checked
-        ? [...updatedOptions, option]
-        : updatedOptions.filter((item) => item !== option);
-
-      return {
-        ...prevFilter,
-        [category]: newOptions,
+    const [filter, setFilter] = useState({});
+    const [filterBody, setFilterBody] = useState({});
+   
+    const updateFilter = (item, key, status) => {
+      console.log(item,key,status)
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+  
+      const filterObj = new Object(filterBody);
+  
+      if (status) {
+        let arr = filterObj[key].filter(ele => ele !== item.value);
+  
+        let arr2 = filter[key].filter(ele => ele !== item.placeholder);
+  
+        filterObj[key] = arr;
+  
+        setFilterBody(filterObj);
+  
+        setFilter({
+          ...filter,
+          [key]: arr2
+        })
+      }
+      else {
+  
+        filterObj[key] = filterObj[key] ? [...filterObj[key], item.value] : [item.value];
+  
+        setFilterBody(filterObj);
+  
+        setFilter({
+          ...filter,
+          [key]: filter[key] ? [...filter[key], item.placeholder] : [item.placeholder]
+        })
       };
-    });
-  };
+  
+      let flag = true;
+  
+      Object.entries(filterObj).map(([key, value]) => {
+  
+        if (filterObj[key].length) flag = false;
+      });
+  
+  setFilterData2(filterObj)
+    
+  
+      return;
+    };
+  
+    const resetFilters = () => {
+    
+     
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      
+      setFilter({});
+      setFilterBody({});
+      setFilterData2({})
+      setPage2(1)
+      
+    };
 
-  const resetFilters = () => {
-    setFilter({
-      company_name: [],
-      byMonths: [],
-    });
-  };
 
-  const isApplyButtonDisabled =
-    filter.company_name.length === 0 && filter.byMonths.length === 0;
-
-  if (!timesPdfFilter.length) {
+  if (!timesPdfFilter?.length) {
     return <></>;
   }
 
@@ -359,11 +396,11 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
-                        checked={filter[company.key]?.includes(company.value)}
-                        onChange={handleChange(
-                          timesPdfFilter[0]?.key,
-                          company.value
-                        )}
+                      checked={filter[timesPdfFilter[0].key] ? filter[timesPdfFilter[0].key]?.includes(company.placeholder) : false}
+                      onChange={() => {
+                        const isChecked = filter[timesPdfFilter[0].key]?.includes(company.placeholder);
+                        updateFilter(company, timesPdfFilter[0].key, isChecked);
+                      }}
                       />
                     }
                     label={company.placeholder}
@@ -400,8 +437,11 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
                 key={index}
                 control={
                   <CustomCheckbox
-                    checked={filter[month.key]?.includes(month.value)}
-                    onChange={handleChange(timesPdfFilter[1]?.key, month.value)}
+                  checked={filter[timesPdfFilter[1].key] ? filter[timesPdfFilter[1].key]?.includes(month.placeholder) : false}
+                  onChange={() => {
+                    const isChecked = filter[timesPdfFilter[1].key]?.includes(month.placeholder);
+                    updateFilter(month, timesPdfFilter[1].key, isChecked);
+                  }}
                   />
                 }
                 label={month.placeholder}
@@ -449,15 +489,20 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen }) => {
               <StyledButton3
                 fullWidth
                 variant="contained"
-                disabled={isApplyButtonDisabled}
+               
                 onClick={() => {
                   if(isAuth)
-                    dispatch(timesPdfListApi(filter))
+                  {
+                    dispatch(timesPdfListApi({page:1,data:filterBody}))
+                    setPage2(1)
+                  }
+                    
                   else
                  {
                   handleModalOpen()
-                  dispatch(togglePdfFilter())
+                 
                  }
+                 dispatch(togglePdfFilter())
                 }}
               >
                 Apply Filter

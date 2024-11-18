@@ -14,7 +14,7 @@ const PulsePage = () => {
   
   useEffect(()=>{
     dispatch(pulseFilterApi())
-  },[])
+  },[dispatch])
   return (
     <>
     <Container>
