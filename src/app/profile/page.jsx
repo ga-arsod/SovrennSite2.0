@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ToggleButtonGroup, ToggleButton, Typography, Box, Grid, Container,useMediaQuery } from '@mui/material';
 import { styled } from '@mui/system';
 import Details from "../../components/Profile/Details";
@@ -9,7 +9,8 @@ import { colors } from '@/components/Constants/colors';
 import { useTheme } from "@mui/material/styles";
 import Footer from '@/components/Home/Footer';
 import Snackbar from "../../components/Snackbar/SnackBar"
-
+import { useDispatch } from 'react-redux';
+import { subscriptionDetailsApi } from '../Redux/Slices/authSlice';
 
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)`
@@ -51,7 +52,8 @@ const StyledTypography1 = styled(Typography)`
 
 const Profile = () => {
   const [alignment, setAlignment] = useState('myDetails');
-  const theme = useTheme();
+ const theme=useTheme()
+  const dispatch=useDispatch()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleAlignment = (event, newAlignment) => {
@@ -59,6 +61,9 @@ const Profile = () => {
       setAlignment(newAlignment);
     }
   };
+  useEffect(()=>{
+dispatch(subscriptionDetailsApi())
+  },[])
 
   return (
     <>

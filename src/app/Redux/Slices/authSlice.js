@@ -11,10 +11,21 @@ const initialState = {
   userDetailsLoading: false,
   isPasswordModalOpen:false,
   message:"",
+  subscriptionDetails:[]
 };
 
 export const userDetailsApi = createAsyncThunk("userDetailsApi", async () => {
   const response = await fetch(`${url}/user`, {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  });
+  return response.json();
+});
+
+export const subscriptionDetailsApi = createAsyncThunk("subscriptionDetailsApi", async () => {
+  const response = await fetch(`${url}/subscription/`, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -58,15 +69,30 @@ export const editUserDetailsApi = createAsyncThunk(
 );
 export const resetPasswordApi = createAsyncThunk(
   "resetPasswordApi",
-  async ({ passwordObj }) => {
+  async ({currentPassword,newPassword },{dispatch}) => {
     const response = await fetch(`${url}/user/reset-password`, {
       method: "PATCH",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(passwordObj),
+      body: JSON.stringify({
+        old_password:currentPassword,
+        new_password:newPassword
+
+      }),
     });
+    if(response.ok)
+    {
+      dispatch(togglePasswordModal())
+      dispatch(
+        setSnackStatus({
+          status: true,
+          severity: "success",
+          message: "Password updated successfully.",
+        })
+      );
+    }
     const result = await response.json();
 
     return result;
@@ -89,6 +115,10 @@ const authSlice = createSlice({
       state.isAuth = false;
       localStorage.removeItem("token");
     },
+    togglePasswordModal:(state)=>{
+      state.isPasswordModalOpen=!state.isPasswordModalOpen
+      state.message=""
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(userDetailsApi.pending, (state, action) => {
@@ -101,8 +131,14 @@ const authSlice = createSlice({
     builder.addCase(userDetailsApi.rejected, (state, action) => {
       state.userDetailsLoading = false;
     });
+    builder.addCase(resetPasswordApi.fulfilled, (state, action) => {
+      state.message = action.payload.message;
+    });
+    builder.addCase(subscriptionDetailsApi.fulfilled, (state, action) => {
+      state.subscriptionDetails = action.payload.data;
+    });
   },
 });
 
-export const { loginSuccess, logout, googleLogin } = authSlice.actions;
+export const { loginSuccess, logout, googleLogin,togglePasswordModal } = authSlice.actions;
 export default authSlice.reducer;

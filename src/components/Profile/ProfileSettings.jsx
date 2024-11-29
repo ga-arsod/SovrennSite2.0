@@ -1,39 +1,44 @@
-"use client"
-import React ,{useState} from 'react';
-import { TextField, Box, Typography, Button, InputAdornment } from '@mui/material';
-import { colors } from '../Constants/colors';
-import { styled } from '@mui/system';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import ProfileModal from "../../components/Modal/ProfileModal"
-import { resetPasswordApi } from '@/app/Redux/Slices/authSlice';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+"use client";
+import React, { useState } from "react";
+import {
+  TextField,
+  Box,
+  Typography,
+  Button,
+  InputAdornment,
+} from "@mui/material";
+import { colors } from "../Constants/colors";
+import { styled } from "@mui/system";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import ProfileModal from "../../components/Modal/ProfileModal";
+import { resetPasswordApi } from "@/app/Redux/Slices/authSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { togglePasswordModal } from "@/app/Redux/Slices/authSlice";
+import moment from "moment";
 
 const StyledInputLabel = styled(Typography)`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
   color: #344054;
- 
 `;
 
 const StyledTextField = styled(TextField)`
   width: 100%;
- 
 
   & .MuiInputBase-root {
     font-size: 16px;
     line-height: 21px;
-    color: #010C15;
+    color: #010c15;
     font-weight: 400;
     border-radius: 8px;
-    background-color: transparent !important; 
+    background-color: transparent !important;
   }
 
- 
   input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
-    -webkit-text-fill-color: #010C15 !important;
+    -webkit-text-fill-color: #010c15 !important;
     background-clip: text !important;
   }
 
@@ -57,15 +62,15 @@ const StyledTextField = styled(TextField)`
     font-weight: 400;
     font-size: 16px;
     line-height: 21px;
-    color: #96A7B4; 
+    color: #96a7b4;
     opacity: 1;
   }
 `;
 
 const GreenBorderColorOutlinedIcon = styled(BorderColorOutlinedIcon)`
   color: ${colors.themeGreen};
-  cursor: pointer; 
-  font-size: 17px; 
+  cursor: pointer;
+  font-size: 17px;
 `;
 
 const StyledTypography = styled(Typography)`
@@ -80,87 +85,112 @@ const StyledBox = styled(Box)`
   border-radius: 8px;
 `;
 
-
-
-const ProfileSettings=()=> {
-  const dispatch=useDispatch()
- const [isOpen,setIsOpen]=useState(true);
- const { isPasswordModalOpen,message} = useSelector((store) => store.auth);
+const ProfileSettings = () => {
+  const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(true);
+  const { isPasswordModalOpen } = useSelector((store) => store.auth);
+  const subscriptionDetails = useSelector(
+    (store) => store.auth.subscriptionDetails[0]
+  );
+  console.log(subscriptionDetails);
   return (
     <>
-    
-       <ProfileModal isOpen={isPasswordModalOpen} />
-    
-    <StyledBox
-      sx={{
-        width: '100%',
-        maxWidth: { xs: '100%', md: '822px' },
-        margin: 'auto',
-        marginTop: {xs:"24px",sm:"90px"},
-        borderRadius: '8px',
-        padding: '24px',
-        backgroundColor: '#fff',
-      }}
-    >
-      {/* Password Section */}
-      <Box sx={{ marginBottom: {xs:"12px",sm:"24px"} }}>
-        <StyledInputLabel htmlFor="password">Password</StyledInputLabel>
-        <StyledTextField
-      onClick={()=>{setIsOpen(true)}}
-          type="password"
-          id="password"
-          name="password"
-          value="***********"
-          sx={{ marginBottom: 3 }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <GreenBorderColorOutlinedIcon   />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Box>
+      <ProfileModal isOpen={isPasswordModalOpen} />
 
-      <Box
+      <StyledBox
         sx={{
-          borderTop: '1px solid #e0e0e0',
-          paddingTop: '24px',
-          display: 'flex',
-          flexDirection:{xs:"column",sm:"row"},
-          gap:4,
-          justifyContent: 'space-between',
+          width: "100%",
+          maxWidth: { xs: "100%", md: "822px" },
+          margin: "auto",
+          marginTop: { xs: "24px", sm: "90px" },
+          borderRadius: "8px",
+          padding: "24px",
+          backgroundColor: "#fff",
         }}
       >
-        {/* Access Section */}
-        <Box>
-          <StyledTypography sx={{ marginBottom: '8px' }}>Access</StyledTypography>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: colors.navyBlue500,
-              fontSize: '16px',
-              fontWeight: '600',
-              lineHeight: '19px',
-              color: '#fff',
-              textTransform: 'none',
-              '&:hover': {
-                backgroundColor: '#001825',
-              },
+        {/* Password Section */}
+        <Box sx={{ marginBottom: { xs: "12px", sm: "24px" } }}>
+          <StyledInputLabel htmlFor="password">Password</StyledInputLabel>
+          <StyledTextField
+            onClick={() => {
+              setIsOpen(true);
             }}
-          >
-            Sovrenn Full Access
-          </Button>
+            type="password"
+            id="password"
+            name="password"
+            value="***********"
+            sx={{ marginBottom: 3 }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment
+                  position="end"
+                  onClick={() => {
+                    dispatch(togglePasswordModal());
+                  }}
+                >
+                  <GreenBorderColorOutlinedIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
         </Box>
 
-       
-        <Box>
-          <StyledTypography sx={{ marginBottom: '8px' }}>Ends On</StyledTypography>
-          <StyledTypography color={colors.navyBlue300}>17th Jan 2024</StyledTypography>
+        <Box
+          sx={{
+            borderTop: "1px solid #e0e0e0",
+            paddingTop: "24px",
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            gap: 4,
+            justifyContent: "space-between",
+          }}
+        >
+          {/* Access Section */}
+          <Box>
+            <StyledTypography sx={{ marginBottom: "8px" }}>
+              Access
+            </StyledTypography>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: colors.navyBlue500,
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "19px",
+                color: "#fff",
+                textTransform: "none",
+                "&:hover": {
+                  backgroundColor: "#001825",
+                },
+              }}
+            >
+              {subscriptionDetails?.type === "full-access"
+                ? "Sovrenn Full Access"
+                : subscriptionDetails?.type === "news"
+                ? "Sovrenn Times Access"
+                : subscriptionDetails?.type === "basket"
+                ? "Sovrenn Discovery Access"
+                : subscriptionDetails?.type === "quarterly"
+                ? "Sovrenn Quarterly Access"
+                : subscriptionDetails?.type === "monthly"
+                ? "Sovrenn Monthly Access"
+                : subscriptionDetails?.type === "life"
+                ? "Sovrenn Lifetime Access"
+                : "No Access"}
+            </Button>
+          </Box>
+
+          <Box>
+            <StyledTypography sx={{ marginBottom: "8px" }}>
+              Ends On
+            </StyledTypography>
+            <StyledTypography color={colors.navyBlue300}>
+              {moment(subscriptionDetails?.expiry_date).format("Do MMM YY")}
+            </StyledTypography>
+          </Box>
         </Box>
-      </Box>
-    </StyledBox>
+      </StyledBox>
     </>
   );
-}
+};
 export default ProfileSettings;
