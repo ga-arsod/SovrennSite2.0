@@ -5,7 +5,7 @@ import { colors } from '../Constants/colors';
 
 export default function Spinner({margin}) {
   return (
-    <Box sx={{ display: 'flex',justifyContent:'center' }} marginTop={margin}>
+    <Box sx={{ display: 'flex',justifyContent:'center' }} marginY={margin}>
       <CircularProgress  />
     </Box>
   );

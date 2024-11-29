@@ -16,25 +16,25 @@ const NewsDataView = ({data, isAuth, discovery_route,prime_route }) => {
 
     
 
-    // const setTablesFun = async (table) => {
-    //     let tableStr = "";
+    const setTablesFun = async (table) => {
+        let tableStr = "";
 
-    //     for (let i = 0; i < table?.length; i++) {
-    //         const matterResult = matter(table[i]);
+        for (let i = 0; i < table?.length; i++) {
+            const matterResult = matter(table[i]);
 
-    //         const processedContent = await remark()
-    //             .use(remarkGfm)
-    //             .use(html)
-    //             .process(matterResult.content);
+            const processedContent = await remark()
+                .use(remarkGfm)
+                .use(html)
+                .process(matterResult.content);
 
-    //         const data = processedContent.toString();
+            const data = processedContent.toString();
 
-    //         tableStr += data;
-    //     };
+            tableStr += data;
+        };
 
-    //     setTables(tableStr);
-    // };
-
+        setTables(tableStr);
+    };
+console.log(convertToHtml(data.content))
     return (
         <article id={styles.MainContainer} >
 

@@ -63,21 +63,23 @@ const StyledBodyTableCell = styled(TableCell)`
   
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton2 = styled(Button)`
+  color: white;
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
-  color: ${colors.navyBlue500};
-  padding: 8px 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background-color: ${colors.themeGreen};
   text-transform: none;
-  white-space:nowrap;
-  border-color: ${colors.navyBlue500};
-  &:hover {
-    background-color: ${colors.navyBlue200};
-    color: white;
-    border-color: ${colors.navyBlue200};
+
+  :hover {
+    background-color: ${colors.themeButtonHover};
   }
 `;
+
 const headerData = [
   "Company Name",
   "Industry",
@@ -101,7 +103,7 @@ const IpoTableData = ({data}) => {
          sx={{
            paddingX: 2,
            marginTop: 3,
-           marginBottom: "200px",
+          
            border: `1px solid ${colors.neutral600}`,
            borderRadius: 1,
          }}
@@ -168,9 +170,9 @@ const IpoTableData = ({data}) => {
                    <StyledBodyTableCell>
                      <Link target="_blank" href={decodeURIComponent(`/ipo-zone/${(row.slug)}`)}>
                     
-                     <StyledButton variant="outlined" size="small">
+                     <StyledButton2 variant="contained" size="small">
                        Read
-                     </StyledButton>
+                     </StyledButton2>
                      </Link>
                    </StyledBodyTableCell>
                  </TableRow>

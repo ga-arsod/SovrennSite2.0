@@ -5,6 +5,9 @@ import { colors } from '../Constants/colors';
 import { styled } from '@mui/system';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import ProfileModal from "../../components/Modal/ProfileModal"
+import { resetPasswordApi } from '@/app/Redux/Slices/authSlice';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const StyledInputLabel = styled(Typography)`
   font-weight: 500;
@@ -24,7 +27,7 @@ const StyledTextField = styled(TextField)`
     color: #010C15;
     font-weight: 400;
     border-radius: 8px;
-    background-color: transparent !important; /* Ensure background stays transparent */
+    background-color: transparent !important; 
   }
 
  
@@ -47,22 +50,22 @@ const StyledTextField = styled(TextField)`
   }
 
   & .MuiInputBase-input {
-    padding: 10px 12px; /* Adjust padding here: 8px for vertical and 12px for horizontal */
+    padding: 10px 12px;
   }
 
   & .MuiOutlinedInput-input::placeholder {
     font-weight: 400;
     font-size: 16px;
     line-height: 21px;
-    color: #96A7B4; /* Change this to your desired placeholder color */
+    color: #96A7B4; 
     opacity: 1;
   }
 `;
 
 const GreenBorderColorOutlinedIcon = styled(BorderColorOutlinedIcon)`
-  color: ${colors.themeGreen}; /* Set the icon color to green */
-  cursor: pointer; /* Add pointer cursor */
-  font-size: 17px; /* Set icon size to 17px */
+  color: ${colors.themeGreen};
+  cursor: pointer; 
+  font-size: 17px; 
 `;
 
 const StyledTypography = styled(Typography)`
@@ -80,12 +83,14 @@ const StyledBox = styled(Box)`
 
 
 const ProfileSettings=()=> {
+  const dispatch=useDispatch()
  const [isOpen,setIsOpen]=useState(true);
+ const { isPasswordModalOpen,message} = useSelector((store) => store.auth);
   return (
     <>
-    {
-        isOpen ? <ProfileModal isOpen={isOpen} setIsOpen={setIsOpen}/> : <></>
-    }
+    
+       <ProfileModal isOpen={isPasswordModalOpen} />
+    
     <StyledBox
       sx={{
         width: '100%',

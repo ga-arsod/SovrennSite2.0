@@ -36,20 +36,7 @@ const StyledButton2 = styled(Button)`
 
 const IpoCard = ({ data }) => {
 
-  const categorizeIPO = (ipo) => {
-    const today = new Date();
-    const listingDate = new Date(ipo.listing_date);
-    const openingDate = new Date(ipo.opening_date);
-    const closingDate = new Date(ipo.closing_date);
-
-    if (today.toDateString() === listingDate.toDateString()) {
-        return "Listing Today";
-    } else if (today >= openingDate && today <= closingDate) {
-        return "Open";
-    } else if (today > closingDate) {
-        return "Closed";
-    }
-};
+ 
   return (
     <>
     {
@@ -93,7 +80,7 @@ const IpoCard = ({ data }) => {
                   position: "absolute",
                   top: 0,
                   right: 0,
-                  backgroundColor: "#C5EFC5",
+                  backgroundColor:row.status=="Open" ? "#C5EFC5" : row.status == "Listed" ? "#FB8E8E" : "#FAD28F",
                   color: "black",
                   borderRadius: "0px 4px 0px 4px",
                   padding: "8px 22px",
@@ -106,7 +93,7 @@ const IpoCard = ({ data }) => {
                     lineHeight: "12px",
                   }}
                 >
-                  Open
+                {row.status=="Open" ? "Open" : row.status =="Listed" ? "Listed" : "Upcoming"}
                 </Typography>
               </Box>
 

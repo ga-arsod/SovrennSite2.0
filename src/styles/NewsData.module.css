@@ -3,6 +3,10 @@
     margin: 20px auto;
     font-family: 'Inter', sans-serif;
 }
+#MainContainer>p {
+   
+    font-family: 'Inter', sans-serif;
+}
 
 #MainContainer h2 {
     text-decoration: none;
@@ -58,13 +62,13 @@
 
 #MainContainer table {
     width: 100%;
-    border-collapse: separate; /* Change this to 'separate' */
+    border-collapse: separate; 
     border-spacing: 0;
     margin-bottom: 30px;
     margin-top: 30px;
     border: 1px solid #DEDDDD;
     border-radius: 8px;
-    overflow: hidden; /* Ensure child elements don't overflow the rounded corners */
+    overflow: hidden; 
 }
 
 
@@ -87,6 +91,7 @@
     border-bottom: 1px solid #DEDDDD;
     font-weight:400;
     font-size:16px;
+    width:80px;
     line-height:19px;
     color:black;
     font-family: 'Inter', sans-serif;

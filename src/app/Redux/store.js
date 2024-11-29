@@ -15,6 +15,7 @@ import commentsReducer from "./Slices/commentsSlice"
 import selfHelpReducer from "./Slices/selfHelpSlice"
 import watchlistReducer from "./Slices/watchlistSlice"
 import pulseReducer from "./Slices/pulseSlice"
+import knowledgeReducer from "./Slices/knowledgeSlice"
 // Configuration for redux-persist
 const persistConfig = {
   key: 'root', 
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   selfHelp:selfHelpReducer,
   watchlist:watchlistReducer,
   pulse:pulseReducer,
+  knowledge:knowledgeReducer
 });
 
 

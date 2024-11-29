@@ -200,7 +200,7 @@ const StyledButton = styled(Button)`
 
 
 
-const PromoterFilter = ({ isOpen, handleModalOpen }) => {
+const PromoterFilter = ({ isOpen ,handleModalOpen,page2,setPage2,setFilterData2}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllSectors, setShowAllSectors] = useState(false);
@@ -214,37 +214,74 @@ const PromoterFilter = ({ isOpen, handleModalOpen }) => {
     dispatch(togglePromoterFilter());
   };
 
-  const [filter, setFilter] = useState({
-    sector_id: [],
-
-    company_name: [],
-
-    company_type: [],
-  });
-
-  const handleChange = (category, option) => (event) => {
-    const { checked } = event.target;
-
-    setFilter((prevFilter) => {
-      const updatedOptions = prevFilter[category] || [];
-      const newOptions = checked
-        ? [...updatedOptions, option]
-        : updatedOptions.filter((item) => item !== option);
-
-      return {
-        ...prevFilter,
-        [category]: newOptions,
-      };
+  const [filter, setFilter] = useState({});
+  const [filterBody, setFilterBody] = useState({});
+ 
+  const updateFilter = (item, key, status) => {
+    console.log(item,key,status)
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     });
+
+    const filterObj = new Object(filterBody);
+
+    if (status) {
+      let arr = filterObj[key].filter(ele => ele !== item.value);
+
+      let arr2 = filter[key].filter(ele => ele !== item.placeholder);
+
+      filterObj[key] = arr;
+
+      setFilterBody(filterObj);
+
+      setFilter({
+        ...filter,
+        [key]: arr2
+      })
+    }
+    else {
+
+      filterObj[key] = filterObj[key] ? [...filterObj[key], item.value] : [item.value];
+
+      setFilterBody(filterObj);
+
+      setFilter({
+        ...filter,
+        [key]: filter[key] ? [...filter[key], item.placeholder] : [item.placeholder]
+      })
+    };
+
+    let flag = true;
+
+    Object.entries(filterObj).map(([key, value]) => {
+
+      if (filterObj[key].length) flag = false;
+    });
+
+setFilterData2(filterObj)
+  
+
+    return;
   };
 
-  const isApplyButtonDisabled =
-    filter.sector_id.length === 0 &&
-    filter.company_name.length === 0 &&
-    filter.company_type.length === 0;
+  const resetFilters = () => {
+  
+   
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    
+    setFilter({});
+    setFilterBody({});
+    setFilterData2({})
+    setPage2(1)
+    
+  };
 
 
-    if(!promoterFilter.length)
+    if(!promoterFilter?.length)
         return <></>
         
   return (
@@ -295,6 +332,7 @@ const PromoterFilter = ({ isOpen, handleModalOpen }) => {
                   cursor: "pointer",
                 }}
                 component="span"
+                onClick={resetFilters}
               >
                 Reset Filter
               </UnderlinedTypography>
@@ -313,8 +351,11 @@ const PromoterFilter = ({ isOpen, handleModalOpen }) => {
                   <>
                     <Grid item xs={12} key={index}>
                       <CustomFormControlLabel
-                        checked={filter[item.key]?.includes(item.value)}
-                        onChange={handleChange(promoterFilter[0]?.key, item.value)}
+                        checked={filter[promoterFilter[0].key] ? filter[promoterFilter[0].key]?.includes(item.placeholder) : false}
+                        onChange={() => {
+                          const isChecked = filter[promoterFilter[0].key]?.includes(item.placeholder);
+                          updateFilter(item, promoterFilter[0].key, isChecked);
+                        }}
                         control={<CustomCheckbox />}
                         label={item.placeholder}
                       />
@@ -341,11 +382,11 @@ const PromoterFilter = ({ isOpen, handleModalOpen }) => {
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
-                        checked={filter[sector.key]?.includes(sector.value)}
-                        onChange={handleChange(
-                          promoterFilter[1]?.key,
-                          sector.value
-                        )}
+                      checked={filter[promoterFilter[1].key] ? filter[promoterFilter[1].key]?.includes(sector.placeholder) : false}
+                      onChange={() => {
+                        const isChecked = filter[promoterFilter[1].key]?.includes(sector.placeholder);
+                        updateFilter(sector, promoterFilter[1].key, isChecked);
+                      }}
                       />
                     }
                     label={sector.placeholder}
@@ -386,11 +427,11 @@ const PromoterFilter = ({ isOpen, handleModalOpen }) => {
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
-                        checked={filter[sector.key]?.includes(sector.value)}
-                        onChange={handleChange(
-                          promoterFilter[2]?.key,
-                          sector.value
-                        )}
+                      checked={filter[promoterFilter[2].key] ? filter[promoterFilter[2].key]?.includes(sector.placeholder) : false}
+                      onChange={() => {
+                        const isChecked = filter[promoterFilter[2].key]?.includes(sector.placeholder);
+                        updateFilter(sector, promoterFilter[2].key, isChecked);
+                      }}
                       />
                     }
                     label={sector.placeholder}
@@ -438,20 +479,25 @@ const PromoterFilter = ({ isOpen, handleModalOpen }) => {
               <StyledButton3
                 fullWidth
                 variant="contained"
-                disabled={isApplyButtonDisabled}
                 onClick={()=>{
-                    if(isAuth)
-                    dispatch(promoterCompaniesListApi(
-                      { data: filter,
-                        page: 1,}
-                        
-                    ))
-                  else
-                 {
-                  handleModalOpen()
-                  dispatch(togglePromoterFilter())
-                 }
-                  }}
+                  if(isAuth)
+                  {
+                    dispatch(promoterCompaniesListApi({page:1,data:filterBody}))
+                    setPage2(1)
+                  }
+                 
+                
+                else
+               {
+                handleModalOpen()
+                
+               }
+               dispatch(togglePromoterFilter())
+                }}
+
+
+
+               
               >
                 Apply Filter
               </StyledButton3>

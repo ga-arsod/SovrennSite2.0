@@ -110,6 +110,15 @@ const TimesHeader = ({ setActiveTab }) => {
     setValue(newValue);
     setActiveTab(newValue);
   };
+  const handleArrowClick = () => {
+    if ( value === 'two') {
+      setValue('one');
+      setActiveTab('one');
+    } else if ( value === 'one') {
+      setValue('two');
+      setActiveTab('two');
+    }
+  };
 
   const handleBackClick = () => {
     router.back();  
@@ -182,7 +191,9 @@ const TimesHeader = ({ setActiveTab }) => {
                 sx={{
                   left: { xs: 'calc(50%)', sm: 'calc(40%)', md: 'calc(40%)' }, 
                   transform: 'translateX(-50%)',
+                  cursor:'pointer'
                 }}
+                onClick={handleArrowClick}
               >
                 <StyledArrowForwardIcon />
                 <StyledArrowBackIcon />

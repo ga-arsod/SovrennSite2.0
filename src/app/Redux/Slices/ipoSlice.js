@@ -5,7 +5,7 @@ const initialState = {
   ipoFilter: [],
   isError: false,
   isIpoFilterOpen: false,
-
+  pagination:{},
   ipoCompaniesList: [],
 
   isIpoCompaniesListLoading: false,
@@ -25,8 +25,8 @@ export const ipoFilterApi = createAsyncThunk("ipoFilterApi", async () => {
 
 export const ipoCompaniesListApi = createAsyncThunk(
   "ipoCompaniesListApi",
-  async (data, { dispatch }) => {
-    const response = await fetch(`${url}/ipo/list?page=1&page_size=200`, {
+  async ({page,data}, { dispatch }) => {
+    const response = await fetch(`${url}/ipo/list?page=${page}&page_size=200`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,9 +34,7 @@ export const ipoCompaniesListApi = createAsyncThunk(
       body: JSON.stringify(data),
     });
 
-    if (response.ok && Object.keys(data).length !== 0) {
-      dispatch(toggleIpoFilter());
-    }
+   
     return response.json();
   }
 );
@@ -77,6 +75,7 @@ const ipoSlice = createSlice({
     builder.addCase(ipoCompaniesListApi.fulfilled, (state, action) => {
       state.ipoCompaniesList = action.payload.list;
       state.isIpoCompaniesListLoading = false;
+      state.pagination=action.payload.pagination
     });
     builder.addCase(ipoCompaniesListApi.rejected, (state, action) => {
       state.isError = true;

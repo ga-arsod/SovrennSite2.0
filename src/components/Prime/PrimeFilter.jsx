@@ -22,7 +22,10 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
-import { primeCompaniesListApi, togglePrimeFilter } from "@/app/Redux/Slices/primeSlice";
+import {
+  primeCompaniesListApi,
+  togglePrimeFilter,
+} from "@/app/Redux/Slices/primeSlice";
 import { useDispatch } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
@@ -198,9 +201,13 @@ const StyledButton = styled(Button)`
   }
 `;
 
-
-
-const PrimeFilter = ({ isOpen, handleModalOpen }) => {
+const PrimeFilter = ({
+  isOpen,
+  handleModalOpen,
+  page1,
+  setPage1,
+  setFilterData1,
+}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllSectors, setShowAllSectors] = useState(false);
@@ -214,38 +221,70 @@ const PrimeFilter = ({ isOpen, handleModalOpen }) => {
     dispatch(togglePrimeFilter());
   };
 
-  const [filter, setFilter] = useState({
-    sector_id: [],
+  const [filter, setFilter] = useState({});
+  const [filterBody, setFilterBody] = useState({});
 
-    company_name: [],
-
-    company_type: [],
-  });
-
-  const handleChange = (category, option) => (event) => {
-    const { checked } = event.target;
-
-    setFilter((prevFilter) => {
-      const updatedOptions = prevFilter[category] || [];
-      const newOptions = checked
-        ? [...updatedOptions, option]
-        : updatedOptions.filter((item) => item !== option);
-
-      return {
-        ...prevFilter,
-        [category]: newOptions,
-      };
+  const updateFilter = (item, key, status) => {
+    console.log(item, key, status);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
+
+    const filterObj = new Object(filterBody);
+
+    if (status) {
+      let arr = filterObj[key].filter((ele) => ele !== item.value);
+
+      let arr2 = filter[key].filter((ele) => ele !== item.placeholder);
+
+      filterObj[key] = arr;
+
+      setFilterBody(filterObj);
+
+      setFilter({
+        ...filter,
+        [key]: arr2,
+      });
+    } else {
+      filterObj[key] = filterObj[key]
+        ? [...filterObj[key], item.value]
+        : [item.value];
+
+      setFilterBody(filterObj);
+
+      setFilter({
+        ...filter,
+        [key]: filter[key]
+          ? [...filter[key], item.placeholder]
+          : [item.placeholder],
+      });
+    }
+
+    let flag = true;
+
+    Object.entries(filterObj).map(([key, value]) => {
+      if (filterObj[key].length) flag = false;
+    });
+
+    setFilterData1(filterObj);
+
+    return;
   };
 
-  const isApplyButtonDisabled =
-    filter.sector_id.length === 0 &&
-    filter.company_name.length === 0 &&
-    filter.company_type.length === 0;
+  const resetFilters = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
 
+    setFilter({});
+    setFilterBody({});
+    setFilterData1({});
+    setPage1(1);
+  };
 
-    if(!primeFilter.length)
-        return <></>
+  if (!primeFilter?.length) return <></>;
   return (
     <Box>
       <Drawer
@@ -294,6 +333,7 @@ const PrimeFilter = ({ isOpen, handleModalOpen }) => {
                   cursor: "pointer",
                 }}
                 component="span"
+                onClick={resetFilters}
               >
                 Reset Filter
               </UnderlinedTypography>
@@ -312,8 +352,19 @@ const PrimeFilter = ({ isOpen, handleModalOpen }) => {
                   <>
                     <Grid item xs={12} key={index}>
                       <CustomFormControlLabel
-                        checked={filter[item.key]?.includes(item.value)}
-                        onChange={handleChange(primeFilter[0]?.key, item.value)}
+                        checked={
+                          filter[primeFilter[0].key]
+                            ? filter[primeFilter[0].key]?.includes(
+                                item.placeholder
+                              )
+                            : false
+                        }
+                        onChange={() => {
+                          const isChecked = filter[
+                            primeFilter[0].key
+                          ]?.includes(item.placeholder);
+                          updateFilter(item, primeFilter[0].key, isChecked);
+                        }}
                         control={<CustomCheckbox />}
                         label={item.placeholder}
                       />
@@ -340,11 +391,19 @@ const PrimeFilter = ({ isOpen, handleModalOpen }) => {
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
-                        checked={filter[sector.key]?.includes(sector.value)}
-                        onChange={handleChange(
-                          primeFilter[1]?.key,
-                          sector.value
-                        )}
+                        checked={
+                          filter[primeFilter[1].key]
+                            ? filter[primeFilter[1].key]?.includes(
+                                sector.placeholder
+                              )
+                            : false
+                        }
+                        onChange={() => {
+                          const isChecked = filter[
+                            primeFilter[1].key
+                          ]?.includes(sector.placeholder);
+                          updateFilter(sector, primeFilter[1].key, isChecked);
+                        }}
                       />
                     }
                     label={sector.placeholder}
@@ -385,11 +444,19 @@ const PrimeFilter = ({ isOpen, handleModalOpen }) => {
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
-                        checked={filter[sector.key]?.includes(sector.value)}
-                        onChange={handleChange(
-                          primeFilter[2]?.key,
-                          sector.value
-                        )}
+                        checked={
+                          filter[primeFilter[2].key]
+                            ? filter[primeFilter[2].key]?.includes(
+                                sector.placeholder
+                              )
+                            : false
+                        }
+                        onChange={() => {
+                          const isChecked = filter[
+                            primeFilter[2].key
+                          ]?.includes(sector.placeholder);
+                          updateFilter(sector, primeFilter[2].key, isChecked);
+                        }}
                       />
                     }
                     label={sector.placeholder}
@@ -437,20 +504,17 @@ const PrimeFilter = ({ isOpen, handleModalOpen }) => {
               <StyledButton3
                 fullWidth
                 variant="contained"
-                disabled={isApplyButtonDisabled}
-                onClick={()=>{
-                    if(isAuth)
-                    dispatch(primeCompaniesListApi(
-                     { data: filter,
-                      page: 1,}
-                      
-                    ))
-                  else
-                 {
-                  handleModalOpen()
-                  dispatch(togglePrimeFilter())
-                 }
-                  }}
+                onClick={() => {
+                  if (isAuth) {
+                    dispatch(
+                      primeCompaniesListApi({ page: 1, data: filterBody })
+                    );
+                    setPage1(1);
+                  } else {
+                    handleModalOpen();
+                  }
+                  dispatch(togglePrimeFilter());
+                }}
               >
                 Apply Filter
               </StyledButton3>

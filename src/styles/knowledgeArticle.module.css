@@ -1,0 +1,266 @@
+#MainContainer {
+    width: 960px;
+    margin: 13vh auto auto;
+    font-family: 'Inter', sans-serif;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight:400;
+    line-height:19px;
+    /* -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; */
+}
+
+#MainContainer>h1 {
+    text-align: center;
+    margin: 20px 30px 30px;
+   
+    font-size: 40px;
+    font-weight:600;
+    line-height:48px;
+    letter-spacing: -0.04em;
+}
+
+#MainContainer u,
+#MainContainer b,
+#MainContainer a,
+#MainContainer strong {
+    color: black;
+    font-family: 'Inter', sans-serif;
+}
+
+#MainContainer img {
+    display: block;
+    max-height: 400px;
+    width: auto;
+    margin: 20px auto;
+    z-index: 0;
+}
+
+#MainContainer img[title="promoters"] {
+    display: block;
+    width: 200px;
+    z-index: 0;
+}
+
+#MainContainer strong {
+    margin-top: 20px;
+}
+
+
+#MainContainer h2,
+#sliderContainer h2 {
+    margin: 30px 0 10px;
+   
+    font-weight: 700;
+    font-size: larger;
+}
+
+#MainContainer p {
+    text-align: justify;
+    font-size: 16px;
+    font-weight:400;
+    line-height:19px;
+    margin-top: 20px;
+}
+#MainContainer p {
+    font-family: 'Inter', sans-serif;
+}
+#MainContainer span {
+    font-family: 'Inter', sans-serif;
+}
+
+
+#MainContainer li {
+    text-align: justify;
+    margin: 20px;
+    font-size: 16px;
+    font-weight:400;
+    line-height:19px;
+}
+
+#MainContainer table {
+    margin: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+#MainContainer h3 {
+    margin: 30px 0 0;
+}
+
+#MainContainer th,
+#MainContainer td {
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 1px solid #627b8e;
+}
+
+#notLoggedinDiv {
+    margin: 14vh auto;
+    width: 50%;
+    text-align: center;
+}
+
+#notLoggedinDiv>button {
+    padding: 10px 30px;
+    margin-top: 15px;
+    background-color: #fb8135;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#notLoggedinDiv>button:hover {
+    background-color: #fe8d47;
+}
+
+#purchaseDiv {
+    z-index: 100;
+    position: relative;
+    margin-top: -50px;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(to bottom, #f8fbff, #cee3fa);
+    border-radius: 0 0 10px 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#purchaseDiv>h3 {
+    padding-bottom: 10px;
+    margin: 0;
+    text-align: center;
+}
+
+#purchaseDiv button {
+    display: block;
+    margin: 0 auto;
+    border: none;
+    background-color: #faeddd;
+    width: 250px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: medium;
+    cursor: pointer;
+}
+
+#purchaseDiv button:hover {
+    background-color: #fae9d4;
+}
+
+#sliderContainer {
+    width: 80%;
+    margin: 20px auto 40px;
+}
+
+.relatedPostDiv {
+    padding-right: 10px;
+    font-family: 'Inter', sans-serif;
+}
+
+.relatedPostDiv>div {
+    border: 1px solid black;
+    height: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.relatedPostDiv>div>a {
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.relatedPostDiv>div>a:hover {
+    text-decoration: underline;
+}
+
+/* Responsiveness for tablet view */
+@media only screen and (max-width : 1024px) {
+    #MainContainer {
+        width: 90%;
+        margin: 80px auto 60px;
+    }
+
+    #MainContainer table {
+        width: 100%;
+        margin-bottom: 40px;
+        overflow-x: auto;
+        white-space: nowrap;
+        display: block;
+    }
+
+    #notLoggedinDiv {
+        margin: 100px auto auto;
+    }
+
+    #sliderContainer {
+        width: 90%;
+        margin: -40px auto 80px;
+    }
+}
+
+/* Responsiveness for mobile view */
+@media only screen and (max-width : 440px) {
+    #MainContainer {
+        width: 90%;
+        padding: 10px 0;
+        margin: 60px auto 50px;
+    }
+
+    #MainContainer>h1 {
+        margin: 20px 0;
+        font-size: 1.5rem;
+        font-size: 25px;
+        font-weight:600;
+        line-height:32px;
+    }
+
+    #MainContainer h2 {
+        margin: 20px 0 10px;
+        font-size: large;
+    }
+
+    #MainContainer table {
+        width: 100%;
+        margin-bottom: 40px;
+        overflow-x: auto;
+        white-space: nowrap;
+        display: block;
+    }
+
+    #notLoggedinDiv {
+        margin: 100px auto auto;
+        width: 95%;
+    }
+
+    #sliderContainer {
+        width: 95%;
+        margin: -20px auto 80px;
+    }
+
+    .relatedPostDiv {
+        padding-right: 0;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .relatedPostDiv>div {
+        border: 1px solid black;
+        height: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    #MainContainer img {
+        display: block;
+        max-height: 250px;
+        width: auto;
+        margin: 20px auto;
+        z-index: 0;
+    }
+}

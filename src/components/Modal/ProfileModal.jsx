@@ -123,7 +123,7 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
-const ProfileModal = ({ isOpen, setIsOpen }) => {
+const ProfileModal = ({ isOpen }) => {
   const [fullName, setFullName] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -138,14 +138,12 @@ const ProfileModal = ({ isOpen, setIsOpen }) => {
     }
   }, [fullName, newPassword, confirmPassword]);
 
-  const handleClosed = () => {
-    setIsOpen(false);
-  };
+  
 
   return (
     <Modal
       open={isOpen}
-      onClose={handleClosed}
+      // onClose={handleClosed}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{ zIndex: 12000, border: 'none', outline: 'none' }}
@@ -172,7 +170,7 @@ const ProfileModal = ({ isOpen, setIsOpen }) => {
         >
           <IconButton
             sx={{ position: 'absolute', top: '6px', right: '4px' }}
-            onClick={handleClosed}
+            // onClick={handleClosed}
           >
             <CloseIcon sx={{ color: colors.black }} />
           </IconButton>

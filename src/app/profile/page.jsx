@@ -7,7 +7,8 @@ import ProfileSettings from "../../components/Profile/ProfileSettings";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { colors } from '@/components/Constants/colors';
 import { useTheme } from "@mui/material/styles";
-
+import Footer from '@/components/Home/Footer';
+import Snackbar from "../../components/Snackbar/SnackBar"
 
 
 
@@ -60,8 +61,10 @@ const Profile = () => {
   };
 
   return (
+    <>
     <Container>
-      <Grid container marginTop="100px">
+      <Grid container marginY="100px" >
+        <Snackbar/>
         <Grid item>
         <Box marginBottom={1} display="flex" alignItems="center">
               {isSmallScreen && (
@@ -104,11 +107,13 @@ const Profile = () => {
         </Grid>
 
         <Grid item width="100%" sx={{ display: 'flex', justifyContent: 'center' }}>
-          {alignment === 'myDetails' && <Details />} {/* Render the Details component when 'My details' is selected */}
-          {alignment === 'accountSettings' && <ProfileSettings />} {/* Render the AccountSettings component when 'Account Settings' is selected */}
+          {alignment === 'myDetails' && <Details />} 
+          {alignment === 'accountSettings' && <ProfileSettings />} 
         </Grid>
       </Grid>
     </Container>
+   <Footer/>
+    </>
   );
 };
 

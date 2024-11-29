@@ -115,6 +115,9 @@ const DiscoveryBucketContent = () => {
   const tableData = useSelector(
     (store) => store.discovery.discoveryTableBucket
   );
+  const pagination = useSelector(
+    (store) => store.discovery.pagination
+  );
   const { userDetails ,isAuth} = useSelector((store) => store.auth);
   const title = formattedId;
  
@@ -366,7 +369,7 @@ const DiscoveryBucketContent = () => {
           <DiscoveryTable tableData={tableData} id={id} />
         )}
         <Box mt={2}>
-        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pagination={pagination} />
       </Box>
       </Container>
       {!isSmallerThanMd && <Footer />}

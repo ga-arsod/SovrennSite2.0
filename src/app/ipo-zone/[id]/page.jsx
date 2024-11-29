@@ -14,6 +14,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Disclaimer from "../../../components/Common/Disclaimer";
 import { primeArticleDisclaimer } from "@/utils/Data";
 import Spinner from "@/components/Common/Spinner";
+import Footer from "@/components/Home/Footer";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 36px;
@@ -108,7 +109,7 @@ const IpoArticles = () => {
         />
       </Head>
       <article>
-        <Box sx={{ maxWidth: 915, margin: "84px auto 0px auto", padding: 2 }}>
+        <Box sx={{ maxWidth: 990, margin: "84px auto 0px auto", padding: 2 }}>
           <StyledTypography1>{ipoArticle?.title}</StyledTypography1>
 
           {ipoArticle ? (
@@ -139,9 +140,10 @@ const IpoArticles = () => {
           >
             <KeyboardArrowUpIcon />
           </Box>
-          <Disclaimer margin="0" text={primeArticleDisclaimer} width="990px" />
+          <Disclaimer margin={3} text={primeArticleDisclaimer}  />
         </Box>
       </article>
+      <Footer/>
     </>
   );
 };

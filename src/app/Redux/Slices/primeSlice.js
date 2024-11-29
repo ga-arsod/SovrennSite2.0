@@ -7,6 +7,8 @@ const initialState = {
   primeFilter:[],
   isError:false,
   comments:[],
+  primePagination:{},
+  promoterPagination:{},
  isPrimeFilterOpen:false,
  isPromoterFilterOpen:false,
   primeCompaniesList:[],
@@ -27,7 +29,7 @@ export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
     return response.json();
   });
 
-  export const primeCompaniesListApi = createAsyncThunk("primeCompaniesListApi", async ( { data, page},{dispatch}) => {
+  export const primeCompaniesListApi = createAsyncThunk("primeCompaniesListApi", async ( { page,data},{dispatch}) => {
     const response = await fetch(`${url}/prime-research/list?page=${page}&page_size=200`, {
       method: "POST",
       headers: {
@@ -37,14 +39,11 @@ export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
       body: JSON.stringify(data),
     });
   
-    if(response.ok && Object.keys(data).length !== 0)
-    {
-      dispatch(togglePrimeFilter())
-    }
+    
     return response.json();
   });
 
-  export const promoterCompaniesListApi = createAsyncThunk("promoterCompaniesListApi", async ({ data, page},{dispatch}) => {
+  export const promoterCompaniesListApi = createAsyncThunk("promoterCompaniesListApi", async ({ page,data},{dispatch}) => {
     const response = await fetch(`${url}/promoter-interviews/list?page=${page}&page_size=200`, {
       method: "POST",
       headers: {
@@ -54,10 +53,6 @@ export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
       body: JSON.stringify(data),
     });
   
-    if(response.ok && Object.keys(data).length !== 0)
-    {
-      dispatch(togglePromoterFilter())
-    }
     return response.json();
   });
   
@@ -145,7 +140,7 @@ const primeSlice = createSlice({
        
       });
      builder.addCase(primeCompaniesListApi.fulfilled, (state, action) => {
-     
+       state.primePagination=action.payload.pagination
         state.primeCompaniesList = action.payload.list;
         state.isPrimeCompanyListLoading=false;
       });
@@ -194,7 +189,7 @@ const primeSlice = createSlice({
           
          });
         builder.addCase(promoterCompaniesListApi.fulfilled, (state, action) => {
-        
+        state.promoterPagination=action.payload.pagination
            state.promoterCompaniesList = action.payload.list;
            state.isPromoterCompanyListLoading=false;
          });

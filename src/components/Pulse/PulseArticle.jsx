@@ -68,15 +68,25 @@ const StyledButton = styled(Button)`
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
-  color: ${colors.navyBlue500};
-  padding: 8px 16px;
+  color: ${colors.themeGreen};
+  padding: 6px 16px;
   text-transform: none;
-  border-color: ${colors.navyBlue500};
+  border-color: ${colors.themeGreen};
+ 
+`;
+const StyledButton3 = styled(Button)`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+  color: #1C1C1C;
+  padding: 6px 16px;
+  text-transform: none;
+  border-color:#1C1C1C;
   &:hover {
-    background-color: ${colors.navyBlue200};
-    color: white;
-    border-color: ${colors.navyBlue200};
+   border-color:#1C1C1C;
+   
   }
+ 
 `;
 
 const StyledTypographyFileLink = styled(Typography)`
@@ -93,8 +103,8 @@ const FileLinkButton = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  padding: 4px 16px;
+  border-radius: 4px;
+  padding: 6px 16px;
   min-width: 120px;
   &:hover {
     color: white;
@@ -152,6 +162,7 @@ const PulseArticle = () => {
   );
   const [expanded, setExpanded] = useState({});
   const [filterData, setFilterData] = useState({});
+  const [windowSize, setWindowSize] = useState(undefined);
 
   useEffect(() => {
     dispatch(pulseArticlesApi({ page: 1, pageSize: 20 }));
@@ -196,6 +207,11 @@ const PulseArticle = () => {
   }, {});
 
   useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(window.innerWidth > 920);
+    }
+
+    handleWindowResize();
     const handleKeyDown = (event) => {
       if (event.ctrlKey && (event.key === "p" || event.key === "P")) {
         event.preventDefault();
@@ -264,7 +280,7 @@ const PulseArticle = () => {
             xs={12}
             sx={{ display: "flex", justifyContent: "space-between" }}
           >
-            <StyledButton
+            <StyledButton3
               variant="outlined"
               endIcon={
                 <FilterAltOutlinedIcon
@@ -275,11 +291,11 @@ const PulseArticle = () => {
               onClick={() => dispatch(togglePulseFilter())}
             >
               Filter
-            </StyledButton>
+            </StyledButton3>
             <Typography></Typography>
 
             <Link href="/pulse/portfolio">
-              <StyledButton
+              <StyledButton3
                 variant="outlined"
                 endIcon={
                   <DriveFileRenameOutlineIcon
@@ -287,9 +303,10 @@ const PulseArticle = () => {
                   />
                 }
                 size="small"
+                
               >
                 Edit Portfolio
-              </StyledButton>
+              </StyledButton3>
             </Link>
           </Grid>
         </Grid>
@@ -309,7 +326,7 @@ const PulseArticle = () => {
                 <Grid item>
                   <StyledTypography4>{date}</StyledTypography4>
                 </Grid>
-                <Grid item>
+                {/* <Grid item>
                   <IconButton size="small">
                     <ExpandMoreIcon
                       sx={{
@@ -320,7 +337,7 @@ const PulseArticle = () => {
                       }}
                     />
                   </IconButton>
-                </Grid>
+                </Grid> */}
               </Grid>
             </HeaderBox>
 
@@ -332,6 +349,7 @@ const PulseArticle = () => {
                   sx={{ width: "100%", marginBottom: 2, padding: 1 }}
                 >
                   <CardContent>
+                    <Typography color="#8A949C" sx={{fontWeight:'600',fontSize:'12px',lineHeight:'14px'}}>{moment(article.news_date).format("Do MMM YYYY")} | {moment(article.news_date).format('LT')}</Typography>
                     <Box
                       display="flex"
                       justifyContent={{ xs: "flex-start", sm: "space-between" }}
@@ -350,21 +368,61 @@ const PulseArticle = () => {
                         <Box
                           display="flex"
                           justifyContent="flex-end"
+                          gap={2}
                           width={{ xs: "100%", sm: "auto" }}
+
                         >
-                          <Link
-                            href={article.file_url}
-                            target="_blank"
-                            style={{ textDecoration: "none" }}
+                          {
+                            article?.discovery_slug && 
+                            <Link
+                          href={`discovery/pulse/${article.discovery_slug}`}
+                          target="_blank"
+                        >
+                          <StyledButton
+                            variant="outlined"
+                            color="primary"
+                            sx={{ textTransform: "none" }}
                           >
-                            <FileLinkButton
-                              startIcon={<AttachFileTwoToneIcon />}
-                            >
-                              <StyledTypographyFileLink>
-                                File Link
-                              </StyledTypographyFileLink>
-                            </FileLinkButton>
-                          </Link>
+                           Read Discovery
+                          </StyledButton>
+                        </Link>
+                          }
+                          
+                   
+                     {
+                      article.prime_slug && 
+                      <Link
+                      href={`prime/pulse/${article.prime_slug}`}
+                      target="_blank"
+                    >
+                      <StyledButton
+                        variant="outlined"
+                        color="primary"
+                        sx={{ textTransform: "none" }}
+                      >
+                        Read Prime
+                      </StyledButton>
+                    </Link>
+
+                     }
+                       
+                       {
+                        article.file_url && 
+                        <Link
+                        href={article.file_url}
+                        target="_blank"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <FileLinkButton
+                          startIcon={<AttachFileTwoToneIcon />}
+                        >
+                          <StyledTypographyFileLink>
+                            File Link
+                          </StyledTypographyFileLink>
+                        </FileLinkButton>
+                      </Link>
+                       }
+                         
                         </Box>
                       )}
                     </Box>
@@ -376,34 +434,9 @@ const PulseArticle = () => {
                     </Box>
 
                     <Stack direction="row" spacing={2}>
-                      {article.discovery_slug && (
-                        <Link
-                          href={`discovery/pulse/${article.discovery_slug}`}
-                          target="_blank"
-                        >
-                          <Button
-                            variant="outlined"
-                            color="primary"
-                            sx={{ textTransform: "none" }}
-                          >
-                            Discovery
-                          </Button>
-                        </Link>
-                      )}
-                      {article.prime_slug && (
-                        <Link
-                          href={`prime/pulse/${article.prime_slug}`}
-                          target="_blank"
-                        >
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            sx={{ textTransform: "none" }}
-                          >
-                            Prime
-                          </Button>
-                        </Link>
-                      )}
+                     
+                        
+                     
                     </Stack>
                   </CardContent>
                 </Card>
