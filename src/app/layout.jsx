@@ -12,7 +12,9 @@ import {auth} from "@/auth";
 const inter = Inter({
   weight: ['200'],
   style: ['normal'],
-  subsets: ['latin'], });
+  subsets: ['latin'],
+ 
+ });
 
 export default async function RootLayout({ children }) {
 

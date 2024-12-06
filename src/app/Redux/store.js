@@ -16,7 +16,9 @@ import selfHelpReducer from "./Slices/selfHelpSlice"
 import watchlistReducer from "./Slices/watchlistSlice"
 import pulseReducer from "./Slices/pulseSlice"
 import knowledgeReducer from "./Slices/knowledgeSlice"
-// Configuration for redux-persist
+import paymentReducer from "./Slices/paymentSlice"
+import planReducer from "./Slices/PlanSlice"
+
 const persistConfig = {
   key: 'root', 
   storage,     
@@ -37,7 +39,9 @@ const rootReducer = combineReducers({
   selfHelp:selfHelpReducer,
   watchlist:watchlistReducer,
   pulse:pulseReducer,
-  knowledge:knowledgeReducer
+  knowledge:knowledgeReducer,
+  payment:paymentReducer,
+  plan:planReducer,
 });
 
 

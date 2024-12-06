@@ -11,6 +11,7 @@ import Footer from '@/components/Home/Footer';
 import Snackbar from "../../components/Snackbar/SnackBar"
 import { useDispatch } from 'react-redux';
 import { subscriptionDetailsApi } from '../Redux/Slices/authSlice';
+import { useRouter } from 'next/navigation';
 
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)`
@@ -52,6 +53,7 @@ const StyledTypography1 = styled(Typography)`
 
 const Profile = () => {
   const [alignment, setAlignment] = useState('myDetails');
+  const router=useRouter()
  const theme=useTheme()
   const dispatch=useDispatch()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -64,6 +66,15 @@ const Profile = () => {
   useEffect(()=>{
 dispatch(subscriptionDetailsApi())
   },[])
+
+  useEffect(() => {
+    const token = localStorage.getItem('token'); 
+
+   
+    if (!token) {
+      router.push('/login');
+    }
+  }, [router]);
 
   return (
     <>
