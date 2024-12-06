@@ -6,20 +6,24 @@ import Head from "next/head";
 import IpoFilters from "../../components/Ipo/IpoFilters";
 
 import { ipoCompaniesListApi,ipoFilterApi } from "../Redux/Slices/ipoSlice";
-
+import {Box,Container} from "@mui/material";
+import Pagination from "../../components/Pagination/Pagination"
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import IpoCard from "../../components/Cards/IpoCard";
 import IpoTableData from "../../components/Ipo/IpoTableData";
+import Footer from "@/components/Home/Footer";
 
 const Ipo = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const [windowSize, setWindowSize] = useState(undefined);
- 
-  const { ipoCompaniesList } = useSelector((store) => store.ipo);
+ const [currentPage,setCurrentPage]=useState(1)
+ const [page,setPage]= useState(1)
+ const [filterData,setFilterData]= useState({})
+  const { ipoCompaniesList ,pagination} = useSelector((store) => store.ipo);
   const { isIpoFilterOpen, } = useSelector(
     (store) => store.ipo
   );
@@ -30,8 +34,8 @@ const Ipo = () => {
 
   useEffect(() => {
     dispatch(ipoFilterApi())
-    dispatch(ipoCompaniesListApi({}));
-  }, []);
+    dispatch(ipoCompaniesListApi({page:page,data:filterData}));
+  }, [page,dispatch]);
 
   useEffect(() => {
     function handleWindowResize() {
@@ -74,12 +78,18 @@ const Ipo = () => {
         />
       </Head>
       <IpoHeader />
-      <IpoFilters isOpen={isIpoFilterOpen} handleModalOpen={handleModalOpen}/>
+      <IpoFilters isOpen={isIpoFilterOpen} handleModalOpen={handleModalOpen} page={page} setPage={setPage} setFilterData={setFilterData}/>
       {isSmallerThanMd ? (
         <IpoCard data={ipoCompaniesList} />
       ) : (
         <IpoTableData data={ipoCompaniesList} />
       )}
+      <Container>
+       <Box mt={2}>
+        <Pagination currentPage={page} setCurrentPage={setPage} pagination={pagination}/>
+      </Box>
+      </Container>
+      <Footer/>
     </>
   );
 };

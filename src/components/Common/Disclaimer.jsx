@@ -2,27 +2,25 @@ import React from "react";
 import { Typography, Box } from "@mui/material";
 import styled from "@emotion/styled";
 
-const StyledTypography = styled(Typography)`
-  text-align: justify;
-`;
 
-const Disclaimer = ({ margin, text, width }) => {
+
+const Disclaimer = ({ margin, text }) => {
   return (
-    <Box marginBottom={4} marginTop={margin} width={width ? width : "100%"} >
-      <StyledTypography sx={{ color: '#657785', fontWeight: '600', display: 'inline' }}>
-        DISCLAIMER:
-      </StyledTypography>
-      <StyledTypography
+    <Box marginBottom={4} marginTop={margin} width="100%" >
+      
+      <Typography
+      
         sx={{
           color: '#8EA7BB',
           fontWeight: '400',
-          display: 'inline',
+        
           marginLeft: '4px', 
+          textAlign: "justify",
         }}
-        component="span"
+        
       >
-        {text}
-      </StyledTypography>
+       <span style={{ color: '#657785', fontWeight: '600'}}> DISCLAIMER:</span> {text}
+      </Typography>
     </Box>
   );
 };

@@ -13,8 +13,8 @@ const StyledTypography = styled(Typography)`
   line-height: 17px;
 `;
 
-const Pagination = ({ currentPage, setCurrentPage }) => {
-  const { pagination } = useSelector((store) => store.discovery);
+const Pagination = ({ currentPage, setCurrentPage,pagination }) => {
+  
   const totalPages = pagination?.total_pages;
 
   const handlePageClick = (page) => {

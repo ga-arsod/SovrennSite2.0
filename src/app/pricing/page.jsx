@@ -1,12 +1,14 @@
 "use client";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Grid, Typography, Box } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import styled from "@emotion/styled";
 import { colors } from "@/components/Constants/colors";
 import PricingCard from "../../components/Cards/PricingCard"
 import { useRouter } from "next/navigation";
-
+import {allPlansApi} from "../Redux/Slices/PlanSlice"
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -36,10 +38,17 @@ const StyledTypography2 = styled(Typography)`
 
 
 const PricingPage = () => {
+  const { plans } = useSelector(
+    (store) => store.plan
+  );
   const router=useRouter();
   const handleBackClick = () => {
     router.back();  
   };
+  const dispatch=useDispatch()
+  useEffect(()=>{
+    dispatch(allPlansApi())
+  },[])
   return (
     <Box sx={{ width: "100%", padding: "60px 0 0px 0" }}>
       <Grid
@@ -78,7 +87,7 @@ const PricingPage = () => {
       </Grid>
 
       <Box sx={{ position: "relative", top: { xs: "-160px", sm: "-170px" } }}>
-        <PricingCard />
+        <PricingCard planDetails={plans} />
       </Box>
     </Box>
   );

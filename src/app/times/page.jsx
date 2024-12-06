@@ -9,6 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 import styled from "@emotion/styled";
+import { primeArticleDisclaimer } from "@/utils/Data";
 import { colors } from "../../components/Constants/colors";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import TimesFilter from "../../components/Common/TimesFilter";
@@ -37,6 +38,7 @@ import TimesHeader from "../../components/Times/TimesHeader";
 import Head from "next/head";
 import Spinner from "../../components/Common/Spinner";
 import Footer from "@/components/Home/Footer";
+import Disclaimer from "@/components/Common/Disclaimer";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -114,6 +116,9 @@ const StyledButton = styled(Button)`
     background-color: ${colors.navyBlue200};
     color: white;
     border-color: ${colors.navyBlue200};
+      & .MuiSvgIcon-root {
+      color: white; 
+    }
   }
 `;
 const StyledFilterIcon = styled(FilterAltOutlinedIcon)`
@@ -142,6 +147,7 @@ const Times = () => {
   const [page2, setPage2] = useState(1);
   const [showScroll, setShowScroll] = useState(false);
   const [filterData, setFilterData] = useState({});
+  const [filterData2, setFilterData2] = useState({});
   const [groupedArticles, setGroupedArticles] = useState({});
   const [collapsedGroups, setCollapsedGroups] = useState({});
   const dispatch = useDispatch();
@@ -414,6 +420,7 @@ const Times = () => {
               )}
             </Grid>
           )}
+            <Disclaimer margin={3} text={primeArticleDisclaimer}  />
         </Container>
       </Grid>
       <Box
@@ -453,6 +460,7 @@ const Times = () => {
           setFilterData2={setFilterData2}
         />
       ) : null}
+     
       <Footer />
     </>
   );

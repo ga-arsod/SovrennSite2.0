@@ -115,6 +115,16 @@ const PrimeHeading = ({ setActiveTab }) => {
     router.back();  
   };
 
+  const handleArrowClick = () => {
+    if ( value === 'two') {
+      setValue('one');
+      setActiveTab('one');
+    } else if ( value === 'one') {
+      setValue('two');
+      setActiveTab('two');
+    }
+  };
+
   return (
    
       <Box sx={{ width: '100%' }} marginTop={{xs:"70px",sm:"90px"}}>
@@ -182,7 +192,9 @@ const PrimeHeading = ({ setActiveTab }) => {
                 sx={{
                   left: { xs: 'calc(50%)', sm: 'calc(40%)', md: 'calc(40%)' }, 
                   transform: 'translateX(-50%)',
+                  cursor:'pointer'
                 }}
+                onClick={handleArrowClick}
               >
                 <StyledArrowForwardIcon />
                 <StyledArrowBackIcon />

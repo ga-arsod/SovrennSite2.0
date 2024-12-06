@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ToggleButtonGroup, ToggleButton, Typography, Box, Grid, Container,useMediaQuery } from '@mui/material';
 import { styled } from '@mui/system';
 import Details from "../../components/Profile/Details";
@@ -7,8 +7,11 @@ import ProfileSettings from "../../components/Profile/ProfileSettings";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { colors } from '@/components/Constants/colors';
 import { useTheme } from "@mui/material/styles";
-
-
+import Footer from '@/components/Home/Footer';
+import Snackbar from "../../components/Snackbar/SnackBar"
+import { useDispatch } from 'react-redux';
+import { subscriptionDetailsApi } from '../Redux/Slices/authSlice';
+import { useRouter } from 'next/navigation';
 
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)`
@@ -50,7 +53,9 @@ const StyledTypography1 = styled(Typography)`
 
 const Profile = () => {
   const [alignment, setAlignment] = useState('myDetails');
-  const theme = useTheme();
+  const router=useRouter()
+ const theme=useTheme()
+  const dispatch=useDispatch()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleAlignment = (event, newAlignment) => {
@@ -58,10 +63,24 @@ const Profile = () => {
       setAlignment(newAlignment);
     }
   };
+  useEffect(()=>{
+dispatch(subscriptionDetailsApi())
+  },[])
+
+  useEffect(() => {
+    const token = localStorage.getItem('token'); 
+
+   
+    if (!token) {
+      router.push('/login');
+    }
+  }, [router]);
 
   return (
+    <>
     <Container>
-      <Grid container marginTop="100px">
+      <Grid container marginY="100px" >
+        <Snackbar/>
         <Grid item>
         <Box marginBottom={1} display="flex" alignItems="center">
               {isSmallScreen && (
@@ -104,11 +123,13 @@ const Profile = () => {
         </Grid>
 
         <Grid item width="100%" sx={{ display: 'flex', justifyContent: 'center' }}>
-          {alignment === 'myDetails' && <Details />} {/* Render the Details component when 'My details' is selected */}
-          {alignment === 'accountSettings' && <ProfileSettings />} {/* Render the AccountSettings component when 'Account Settings' is selected */}
+          {alignment === 'myDetails' && <Details />} 
+          {alignment === 'accountSettings' && <ProfileSettings />} 
         </Grid>
       </Grid>
     </Container>
+   <Footer/>
+    </>
   );
 };
 

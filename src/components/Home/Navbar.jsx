@@ -18,6 +18,7 @@ import {
   TextField,
  
 } from "@mui/material";
+
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
@@ -241,8 +242,7 @@ const Navbar = ({ session }) => {
   const filteredNavItems = isGreaterThanMd ? navItems.slice(2) : navItems;
   
   
-  console.log(isAuth,"isAuth")
-  console.log(session,"session")
+ 
   return (
     <>
       <AppBar
@@ -415,7 +415,7 @@ const Navbar = ({ session }) => {
                   
                   <Box
                 sx={{
-                  backgroundColor: "#172641",
+                  borderColor: "#172641",
                   borderRadius: "50%",
                   padding: "2px",
                   width: "30px",
@@ -430,7 +430,15 @@ const Navbar = ({ session }) => {
                   <Typography color="white">
                     {user?.first_name.charAt(0)}
                   </Typography>
-                ) : session?.user ? (
+                ) :
+                user?.profile_pic ? <Image
+                src={user?.profile_pic}
+                width={30}
+                height={30}
+                alt="profile"
+                style={{ objectFit: "cover", borderRadius: "50%" }}
+              />:
+                session?.user ? (
                   <Image
                     src={session?.user?.image}
                     width={30}
@@ -469,7 +477,9 @@ const Navbar = ({ session }) => {
                 open={opens}
                 onClose={handleClose}
               >
+                <Link href="/profile" style={{textDecoration:"none"}}>
                 <StyledMenuItem onClick={handleClose} disableRipple>
+               
                   <IconButton
                     sx={{ "& svg path": { fill: "black" }, padding: 0 }}
                   >
@@ -477,6 +487,7 @@ const Navbar = ({ session }) => {
                   </IconButton>
                   My Account
                 </StyledMenuItem>
+                </Link>
                 <StyledMenuItem onClick={handleClose} disableRipple>
                   <IconButton
                     sx={{ "& svg path": { fill: "black" }, padding: 0 }}
@@ -486,7 +497,7 @@ const Navbar = ({ session }) => {
                   My Orders
                 </StyledMenuItem>
                 {/* <Divider sx={{ my: 0.5 }} /> */}
-
+                 <Link href="/watchlist" style={{textDecoration:"none"}}>
                 <StyledMenuItem onClick={handleClose} disableRipple>
                   <IconButton
                     sx={{ "& svg path": { fill: "black" }, padding: 0 }}
@@ -495,15 +506,8 @@ const Navbar = ({ session }) => {
                   </IconButton>
                   My Watchlist
                 </StyledMenuItem>
-                <StyledMenuItem onClick={handleClose} disableRipple>
-                  <IconButton
-                    sx={{ "& svg path": { fill: "black" }, padding: 0 }}
-                  >
-                    <CardGiftcardOutlinedIcon />
-                  </IconButton>
-                  My Watchlist
-                </StyledMenuItem>
-
+                </Link>
+               
                 <StyledMenuItem2
                   onClick={() => {
                     doLogout();

@@ -14,6 +14,8 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Comments from "../../../components/Prime/Comments";
 import Snackbar from "../../../components/Snackbar/SnackBar";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import Disclaimer from "../../../components/Common/Disclaimer";
+import { primeArticleDisclaimer } from "@/utils/Data";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -154,7 +156,7 @@ const PrimeArticles = () => {
         <title>{company_name}</title>
       </Head>
       <article>
-        <Box sx={{ maxWidth: 915, margin: "84px auto 0px auto", padding: 2 }}>
+        <Box sx={{ maxWidth: 990, margin: "84px auto 0px auto", padding: 2 }}>
           <Snackbar />
           <StyledTypography1>{company_name}</StyledTypography1>
           <CustomDivider1 sx={{ marginTop: 3, marginBottom: 1 }} />
@@ -193,7 +195,7 @@ const PrimeArticles = () => {
             </Box>
           ) : <></>}
 
-<Fade in={fadeIn} timeout={1000}>
+
             <Box
               sx={{
                 opacity: content ? 1 : 0,
@@ -203,7 +205,7 @@ const PrimeArticles = () => {
             >
               {content && <div id={styles.MainContainer}>{content}</div>}
             </Box>
-         </Fade>
+            <Disclaimer margin={3} text={primeArticleDisclaimer}  />
         </Box>
       </article>
       {articleData && (

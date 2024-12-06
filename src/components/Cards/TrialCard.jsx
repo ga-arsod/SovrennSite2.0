@@ -9,17 +9,17 @@ import { colors } from "../Constants/colors";
 const StyledGrid = styled(Box)`
   position: relative;
   z-index: 10;
-  width: 100%; 
-  max-width: 960px; 
-  margin: auto; 
+  width: 100%;
+  max-width: 960px;
+  margin: auto;
   bottom: 5rem;
   left: 0;
-  
+
   @media (min-width: 640px) and (max-width: 1080px) {
     width: 90%;
     bottom: 7rem;
   }
-  
+
   @media (min-width: 1080px) {
     bottom: 7rem;
   }
@@ -42,7 +42,7 @@ const StyledTypography2 = styled(Typography)`
   font-weight: 400;
   font-size: 20px;
   line-height: 24px;
-  
+
   @media (max-width: 639px) {
     font-weight: 400;
     font-size: 12px;
@@ -56,9 +56,9 @@ const StyledButton = styled(Button)`
   border-color: ${(props) => props.theme.palette.primary.main};
   outline: ${(props) => props.theme.palette.primary.main};
   box-shadow: none;
-   &:hover {
-    background-color:${colors.themeButtonHover}; 
-    color: white; 
+  &:hover {
+    background-color: ${colors.themeButtonHover};
+    color: white;
   }
 `;
 
@@ -68,23 +68,26 @@ const TrialCard = () => {
       <Box
         sx={{ position: "absolute" }}
         bgcolor={{ xs: "#0D1726", sm: "transparent" }}
-        width="100%" 
+        width="100%"
       >
         <StyledGrid
           container
           justifyContent="center"
-          paddingX={{ xs: 2, sm: 0 }}  
+          paddingX={{ xs: 2, sm: 0 }}
           paddingTop={{ xs: 16, sm: 0 }}
         >
           <Grid
             item
             sx={{
-              background: `linear-gradient(45deg, ${gradientColors.c1}, ${gradientColors.c2})`,
-              boxShadow:
-                "0px 8px 8px -4px #1018280A, 0px 20px 24px -4px #1018281A",
+              background: "linear-gradient(15deg, #0C4340 0%, #06A77D 100%)",
+
+              boxShadow: "0px 8px 8px -4px #1018280A",
+
+              boxShadow: "0px 20px 24px -4px #1018281A",
+
               borderRadius: "8px",
-              maxWidth: "960px", 
-              width: "100%", 
+              maxWidth: "960px",
+              width: "100%",
             }}
           >
             <Grid
@@ -94,13 +97,13 @@ const TrialCard = () => {
               alignItems="center"
               justifyContent="space-between"
               paddingY={{ xs: 1, sm: 4 }}
-              paddingX={{ xs: 2, sm: 4, md: 4 }}  
+              paddingX={{ xs: 2, sm: 4, md: 4 }}
             >
               <Grid item width={{ xs: "100%", sm: "70%" }}>
                 <StyledTypography1
                   color="#F3FAFB"
                   textAlign={{ xs: "center", sm: "start" }}
-                  gutterBottom
+                  marginBottom={2}
                 >
                   Begin your 2-month trial for only ₹400 today!
                 </StyledTypography1>

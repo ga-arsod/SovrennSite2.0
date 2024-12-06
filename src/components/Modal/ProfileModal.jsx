@@ -1,9 +1,19 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, TextField, Button, IconButton, Modal, Grid } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import styled from '@emotion/styled';
-import { colors } from '../Constants/colors';
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  IconButton,
+  Modal,
+  Grid,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import styled from "@emotion/styled";
+import { colors } from "../Constants/colors";
+import { resetPasswordApi, togglePasswordModal } from "@/app/Redux/Slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const StyledTypography2 = styled(Typography)`
   font-size: 28px;
@@ -24,15 +34,14 @@ const StyledButton1 = styled(Button)`
   padding-bottom: 14px;
   text-transform: none;
   background-color: ${colors.white};
-  width: 100%; 
-   @media (max-width: 639px) {
+  width: 100%;
+  @media (max-width: 639px) {
     font-size: 14px;
     font-weight: 600;
     line-height: 17px;
-     padding-top: 8px;
-  padding-bottom: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
-
   :hover {
     background-color: ${colors.themeButtonHover};
     color: ${colors.navyBlue500};
@@ -49,16 +58,16 @@ const StyledButton2 = styled(Button)`
   line-height: 21px;
   padding-top: 14px;
   padding-bottom: 14px;
-  white-space:nowrap;
+  white-space: nowrap;
   text-transform: none;
   background-color: ${colors.themeGreen};
   width: 100%;
- @media (max-width: 639px) {
+  @media (max-width: 639px) {
     font-size: 14px;
     font-weight: 600;
     line-height: 17px;
-     padding-top: 8px;
-  padding-bottom: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
   :hover {
     background-color: ${colors.themeButtonHover};
@@ -67,6 +76,7 @@ const StyledButton2 = styled(Button)`
     outline: ${colors.themeButtonHover};
   }
 `;
+
 const StyledBox = styled(Box)`
   position: absolute;
   top: 50%;
@@ -78,6 +88,7 @@ const StyledBox = styled(Box)`
   align-items: center;
   justify-content: center;
 `;
+
 const StyledInputLabel = styled(Typography)`
   font-weight: 500;
   font-size: 14px;
@@ -92,87 +103,81 @@ const StyledTextField = styled(TextField)`
   & .MuiInputBase-root {
     font-size: 16px;
     line-height: 21px;
-    color: #010C15;
+    color: #010c15;
     font-weight: 400;
     border-radius: 8px;
   }
-
   & .MuiOutlinedInput-notchedOutline {
     border: 1px solid #d0d5dd;
   }
-
   &:hover .MuiOutlinedInput-notchedOutline {
     border: 1px solid #d0d5dd;
   }
-
   &.Mui-focused .MuiOutlinedInput-notchedOutline {
     border: 1px solid #d0d5dd;
   }
-
   & .MuiInputBase-input {
     padding: 10px 12px;
   }
-
-
   & .MuiOutlinedInput-input::placeholder {
     font-weight: 400;
     font-size: 16px;
     line-height: 21px;
-    color: #96A7B4;
+    color: #96a7b4;
     opacity: 1;
   }
 `;
 
-const ProfileModal = ({ isOpen, setIsOpen }) => {
-  const [fullName, setFullName] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+const ProfileModal = ({ isOpen, onClose }) => {
+  const dispatch = useDispatch();
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const { message } = useSelector((store) => store.auth);
 
-  useEffect(() => {
-    // Check if all fields are filled
-    if (fullName && newPassword && confirmPassword) {
-      setIsButtonDisabled(false);
-    } else {
-      setIsButtonDisabled(true);
+  const handleSubmit = () => {
+    if (newPassword !== confirmPassword) {
+      setErrorMessage("New Password and Re-enter New Password must match!");
+      return;
     }
-  }, [fullName, newPassword, confirmPassword]);
-
-  const handleClosed = () => {
-    setIsOpen(false);
+    setErrorMessage(""); 
+    dispatch(resetPasswordApi({ currentPassword, newPassword }));
   };
 
   return (
     <Modal
       open={isOpen}
-      onClose={handleClosed}
+      onClose={onClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
-      sx={{ zIndex: 12000, border: 'none', outline: 'none' }}
+      sx={{ zIndex: 12000, border: "none", outline: "none" }}
       BackdropProps={{
         sx: {
-          backgroundColor: 'rgba(0, 0, 0, 0.25)',
-          border: 'none',
-          outline: 'none',
+          backgroundColor: "rgba(0, 0, 0, 0.25)",
+          border: "none",
+          outline: "none",
         },
       }}
     >
       <StyledBox>
         <Box
           bgcolor={colors.white}
-          width={{ xs: '90vw', sm: '65vw', md: '680px' }}
+          width={{ xs: "90vw", sm: "65vw", md: "680px" }}
           height="auto"
           sx={{
-            boxShadow: '0px 12px 24px 0px #0000001A',
-            position: 'relative',
-            borderRadius: '8px',
-            border: 'none',
-            outline: 'none',
+            boxShadow: "0px 12px 24px 0px #0000001A",
+            position: "relative",
+            borderRadius: "8px",
+            border: "none",
+            outline: "none",
           }}
         >
           <IconButton
-            sx={{ position: 'absolute', top: '6px', right: '4px' }}
-            onClick={handleClosed}
+            sx={{ position: "absolute", top: "6px", right: "4px" }}
+            onClick={() =>{ 
+              setErrorMessage("")
+              dispatch(togglePasswordModal())}}
           >
             <CloseIcon sx={{ color: colors.black }} />
           </IconButton>
@@ -187,18 +192,24 @@ const ProfileModal = ({ isOpen, setIsOpen }) => {
             <Grid item paddingX={{ xs: 1, sm: 4 }}>
               <StyledTypography2>Change Password</StyledTypography2>
             </Grid>
+           
             <Grid item width="100%">
               <Box component="form" noValidate autoComplete="off">
-                <StyledInputLabel htmlFor="full_name">Full Name</StyledInputLabel>
+                <StyledInputLabel htmlFor="current_password">
+                  Current Password
+                </StyledInputLabel>
                 <StyledTextField
-                  placeholder="Ritik Sahu"
-                  id="full_name"
-                  name="full_name"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Enter current password"
+                  id="current_password"
+                  name="current_password"
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                   sx={{ marginBottom: 3 }}
                 />
-                <StyledInputLabel htmlFor="new_password">New Password</StyledInputLabel>
+                <StyledInputLabel htmlFor="new_password">
+                  New Password
+                </StyledInputLabel>
                 <StyledTextField
                   placeholder="Enter new password"
                   id="new_password"
@@ -208,7 +219,9 @@ const ProfileModal = ({ isOpen, setIsOpen }) => {
                   onChange={(e) => setNewPassword(e.target.value)}
                   sx={{ marginBottom: 3 }}
                 />
-                <StyledInputLabel htmlFor="confirm_password">Re-enter New Password</StyledInputLabel>
+                <StyledInputLabel htmlFor="confirm_password">
+                  Re-enter New Password
+                </StyledInputLabel>
                 <StyledTextField
                   placeholder="Re-enter new password"
                   id="confirm_password"
@@ -218,15 +231,28 @@ const ProfileModal = ({ isOpen, setIsOpen }) => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   sx={{ marginBottom: 3 }}
                 />
-
+                <Typography
+                  style={{ color: "red" }}
+                  paddingBottom={1}
+                  textAlign="center"
+                >
+                  {errorMessage!="" ? errorMessage : message!="" ? message : ""}
+                </Typography>
                 <Grid container spacing={2} paddingX="20px">
                   <Grid item xs={6}>
-                    <StyledButton1 variant="outlined">Cancel</StyledButton1>
+                    <StyledButton1
+                      variant="outlined"
+                      onClick={() =>{ 
+                        setErrorMessage("")
+                        dispatch(togglePasswordModal())}}
+                    >
+                      Cancel
+                    </StyledButton1>
                   </Grid>
                   <Grid item xs={6}>
                     <StyledButton2
                       variant="contained"
-                      disabled={isButtonDisabled} // Button will be disabled if fields are not filled
+                      onClick={handleSubmit}
                     >
                       Change Password
                     </StyledButton2>

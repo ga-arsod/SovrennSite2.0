@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Box, TextField, Button, Avatar, Typography, IconButton, InputAdornment,Divider } from '@mui/material';
 import { styled } from '@mui/system';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import { colors } from '../Constants/colors';
+import { useSelector } from 'react-redux';
+import { editUserDetailsApi } from '@/app/Redux/Slices/authSlice';
+import { useDispatch } from 'react-redux';
 
 
 const Container = styled(Box)`
@@ -146,10 +149,28 @@ const StyledTypography = styled(Typography)`
 `;
 
 const Details = () => {
-  const [avatar, setAvatar] = useState('https://www.vhv.rs/dpng/d/15-155087_dummy-image-of-user-hd-png-download.png');
+  const { userDetails} = useSelector((store) => store.auth);
+  const dispatch=useDispatch();
+  const [avatar, setAvatar] = useState(
+    userDetails?.profile_pic 
+      ? userDetails?.profile_pic
+      : '/dummy_image.jpeg'
+  );
+  const [editableFields, setEditableFields] = useState({
+    fullName: false,
+    state: false,
+  });
+  const [formData, setFormData] = useState({
+    fullName: userDetails
+      ? `${userDetails?.first_name} ${userDetails?.last_name}`
+      : '',
+    state: userDetails?.state || '',
+    profile_pic:userDetails?.profile_pic
+  });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    setFormData({...formData,profile_pic:file})
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -159,8 +180,23 @@ const Details = () => {
     }
   };
 
+  const toggleEditable = (field) => {
+    setEditableFields((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+console.log(formData,"formData")
   return (
-    <Container sx={{ width: { xs: '100%', md: '1000px' }, justifyContent: 'center' }} marginTop={1}>
+    <Container sx={{ width: { xs: '100%', md: '1000px' }, justifyContent: 'center' }} >
       <ProfileContainer item xs={3}>
         <AvatarWrapper>
           <AvatarStyled alt="User Avatar" src={avatar} />
@@ -175,73 +211,74 @@ const Details = () => {
           </EditIconButton>
         </AvatarWrapper>
         <StyledTypography sx={{ marginTop: 1 }}>
-          Ritik Sahu
+        {formData.fullName}
         </StyledTypography>
       </ProfileContainer>
       <StyledGrid item width="100%">
         <Box component="form" noValidate autoComplete="off" paddingY="16px">
           <StyledInputLabel htmlFor="full_name">Full Name</StyledInputLabel>
           <StyledTextField
-            placeholder="Ritik Sahu"
+            placeholder={formData.fullName}
             id="full_name"
-            name="full_name"
-            sx={{ marginBottom: 3 }}
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleInputChange}
+            disabled={!editableFields.fullName}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <GreenBorderColorOutlinedIcon />
+                  <GreenBorderColorOutlinedIcon
+                    onClick={() => toggleEditable('fullName')}
+                  />
                 </InputAdornment>
               ),
             }}
+            sx={{ marginBottom: 3 }}
           />
+
 
           <StyledInputLabel htmlFor="phone_number">Phone No.</StyledInputLabel>
           <StyledTextField
-            placeholder="99393493493"
+            placeholder={userDetails ? userDetails?.phone_number : ""}
             id="phone_number"
             name="phone_number"
             sx={{ marginBottom: 3 }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <GreenBorderColorOutlinedIcon />
-                </InputAdornment>
-              ),
-            }}
+           
           />
 
           <StyledInputLabel htmlFor="email">Email</StyledInputLabel>
           <StyledTextField
-            placeholder="Ritiksahu@gmail.com"
+            placeholder={userDetails ? userDetails?.email : ""}
             id="email"
             name="email"
             sx={{ marginBottom: 3 }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <GreenBorderColorOutlinedIcon />
-                </InputAdornment>
-              ),
-            }}
+           
           />
 
           <StyledInputLabel htmlFor="state">State</StyledInputLabel>
           <StyledTextField
-            placeholder="Uttar Pradesh"
+            placeholder={formData.state}
             id="state"
             name="state"
-            sx={{ marginBottom: 3 }}
+            value={formData.state}
+            onChange={handleInputChange}
+            disabled={!editableFields.state}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <GreenBorderColorOutlinedIcon />
+                  <GreenBorderColorOutlinedIcon
+                    onClick={() => toggleEditable('state')}
+                  />
                 </InputAdornment>
               ),
             }}
+            sx={{ marginBottom: 3 }}
           />
           <Divider sx={{marginBottom:"16px"}} />
           <Box paddingX="24px" sx={{display:'flex',justifyContent:"flex-end"}}>
-          <StyledButton  variant="contained">Save Changes</StyledButton>
+          <StyledButton  variant="contained" onClick={() => {
+    dispatch(editUserDetailsApi({ formData:formData }));
+  }}>Save Changes</StyledButton>
           </Box>
          
          

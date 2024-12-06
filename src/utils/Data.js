@@ -1,3 +1,5 @@
+export const androidAppLink="https://play.google.com/store/apps/details?id=com.sovrenn&pli=1"
+export const iosAppLink="https://apps.apple.com/us/app/sovrenn/id6450649929"
 export const planData = [
   {
     planName: "Sovrenn Times",

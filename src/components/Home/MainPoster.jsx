@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useTheme } from "@mui/material/styles";
 import { keyframes } from '@emotion/react';
 import { useSelector } from "react-redux";
+import Link from "next/link";
+import { androidAppLink } from "@/utils/Data";
 
 import { colors } from "../Constants/colors";
 const headingsArray = [
@@ -440,6 +442,7 @@ const MainPoster = () => {
                     zIndex:10,
                   }}
                 >
+                    <Link target="_blank" href={androidAppLink}>
                   <Image
                     src="/group4.svg"
                     alt="Bottom Right"
@@ -447,7 +450,9 @@ const MainPoster = () => {
                     height={32}
                     layout="responsive"
                   />
+                  </Link>
                 </Box>
+              
                 <Box
                   sx={{
                     position: "absolute",
@@ -460,6 +465,7 @@ const MainPoster = () => {
                     zIndex:10,
                   }}
                 >
+                  
                   <Image
                     src="/group5.svg"
                     alt="Bottom Right"
@@ -467,7 +473,9 @@ const MainPoster = () => {
                     height={35}
                     layout="responsive"
                   />
+                  
                 </Box>
+               
                 <Box
                   sx={{
                     position: "absolute",

@@ -116,6 +116,9 @@ const ChildBucketCompanyContent = () => {
   const tableData = useSelector(
     (store) => store.discovery.nestedBucketDiscoveryTableBucket
   );
+  const pagination = useSelector(
+    (store) => store.discovery.pagination
+  );
 
   const firstSpaceIndex = tableData?.bucket?.title?.indexOf(" ");
   const part1 = tableData?.bucket?.title.substring(0, firstSpaceIndex);
@@ -323,7 +326,7 @@ const ChildBucketCompanyContent = () => {
           <DiscoveryTable tableData={tableData} id={title} />
         )}
          <Box mt={2}>
-        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pagination={pagination}/>
       </Box>
       </Container>
       {!isSmallerThanMd && <Footer />}

@@ -200,7 +200,8 @@ const StyledButton = styled(Button)`
 
 
 
-const IpoFilters = ({ isOpen, handleModalOpen }) => {
+const IpoFilters = ({ isOpen ,handleModalOpen,page,setPage,setFilterData}) => {
+  console.log(page,setPage,"setPage")
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllSectors, setShowAllSectors] = useState(false);
@@ -209,39 +210,76 @@ const IpoFilters = ({ isOpen, handleModalOpen }) => {
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const {  ipoFilter } = useSelector((store) => store.ipo);
   const { isAuth } = useSelector((store) => store.auth);
-
+  const [filter, setFilter] = useState({});
+  const [filterBody, setFilterBody] = useState({});
   const toggleFilter = () => {
     dispatch(toggleIpoFilter());
   };
 
-  const [filter, setFilter] = useState({
-    sector_id: [],
-
-    company_name: [],
-
-    company_type: [],
-  });
-
-  const handleChange = (category, option) => (event) => {
-    const { checked } = event.target;
-
-    setFilter((prevFilter) => {
-      const updatedOptions = prevFilter[category] || [];
-      const newOptions = checked
-        ? [...updatedOptions, option]
-        : updatedOptions.filter((item) => item !== option);
-
-      return {
-        ...prevFilter,
-        [category]: newOptions,
-      };
+  const updateFilter = (item, key, status) => {
+   
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     });
+
+    const filterObj = new Object(filterBody);
+
+    if (status) {
+      let arr = filterObj[key].filter(ele => ele !== item.value);
+
+      let arr2 = filter[key].filter(ele => ele !== item.placeholder);
+
+      filterObj[key] = arr;
+
+      setFilterBody(filterObj);
+
+      setFilter({
+        ...filter,
+        [key]: arr2
+      })
+    }
+    else {
+
+      filterObj[key] = filterObj[key] ? [...filterObj[key], item.value] : [item.value];
+
+      setFilterBody(filterObj);
+
+      setFilter({
+        ...filter,
+        [key]: filter[key] ? [...filter[key], item.placeholder] : [item.placeholder]
+      })
+    };
+
+    let flag = true;
+
+    Object.entries(filterObj).map(([key, value]) => {
+
+      if (filterObj[key].length) flag = false;
+    });
+
+setFilterData(filterObj)
+  
+
+    return;
   };
 
-  const isApplyButtonDisabled =
-    filter.sector_id.length === 0 &&
-    filter.company_name.length === 0 &&
-    filter.company_type.length === 0;
+  const resetFilters = () => {
+  
+   
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    
+    setFilter({});
+    setFilterBody({});
+    setFilterData({})
+    setPage(1)
+    
+  };
+
+
 
 
     if(!ipoFilter?.length)
@@ -294,6 +332,7 @@ const IpoFilters = ({ isOpen, handleModalOpen }) => {
                   cursor: "pointer",
                 }}
                 component="span"
+                onClick={resetFilters}
               >
                 Reset Filter
               </UnderlinedTypography>
@@ -311,12 +350,21 @@ const IpoFilters = ({ isOpen, handleModalOpen }) => {
                 return (
                   <>
                     <Grid item xs={12} key={index}>
-                      <CustomFormControlLabel
-                        checked={filter[item.key]?.includes(item.value)}
-                        onChange={handleChange(ipoFilter[0]?.key, item.value)}
-                        control={<CustomCheckbox />}
-                        label={item.placeholder}
+
+                    <CustomFormControlLabel
+                    control={
+                      <CustomCheckbox
+                      checked={filter[ipoFilter[0].key] ? filter[ipoFilter[0].key]?.includes(item.placeholder) : false}
+                        onChange={() => {
+                          const isChecked = filter[ipoFilter[0].key]?.includes(item.placeholder);
+                          updateFilter(item, ipoFilter[0].key, isChecked);
+                        }}
+                        
                       />
+                    }
+                    label={item.placeholder}
+                  />
+                      
                     </Grid>
                   </>
                 );
@@ -340,11 +388,11 @@ const IpoFilters = ({ isOpen, handleModalOpen }) => {
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
-                        checked={filter[sector.key]?.includes(sector.value)}
-                        onChange={handleChange(
-                          ipoFilter[1]?.key,
-                          sector.value
-                        )}
+                      checked={filter[ipoFilter[1].key] ? filter[ipoFilter[1].key]?.includes(sector.placeholder) : false}
+                      onChange={() => {
+                        const isChecked = filter[ipoFilter[1].key]?.includes(sector.placeholder);
+                        updateFilter(sector, ipoFilter[1].key, isChecked);
+                      }}
                       />
                     }
                     label={sector.placeholder}
@@ -380,19 +428,19 @@ const IpoFilters = ({ isOpen, handleModalOpen }) => {
               {(showAllCompanies
                 ? ipoFilter[2]?.options
                 : ipoFilter[2]?.options.slice(0, 5)
-              ).map((sector, index) => (
+              ).map((company, index) => (
                 <Grid item key={index} xs={12}>
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
-                        checked={filter[sector.key]?.includes(sector.value)}
-                        onChange={handleChange(
-                          ipoFilter[2]?.key,
-                          sector.value
-                        )}
+                      checked={filter[ipoFilter[2].key] ? filter[ipoFilter[2].key]?.includes(company.placeholder) : false}
+                      onChange={() => {
+                        const isChecked = filter[ipoFilter[2].key]?.includes(company.placeholder);
+                        updateFilter(company, ipoFilter[2].key, isChecked);
+                      }}
                       />
                     }
-                    label={sector.placeholder}
+                    label={company.placeholder}
                   />
                 </Grid>
               ))}
@@ -437,16 +485,25 @@ const IpoFilters = ({ isOpen, handleModalOpen }) => {
               <StyledButton3
                 fullWidth
                 variant="contained"
-                disabled={isApplyButtonDisabled}
-                onClick={()=>{
+               
+               
+                  onClick={()=>{
                     if(isAuth)
-                    dispatch(ipoCompaniesListApi(filter))
+                    {
+                      dispatch(ipoCompaniesListApi({page:1,data:filterBody}))
+                      setPage(1)
+                    }
+                   
+                  
                   else
                  {
                   handleModalOpen()
-                  dispatch(toggleIpoFilter())
+                  
                  }
+                 dispatch(toggleIpoFilter())
                   }}
+
+                   
               >
                 Apply Filter
               </StyledButton3>
