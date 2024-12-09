@@ -13,11 +13,11 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import {
-  DoneOutlined, 
-  
+  DoneOutlined,
+
 } from "@mui/icons-material";
 import { colors } from "../Constants/colors";
-import { generateHashApi,setPaymentData } from "@/app/Redux/Slices/paymentSlice";
+import { generateHashApi, setPaymentData } from "@/app/Redux/Slices/paymentSlice";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -115,11 +115,8 @@ const FullWidthBadge = styled(Box)`
 `;
 
 
-
-
-
 const PricingCard = ({ planDetails }) => {
- const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState("");
   const { isAuth, userDetails } = useSelector((store) => store.auth);
 
@@ -128,10 +125,10 @@ const PricingCard = ({ planDetails }) => {
   const handleOptionChange = (optionId) => {
     setSelectedOption(optionId);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
     const result = await dispatch(generateHashApi(paymentData));
 
     if (result.meta.requestStatus === 'fulfilled') {
@@ -140,7 +137,6 @@ const PricingCard = ({ planDetails }) => {
       console.error('Error generating hash:', result.error.message);
     }
   };
-  console.log(planDetails,"planDetails")
 
   return (
     <Container>
@@ -370,56 +366,53 @@ const PricingCard = ({ planDetails }) => {
                   }}
                 >
                   <Grid item xs={12}>
-                  <form
-      id="paymentForm"
-      action="https://test.payu.in/_payment"
-      method="post"
-      onSubmit={handleSubmit}
-    >
-      <input type="hidden" name="key" value={paymentData.key} />
-      <input type="hidden" name="txnid" value={paymentData.txnid} />
-      <input type="hidden" name="productinfo" value={paymentData.productinfo} />
-      <input type="hidden" name="amount" value={paymentData.amount} />
-      <input type="hidden" name="email" value={paymentData.email} />
-      <input type="hidden" name="firstname" value={paymentData.firstname} />
-      <input type="hidden" name="phone" value={paymentData.phone} />
-      <input type="hidden" name="surl" value={paymentData.surl} />
-      <input type="hidden" name="furl" value={paymentData.furl} />
-      <input type="hidden" name="udf1" value={paymentData.udf1} />
-      <input type="hidden" name="udf2" value={paymentData.udf2} />
-      <input type="hidden" name="hash" value={paymentData.hash} />
-
-      <StyledButton type='submit'
-       
-                      fullWidth
-                      disabled={
-                        selectedOption === "" ||
-                        plan.offerings.some((opt) => opt.id === selectedOption) === false
-                      }
-                      onClick={()=>{
-                        const data = {
-                          txnid: Date.now(),
-                          amount: (isAuth ? userDetails?.to_pay_for_fa : 4500),
-                          productinfo:plan.type,
-                          firstname: userDetails.first_name,
-                          email: userDetails.email,
-                          udf1: userDetails._id,
-                          udf2: 12
-                      }
-                      dispatch(setPaymentData({
-                          ...data,
-                          key: "QyT13U",
-                          lastname: userDetails?.last_name,
-                         
-                          phone: userDetails.phone_number,
-                          state: userDetails.state,
-                      }))
-                      }}
+                    <form
+                      id="paymentForm"
+                      action="https://test.payu.in/_payment"
+                      method="post"
+                      onSubmit={handleSubmit}
                     >
-                      Buy Now
-                    </StyledButton>
-    </form>
-                   
+                      <input type="hidden" name="key" value={paymentData.key} />
+                      <input type="hidden" name="txnid" value={paymentData.txnid} />
+                      <input type="hidden" name="productinfo" value={paymentData.productinfo} />
+                      <input type="hidden" name="amount" value={paymentData.amount} />
+                      <input type="hidden" name="email" value={paymentData.email} />
+                      <input type="hidden" name="firstname" value={paymentData.firstname} />
+                      <input type="hidden" name="phone" value={paymentData.phone} />
+                      <input type="hidden" name="surl" value={paymentData.surl} />
+                      <input type="hidden" name="furl" value={paymentData.furl} />
+                      <input type="hidden" name="udf1" value={paymentData.udf1} />
+                      <input type="hidden" name="udf2" value={paymentData.udf2} />
+                      <input type="hidden" name="hash" value={paymentData.hash} />
+
+                      <StyledButton type='submit'
+
+                        fullWidth
+                        disabled={
+                          selectedOption === "" ||
+                          plan.offerings.some((opt) => opt.id === selectedOption) === false
+                        }
+                        onClick={() => {
+                          const data = {
+                            txnid: Date.now(),
+                            amount: (isAuth ? userDetails?.to_pay_for_fa : 4500),
+                            productinfo: plan.type,
+                            firstname: userDetails.first_name,
+                            email: userDetails.email,
+                            udf1: userDetails._id,
+                            udf2: 12
+                          }
+                          dispatch(setPaymentData({
+                            ...data,
+                            phone: userDetails.phone_number,
+                            state: userDetails.state,
+                          }))
+                        }}
+                      >
+                        Buy Now
+                      </StyledButton>
+                    </form>
+
                   </Grid>
                   <Grid item xs={12}>
                     <StyledButton2 fullWidth>Contact Sales</StyledButton2>

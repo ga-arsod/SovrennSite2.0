@@ -44,12 +44,12 @@ const PaymentConfirmation = () => {
             marginTop="60px"
             width={{ xs: "100%", sm: "750px" }}
           >
-           
+
             <StyledTypography1 color="#034635" paddingTop={5}>
-            Payment Failed! An error occurred while processing the payment!
+              Payment Failed! An error occurred while processing the payment!
             </StyledTypography1>
             <StyledTypography2 color={colors.navyBlue200}>
-         {   "Don't worry your money is safe! In case your money got deducted, please email at" + " "} 
+              {"Don't worry your money is safe! In case your money got deducted, please email at" + " "}
               <Typography
                 component="a"
                 href="mailto:help@sovrenn.com"
@@ -57,10 +57,10 @@ const PaymentConfirmation = () => {
               >
                 help@sovrenn.com
               </Typography>
-              {" "+"and we will solve the problem in the next 12 hours."}
+              {" " + "and we will solve the problem in the next 12 hours."}
             </StyledTypography2>
 
-          
+
             <Box sx={{ marginBottom: "24px" }}>
               <Image
                 src="/rafiki.png"
@@ -70,16 +70,16 @@ const PaymentConfirmation = () => {
               />
             </Box>
 
-           
-           
-          
 
-          
-          
 
-            
 
-           
+
+
+
+
+
+
+
             <Grid container gap={2} justifyContent="center" marginBottom={2}>
               <Grid item xs={12} sm="auto">
                 <Link href="/discovery" replace>
