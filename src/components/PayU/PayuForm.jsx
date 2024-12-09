@@ -7,21 +7,23 @@ const PayUForm = () => {
   const [isLoading, setIsLoading] = useState(true);
 
  
-  const fetchHash = async () => {
+  const fetchHash = async (paymentData) => {
     try {
       const response = await fetch(`https://api.sovrenn.com/payment/payu/create-hash/test`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
         body: JSON.stringify({
-          key: paymentData.key,
+         udf1:payment.udf1,
+         udf2:paymentData.udf2,
           txnid: paymentData.txnid,
           amount: paymentData.amount,
           productinfo: paymentData.productinfo,
           firstname: paymentData.firstname,
           email: paymentData.email,
-          phone: paymentData.phone,
+          
         }),
       });
 
@@ -39,7 +41,7 @@ const PayUForm = () => {
 
   
   useEffect(() => {
-    fetchHash();
+    fetchHash(paymentData);
   }, [paymentData]);
 
   if (isLoading) {

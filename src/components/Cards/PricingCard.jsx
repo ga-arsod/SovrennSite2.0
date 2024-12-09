@@ -13,16 +13,14 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import {
-  DoneOutlined,
-  Insights,
-  Star,
-  Public,
-  Group,
-  ExploreOutlined,
-  Groups2Outlined,
+  DoneOutlined, 
+  
 } from "@mui/icons-material";
 import { colors } from "../Constants/colors";
+import { generateHashApi,setPaymentData } from "@/app/Redux/Slices/paymentSlice";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const StyledButton = styled(Button)`
   text-transform: none;
@@ -116,104 +114,33 @@ const FullWidthBadge = styled(Box)`
   border-radius: 0;
 `;
 
-const plansData = [
-  {
-    id: 1,
-    title: "Free Access",
-    pack_type: "Only Sovrenn Times",
-    price: "₹0",
-    durationOptions: [
-      { id: "a", label: "1 Month", price: "₹0", discountPrice: "" },
-    ],
-    featuresLabel: "Limited to 10 Combined Actions per month of the following:",
-    features: [
-      "All Free Features",
-      "Sovrenn Times",
-      "Sovrenn Prime",
-      "Sovrenn Discovery",
-      "Sovrenn IPO",
-      "Promoter Interviews",
-      "Community",
-    ],
-    actionLabel: "Buy Now",
-    contactLabel: "Contact Sales",
-  },
-  {
-    id: 2,
-    title: "Full Access",
-    secondary_title: "Most Popular",
-    pack_type: "All Sovrenn Products",
-    price: "₹5,000",
-    durationOptions: [
-      { id: "b", label: "5 Years", price: "₹25,000", discountPrice: "₹35,000" },
-      {
-        id: "c",
-        label: "1 Year",
-        price: "₹5,000",
-        discountPrice: "₹7,000",
-        popular: true,
-      },
-      { id: "d", label: "6 Months", price: "₹2,500", discountPrice: "₹3,500" },
-    ],
-    features: [
-      "All Free Features",
-      "Sovrenn Times",
-      "Sovrenn Prime",
-      "Sovrenn Discovery",
-      "Sovrenn IPO",
-      "Promoter Interviews",
-      "Community",
-    ],
-    actionLabel: "Extend Now",
-    contactLabel: "Contact Sales",
-  },
-  {
-    id: 3,
-    title: "Times Access",
-    pack_type: "Only Sovrenn Times",
-    price: "₹365",
-    durationOptions: [
-      { id: "e", label: "1 Year", price: "₹365", discountPrice: "₹1,000" },
-    ],
-    notIncluded: [
-      "Sovrenn Prime",
-      "Sovrenn Discovery",
-      "Sovrenn IPO",
-      "Promoter Interviews",
-      "Community",
-    ],
-    features: [
-      "10 Combined Actions for overall Product",
-      "All Free Features",
-      "Sovrenn Times",
-    ],
-    actionLabel: "Buy Now",
-    contactLabel: "Contact Sales",
-  },
-];
 
-const featureIcons = {
-  "All Free Features": <DoneOutlined />,
-  "Sovrenn Times": <Insights />,
-  "Sovrenn Prime": <Star />,
-  "Sovrenn Discovery": <Public />,
-  "Sovrenn IPO": <ExploreOutlined />,
-  "Promoter Interviews": <Group />,
-  Community: <Groups2Outlined />,
-};
+
+
 
 const PricingCard = ({ planDetails }) => {
-  const [plans, setPlans] = useState([]);
+ const dispatch=useDispatch();
   const [selectedOption, setSelectedOption] = useState("");
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
 
-  useEffect(() => {
-    setPlans(plansData);
-  }, []);
+  const { paymentData } = useSelector((state) => state.payment);
 
   const handleOptionChange = (optionId) => {
     setSelectedOption(optionId);
   };
-  console.log(planDetails, "plans");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    
+    const result = await dispatch(generateHashApi(paymentData));
+
+    if (result.meta.requestStatus === 'fulfilled') {
+      document.getElementById('paymentForm').submit();
+    } else {
+      console.error('Error generating hash:', result.error.message);
+    }
+  };
+  console.log(planDetails,"planDetails")
 
   return (
     <Container>
@@ -443,15 +370,56 @@ const PricingCard = ({ planDetails }) => {
                   }}
                 >
                   <Grid item xs={12}>
-                    <StyledButton
+                  <form
+      id="paymentForm"
+      action="https://test.payu.in/_payment"
+      method="post"
+      onSubmit={handleSubmit}
+    >
+      <input type="hidden" name="key" value={paymentData.key} />
+      <input type="hidden" name="txnid" value={paymentData.txnid} />
+      <input type="hidden" name="productinfo" value={paymentData.productinfo} />
+      <input type="hidden" name="amount" value={paymentData.amount} />
+      <input type="hidden" name="email" value={paymentData.email} />
+      <input type="hidden" name="firstname" value={paymentData.firstname} />
+      <input type="hidden" name="phone" value={paymentData.phone} />
+      <input type="hidden" name="surl" value={paymentData.surl} />
+      <input type="hidden" name="furl" value={paymentData.furl} />
+      <input type="hidden" name="udf1" value={paymentData.udf1} />
+      <input type="hidden" name="udf2" value={paymentData.udf2} />
+      <input type="hidden" name="hash" value={paymentData.hash} />
+
+      <StyledButton type='submit'
+       
                       fullWidth
                       disabled={
                         selectedOption === "" ||
                         plan.offerings.some((opt) => opt.id === selectedOption) === false
                       }
+                      onClick={()=>{
+                        const data = {
+                          txnid: Date.now(),
+                          amount: (isAuth ? userDetails?.to_pay_for_fa : 4500),
+                          productinfo:plan.type,
+                          firstname: userDetails.first_name,
+                          email: userDetails.email,
+                          udf1: userDetails._id,
+                          udf2: 12
+                      }
+                      dispatch(setPaymentData({
+                          ...data,
+                          key: "QyT13U",
+                          lastname: userDetails?.last_name,
+                         
+                          phone: userDetails.phone_number,
+                          state: userDetails.state,
+                      }))
+                      }}
                     >
                       Buy Now
                     </StyledButton>
+    </form>
+                   
                   </Grid>
                   <Grid item xs={12}>
                     <StyledButton2 fullWidth>Contact Sales</StyledButton2>
