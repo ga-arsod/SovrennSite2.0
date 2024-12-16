@@ -84,7 +84,7 @@ const IpoHeader = () => {
             <Box marginBottom={1}>
             <Box display="flex" alignItems="center">
                 <Box display={{ xs: 'block', sm: 'block', md: 'none' }} marginRight={1}>
-                  <ArrowBackIcon sx={{fontSize:{xs:'14px',sm:'24px'}}} />
+                  <ArrowBackIcon sx={{ fontSize: 28,}} />
                 </Box>
                 <StyledTypography1
                   color={colors.navyBlue500}

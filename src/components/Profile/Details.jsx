@@ -1,40 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { Grid, Box, TextField, Button, Avatar, Typography, IconButton, InputAdornment,Divider } from '@mui/material';
-import { styled } from '@mui/system';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import { colors } from '../Constants/colors';
-import { useSelector } from 'react-redux';
-import { editUserDetailsApi } from '@/app/Redux/Slices/authSlice';
-import { useDispatch } from 'react-redux';
-
+import React, { useEffect, useState } from "react";
+import {
+  Grid,
+  Box,
+  TextField,
+  Button,
+  Avatar,
+  Typography,
+  IconButton,
+  InputAdornment,
+  Divider,
+} from "@mui/material";
+import { styled } from "@mui/system";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import { colors } from "../Constants/colors";
+import { useSelector } from "react-redux";
+import { editUserDetailsApi } from "@/app/Redux/Slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const Container = styled(Box)`
   display: flex;
   flex-direction: row;
-  align-items: center; 
+  align-items: center;
   padding: 12px;
   padding-top: 90px;
- @media (max-width: 639px) {
+  @media (max-width: 639px) {
     padding-top: 20px;
-   
   }
   @media (max-width: 1024px) {
     flex-direction: column;
   }
- 
 `;
- const StyledGrid=styled(Grid)`
-  box-shadow: 0px 1px 2px 0px #1018280F;
-  border-radius:8px;
-box-shadow: 0px 1px 3px 0px #1018281A;
-
- `
+const StyledGrid = styled(Grid)`
+  box-shadow: 0px 1px 2px 0px #1018280f;
+  border-radius: 8px;
+  box-shadow: 0px 1px 3px 0px #1018281a;
+`;
 
 const ProfileContainer = styled(Grid)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   margin-right: 60px;
 `;
 
@@ -43,16 +49,16 @@ const AvatarWrapper = styled(Box)`
   width: 120px;
   height: 120px;
   border: 4px solid white;
-  box-shadow: 0px 4px 6px -2px #1018280D;
-  box-shadow: 0px 12px 16px -4px #1018281A;
+  box-shadow: 0px 4px 6px -2px #1018280d;
+  box-shadow: 0px 12px 16px -4px #1018281a;
   border-radius: 50%;
 `;
 
 const AvatarStyled = styled(Avatar)`
   width: 100%;
   height: 100%;
-  object-fit: cover; 
-  border-radius: 50%; 
+  object-fit: cover;
+  border-radius: 50%;
 `;
 
 const EditIconButton = styled(IconButton)`
@@ -71,9 +77,9 @@ const EditedBorderColorOutlinedIcon = styled(BorderColorOutlinedIcon)`
 `;
 
 const GreenBorderColorOutlinedIcon = styled(BorderColorOutlinedIcon)`
-  color: ${colors.themeGreen}; 
+  color: ${colors.themeGreen};
   cursor: pointer;
-  font-size: 15px; 
+  font-size: 15px;
 `;
 
 const StyledInputLabel = styled(Typography)`
@@ -81,17 +87,17 @@ const StyledInputLabel = styled(Typography)`
   font-size: 14px;
   line-height: 20px;
   color: #344054;
-  padding:0px 24px;
+  padding: 0px 24px;
 `;
 
 const StyledTextField = styled(TextField)`
   width: 100%;
- padding:0px 24px;
+  padding: 0px 24px;
   & .MuiInputBase-root {
     font-size: 16px;
-    line-height:21px;
-    color: #010C15;
-    font-weight:400;
+    line-height: 21px;
+    color: #010c15;
+    font-weight: 400;
     border-radius: 8px;
   }
 
@@ -116,7 +122,7 @@ const StyledTextField = styled(TextField)`
     font-weight: 400;
     font-size: 16px;
     line-height: 21px;
-    color:#96A7B4; /* Change this to your desired placeholder color */
+    color: #96a7b4; /* Change this to your desired placeholder color */
     opacity: 1;
   }
 `;
@@ -127,8 +133,8 @@ const StyledButton = styled(Button)`
   line-height: 19px;
   background-color: ${colors.greyBlue100};
   color: ${colors.greyBlue600};
-  text-transform:none;
-  padding:12px 18px;
+  text-transform: none;
+  padding: 12px 18px;
   &:hover {
     background-color: #556677;
   }
@@ -138,23 +144,20 @@ const StyledTypography = styled(Typography)`
   font-weight: 500;
   font-size: 30px;
   line-height: 38px;
-  color:#101828;
-  white-space:nowrap;
+  color: #101828;
+  white-space: nowrap;
   @media (max-width: 639px) {
     font-size: 20px;
     font-weight: 400;
     line-height: 24px;
-   
   }
 `;
 
 const Details = () => {
-  const { userDetails} = useSelector((store) => store.auth);
-  const dispatch=useDispatch();
+  const { userDetails } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
   const [avatar, setAvatar] = useState(
-    userDetails?.profile_pic 
-      ? userDetails?.profile_pic
-      : '/dummy_image.jpeg'
+    userDetails?.profile_pic ? userDetails?.profile_pic : "/dummy_image.jpeg"
   );
   const [editableFields, setEditableFields] = useState({
     fullName: false,
@@ -163,14 +166,14 @@ const Details = () => {
   const [formData, setFormData] = useState({
     fullName: userDetails
       ? `${userDetails?.first_name} ${userDetails?.last_name}`
-      : '',
-    state: userDetails?.state || '',
-    profile_pic:userDetails?.profile_pic
+      : "",
+    state: userDetails?.state || "",
+    profile_pic: userDetails?.profile_pic,
   });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setFormData({...formData,profile_pic:file})
+    setFormData({ ...formData, profile_pic: file });
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
@@ -194,9 +197,11 @@ const Details = () => {
       [name]: value,
     }));
   };
-console.log(formData,"formData")
+
   return (
-    <Container sx={{ width: { xs: '100%', md: '1000px' }, justifyContent: 'center' }} >
+    <Container
+      sx={{ width: { xs: "100%", md: "1000px" }, justifyContent: "center" }}
+    >
       <ProfileContainer item xs={3}>
         <AvatarWrapper>
           <AvatarStyled alt="User Avatar" src={avatar} />
@@ -204,14 +209,14 @@ console.log(formData,"formData")
             <input
               type="file"
               accept="image/*"
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
               onChange={handleImageChange}
             />
             <EditedBorderColorOutlinedIcon fontSize="small" />
           </EditIconButton>
         </AvatarWrapper>
         <StyledTypography sx={{ marginTop: 1 }}>
-        {formData.fullName}
+          {formData.fullName}
         </StyledTypography>
       </ProfileContainer>
       <StyledGrid item width="100%">
@@ -228,7 +233,7 @@ console.log(formData,"formData")
               endAdornment: (
                 <InputAdornment position="end">
                   <GreenBorderColorOutlinedIcon
-                    onClick={() => toggleEditable('fullName')}
+                    onClick={() => toggleEditable("fullName")}
                   />
                 </InputAdornment>
               ),
@@ -236,14 +241,12 @@ console.log(formData,"formData")
             sx={{ marginBottom: 3 }}
           />
 
-
           <StyledInputLabel htmlFor="phone_number">Phone No.</StyledInputLabel>
           <StyledTextField
             placeholder={userDetails ? userDetails?.phone_number : ""}
             id="phone_number"
             name="phone_number"
             sx={{ marginBottom: 3 }}
-           
           />
 
           <StyledInputLabel htmlFor="email">Email</StyledInputLabel>
@@ -252,7 +255,6 @@ console.log(formData,"formData")
             id="email"
             name="email"
             sx={{ marginBottom: 3 }}
-           
           />
 
           <StyledInputLabel htmlFor="state">State</StyledInputLabel>
@@ -267,24 +269,28 @@ console.log(formData,"formData")
               endAdornment: (
                 <InputAdornment position="end">
                   <GreenBorderColorOutlinedIcon
-                    onClick={() => toggleEditable('state')}
+                    onClick={() => toggleEditable("state")}
                   />
                 </InputAdornment>
               ),
             }}
             sx={{ marginBottom: 3 }}
           />
-          <Divider sx={{marginBottom:"16px"}} />
-          <Box paddingX="24px" sx={{display:'flex',justifyContent:"flex-end"}}>
-          <StyledButton  variant="contained" onClick={() => {
-    dispatch(editUserDetailsApi({ formData:formData }));
-  }}>Save Changes</StyledButton>
+          <Divider sx={{ marginBottom: "16px" }} />
+          <Box
+            paddingX="24px"
+            sx={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <StyledButton
+              variant="contained"
+              onClick={() => {
+                dispatch(editUserDetailsApi({ formData: formData }));
+              }}
+            >
+              Save Changes
+            </StyledButton>
           </Box>
-         
-         
-         
         </Box>
-       
       </StyledGrid>
     </Container>
   );

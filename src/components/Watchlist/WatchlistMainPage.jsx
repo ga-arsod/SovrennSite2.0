@@ -41,7 +41,7 @@ const WatchlistMainPage = () => {
               {isSmallerThanMd && (
                 <ArrowBackIcon
                   sx={{
-                    fontSize: { xs: 26, sm: 42 },
+                    fontSize: 28,
                     marginRight: { xs: 1, sm: 2 },
                     color: colors.navyBlue500,
                   }}

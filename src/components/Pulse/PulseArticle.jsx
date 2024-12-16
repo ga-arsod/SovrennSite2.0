@@ -254,7 +254,7 @@ const PulseArticle = () => {
                   marginRight={1}
                 >
                   <ArrowBackIcon
-                    sx={{ fontSize: { xs: "14px", sm: "24px" } }}
+                    sx={{ fontSize: 28, }}
                   />
                 </Box>
                 <StyledTypography1

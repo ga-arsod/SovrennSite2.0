@@ -119,8 +119,8 @@ const PricingCard = ({ planDetails }) => {
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState("");
   const { isAuth, userDetails } = useSelector((store) => store.auth);
-
-  const { paymentData } = useSelector((state) => state.payment);
+  const  {paymentData}  = useSelector((store) => store.payment);
+  
 
   const handleOptionChange = (optionId) => {
     setSelectedOption(optionId);
@@ -137,7 +137,7 @@ const PricingCard = ({ planDetails }) => {
       console.error('Error generating hash:', result.error.message);
     }
   };
-
+console.log(paymentData,"paymentdata")
   return (
     <Container>
       <Grid

@@ -9,11 +9,11 @@ import { colors } from "../Constants/colors";
 const StyledGrid = styled(Box)`
   position: relative;
   z-index: 10;
-  width: 100%; /* Ensure it takes the full width on smaller screens */
-  max-width: 960px; /* Limit the max width */
-  margin: auto; /* Center the card */
+  width: 100%; 
+  max-width: 960px; 
+  margin: auto; 
   bottom: 5rem;
-  left: 0; /* Removed the percentage left alignment for better centering */
+  left: 0;
   
   @media (min-width: 640px) and (max-width: 1080px) {
     width: 90%;

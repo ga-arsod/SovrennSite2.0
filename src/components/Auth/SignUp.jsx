@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import {
   Grid,
@@ -7,7 +7,8 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  InputLabel,form
+  InputLabel,
+  form,
 } from "@mui/material";
 import styled from "@emotion/styled";
 import Link from "next/link";
@@ -21,6 +22,8 @@ import { colors } from "../Constants/colors";
 import Image from "next/image";
 import { validEmail, validPassword, validPhoneNumber } from "./Regex";
 import { doSocialLogin } from "@/app/actions";
+import BasicInfo from "../Auth/BasicInfo";
+import { useRouter } from "next/navigation";
 
 const StyledInputLabel = styled(InputLabel)`
   font-weight: 400;
@@ -84,14 +87,9 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const URL = "https://api.sovrenn.com";
-const SignUp = ({ isSignIn, setIsSignIn }) => {
-  const [form, setForm] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    phone_number: "",
-  });
+const SignUp = ({ form, setForm }) => {
+  const [basicInfo, setBasicInfo] = useState(false);
+  const router = useRouter();
 
   const [values, setValues] = useState({
     password: "",
@@ -123,21 +121,7 @@ const SignUp = ({ isSignIn, setIsSignIn }) => {
         first_name: firstName,
         last_name: lastName,
       }));
-    } else if (name === "email") {
-      if (validEmail.test(value)) {
-        setForm((prevForm) => ({
-          ...prevForm,
-          email: value,
-          phone_number: "",
-        }));
-      } else {
-        setForm((prevForm) => ({
-          ...prevForm,
-          email: "",
-          phone_number: value,
-        }));
-      }
-    } else {
+    }  else {
       setForm((prevForm) => ({
         ...prevForm,
         [name]: value,
@@ -185,156 +169,116 @@ const SignUp = ({ isSignIn, setIsSignIn }) => {
       return;
     }
 
-    if (values.password !== confirmValues.password) {
-      setValidate(true);
-      setValidateValue("Password and Confirm Password does not match.");
-      return;
-    }
-
-    const data = await fetch(`${URL}/register`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        ...form,
-        signed_up_from: "website",
-      }),
-    }).then((response) => response.json());
-
-    if (data.success) {
-      localStorage.setItem("token", data.token);
-      dispatch(
-        authAction({
-          isAuth: true,
-          token: data.token,
-          user: data.user,
-        })
-      );
-
-      setForm({
-        first_name: "",
-        last_name: "",
-
-        email: "",
-        phone_number: "",
-        password: "",
-      });
-
-      setValues({
-        password: "",
-        showPassword: false,
-      });
-
-      setConfirmValues({
-        password: "",
-        showPassword: false,
-      });
-      return;
-    }
-
-    setValidate(true);
-    setValidateValue(data.message);
+    setBasicInfo(true)
     return;
+   
   };
-
+  console.log(form, "form");
   return (
-    <Grid
-      container
-      display="flex"
-      width={{ xs: "90%", sm: "50%", lg: "70%" }}
-      justifyContent="center"
-      alignItems="center"
-      marginTop={6}
-    >
-      <Grid
-        item
-        width="100%"
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-        marginBottom={3}
-      >
-        <IconButton sx={{ padding: 0, visibility: { xs: "", sm: "hidden" } }}>
-          <ArrowBackIcon sx={{ color: "#011627" }} />
-        </IconButton>
-
-        <Typography
-          textAlign="center"
-          color={colors.themeGreen}
-          sx={{ fontWeight: "600", fontSize: "33px", lineHeight: "40px" }}
+    <>
+      {basicInfo ? (
+        <BasicInfo
+          form={form}
+          setForm={setForm}
+          formInputChange={formInputChange}
+        />
+      ) : (
+        <Grid
+          container
+          display="flex"
+          width={{ xs: "90%", sm: "50%", lg: "70%" }}
+          justifyContent="center"
+          alignItems="center"
+          marginTop={6}
         >
-          {isSignIn ? "Sign In" : "Sign Up"}
-        </Typography>
-        <Typography></Typography>
-      </Grid>
-      <Grid item width="100%">
-        <form onSubmit={handleSubmitForm}>
-          <Grid container direction="column">
-            <Grid item>
-              <StyledInputLabel htmlFor="name">Name</StyledInputLabel>
+          <Grid
+            item
+            width="100%"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+            marginBottom={3}
+          >
+            <IconButton
+              sx={{ padding: 0, visibility: { xs: "", sm: "hidden" } }}
+            >
+              <ArrowBackIcon sx={{ color: "#011627", fontSize: 28 }} />
+            </IconButton>
 
-              <CustomTextField
-                sx={{ marginBottom: "16px" }}
-                id="name"
-                required
-                name="name"
-                value={form.name}
-                onChange={formInputChange}
-                placeholder="Enter your full name"
-                fullWidth
-              />
-              <StyledInputLabel htmlFor="email">
-                Email or Phone no.
-              </StyledInputLabel>
+            <Typography
+              textAlign="center"
+              color={colors.themeGreen}
+              sx={{ fontWeight: "600", fontSize: "33px", lineHeight: "40px" }}
+            >
+              Sign Up
+            </Typography>
+            <Typography></Typography>
+          </Grid>
+          <Grid item width="100%">
+            <form onSubmit={handleSubmitForm}>
+              <Grid container direction="column">
+                <Grid item>
+                  <StyledInputLabel htmlFor="name">Name</StyledInputLabel>
 
-              <CustomTextField
-                sx={{ marginBottom: "16px" }}
-                id="email"
-                required
-                name="email"
-                placeholder="Enter your email or Phone no."
-                value={form.email || form.phone_number}
-                onChange={formInputChange}
-                fullWidth
-              />
-              <StyledInputLabel htmlFor="password">
-                Create Password
-              </StyledInputLabel>
+                  <CustomTextField
+                    sx={{ marginBottom: "16px" }}
+                    id="name"
+                    required
+                    name="name"
+                    value={form.name}
+                    onChange={formInputChange}
+                    placeholder="Enter your full name"
+                    fullWidth
+                  />
+                  <StyledInputLabel htmlFor="email">Email</StyledInputLabel>
 
-              <CustomTextField
-                sx={{ marginBottom: "16px" }}
-                id="password"
-                required
-                type={values.showPassword ? "text" : "password"}
-                onChange={handleChange("password")}
-                name="password"
-                placeholder="Enter at least 6 characters"
-                value={form.password}
-                fullWidth
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        id={"password"}
-                        onClick={handleClickShowPassword("password")}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {values.showPassword ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <StyledInputLabel htmlFor="confirmPassword">
+                  <CustomTextField
+                    sx={{ marginBottom: "16px" }}
+                    id="email"
+                    required
+                    name="email"
+                    placeholder="Enter your email"
+                    value={form.email}
+                    onChange={formInputChange}
+                    fullWidth
+                  />
+                  <StyledInputLabel htmlFor="password">
+                    Create Password
+                  </StyledInputLabel>
+
+                  <CustomTextField
+                    sx={{ marginBottom: "16px" }}
+                    id="password"
+                    required
+                    type={values.showPassword ? "text" : "password"}
+                    onChange={handleChange("password")}
+                    name="password"
+                    placeholder="Enter at least 6 characters"
+                    value={form.password}
+                    fullWidth
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            id={"password"}
+                            onClick={handleClickShowPassword("password")}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {values.showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  {/* <StyledInputLabel htmlFor="confirmPassword">
                 Confirm Password
               </StyledInputLabel>
 
@@ -366,46 +310,42 @@ const SignUp = ({ isSignIn, setIsSignIn }) => {
                     </InputAdornment>
                   ),
                 }}
-              />
-
-              <Typography textAlign="right">
-                <Button
-                  disableElevation
-                  sx={{
-                    color: "#1DA098",
-                    fontWeight: "400",
-                    fontSize: "13px",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                  }}
-                >
-                  Forgot Password
-                </Button>
-              </Typography>
-            </Grid>
-            {validate ? (
-              <Typography
-                marginBottom={1}
-                textAlign="center"
-                sx={{ fontWeight: 400, fontSize: "14px", lineheight: "17px" }}
-                color={colors.red500}
-              >
-                {validateValue}
-              </Typography>
-            ) : (
-              ""
-            )}
-            <Grid item width="100%">
-              <StyledButton1 type="submit" variant="contained">
-                {isSignIn ? "Sign In" : "Sign Up"}
-              </StyledButton1>
-            </Grid>
+              /> */}
+                </Grid>
+               
+                <Grid item xs={12}>
+                  {validate ? (
+                    <Typography
+                      marginBottom={1}
+                      textAlign="center"
+                      sx={{
+                        fontWeight: 400,
+                        fontSize: "14px",
+                        lineheight: "17px",
+                      }}
+                      color={colors.red500}
+                    >
+                      {validateValue}
+                    </Typography>
+                  ) : (
+                    ""
+                  )}
+                </Grid>
+                <Grid item width="100%">
+                  <StyledButton1
+                    type="submit"
+                    variant="contained"
+                   
+                  >
+                    Create Account
+                  </StyledButton1>
+                </Grid>
+              </Grid>
+            </form>
           </Grid>
-        </form>
-      </Grid>
-      <Grid item width="100%">
-        <Grid container width="100%" rowSpacing={2}>
           <Grid item width="100%">
+            <Grid container width="100%">
+              {/* <Grid item width="100%">
             <Typography
               color="#98A3B4"
               textAlign="center"
@@ -417,8 +357,8 @@ const SignUp = ({ isSignIn, setIsSignIn }) => {
             >
               Or
             </Typography>
-          </Grid>
-          <Grid item width="100%">
+          </Grid> */}
+              {/* <Grid item width="100%">
             <form action={doSocialLogin}>
             <StyledButton2
               variant="outlined"
@@ -437,26 +377,28 @@ const SignUp = ({ isSignIn, setIsSignIn }) => {
               Continue with Google
             </StyledButton2>
             </form>
-          </Grid>
-          <Grid item width="100%">
-            <Typography textAlign="center" sx={{ cursor: "pointer" }}>
-              <StyledTypography component="span" color="#121E32">
-                Already have an account?
-              </StyledTypography>
-              <StyledTypography
-                component="span"
-                color={colors.themeGreen}
-                onClick={() => {
-                  setIsSignIn(!isSignIn);
-                }}
-              >
-               Sign In
-              </StyledTypography>
-            </Typography>
+          </Grid> */}
+              <Grid item width="100%" marginTop={3}>
+                <Typography textAlign="center" sx={{ cursor: "pointer" }}>
+                  <StyledTypography component="span" color="#121E32">
+                    Already have an account?
+                  </StyledTypography>
+                  <StyledTypography
+                    component="span"
+                    color={colors.themeGreen}
+                    onClick={() => {
+                      router.replace("/login");
+                    }}
+                  >
+                    {` Sign In`}
+                  </StyledTypography>
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </Grid>
+      )}
+    </>
   );
 };
 

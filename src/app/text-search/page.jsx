@@ -122,7 +122,7 @@ const TextSearch = () => {
         <Box marginTop="90px">
           {isXsOrSm && (
             <IconButton onClick={() => router.back()} aria-label="go back">
-              <ArrowBack />
+              <ArrowBack sx={{fontSize: 28,}}/>
             </IconButton>
           )}
           <StyledTypography1

@@ -168,7 +168,7 @@ const SelfHelp = () => {
             {isSmallScreen && (
               <ArrowBackIcon
                 sx={{
-                  fontSize: { xs: 23, sm: 42 },
+                  fontSize: 28,
                   marginRight: { xs: 1, sm: 2 },
                   color: colors.navyBlue500,
                 }}
