@@ -62,7 +62,7 @@ const PrimeHeader = () => {
       <Grid container alignItems="center">
         <Grid item paddingY={{ xs: 2, sm: 5 }}>
           <Box display="flex" alignItems="center" marginBottom={1}>
-            <ArrowBack sx={{ color: colors.navyBlue500, marginRight: 1 }} /> 
+            <ArrowBack sx={{ color: colors.navyBlue500, marginRight: 1,fontSize: 28, }} /> 
             <StyledTypography1
               color={colors.navyBlue500}
               marginRight={1}

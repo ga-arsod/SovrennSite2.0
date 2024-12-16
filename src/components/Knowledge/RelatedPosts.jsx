@@ -174,7 +174,7 @@ const RelatedPosts = ({ posts }) => {
           <Grid item sx={{ display: "flex", gap: 1 }}>
             <StyledIconButton onClick={prevSlide}>
               <ArrowBackIcon
-                sx={{ color: colors.navyBlue500, fontSize: "16px" }}
+                sx={{ color: colors.navyBlue500, fontSize: 28, }}
               />
             </StyledIconButton>
             <StyledIconButton onClick={nextSlide}>

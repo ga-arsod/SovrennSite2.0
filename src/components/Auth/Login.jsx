@@ -159,7 +159,7 @@ const Login = ({ component, handleClose }) => {
         marginBottom={3}
       >
         <IconButton sx={{ padding: 0, visibility: { xs: "", sm: "hidden" } }}>
-          <ArrowBackIcon sx={{ color: "#011627" }} />
+          <ArrowBackIcon sx={{ color: "#011627",fontSize: 28, }} />
         </IconButton>
 
         <Typography
@@ -259,8 +259,8 @@ const Login = ({ component, handleClose }) => {
         </form>
       </Grid>
       <Grid item width="100%">
-        <Grid container width="100%" rowSpacing={2}>
-          <Grid item width="100%" marginTop={2}>
+        <Grid container width="100%" >
+          {/* <Grid item width="100%" marginTop={2}>
             <Typography
               color="#98A3B4"
               textAlign="center"
@@ -292,8 +292,8 @@ const Login = ({ component, handleClose }) => {
               Continue with Google
             </StyledButton2>
             </form>
-          </Grid>
-          <Grid item width="100%">
+          </Grid> */}
+          <Grid item width="100%" marginTop={3}>
             <Typography textAlign="center" sx={{ cursor: "pointer" }}>
               <StyledTypography component="span" color="#121E32">
                 Don’t have an account?
@@ -302,7 +302,7 @@ const Login = ({ component, handleClose }) => {
                 component="span"
                 color={colors.themeGreen}
                 onClick={() => {
-                  setIsSignIn(!isSignIn);
+                 router.replace("/signup")
                 }}
               >
                 Sign Up

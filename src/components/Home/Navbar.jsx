@@ -191,7 +191,7 @@ const Navbar = ({ session }) => {
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const isGeaterThanSm = useMediaQuery(theme.breakpoints.up("sm"));
-  const { isAuth, user } = useSelector((store) => store.auth);
+  const { isAuth, user,userDetails } = useSelector((store) => store.auth);
   const router = useRouter();
   const pathname=usePathname();
   const isXsOrSm = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -426,13 +426,13 @@ const Navbar = ({ session }) => {
                   overflow: "hidden",
                 }}
               >
-                {user?.profile_pic === null ? (
+                {userDetails?.profile_pic === null ? (
                   <Typography color="white">
-                    {user?.first_name.charAt(0)}
+                    {userDetails?.first_name.charAt(0)}
                   </Typography>
                 ) :
-                user?.profile_pic ? <Image
-                src={user?.profile_pic}
+                userDetails?.profile_pic ? <Image
+                src={userDetails?.profile_pic}
                 width={30}
                 height={30}
                 alt="profile"

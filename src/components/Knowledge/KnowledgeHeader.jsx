@@ -62,7 +62,7 @@ const KnowledgeHeader = () => {
                   marginRight={1}
                 >
                   <ArrowBackIcon
-                    sx={{ fontSize: { xs: "16px", sm: "24px" } }}
+                    sx={{ fontSize: 28, }}
                   />
                 </Box>
                 <StyledTypography1

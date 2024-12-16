@@ -75,7 +75,7 @@ const PricingPage = () => {
           <Box display="flex" alignItems="center" gap={1}>
             <ArrowBackIcon
             onClick={handleBackClick}
-            sx={{ display: { xs: "block", sm: "none" }, color: "white",fontSize:'18px' }} />
+            sx={{ display: { xs: "block", sm: "none" }, color: "white",fontSize: 28, }} />
             <StyledTypography1 variant="h2" color="white">
               Pricing plans
             </StyledTypography1>

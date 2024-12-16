@@ -92,7 +92,7 @@ const ProfileSettings = () => {
   const subscriptionDetails = useSelector(
     (store) => store.auth.subscriptionDetails[0]
   );
-  console.log(subscriptionDetails);
+ 
   return (
     <>
       <ProfileModal isOpen={isPasswordModalOpen} />
@@ -108,7 +108,7 @@ const ProfileSettings = () => {
           backgroundColor: "#fff",
         }}
       >
-        {/* Password Section */}
+      
         <Box sx={{ marginBottom: { xs: "12px", sm: "24px" } }}>
           <StyledInputLabel htmlFor="password">Password</StyledInputLabel>
           <StyledTextField
@@ -145,7 +145,7 @@ const ProfileSettings = () => {
             justifyContent: "space-between",
           }}
         >
-          {/* Access Section */}
+          
           <Box>
             <StyledTypography sx={{ marginBottom: "8px" }}>
               Access

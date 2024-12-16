@@ -56,7 +56,7 @@ const DiscoveryHeading = ({headingObject}) => {
               {isSmallScreen && (
                 <ArrowBackIcon
                   sx={{
-                    fontSize: { xs: 23, sm: 48 },
+                    fontSize: 28,
                     marginRight: { xs: 1, sm: 2 },
                     color: colors.navyBlue500,
                   }}

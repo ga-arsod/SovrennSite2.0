@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import {
   Grid,
@@ -9,47 +9,131 @@ import {
   Stack,
   InputLabel,
   Button,
+  FormControl,
 } from "@mui/material";
 import styled from "@emotion/styled";
+import { colors } from "../Constants/colors";
+import countryCodes from "../../utils/Countries.json";
+import { states } from "../../utils/States";
+import { validPhoneNumber } from "./Regex";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "@/app/Redux/Slices/authSlice";
+import { useRouter } from "next/navigation";
 
-const inputsFieldsArray2 = {
-  name: {
-    inputLabel: "Your Phone No.",
-    placeholder: "Enter your Phone no.",
-    type: "tel",
-    id: "phone",
-    htmlFor: "phone",
-  },
-  state: {
-    inputLabel: "Select Your State",
-    placeholder: "Select Your State",
-    type: "email",
-    id: "state",
-    htmlFor: "state",
-  },
-};
-
-const StyledInputLabel = styled(InputLabel)`
+const StyledInputLabel = styled(Typography)`
   font-weight: 400;
-  font-size: 17px;
-  line-height: 21px;
-  color: #121e32;
+  font-size: 18px;
+  line-height: 21.5px;
+  color: ${colors.navyBlue800};
+  white-space: nowrap;
 `;
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  "& .MuiOutlinedInput-input": {
+    padding: "12px 8px",
+    color: colors.navyBlue900,
+    fontWeight: 400,
+    fontSize: "14px",
+    lineHeight: "17px",
+  },
+  "& .MuiInputLabel-root": {
+    fontSize: "0.60rem",
+  },
+  "& .MuiOutlinedInput-root": {
+    fontSize: "0.90rem",
+  },
+  "& input:-webkit-autofill": {
+    WebkitBoxShadow: "0 0 0 1000px white inset",
+    WebkitTextFillColor: colors.navyBlue900,
+    caretColor: colors.navyBlue900,
+  },
+}));
+const StyledSelect = styled(Select)`
+  & .MuiInputBase-root {
+    padding: 10px 12px;
+    font-size: 18px;
+    color: ${colors.navyBlue800};
+    border-radius: 8px;
+  }
+
+  & .MuiSelect-select {
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+  }
+`;
+
 const StyledButton1 = styled(Button)`
-  border-color: #1da098;
+  border-color: ${colors.themeGreen};
   color: white;
   font-weight: 600;
   font-size: 17px;
   line-height: 30px;
   text-transform: none;
+  paddingy: 14px;
   width: 100%;
-  background-color: #1da098;
+  background-color: ${colors.themeGreen};
   :hover {
-    background-color: #1da098;
+    background-color: ${colors.themeGreen};
   }
 `;
-const BasicInfo = () => {
-  const [selectedValue, setSelectedValue] = useState("hello");
+const StyledTypography = styled(Typography)`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+`;
+const sources = [
+  "Twitter",
+  "YouTube",
+  "Linkedin",
+  "Google",
+  "WhatsApp",
+  "Instagram",
+];
+const utm_sources = [
+  "twitter_ad",
+  "youtube_ad",
+  "linkedin_ad",
+  "google_ad",
+  "whatsapp_ad",
+  "instagram_ad",
+];
+const URL = "https://api.sovrenn.com";
+const BasicInfo = ({ form, setForm, formInputChange }) => {
+  const dispatch=useDispatch();
+  const router=useRouter();
+  const [stateInputDisabled, setStateInputDisabled] = useState(false);
+  const [validate, setValidate] = useState(false);
+    const [validateValue, setValidateValue] = useState("");
+  const handleSubmitForm = async (event) => {
+    event.preventDefault();
+
+    if (!validPhoneNumber.test(form.phone_number)) {
+      setValidate(true);
+      setValidateValue("Please enter correct phone number.");
+      return;
+    }
+
+    const data = await fetch(`${URL}/register`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(form),
+    }).then((d) => d.json());
+
+    if (data.success) {
+      localStorage.setItem("token", data.token);
+      dispatch(loginSuccess(data));
+
+      router.push("/");
+
+      return;
+    }
+
+    setValidate(true);
+    setValidateValue(data.message);
+    return;
+  };
   return (
     <Grid
       container
@@ -65,72 +149,196 @@ const BasicInfo = () => {
       >
         <Typography
           textAlign="center"
-          color="#1DA098"
+          color={colors.themeGreen}
           sx={{ fontWeight: "600", fontSize: "33px", lineHeight: "40px" }}
         >
           Basic Info
         </Typography>
-        <form>
-          <Grid container direction="column">
-            <Grid item marginBottom={2}>
-              <StyledInputLabel htmlFor={inputsFieldsArray2.name.htmlFor}>
-                {inputsFieldsArray2.name.inputLabel}
+        <form onSubmit={handleSubmitForm}>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <FormControl sx={{ width: "100%" }}>
+                <StyledInputLabel htmlFor="country_code">
+                  Country code
+                </StyledInputLabel>
+                <StyledSelect
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  fullWidth
+                  required
+                  name="country_code"
+                  value={form.country_code}
+                  MenuProps={{
+                    PaperProps: {
+                      elevation: 0,
+                      sx: {
+                        zIndex: 1400,
+                      },
+                    },
+                  }}
+                  onChange={formInputChange}
+                >
+                  {countryCodes.countries.map((ele, index) => {
+                    return (
+                      <MenuItem value={ele.code} key={index}>
+                        {ele.code}
+                      </MenuItem>
+                    );
+                  })}
+                </StyledSelect>
+              </FormControl>
+            </Grid>
+            <Grid item xs={8}>
+              <StyledInputLabel htmlFor="phone_number">
+                Enter phone No.
               </StyledInputLabel>
-              <TextField
-                sx={{
-                  "& .MuiOutlinedInput-input": {
-                    padding: "12px 8px",
-                  },
-                  "& .MuiInputLabel-root": {
-                    fontSize: "0.60rem",
-                  },
-                }}
-                id={inputsFieldsArray2.name.id}
-                type={inputsFieldsArray2.name.type}
-                placeholder={inputsFieldsArray2.name.placeholder}
+              <StyledTextField
                 fullWidth
-                InputProps={{
-                  sx: { fontSize: "0.90rem" },
+                required
+                inputProps={{ maxLength: 10 }}
+                type="tel"
+                id="fullWidth"
+                name="phone_number"
+                placeholder="Your phone number"
+                value={form.phone_number}
+                onKeyPress={(event) => {
+                  if (event.target.value.length >= 10) {
+                    event.preventDefault();
+                  }
                 }}
+                onChange={formInputChange}
               />
             </Grid>
-            <Grid item width="100%" marginBottom={2}>
-              <StyledInputLabel id={inputsFieldsArray2.state.id}>
-                {inputsFieldsArray2.state.inputLabel}
-              </StyledInputLabel>
-              <Select
-                labelId={inputsFieldsArray2.state.id}
-                id={inputsFieldsArray2.state.id}
-                sx={{
-                  "& .MuiOutlinedInput-input": {
-                    padding: "10px 8px",
-                  },
-                  "& .MuiInputLabel-root": {
-                    fontSize: "0.60rem",
-                  },
-                }}
-                variant="outlined"
-                displayEmpty
-                fullWidth
-              >
-                <MenuItem value="Select an option" defaultValue={true}>
-                  Select an option
-                </MenuItem>
+            {stateInputDisabled ? (
+              ""
+            ) : (
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <StyledInputLabel htmlFor="state">
+                    Select State
+                  </StyledInputLabel>
+                  <StyledSelect
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="state"
+                    defaultValue="Select State"
+                    fullWidth
+                    onChange={formInputChange}
+                    value={form.state}
+                    required
+                    disabled={stateInputDisabled}
+                    MenuProps={{
+                      PaperProps: {
+                        elevation: 0,
+                        sx: {
+                          zIndex: 1400,
+                        },
+                      },
+                    }}
+                  >
+                    {states.map((ele, index) => {
+                      return (
+                        <MenuItem value={ele} key={index}>
+                          {ele}
+                        </MenuItem>
+                      );
+                    })}
+                  </StyledSelect>
+                </FormControl>
+              </Grid>
+            )}
 
-                <MenuItem value={"Haryana"}>Haryana</MenuItem>
-                <MenuItem value={"Rajasthan"}>Rajasthan</MenuItem>
-                <MenuItem value={"Uttar Pradesh"}>Uttar Pradesh</MenuItem>
-              </Select>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <StyledInputLabel htmlFor="where_did_hear_about_sovrenn">
+                  From where you hear about us
+                </StyledInputLabel>
+                <StyledSelect
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="where_did_hear_about_sovrenn"
+                  fullWidth
+                  onChange={formInputChange}
+                  value={form.where_did_hear_about_sovrenn}
+                  disabled={stateInputDisabled}
+                  MenuProps={{
+                    PaperProps: {
+                      elevation: 0,
+                      sx: {
+                        zIndex: 1400,
+                      },
+                    },
+                  }}
+                >
+                  {sources.map((ele, index) => {
+                    return (
+                      <MenuItem value={ele} key={index}>
+                        {ele}
+                      </MenuItem>
+                    );
+                  })}
+                </StyledSelect>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <StyledInputLabel htmlFor="referral_code">
+                Referral code
+              </StyledInputLabel>
+              <StyledTextField
+                fullWidth
+                type="text"
+                id="fullWidth"
+                name="referral_code"
+                placeholder="(Optional)"
+                value={form.referral_code}
+                onChange={formInputChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {validate ? (
+                <Typography
+                 
+                  textAlign="center"
+                  sx={{
+                    fontWeight: 400,
+                    fontSize: "14px",
+                    lineheight: "17px",
+                  }}
+                  color={colors.red500}
+                >
+                  {validateValue}
+                </Typography>
+              ) : (
+                ""
+              )}
+            </Grid>
+            <Grid item width="100%" >
+              <Grid container width="100%" rowSpacing={2}>
+                <Grid item width="100%">
+                  <StyledButton1 variant="contained" type="submit">
+                    Create Profile
+                  </StyledButton1>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </form>
-      </Grid>
-      <Grid item width="100%">
-        <Grid container width="100%" rowSpacing={2}>
-          <Grid item width="100%">
-            <StyledButton1 variant="contained">Create Profile</StyledButton1>
-          </Grid>
-        </Grid>
+         <Grid item width="100%" >
+                        <Typography textAlign="center" sx={{ cursor: "pointer" }}>
+                          <StyledTypography component="span" color="#121E32">
+                            Already have an account?
+                          </StyledTypography>
+                          <StyledTypography
+                            component="span"
+                            color={colors.themeGreen}
+                            onClick={() => {
+                              router.replace("/login");
+                            }}
+                          >
+                            {` Sign In`}
+                          </StyledTypography>
+                        </Typography>
+                      </Grid>
       </Grid>
     </Grid>
   );
