@@ -4,6 +4,7 @@ import { Grid, Typography, Box, Divider, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import moment from "moment";
+import Link from "next/link";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -58,6 +59,7 @@ const SearchPrimeCard = ({data}) => {
         }}
       >
         {data?.map((ele, index) => (
+         
           <Box
             key={index}
             sx={{
@@ -102,9 +104,14 @@ const SearchPrimeCard = ({data}) => {
              
               marginTop={1}
             >
+            <Link target="blank" href={`/prime/${ele.slug}`} style={{textDecoration:"none"}}>
+           
               <StyledButton2 variant="contained">Read</StyledButton2>
+              </Link>
             </Grid> 
+            
           </Box>
+          
         ))}
       </Grid>
     </Box>

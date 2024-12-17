@@ -119,7 +119,7 @@ const Footer = () => {
             xs: "765px",
            
             sm: "600px",
-            md:"480px",
+            md:"460px",
             
           }}
           sx={{ position: "relative" }}
@@ -130,7 +130,7 @@ const Footer = () => {
             container
             justifyContent="space-between"
             sx={{ position: "absolute", bottom: { xs: "13rem", sm: "9rem" } }}
-            paddingX={{ xs: 1, sm: 4, md: 6, lg: 8 }}
+            paddingX={{ xs: 1, sm: 4, md: 4 }}
           >
             <Grid item order={1} sm={4} md={3}  marginTop={{ xs: 3, lg: 0 }}>
               <List
@@ -312,7 +312,7 @@ const Footer = () => {
             container
             spacing={0.5}
             alignItems="flex-start"
-            paddingX={{ xs: 3, sm: 4, md: 6, lg: 8 }}
+            paddingX={{ xs: 3, sm: 4, md: 4 }}
             sx={{
               position: "absolute",
               bottom: { xs: "6rem", sm:'4rem', md: "3.5rem" },
@@ -347,7 +347,7 @@ const Footer = () => {
           <Grid
             container
             justifyContent="space-between"
-            paddingX={{ xs: 3, sm: 4, md: 6, lg: 8 }}
+            paddingX={{ xs: 3, sm: 4, md: 4 }}
             alignItems="center"
             sx={{ position: "absolute", bottom: "1rem" }}
             marginBottom={1}

@@ -18,7 +18,7 @@ import styled from "@emotion/styled";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useRouter } from 'next/navigation';
 import moment from "moment"
-
+import Link from 'next/link';
 
 const StyledTableCell = styled(TableCell)`
   font-weight: 600;
@@ -156,10 +156,12 @@ const SearchTableData = ({data}) => {
                   <StyledBodyTableCell sx={{ color: colors.navyBlue500 }}>{row.description}</StyledBodyTableCell>
                  
                   <StyledBodyTableCell>
+                  <Link target="blank" href={`/prime/${ele.slug}`} style={{textDecoration:"none"}}>
                     <StyledButton  
                           variant="outlined" endIcon={<StyledArrowForwardIosIcon />} size="small">
                       Read
                     </StyledButton>
+                    </Link>
                   </StyledBodyTableCell>
                 </TableRow>
               ))}

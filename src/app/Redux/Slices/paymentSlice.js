@@ -1,5 +1,5 @@
 import { createSlice ,createAsyncThunk} from '@reduxjs/toolkit';
-const url = "https://api.sovrenn.com";
+const url = process.env.NEXT_PUBLIC_API_URL;
 
 const initialState = {
   paymentData: {
@@ -10,8 +10,8 @@ const initialState = {
     firstname: '',
     email: '',
     phone: '',
-    surl: 'https://api.sovrenn.com/payment/payu/verify',
-    furl: 'https://api.sovrenn.com/payment/payu/failure',
+    surl: `${url}/payment/payu/verify`,
+    furl: `${url}/payment/payu/failure`,
     udf1:'',
     udf2:'',
     hash:'',

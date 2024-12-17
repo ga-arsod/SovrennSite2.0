@@ -18,22 +18,24 @@ import { colors } from "../Constants/colors";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import NoData from "../NoData/NoData";
-
+import PaymentModal from "../PayU/PaymentModal"
+import LoginModal from "../Modal/LoginModal";
+import { useSelector } from "react-redux";
 
 const StyledTableCell = styled(TableCell)`
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
   color: ${colors.themeGreen};
-  position: relative; // Set position relative for positioning the icon
-  padding: 24px 16px 12px 16px; // Adjust padding for alignment
-  cursor: pointer; // Add cursor pointer to indicate it's clickable
+  position: relative;
+  padding: 24px 16px 12px 16px; 
+  cursor: pointer; 
 white-space:nowrap;
   &:hover {
-    color: ${colors.navyBlue500}; // Change to the desired hover color
+    color: ${colors.navyBlue500}; 
   }
   &:hover .arrow-icon {
-    opacity: 1; // Show icon on hover
+    opacity: 1; 
   }
 `;
 
@@ -93,9 +95,47 @@ const headerData = [
 
 
 const IpoTableData = ({data}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isPaymentOpen,setIsPaymentOpen]=useState(false)
+  const { isAuth ,userDetails} = useSelector((store) => store.auth);
+  const handleClose=()=>{
+    setIsOpen(false)
+  }
+  const handlePaymentClose=()=>{
+    setIsPaymentOpen(false)
+  }
+
+  const articleRedirect = (ind, row) => {
+    if (
+     
+      userDetails?.subscriptions?.includes("full-access") ||
+      userDetails?.subscriptions?.includes("monthly") ||
+      userDetails?.subscriptions?.includes("quarterly") ||
+      userDetails?.subscriptions?.includes("life") ||
+      userDetails?.subscriptions?.includes("trial") 
+       && isAuth
+    ) {
+      return decodeURIComponent(`/ipo-zone/${(row.slug)}`);
+    } else 
+    setIsPaymentOpen(true);
+  };
+
+  const handleRowClick = (index,row) => {
+    if (isAuth) {
+      const redirectUrl = articleRedirect(index,row);
+      if (redirectUrl) {
+        window.open(redirectUrl, "_blank");
+      }
+    } else {
+      setIsOpen(true);
+    }
+  };
   return (
-   
+   <>
+   <LoginModal isOpen={isOpen} handleClose={handleClose}/>
+   <PaymentModal isPaymentOpen={isPaymentOpen} handlePaymentClose={handlePaymentClose}/>
      <Container>
+     
       {
          data.length== 0 ?  <NoData text="No data available" />
          :
@@ -168,12 +208,12 @@ const IpoTableData = ({data}) => {
                    {row.company_Id?.revenue_growth ? `${row.company_Id?.revenue_growth}%` : "NA"}
                    </StyledBodyTableCell>
                    <StyledBodyTableCell>
-                     <Link target="_blank" href={decodeURIComponent(`/ipo-zone/${(row.slug)}`)}>
                     
-                     <StyledButton2 variant="contained" size="small">
+                    
+                     <StyledButton2 variant="contained" size="small" onClick={()=>{handleRowClick(index,row)}}>
                        Read
                      </StyledButton2>
-                     </Link>
+                    
                    </StyledBodyTableCell>
                  </TableRow>
                ))}
@@ -184,7 +224,7 @@ const IpoTableData = ({data}) => {
       }
      
       </Container>
-   
+      </>
   );
 };
 

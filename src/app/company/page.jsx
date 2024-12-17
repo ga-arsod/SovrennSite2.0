@@ -14,6 +14,7 @@ import { useSearchParams } from "next/navigation";
 import Head from "next/head";
 import Spinner from "@/components/Common/Spinner";
 import NoData from "../../components/NoData/NoData"
+import Link from "next/link";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -133,6 +134,7 @@ const CompanyInfo = () => {
       </>
     );
   }
+  console.log(companyData)
   return (
     <>
       <Head>
@@ -258,7 +260,7 @@ const CompanyInfo = () => {
           
 
           
-            <Grid item width="100%" marginTop={4}>
+            <Grid item width="100%" marginTop={2}>
               <StyledTypography2>Discovery</StyledTypography2>
               {
                 !companyData?.discovery.length ? <NoData text="No bucket available currently."/>
@@ -302,6 +304,8 @@ const CompanyInfo = () => {
                     item
                     sx={{ display: "flex", justifyContent: "flex-end" }}
                   >
+                    <Link href={`/times/${companyData?.company?.slug}` } target="blank" style={{textDecoration:"none"}}>
+                   
                     <StyledButton
                       variant="outlined"
                       endIcon={<StyledArrowForwardIosIcon />}
@@ -309,6 +313,7 @@ const CompanyInfo = () => {
                     >
                       Read
                     </StyledButton>
+                    </Link>
                   </Grid>
                 </Grid>
               </Box>

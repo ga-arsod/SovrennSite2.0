@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getWatchlistApi } from "./watchlistSlice";
 import { setSnackStatus } from "./snackbarSlice";
-const url = "https://api.sovrenn.com";
+const url = process.env.NEXT_PUBLIC_API_URL;
+
 const initialState = {
   buckets: [],
   isAllBucketsLoading: false,

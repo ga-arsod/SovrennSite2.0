@@ -1,4 +1,4 @@
-import { Grid, Box, Avatar, Typography, Stack } from "@mui/material";
+import { Grid, Box, Avatar, Typography, Stack,AvatarGroup } from "@mui/material";
 import React from "react";
 
 import { useTheme } from "@mui/material/styles";
@@ -7,9 +7,10 @@ import { gradientColors } from "../Constants/colors";
 
 const StyledGrid = styled(Grid)`
   @media (min-width: 640px) and (max-width: 1024px) {
-    height: 30vh;
+    height: 35vh;
   }
   height: 100vh;
+  padding-right:0px;
 `;
 const infoObj = {
   h1: "Start your investing journey.",
@@ -121,6 +122,7 @@ const SignUpCard = () => {
                   zIndex: 2,
                 }}
               />
+              
             </Stack>
           </Grid>
           <Grid item sx={{ pl: 6.5 }}>

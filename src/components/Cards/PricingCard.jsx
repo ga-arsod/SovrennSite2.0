@@ -114,7 +114,7 @@ const FullWidthBadge = styled(Box)`
   border-radius: 0;
 `;
 
-
+const payuUrl = process.env.NEXT_PUBLIC_PAYU_URL;
 const PricingCard = ({ planDetails }) => {
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState("");
@@ -137,7 +137,7 @@ const PricingCard = ({ planDetails }) => {
       console.error('Error generating hash:', result.error.message);
     }
   };
-console.log(paymentData,"paymentdata")
+
   return (
     <Container>
       <Grid
@@ -368,7 +368,7 @@ console.log(paymentData,"paymentdata")
                   <Grid item xs={12}>
                     <form
                       id="paymentForm"
-                      action="https://test.payu.in/_payment"
+                      action={payuUrl}
                       method="post"
                       onSubmit={handleSubmit}
                     >
@@ -414,9 +414,9 @@ console.log(paymentData,"paymentdata")
                     </form>
 
                   </Grid>
-                  <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <StyledButton2 fullWidth>Contact Sales</StyledButton2>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </CardContent>
             </StyledCard>

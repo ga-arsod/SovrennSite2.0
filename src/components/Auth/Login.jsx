@@ -213,9 +213,9 @@ const Login = ({ component, handleClose }) => {
                         edge="end"
                       >
                         {values.showPassword ? (
-                          <VisibilityOff />
-                        ) : (
                           <Visibility />
+                        ) : (
+                          <VisibilityOff />
                         )}
                       </IconButton>
                     </InputAdornment>
@@ -305,7 +305,7 @@ const Login = ({ component, handleClose }) => {
                  router.replace("/signup")
                 }}
               >
-                Sign Up
+               {` Sign Up`}
               </StyledTypography>
             </Typography>
           </Grid>

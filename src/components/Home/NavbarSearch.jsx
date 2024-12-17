@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Autocomplete, InputAdornment, TextField } from '@mui/material';
 import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear"; // Import ClearIcon
+import ClearIcon from "@mui/icons-material/Clear"; 
 import styled from "@emotion/styled";
-import { useRouter } from 'next/navigation'; // Correct useRouter import for next/navigation
+import { useRouter } from 'next/navigation';
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
   "& .MuiOutlinedInput-root": {
-    padding: "8px 13px",
+    padding: "4px 13px", 
     "@media (max-width: 639px)": {
-      padding: "5px 16px",
+      padding: "6px 10px", 
+    },
+    "& .MuiInputBase-input": {
+      padding: "10px 8px", 
+      fontSize: "12px",
+      color: "black",
+      "&::placeholder": {
+        fontSize: "12px",
+      },
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
       border: "none",
@@ -21,16 +29,7 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
   "& .MuiOutlinedInput-notchedOutline": {
     border: "none",
   },
-  "& .MuiInputBase-input": {
-    padding: "2px 12px",
-    fontSize: "12px",
-    color: "black",
-    "&::placeholder": {
-      fontSize: "12px",
-    },
-  },
 }));
-
 const NavbarSearch = ({ handleSearchClick }) => {
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -82,9 +81,9 @@ const NavbarSearch = ({ handleSearchClick }) => {
         id="combo-box-demo"
         freeSolo
         disableClearable
-        inputValue={searchText} // Control input value
+        inputValue={searchText} 
         onInputChange={(event, newInputValue) => {
-          setSearchText(newInputValue); // Update searchText when input changes
+          setSearchText(newInputValue); 
         }}
         options={searchResults}
         getOptionLabel={(option) => option.company_name || ""}
@@ -94,7 +93,7 @@ const NavbarSearch = ({ handleSearchClick }) => {
           </li>
         )}
         filterOptions={() => searchResults}
-        sx={{ width: { xs: "100%", sm: "230px" }, height: "50px" }}
+        sx={{ width: { xs: "95vw", sm: "350px" },marginTop:3, }}
         onChange={handleOptionChange}
 
         renderInput={(params) => (
