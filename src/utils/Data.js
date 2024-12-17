@@ -13,6 +13,7 @@ export const planData = [
         description: "Access to daily Sovrenn Times",
       },
       {
+
         accessibility: false,
         description: "Community Support",
       },
@@ -209,6 +210,11 @@ export const navItems = [
      description:"Detailed information about upcoming IPOs."
   },
   {
+    name: "Discovery",
+    link: "/discovery",
+    description:"Get thematic buckets on themes like Solar, Railways, Defence, IT, Consumption, Electrification, etc."
+  },
+  {
     name: "Times",
     link: "/times",
     description:"Get daily newsletter covering updates on important events in smallcap and microcap space."
@@ -218,25 +224,28 @@ export const navItems = [
     link: "/prime",
     description:"Read detailed articles on promising smallcap and microcap companies."
   },
-  {
-    name: "Discovery",
-    link: "/discovery",
-    description:"Get thematic buckets on themes like Solar, Railways, Defence, IT, Consumption, Electrification, etc."
-  },
+ 
   {
     name: "IPO",
     link: "/ipo-zone",
     description:"Detailed information about upcoming IPOs."
   },
   {
-    name: "Pulse",
-    link: "/pulse",
+    name: "Knowledge",
+    link: "/knowledge",
+    description:"Detailed information about upcoming IPOs."
   },
   {
     name: "Self Help",
     link: "/self-help",
     description:"Detailed information about upcoming IPOs."
   },
+  
+  {
+    name: "Pulse",
+    link: "/pulse",
+  },
+ 
   {
     name: "Pricing",
     link: "/pricing",

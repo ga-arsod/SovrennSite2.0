@@ -12,6 +12,7 @@ import IpoFilters from "../Common/IpoFilters"
 import { useSelector } from "react-redux";
 import { toggleIpoFilter } from "@/app/Redux/Slices/ipoSlice";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -67,11 +68,13 @@ const IpoHeader = () => {
  const dispatch=useDispatch();
   const theme = useTheme();
   const [isOpen,setIsOpen]=useState(false);
-
+ const router=useRouter()
   const toggleDrawer = () => {
    dispatch(toggleIpoFilter())
   }
-  
+  const handleBackClick = () => {
+    router.back();  
+  };
 
  
 
@@ -83,7 +86,7 @@ const IpoHeader = () => {
           <Grid item paddingY={{ xs: 2, sm: 5 }}>
             <Box marginBottom={1}>
             <Box display="flex" alignItems="center">
-                <Box display={{ xs: 'block', sm: 'block', md: 'none' }} marginRight={1}>
+                <Box display={{ xs: 'block', sm: 'block', md: 'none' }} marginRight={1} onClick={handleBackClick}>
                   <ArrowBackIcon sx={{ fontSize: 28,}} />
                 </Box>
                 <StyledTypography1

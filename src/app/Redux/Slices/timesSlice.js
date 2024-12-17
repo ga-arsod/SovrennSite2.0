@@ -1,7 +1,7 @@
 import { Pagination } from "@mui/material";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const url = "https://api.sovrenn.com";
+const url = process.env.NEXT_PUBLIC_API_URL;
 
 const initialState = {
   timesFilter: [],

@@ -26,10 +26,11 @@
 html, body {
   overflow-x: hidden; /* This hides the horizontal scrollbar */
   overflow-y: auto; /* This ensures vertical scrolling is possible */
- 
+  padding-right:0px
 }
 body {
   width:100vw;
+  padding-right:0px;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,

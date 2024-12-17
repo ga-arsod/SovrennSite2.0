@@ -300,7 +300,7 @@ const MainPoster = () => {
                   
                     
                   <StyledButton2 variant="contained">
-                  {`Buy Full Access @ ₹5000/yr`}
+                  {`Buy Full Access @ ₹4500/yr`}
                 </StyledButton2>
                 
                 

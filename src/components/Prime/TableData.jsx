@@ -72,7 +72,7 @@ const StyledArrowDownwardIcon = styled(ArrowDownwardIcon)`
 const StyledArrowForwardIosIcon = styled(ArrowForwardIosIcon)`
   && {
     font-size: 12px;
-    color: ${colors.navyBlue500};
+    color:white;
   }
 `;
 
@@ -84,25 +84,24 @@ const StyledBodyTableCell = styled(TableCell)`
     color: ${colors.themeGreen};
   }
 `;
-
-const StyledButton = styled(Button)`
+const StyledButton2 = styled(Button)`
+  color: white;
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
-  white-space: nowrap;
-  color: ${colors.navyBlue500};
-  padding: 8px 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+ width:120px;
+  white-space:nowrap;
+  background-color: ${colors.themeGreen};
   text-transform: none;
-  border-color: ${colors.navyBlue500};
-  min-width: 120px; 
-  text-align: center; 
-  
-  &:hover {
-    background-color: ${colors.navyBlue200};
-    color: white;
-    border-color: ${colors.navyBlue200};
+
+  :hover {
+    background-color: ${colors.themeButtonHover};
   }
 `;
+
+
 
 const headerRowArray = [
   {
@@ -229,14 +228,14 @@ const TableData = ({ data, activeTab }) => {
                 </StyledBodyTableCell>
                 <StyledBodyTableCell>
                   <Link target="_blank" href={activeTab == 'two' ? `/prime/${elem.slug}?s=promoter_interview` : `/prime/${elem.slug}`}>
-                  <StyledButton
+                  <StyledButton2
                     
-                    variant="outlined"
-                    endIcon={<StyledArrowForwardIosIcon />}
+                    variant="contained"
+                    endIcon={<StyledArrowForwardIosIcon   />}
                     size="small"
                   >
                     {elem.price === 0 ? "Read Free" : "Read"}
-                  </StyledButton>
+                  </StyledButton2>
                   </Link>
                 </StyledBodyTableCell>
               </TableRow>

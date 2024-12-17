@@ -157,7 +157,7 @@ const Details = () => {
   const { userDetails } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const [avatar, setAvatar] = useState(
-    userDetails?.profile_pic ? userDetails?.profile_pic : "/dummy_image.jpeg"
+    userDetails?.profile_pic ? userDetails?.profile_pic : "/dummy_image.jpg"
   );
   const [editableFields, setEditableFields] = useState({
     fullName: false,
@@ -197,14 +197,17 @@ const Details = () => {
       [name]: value,
     }));
   };
-
+console.log(avatar,"avatar")
   return (
     <Container
       sx={{ width: { xs: "100%", md: "1000px" }, justifyContent: "center" }}
     >
       <ProfileContainer item xs={3}>
         <AvatarWrapper>
-          <AvatarStyled alt="User Avatar" src={avatar} />
+          <AvatarStyled alt="User Avatar" src={avatar}  onError={(e) => {
+    e.target.onerror = null; // Prevent infinite loop
+    e.target.src = "/dummy_image.jpeg"; // Fallback image
+  }}/>
           <EditIconButton component="label">
             <input
               type="file"

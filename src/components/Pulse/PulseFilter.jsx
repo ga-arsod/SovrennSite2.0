@@ -254,7 +254,7 @@ const PulseFilter = ({
         ? [...newFilter[key], item.placeholder]
         : [item.placeholder];
     }
-
+    
     setFilterBody(newFilterBody);
     setFilter(newFilter);
     setFilterData(newFilterBody);
