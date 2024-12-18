@@ -179,9 +179,9 @@ export const discoveryTableApi = createAsyncThunk(
 
 export const nestedBucketDiscoveryTableApi = createAsyncThunk(
   "nestedBucketDiscoveryTableApi",
-  async ({ id, body, page }) => {
+  async ({ id, body, page,sort_by,sort_order }) => {
     const response = await fetch(
-      `${url}/child-buckets/companies/${id}?page=${page}&page_size=200&sort_by=company_name&sort_order=inc&platform=website`,
+      `${url}/child-buckets/companies/${id}?page=${page}&page_size=200&sort_by=${sort_by}&sort_order=${sort_order}&platform=website`,
       {
         method: "POST",
         headers: {

@@ -1,11 +1,12 @@
 "use client";
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Grid, Typography, Box, Divider, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import LoginModal from "../Modal/LoginModal";
+import PaymentModal from "../PayU/PaymentModal";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -20,7 +21,7 @@ const StyledTypography4 = styled(Typography)`
   line-height: 17px;
   color: black;
   display: -webkit-box;
-  -webkit-line-clamp: 2; 
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -157,17 +158,17 @@ const wordsStr = [
 const DiscoveryTableCard = ({ tableData, id }) => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
- 
-  const handleClose=()=>{
-    setIsOpen(false)
-  }
- 
-  const { userDetails } = useSelector((store) => store.auth);
-  const { isAuth } = useSelector((store) => store.auth);
-  const totalPages = 20;
+
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+  const handlePaymentClose = () => {
+    setIsPaymentOpen(false);
+  };
 
   const articleRedirect = (ind, item) => {
-    
     if (
       (ind % 2 === 0 && tableData?.basket?.avail_free) ||
       userDetails?.subscriptions?.includes("full-access") ||
@@ -178,13 +179,13 @@ const DiscoveryTableCard = ({ tableData, id }) => {
       (userDetails?.subscriptions?.includes("basket") && isAuth)
     ) {
       return `/discovery/${id}/${item?.slug}`;
-    } else return "";
+    } else setIsPaymentOpen(true);
   };
 
   const handleRowClick = (index, item) => {
     if (isAuth) {
       const redirectUrl = articleRedirect(index, item);
-     
+
       if (redirectUrl) {
         window.open(redirectUrl, "_blank");
       }
@@ -195,128 +196,137 @@ const DiscoveryTableCard = ({ tableData, id }) => {
 
   return (
     <>
-    <LoginModal isOpen={isOpen} handleClose={handleClose} />
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid
-        container
-        marginBottom={5}
-        justifyContent="center"
-        sx={{
-          display: "grid",
-          gridTemplateColumns: {
-            xs: "1fr",
-            sm: "repeat(2, minmax(0, 1fr))",
-          },
-          gap: 2,
-        }}
-      >
-        {tableData?.companies?.map((item, index) => (
-          <Box
-            key={index}
-            sx={{
-              backgroundColor: "#EFF2F4",
-              borderRadius: "4px",
-              maxWidth: "472px",
-              width: "100%",
-              padding: 2,
-              boxSizing: "border-box",
-              margin: "auto", 
-            }}
-          >
-            <StyledTypography1
-              color={colors.greyBlue900}
-              sx={{ fontWeight: "400" }}
-              component="span"
+      <LoginModal isOpen={isOpen} handleClose={handleClose} />
+      <PaymentModal
+        isPaymentOpen={isPaymentOpen}
+        handlePaymentClose={handlePaymentClose}
+      />
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid
+          container
+          marginBottom={5}
+          justifyContent="center"
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              sm: "repeat(2, minmax(0, 1fr))",
+            },
+            gap: 2,
+          }}
+        >
+          {tableData?.companies?.map((item, index) => (
+            <Box
+              key={index}
+              sx={{
+                backgroundColor: "#EFF2F4",
+                borderRadius: "4px",
+                maxWidth: "472px",
+                width: "100%",
+                padding: 2,
+                boxSizing: "border-box",
+                margin: "auto",
+              }}
             >
-              {`Date Of Info. `}
-            </StyledTypography1>
-            <StyledTypography1
-              color={colors.navyBlue500}
-              sx={{ fontWeight: "600" }}
-              component="span"
-            >
-              {item?.date ? moment(item?.date).format("Do MMM YY") : "NA"}
-            </StyledTypography1>
+              <StyledTypography1
+                color={colors.greyBlue900}
+                sx={{ fontWeight: "400" }}
+                component="span"
+              >
+                {`Date Of Info. `}
+              </StyledTypography1>
+              <StyledTypography1
+                color={colors.navyBlue500}
+                sx={{ fontWeight: "600" }}
+                component="span"
+              >
+                {item?.date ? moment(item?.date).format("Do MMM YY") : "NA"}
+              </StyledTypography1>
 
-            {(index % 2 === 0 && tableData?.basket?.avail_free) ||
-                  userDetails?.subscriptions?.includes("full-access") ||
-                  userDetails?.subscriptions?.includes("monthly") ||
-                  userDetails?.subscriptions?.includes("quarterly") ||
-                  userDetails?.subscriptions?.includes("life") ||
-                  userDetails?.subscriptions?.includes("trial") ||
-                  userDetails?.subscriptions?.includes("basket") ? (
-                    <StyledTypography2
-                    marginTop={1}
-                    color={colors.navyBlue500}
-                    component="div"
-                  >
-                    {item?.company_name}
-                  </StyledTypography2>
-                  ) : (
-                    <StyledTypography2
-                    marginTop={1}
-                    color={colors.navyBlue500}
-                    component="div"
-                  >
-                   Company {wordsStr[index]}
-                  </StyledTypography2>
-                  )}
-           
-            <Box marginTop={1}>
-              <Grid container justifyContent="space-between">
-                <Grid item>
-                  <StyledTypography3
-                    color={colors.greyBlue900}
-                    sx={{ fontWeight: "400" }}
-                    component="span"
-                  >
-                    {`Market Cap (in Cr.) :  `}
-                  </StyledTypography3>
-                  <StyledTypography3
-                    color={colors.navyBlue500}
-                    sx={{ fontWeight: "600" }}
-                    component="span"
-                  >
-                    {item?.market_cap ? item?.market_cap : "NA"}
-                  </StyledTypography3>
-                </Grid>
-                <Grid item>
-                  <StyledTypography3
-                    color={colors.greyBlue900}
-                    sx={{ fontWeight: "400" }}
-                    component="span"
-                  >
-                    {`TTM PE : `}
-                  </StyledTypography3>
-                  <StyledTypography3
-                    color={colors.navyBlue500}
-                    sx={{ fontWeight: "600" }}
-                    component="span"
-                  >
+              {(index % 2 === 0 && tableData?.basket?.avail_free) ||
+              userDetails?.subscriptions?.includes("full-access") ||
+              userDetails?.subscriptions?.includes("monthly") ||
+              userDetails?.subscriptions?.includes("quarterly") ||
+              userDetails?.subscriptions?.includes("life") ||
+              userDetails?.subscriptions?.includes("trial") ||
+              userDetails?.subscriptions?.includes("basket") ? (
+                <StyledTypography2
+                  marginTop={1}
+                  color={colors.navyBlue500}
+                  component="div"
+                >
+                  {item?.company_name}
+                </StyledTypography2>
+              ) : (
+                <StyledTypography2
+                  marginTop={1}
+                  color={colors.navyBlue500}
+                  component="div"
+                >
+                  Company {wordsStr[index]}
+                </StyledTypography2>
+              )}
+
+              <Box marginTop={1}>
+                <Grid container justifyContent="space-between">
+                  <Grid item>
+                    <StyledTypography3
+                      color={colors.greyBlue900}
+                      sx={{ fontWeight: "400" }}
+                      component="span"
+                    >
+                      {`Market Cap (in Cr.) :  `}
+                    </StyledTypography3>
+                    <StyledTypography3
+                      color={colors.navyBlue500}
+                      sx={{ fontWeight: "600" }}
+                      component="span"
+                    >
+                      {item?.market_cap ? item?.market_cap : "NA"}
+                    </StyledTypography3>
+                  </Grid>
+                  <Grid item>
+                    <StyledTypography3
+                      color={colors.greyBlue900}
+                      sx={{ fontWeight: "400" }}
+                      component="span"
+                    >
+                      {`TTM PE : `}
+                    </StyledTypography3>
+                    <StyledTypography3
+                      color={colors.navyBlue500}
+                      sx={{ fontWeight: "600" }}
+                      component="span"
+                    >
                       {item?.ttm_pe ? `${item?.ttm_pe}x` : "NA"}
-                  </StyledTypography3>
+                    </StyledTypography3>
+                  </Grid>
                 </Grid>
+              </Box>
+              <Divider sx={{ paddingBottom: "8px", borderColor: "#E6E6E6" }} />
+              <StyledTypography4 textAlign="justify" marginTop={1}>
+                {item?.remark || "NA"}
+              </StyledTypography4>
+              <Divider sx={{ paddingTop: "8px", borderColor: "#E6E6E6" }} />
+              <Grid
+                item
+                sx={{ display: "flex", justifyContent: "flex-end" }}
+                marginBottom={0.5}
+                marginTop={1}
+              >
+                <StyledButton2
+                  onClick={() => {
+                    handleRowClick(index, item);
+                  }}
+                  variant="contained"
+                >
+                  Read
+                </StyledButton2>
               </Grid>
             </Box>
-            <Divider sx={{ paddingBottom: "8px", borderColor: "#E6E6E6" }} />
-            <StyledTypography4 textAlign="justify" marginTop={1}>
-            {item?.remark || "NA"}
-            </StyledTypography4>
-            <Divider sx={{ paddingTop: "8px", borderColor: "#E6E6E6" }} />
-            <Grid
-              item
-              sx={{ display: "flex", justifyContent: "flex-end" }}
-              marginBottom={0.5}
-              marginTop={1}
-            >
-              <StyledButton2
-              onClick={() =>{ handleRowClick(index, item)}}
-              variant="contained">Read</StyledButton2>
-            </Grid>
-          </Box>
-        ))}
-      </Grid>
-    </Box>
+          ))}
+        </Grid>
+      </Box>
     </>
   );
 };

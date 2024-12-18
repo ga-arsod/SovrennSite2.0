@@ -1,11 +1,14 @@
 "use client";
-import React from "react";
+import React,{useState} from "react";
 import { Grid, Typography, Box, Divider, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import moment from "moment";
 import NoData from "../../components/NoData/NoData"
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import PaymentModal from "../PayU/PaymentModal";
+import LoginModal from "../Modal/LoginModal";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -43,8 +46,47 @@ const StyledButton2 = styled(Button)`
 `;
 
 const PrimeCard = ({ data, activeTab }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+  const handlePaymentClose = () => {
+    setIsPaymentOpen(false);
+  };
+
+  const articleRedirect = (ind, elem) => {
+    if (
+      userDetails?.subscriptions?.includes("full-access") ||
+      userDetails?.subscriptions?.includes("monthly") ||
+      userDetails?.subscriptions?.includes("quarterly") ||
+      userDetails?.subscriptions?.includes("life") ||
+      (userDetails?.subscriptions?.includes("trial") && isAuth)
+    ) {
+      return activeTab == "two"
+        ? `/prime/${elem.slug}?s=promoter_interview`
+        : `/prime/${elem.slug}`;
+    } else setIsPaymentOpen(true);
+  };
+
+  const handleRowClick = (index, row) => {
+    if (isAuth) {
+      const redirectUrl = articleRedirect(index, row);
+      if (redirectUrl) {
+        window.open(redirectUrl, "_blank");
+      }
+    } else {
+      setIsOpen(true);
+    }
+  };
   return (
     <>
+    <LoginModal isOpen={isOpen} handleClose={handleClose} />
+      <PaymentModal
+        isPaymentOpen={isPaymentOpen}
+        handlePaymentClose={handlePaymentClose}
+      />
     {
       data.length== 0 ?  <NoData text="No data available" />
       :
@@ -148,9 +190,36 @@ const PrimeCard = ({ data, activeTab }) => {
               marginBottom={0.5}
               marginTop={1}
             >
-               <Link target="_blank" href={activeTab == 'two' ? `/prime/${elem.slug}?s=promoter_interview` : `/prime/${elem.slug}`}>
-              <StyledButton2 variant="contained">    {elem.price === 0 ? "Read Free" : "Read"}</StyledButton2>
-              </Link>
+              
+              {elem.price === 0 ? (
+                        <Link
+                          href={
+                            activeTab == "two"
+                              ? `/prime/${elem.slug}?s=promoter_interview`
+                              : `/prime/${elem.slug}`
+                          }
+                          target="blank"
+                        >
+                          <StyledButton2
+                            variant="contained"
+                           
+                            size="small"
+                          >
+                            Read Free
+                          </StyledButton2>
+                        </Link>
+                      ) : (
+                        <StyledButton2
+                          onClick={() => {
+                            handleRowClick(index, elem);
+                          }}
+                          variant="contained"
+                         
+                          size="small"
+                        >
+                          Read
+                        </StyledButton2>
+                      )}
             </Grid>
           </Box>
         ))}

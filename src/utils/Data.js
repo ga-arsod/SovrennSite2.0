@@ -538,7 +538,7 @@ export const primeArticleDisclaimer =
       },
       button: {
         first: "Read Free Unlimited Articles",
-        second: "Buy Full Access @ ₹5000/yr",
+        second: "Buy Full Access @ ₹4500/yr",
       },
     },
     {
@@ -552,7 +552,7 @@ export const primeArticleDisclaimer =
       },
       button: {
         first: "Read Free Unlimited Articles",
-        second: "Buy Full Access @ ₹5000/yr",
+        second: "Buy Full Access @ ₹4500/yr",
       },
     },
     {
@@ -566,7 +566,7 @@ export const primeArticleDisclaimer =
       },
       button: {
         first: "Read Free Unlimited Articles",
-        second: "Buy Full Access @ ₹5000/yr",
+        second: "Buy Full Access @ ₹4500/yr",
       },
     },
 
@@ -598,7 +598,7 @@ export const primeArticleDisclaimer =
       },
       button: {
         first: "Read Free Unlimited Articles",
-        second: "Buy Full Access @ ₹5000/yr",
+        second: "Buy Full Access @ ₹4500/yr",
       },
     },
     {
@@ -615,7 +615,7 @@ export const primeArticleDisclaimer =
       },
       button: {
         first: "Read Free Unlimited Articles",
-        second: "Buy Full Access @ ₹5000/yr",
+        second: "Buy Full Access @ ₹4500/yr",
       },
     },
     

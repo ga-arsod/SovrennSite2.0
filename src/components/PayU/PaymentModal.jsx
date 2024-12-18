@@ -13,7 +13,11 @@ import { colors } from "../Constants/colors";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { generateHashApi,setPaymentData } from "@/app/Redux/Slices/paymentSlice";
+import {
+  generateHashApi,
+  setPaymentData,
+} from "@/app/Redux/Slices/paymentSlice";
+import Link from "next/link";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -65,7 +69,7 @@ const StyledButton2 = styled(Button)`
   width: 100%;
   text-transform: none;
   background-color: ${colors.themeGreen};
-  white-space:nowrap;
+  white-space: nowrap;
 
   :hover {
     background-color: ${colors.themeButtonHover};
@@ -92,32 +96,25 @@ const StyledBox = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;
- 
 `;
 const payuUrl = process.env.NEXT_PUBLIC_PAYU_URL;
-const PaymentModal = ({isPaymentOpen,handlePaymentClose}) => {
+const PaymentModal = ({ isPaymentOpen, handlePaymentClose }) => {
   const dispatch = useDispatch();
-  
-  
- 
-   
-    const { isAuth, userDetails } = useSelector((store) => store.auth);
-    const  {paymentData}  = useSelector((store) => store.payment);
-    
-  
-   
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-  
-      const result = await dispatch(generateHashApi(paymentData));
-  
-      if (result.meta.requestStatus === 'fulfilled') {
-        document.getElementById('paymentForm').submit();
-      } else {
-        console.error('Error generating hash:', result.error.message);
-      }
-    };
+
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
+  const { paymentData } = useSelector((store) => store.payment);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const result = await dispatch(generateHashApi(paymentData));
+
+    if (result.meta.requestStatus === "fulfilled") {
+      document.getElementById("paymentForm").submit();
+    } else {
+      console.error("Error generating hash:", result.error.message);
+    }
+  };
   return (
     <Modal
       open={isPaymentOpen}
@@ -161,10 +158,22 @@ const PaymentModal = ({isPaymentOpen,handlePaymentClose}) => {
             gap={4}
           >
             <Grid item paddingX={{ xs: 2, sm: 4 }}>
-              <StyledTypography1 color={colors.navyBlue500} textAlign="center" marginTop={1}>
-              This feature is only available for users with a plan.
+              <StyledTypography1
+                color={colors.navyBlue500}
+                textAlign="center"
+                marginTop={1.5}
+              >
+                This feature is only available for user with a subscription plan
               </StyledTypography1>
-              <Typography textAlign="center" marginTop={2} color={colors.navyBlue500} sx={{fontWeight:400,fontSize:'16px',lineHeight:'19px'}}y>Unlock it by buying a plan</Typography>
+              <Typography
+                textAlign="center"
+                marginTop={2}
+                color={colors.navyBlue500}
+                sx={{ fontWeight: 400, fontSize: "16px", lineHeight: "19px" }}
+                y
+              >
+                Unlock it by buying a plan
+              </Typography>
             </Grid>
 
             <Grid item width="100%">
@@ -175,56 +184,81 @@ const PaymentModal = ({isPaymentOpen,handlePaymentClose}) => {
                 spacing={2}
                 width="100%"
               >
-                <Grid item xs={6}>
-                  <StyledButton1  variant="outlined"  onClick={handlePaymentClose}>
-                    Cancel
-                  </StyledButton1>
+                <Grid item xs={12} sm={6} order={{xs:2,sm:1}}>
+                  <Link href="/pricing">
+                    <StyledButton1 variant="outlined">View Plans</StyledButton1>
+                  </Link>
                 </Grid>
-                <Grid item xs={6}>
-                <form
-                      id="paymentForm"
-                      action={payuUrl}
-                      method="post"
-                      onSubmit={handleSubmit}
-                    >
-                      <input type="hidden" name="key" value={paymentData.key} />
-                      <input type="hidden" name="txnid" value={paymentData.txnid} />
-                      <input type="hidden" name="productinfo" value={paymentData.productinfo} />
-                      <input type="hidden" name="amount" value={paymentData.amount} />
-                      <input type="hidden" name="email" value={paymentData.email} />
-                      <input type="hidden" name="firstname" value={paymentData.firstname} />
-                      <input type="hidden" name="phone" value={paymentData.phone} />
-                      <input type="hidden" name="surl" value={paymentData.surl} />
-                      <input type="hidden" name="furl" value={paymentData.furl} />
-                      <input type="hidden" name="udf1" value={paymentData.udf1} />
-                      <input type="hidden" name="udf2" value={paymentData.udf2} />
-                      <input type="hidden" name="hash" value={paymentData.hash} />
 
-                      <StyledButton2 type='submit'
-                       variant="contained"
-                       
-                       
-                        onClick={() => {
-                          const data = {
-                            txnid: Date.now(),
-                            amount: (isAuth ? userDetails?.to_pay_for_fa : 4500),
-                            productinfo: "full-access",
-                            firstname: userDetails.first_name,
-                            email: userDetails.email,
-                            udf1: userDetails._id,
-                            udf2: 12
-                          }
-                          dispatch(setPaymentData({
+                <Grid item xs={12} sm={6} order={{xs:1,sm:2}}>
+                  <form
+                    id="paymentForm"
+                    action={payuUrl}
+                    method="post"
+                    onSubmit={handleSubmit}
+                  >
+                    <input type="hidden" name="key" value={paymentData.key} />
+                    <input
+                      type="hidden"
+                      name="txnid"
+                      value={paymentData.txnid}
+                    />
+                    <input
+                      type="hidden"
+                      name="productinfo"
+                      value={paymentData.productinfo}
+                    />
+                    <input
+                      type="hidden"
+                      name="amount"
+                      value={paymentData.amount}
+                    />
+                    <input
+                      type="hidden"
+                      name="email"
+                      value={paymentData.email}
+                    />
+                    <input
+                      type="hidden"
+                      name="firstname"
+                      value={paymentData.firstname}
+                    />
+                    <input
+                      type="hidden"
+                      name="phone"
+                      value={paymentData.phone}
+                    />
+                    <input type="hidden" name="surl" value={paymentData.surl} />
+                    <input type="hidden" name="furl" value={paymentData.furl} />
+                    <input type="hidden" name="udf1" value={paymentData.udf1} />
+                    <input type="hidden" name="udf2" value={paymentData.udf2} />
+                    <input type="hidden" name="hash" value={paymentData.hash} />
+
+                    <StyledButton2
+                      type="submit"
+                      variant="contained"
+                      onClick={() => {
+                        const data = {
+                          txnid: Date.now(),
+                          amount: isAuth ? userDetails?.to_pay_for_fa : 4500,
+                          productinfo: "full-access",
+                          firstname: userDetails.first_name,
+                          email: userDetails.email,
+                          udf1: userDetails._id,
+                          udf2: 12,
+                        };
+                        dispatch(
+                          setPaymentData({
                             ...data,
                             phone: userDetails.phone_number,
                             state: userDetails.state,
-                          }))
-                        }}
-                      >
-                         {`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
-                      </StyledButton2>
-                    </form>
-                 
+                          })
+                        );
+                      }}
+                    >
+                      Buy Full Access@ ₹4500/yr
+                    </StyledButton2>
+                  </form>
                 </Grid>
               </Grid>
             </Grid>

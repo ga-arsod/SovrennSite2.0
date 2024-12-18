@@ -130,15 +130,31 @@ const Login = ({ component, handleClose }) => {
         localStorage.setItem("token", data.token);
       }
       dispatch(loginSuccess(data));
-      if (handleClose) handleClose();
+      if (handleClose){
+        handleClose();
+        const currentPath = window.location.pathname + window.location.search;
+      localStorage.setItem("redirectUrl", currentPath);
+      } 
+      
+      const redirectUrl = localStorage.getItem("redirectUrl") || "/";
+        
+       
+      if (redirectUrl === "/login") {
+        router.replace("/");
+      } else {
+        router.push(redirectUrl);
+      }
 
-      router.push(redirectUrl === '/login' ? '/' : redirectUrl);
+      localStorage.removeItem("redirectUrl"); 
+
+      // router.push(redirectUrl === '/login' ? '/' : redirectUrl);
+     
     } else {
       setMessage(data.message);
     }
     setValidate(false);
   };
-
+console.log(redirectUrl,"redirectUrl")
   return (
     <Grid
       container

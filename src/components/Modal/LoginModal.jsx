@@ -99,7 +99,7 @@ const LoginModal = ({ isOpen,handleClose}) => {
               You need to Login to read free articles
               </StyledTypography1>
               <StyledTypography2 color={colors.navyBlue400} textAlign="center" marginTop={1}>
-              it takes less than 1 minute to Login.
+              It takes less than 1 minute to Login.
               </StyledTypography2>
             </Grid>
            <Grid item sx={{display:'flex',justifyContent:'center'}}>

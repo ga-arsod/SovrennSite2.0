@@ -7,6 +7,9 @@ import { planData } from "../../utils/Data";
 import { colors } from "../Constants/colors";
 import { Fade } from "@mui/material";
 import PricingCard from "../Cards/PricingCard";
+import { useDispatch } from "react-redux";
+import { allPlansApi } from "@/app/Redux/Slices/PlanSlice";
+import { useSelector } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -43,7 +46,14 @@ const FadeInBox = styled(Box)(({ theme }) => ({
 const PlanInfo = () => {
   const [inView, setInView] = useState(false);
   const ref = useRef(null);
-
+  const { plans } = useSelector(
+    (store) => store.plan
+  );
+ 
+  const dispatch=useDispatch()
+  useEffect(()=>{
+    dispatch(allPlansApi())
+  },[])
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -127,7 +137,7 @@ const PlanInfo = () => {
          
          
         >
-         <PricingCard/>
+         <PricingCard planDetails={plans}/>
         </Grid>
       </Fade>
     </Box>

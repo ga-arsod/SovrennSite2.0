@@ -20,6 +20,7 @@ import { colors } from "../Constants/colors";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { sovreenOfferArray } from "@/utils/Data";
+import { useSelector } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -63,6 +64,7 @@ const StyledButton1 = styled(Button)`
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
+  background-color:white;
   text-transform: none;
   :hover {
     background-color: ${colors.blueButtonHover};
@@ -115,7 +117,9 @@ const FadeInBox = styled(Box)(({ theme }) => ({
 const Offer = () => {
   const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const {isAuth,userDetails } = useSelector(
+    (store) => store.auth
+  );
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % sovreenOfferArray.length);
   };
@@ -333,7 +337,7 @@ const Offer = () => {
                               </Grid>
                               <Grid item>
                                 <Grid container my={2} gap={2} direction={{ xs: "column", md: "row" }}>
-                                  <Grid item>
+                                  {/* <Grid item>
                                     <StyledButton1
                                       variant="outlined"
                                       sx={{
@@ -344,12 +348,18 @@ const Offer = () => {
                                     >
                                       {element.button.first}
                                     </StyledButton1>
-                                  </Grid>
-                                  <Grid item>
+                                  </Grid> */}
+                                  {
+                                    !isAuth || userDetails?.subscriptions.length==0 ? <Grid item>
                                     <StyledButton2 variant="contained">
-                                      {element.button.second}
+                                    {`Buy Full Access @ ₹4500/yr`}
                                     </StyledButton2>
-                                  </Grid>
+                                  </Grid>:
+                                    (userDetails?.subscriptions?.includes("full-access") ||
+                                    userDetails?.subscriptions?.includes("life")) && isAuth ? "" :
+                                    ""
+                                  }
+                                  
                                 </Grid>
                               </Grid>
                             </Grid>

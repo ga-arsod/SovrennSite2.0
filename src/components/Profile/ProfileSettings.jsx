@@ -175,7 +175,9 @@ const ProfileSettings = () => {
                 : subscriptionDetails?.type === "monthly"
                 ? "Sovrenn Monthly Access"
                 : subscriptionDetails?.type === "life"
-                ? "Sovrenn Lifetime Access"
+                ? "Sovrenn Lifetime Access" 
+                : subscriptionDetails?.type === "trial" ?
+                "Sovrenn Trial Access" 
                 : "No Access"}
             </Button>
           </Box>
