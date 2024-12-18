@@ -1,15 +1,19 @@
-"use client"
+"use client";
 import styled from "@emotion/styled";
 import { Grid, Typography, Box, Button } from "@mui/material";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useTheme } from "@mui/material/styles";
-import { keyframes } from '@emotion/react';
+import { keyframes } from "@emotion/react";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import { androidAppLink } from "@/utils/Data";
+import { useDispatch } from "react-redux";
 
 import { colors } from "../Constants/colors";
+import { subscriptionDetailsApi } from "@/app/Redux/Slices/authSlice";
+import moment from 'moment'
+
 const headingsArray = [
   {
     h1: "MASTER",
@@ -35,7 +39,7 @@ const StyledButton1 = styled(Button)`
   padding-bottom: 12px;
   text-transform: none;
   background-color: white;
-  width: 100%;
+  width: 350px;
   :hover {
     background-color: ${colors.themeButtonHover};
     color: white;
@@ -61,9 +65,31 @@ const StyledButton2 = styled(Button)`
   background-color: ${colors.themeGreen};
   text-transform: none;
 
-  width: 100%;
+   width: 350px;
   :hover {
     background-color: ${colors.themeButtonHover};
+  }
+  @media (max-width: 700px) {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+`;
+const StyledButton3 = styled(Button)`
+  color: black;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  background-color: #f8be5c;
+  text-transform: none;
+
+  width: 350px;
+  :hover {
+    background-color: #f8be5c;
   }
   @media (max-width: 700px) {
     font-size: 16px;
@@ -92,7 +118,7 @@ const StyledTypography1 = styled(Typography)`
   @media (min-width: 1025px) {
     font-size: 48px;
     font-weight: 700;
-    line-height:56px;
+    line-height: 56px;
     letter-spacing: -0.04em;
   }
 `;
@@ -144,24 +170,27 @@ const slideInFromBottom = keyframes`
 `;
 
 const SlideInLeftBox = styled(Grid)`
-opacity: 0;
-&.animate {
-  animation: ${slideInFromLeft} 1s ease-out forwards;
-}
+  opacity: 0;
+  &.animate {
+    animation: ${slideInFromLeft} 1s ease-out forwards;
+  }
 `;
 
 const SlideInBottomBox = styled(Box)`
-opacity: 0; 
-&.animate {
-  animation: ${slideInFromBottom} 1s ease-out forwards;
-}
+  opacity: 0;
+  &.animate {
+    animation: ${slideInFromBottom} 1s ease-out forwards;
+  }
 `;
 
 const MainPoster = () => {
   const theme = useTheme();
   const [hovered, setHovered] = useState(false);
-  const { userDetails,isAuth} =
-    useSelector((store) => store.auth);
+  const dispatch=useDispatch()
+  const { userDetails, isAuth } = useSelector((store) => store.auth);
+  const {subscriptionDetails} = useSelector(
+    (store) => store.auth
+  );
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -182,17 +211,22 @@ const MainPoster = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setAnimate(true);
-    }, 200); 
+    }, 200);
 
     return () => clearTimeout(timer);
   }, []);
+  useEffect(()=>{
+    if(isAuth)
+dispatch(subscriptionDetailsApi())
+
+  },[])
   return (
     <Box
       width="100vw"
       sx={{
         backgroundImage: `url('/rectangle.png')`,
         backgroundSize: "cover",
-        overflow: "hidden"
+        overflow: "hidden",
       }}
       marginTop={6}
     >
@@ -208,8 +242,12 @@ const MainPoster = () => {
           xs={12}
           sx={{ display: "flex", alignItems: "center" }}
         >
-         
-          <SlideInLeftBox container justifyContent="center" alignItems="center" className={animate ? 'animate' : ''}>
+          <SlideInLeftBox
+            container
+            justifyContent="center"
+            alignItems="center"
+            className={animate ? "animate" : ""}
+          >
             <Grid item>
               <StyledTyography3 marginBottom={1}>
                 <Typography
@@ -247,7 +285,7 @@ const MainPoster = () => {
                 {headingsArray.map((element, index) => {
                   return (
                     <Box key={index}>
-                      <StyledTyography3  marginBottom="4px">
+                      <StyledTyography3 marginBottom="4px">
                         <StyledTypography1 variant="h6" component="span">
                           {element.h1}
                         </StyledTypography1>
@@ -284,221 +322,210 @@ const MainPoster = () => {
                 container
                 direction={{ xs: "column", sm: "row" }}
                 spacing={2}
-                justifyContent={{xs:"center",md:"start"}}
-               width="100%"
+                alignItems="center"
+                justifyContent={{ xs: "center", md: "start" }}
+                width="100%"
               >
-                {/* <Grid item>
-                  <StyledButton1 variant="outlined">
-                    {`Buy Trial for ${userDetails.trial_validity} @ ₹${userDetails.to_pay_for_trial==0 ? "0" :userDetails.to_pay_for_trial}`}
-                  </StyledButton1>
-                </Grid> */}
-                
-
-                {
-                  !isAuth ?
+                {isAuth && userDetails?.subscriptions?.includes("trial") ? (
+                  <>
                   <Grid item>
-                  
-                    
+                    <StyledButton3 variant="contained">
+                      {`Your Trial Expires on ${moment(subscriptionDetails?.expiry_date).format("Do MMM YY")}`}
+                       
+                    </StyledButton3>
+                  </Grid>
+                  <Grid item>
                   <StyledButton2 variant="contained">
-                  {`Buy Full Access @ ₹4500/yr`}
-                </StyledButton2>
-                
-                
-              </Grid>:
-              isAuth && 
-                (userDetails?.subscriptions?.includes("full-access") ||
-                  
-                   
-                    userDetails?.subscriptions?.includes("life") ) ? "" 
-                    : 
-                    <Grid item>
-                  
-                    
-                    <StyledButton2 variant="contained">
-                    {`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
+                  Upgrade to Full Access @ ₹4500/yr
                   </StyledButton2>
-                  
-                  
                 </Grid>
-                
-                    } 
-               
+                </>
+                ): userDetails?.subscriptions.length==0 ? <StyledButton2 variant="contained">
+                {`Buy Full Access @ ₹4500/yr`}
+              </StyledButton2> :<></> }
+
+                {!isAuth ? (
+                  <Grid item>
+                    <StyledButton2 variant="contained">
+                      {`Buy Full Access @ ₹4500/yr`}
+                    </StyledButton2>
+                  </Grid>
+                ) : isAuth &&
+                  (userDetails?.subscriptions?.includes("full-access") ||
+                    userDetails?.subscriptions?.includes("life")) ? (
+                  ""
+                ) :""}
               </Grid>
             </Grid>
           </SlideInLeftBox>
-         
         </Grid>
         <Grid item md={6} xs={12}>
-        <SlideInBottomBox className={animate ? 'animate' : ''}>
-          <Grid
-            container
-            justifyContent="center"
-            paddingTop={6}
-            alignItems="center"
-            sx={{
-              display: "flex",
+          <SlideInBottomBox className={animate ? "animate" : ""}>
+            <Grid
+              container
+              justifyContent="center"
+              paddingTop={6}
+              alignItems="center"
+              sx={{
+                display: "flex",
 
-              position: "relative",
-            }}
-          >
-            <Grid item  sx={{display:{xs:"block",md:"none"}}} >
-               <Image
-                src="/hero.svg"
-                width={500}
-                height={636}
-                alt="poster"
-                layout="responsive"
-               
-              /> 
-             
-            </Grid>
-            <Grid item sm={6.5} sx={{display:{xs:"none",md:"block"}}}>
-            <Box
-                sx={{ position: "relative",display:{xs:"none",md:"block", zIndex:5, }}}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                width="500px"
-                height="420px"
-              
-               
-              >
+                position: "relative",
+              }}
+            >
+              <Grid item sx={{ display: { xs: "block", md: "none" } }}>
                 <Image
-                  src="/hero2.svg"
-                  alt="Parent"
+                  src="/hero.svg"
                   width={500}
-                  height={420}
-                  layout="fixed"
-                
+                  height={636}
+                  alt="poster"
+                  layout="responsive"
                 />
+              </Grid>
+              <Grid item sm={6.5} sx={{ display: { xs: "none", md: "block" } }}>
                 <Box
                   sx={{
-                    position: "absolute",
-                    width: "183px",
-                    height: "68px",
-                    top: 0,
-                    left: "-22px",
-                    transition: "transform 0.3s",
-                    transform: hoverTransform1,
-                    zIndex:10,
+                    position: "relative",
+                    display: { xs: "none", md: "block", zIndex: 5 },
                   }}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  width="500px"
+                  height="420px"
                 >
                   <Image
-                    src="/group1.svg"
-                    alt="Top Left"
-                    width={183}
-                    height={68}
-                    layout="responsive"
+                    src="/hero2.svg"
+                    alt="Parent"
+                    width={500}
+                    height={420}
+                    layout="fixed"
                   />
-                </Box>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    width: "35px",
-                    height: "35px",
-                    top: "150px",
-                    left: "130px",
-                    transition: "transform 0.3s",
-                    transform: hoverTransform2,
-                    zIndex:10,
-                  }}
-                >
-                  <Image
-                    src="/group2.svg"
-                    alt="Top Right"
-                    width={35}
-                    height={35}
-                    layout="responsive"
-                  />
-                </Box>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    width: "121px",
-                    height: "61px",
-                    bottom: "50px",
-                    left: "35px",
-                    transition: "transform 0.3s",
-                    transform: hoverTransform3,
-                    zIndex:10,
-                  }}
-                >
-                  <Image
-                    src="/group3.svg"
-                    alt="Bottom Left"
-                    width={121}
-                    height={61}
-                    layout="responsive"
-                  />
-                </Box>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    width: "129px",
-                    height: "32px",
-                    bottom: "15px",
-                    left: "220px",
-                    transition: "transform 0.3s",
-                    transform: hoverTransform4,
-                    zIndex:10,
-                  }}
-                >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "183px",
+                      height: "68px",
+                      top: 0,
+                      left: "-22px",
+                      transition: "transform 0.3s",
+                      transform: hoverTransform1,
+                      zIndex: 10,
+                    }}
+                  >
+                    <Image
+                      src="/group1.svg"
+                      alt="Top Left"
+                      width={183}
+                      height={68}
+                      layout="responsive"
+                    />
+                  </Box>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "35px",
+                      height: "35px",
+                      top: "150px",
+                      left: "130px",
+                      transition: "transform 0.3s",
+                      transform: hoverTransform2,
+                      zIndex: 10,
+                    }}
+                  >
+                    <Image
+                      src="/group2.svg"
+                      alt="Top Right"
+                      width={35}
+                      height={35}
+                      layout="responsive"
+                    />
+                  </Box>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "121px",
+                      height: "61px",
+                      bottom: "50px",
+                      left: "35px",
+                      transition: "transform 0.3s",
+                      transform: hoverTransform3,
+                      zIndex: 10,
+                    }}
+                  >
+                    <Image
+                      src="/group3.svg"
+                      alt="Bottom Left"
+                      width={121}
+                      height={61}
+                      layout="responsive"
+                    />
+                  </Box>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "129px",
+                      height: "32px",
+                      bottom: "15px",
+                      left: "220px",
+                      transition: "transform 0.3s",
+                      transform: hoverTransform4,
+                      zIndex: 10,
+                    }}
+                  >
                     <Link target="_blank" href={androidAppLink}>
-                  <Image
-                    src="/group4.svg"
-                    alt="Bottom Right"
-                    width={129}
-                    height={32}
-                    layout="responsive"
-                  />
-                  </Link>
+                      <Image
+                        src="/group4.svg"
+                        alt="Bottom Right"
+                        width={129}
+                        height={32}
+                        layout="responsive"
+                      />
+                    </Link>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "35px",
+                      height: "35px",
+                      bottom: "5px",
+                      right: "80px",
+                      transition: "transform 0.3s",
+                      transform: hoverTransform5,
+                      zIndex: 10,
+                    }}
+                  >
+                    <Image
+                      src="/group5.svg"
+                      alt="Bottom Right"
+                      width={35}
+                      height={35}
+                      layout="responsive"
+                    />
+                  </Box>
+
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      width: "129px",
+                      height: "166px",
+                      bottom: "35px",
+                      right: "15px",
+                      transition: "transform 0.3s",
+                      transform: hoverTransform6,
+                      zIndex: 10,
+                    }}
+                  >
+                    <Image
+                      src="/group6.svg"
+                      alt="Bottom Right"
+                      width={129}
+                      height={166}
+                      layout="responsive"
+                    />
+                  </Box>
                 </Box>
-              
-                <Box
-                  sx={{
-                    position: "absolute",
-                    width: "35px",
-                    height: "35px",
-                    bottom: "5px",
-                    right: "80px",
-                    transition: "transform 0.3s",
-                    transform: hoverTransform5,
-                    zIndex:10,
-                  }}
-                >
-                  
-                  <Image
-                    src="/group5.svg"
-                    alt="Bottom Right"
-                    width={35}
-                    height={35}
-                    layout="responsive"
-                  />
-                  
-                </Box>
-               
-                <Box
-                  sx={{
-                    position: "absolute",
-                    width: "129px",
-                    height: "166px",
-                    bottom: "35px",
-                    right: "15px",
-                    transition: "transform 0.3s",
-                    transform: hoverTransform6,
-                    zIndex:10,
-                  }}
-                >
-                  <Image
-                    src="/group6.svg"
-                    alt="Bottom Right"
-                    width={129}
-                    height={166}
-                    layout="responsive"
-                  />
-                </Box>
-              </Box>
+              </Grid>
             </Grid>
-          </Grid>
           </SlideInBottomBox>
         </Grid>
       </Grid>

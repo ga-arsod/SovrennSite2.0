@@ -81,7 +81,6 @@ const StyledGrid3 = styled(Grid)`
   @media (min-width: 639px) {
     display: none;
   }
- 
 `;
 
 const StyledGrid4 = styled(Grid)`
@@ -232,14 +231,14 @@ const Navbar = ({ session }) => {
   };
 
   const filteredNavItems = isGreaterThanMd
-  ? navItems.filter(
-      (elem) =>
-        elem.name !== "Sign Up" &&
-        elem.name !== "Login" &&
-        elem.name !== "Knowledge" &&
-        elem.name !== "Self Help"
-    )
-  : navItems;
+    ? navItems.filter(
+        (elem) =>
+          elem.name !== "Sign Up" &&
+          elem.name !== "Login" &&
+          elem.name !== "Knowledge" &&
+          elem.name !== "Self Help"
+      )
+    : navItems;
 
   return (
     <>
@@ -264,403 +263,448 @@ const Navbar = ({ session }) => {
               direction="row"
               alignItems="center"
               justifyContent="space-between"
-              display={{xs:"flex",md:"flex"}}
+              display={{ xs: "flex", md: "flex" }}
             >
-              <Grid item width={{xs:"100%",sm:'auto'}}>
-                <Grid container alignItems="center" width="100%" justifyContent="space-between" >
+              <Grid item width={{ xs: "100%", sm: "auto" }}>
                 <Grid
-                item
-                sx={{ display: { xs: "flex", sm: "none", md: "flex" ,alignItems:"center"} }}
-              >
-                <Link href="/" passHref>
-                  {!searchOpen && isSmallerThanSm ? (
-                    <Image src="/logo.svg" width={146} height={25} alt="logo" />
-                  ) : isGeaterThanSm ? (
-                    <Image src="/logo.svg" width={146} height={25} alt="logo" />
-                  ) : (
-                    ""
-                  )}
-                </Link>
-              </Grid>
-
-              <StyledGrid3 item>
-              {!searchOpen && (
-                <>
-                  <IconButton onClick={handleSearchClick}>
-                    <SearchIcon />
-                  </IconButton>
-
-                  <IconButton onClick={toggleDrawer}>
-                    {open ? (
-                      <CloseIcon sx={{ color: "black" }} />
-                    ) : (
-                      <MenuIcon />
-                    )}
-                  </IconButton>
-                  </>
-              )}
-              </StyledGrid3>
-
-              <StyledGrid1 item>
-                <Box>
-                  <List
-                    sx={{ display: "flex", flexDirection: "row", padding: 0 }}
+                  container
+                  alignItems="center"
+                  width="100%"
+                  justifyContent="space-between"
+                >
+                  <Grid
+                    item
+                    sx={{
+                      display: {
+                        xs: "flex",
+                        sm: "none",
+                        md: "flex",
+                        alignItems: "center",
+                      },
+                    }}
                   >
-                    {filteredNavItems.map((item) => (
-                      <LightTooltip
-                        key={item.name}
+                    <Link href="/" passHref>
+                      {!searchOpen && isSmallerThanSm ? (
+                        <Image
+                          src="/logo.svg"
+                          width={146}
+                          height={25}
+                          alt="logo"
+                        />
+                      ) : isGeaterThanSm ? (
+                        <Image
+                          src="/logo.svg"
+                          width={146}
+                          height={25}
+                          alt="logo"
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </Link>
+                  </Grid>
+
+                  <StyledGrid3 item>
+                    {!searchOpen && (
+                      <>
+                        <IconButton onClick={handleSearchClick}>
+                          <SearchIcon />
+                        </IconButton>
+
+                        <IconButton onClick={toggleDrawer}>
+                          {open ? (
+                            <CloseIcon sx={{ color: "black" }} />
+                          ) : (
+                            <MenuIcon />
+                          )}
+                        </IconButton>
+                      </>
+                    )}
+                  </StyledGrid3>
+
+                  <StyledGrid1 item>
+                    <Box>
+                      <List
                         sx={{
-                          "& .MuiTooltip-tooltip": {
-                            backgroundColor: "white",
-                            color: "black",
-                          },
+                          display: "flex",
+                          flexDirection: "row",
+                          padding: 0,
                         }}
-                        title={
-                          <TooltipContent
-                            heading={item.name}
-                            description={item.description}
-                          />
-                        }
-                        placement="bottom"
-                        arrow
-                        disablePortal={false}
                       >
+                        {filteredNavItems.map((item) => (
+                          <LightTooltip
+                            key={item.name}
+                            sx={{
+                              "& .MuiTooltip-tooltip": {
+                                backgroundColor: "white",
+                                color: "black",
+                              },
+                            }}
+                            title={
+                              <TooltipContent
+                                heading={item.name}
+                                description={item.description}
+                              />
+                            }
+                            placement="bottom"
+                            arrow
+                            disablePortal={false}
+                          >
+                            <ListItem
+                              component={Link}
+                              href={item.link}
+                              onClick={toggleDrawer}
+                              sx={{
+                                px: 1,
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <StyledListItemText
+                                primary={item.name}
+                                isFirst={filteredNavItems.indexOf(item) === 0}
+                              />
+                            </ListItem>
+                          </LightTooltip>
+                        ))}
                         <ListItem
-                          component={Link}
-                          href={item.link}
-                          onClick={toggleDrawer}
+                          onMouseLeave={handleMouseLeave}
+                          onMouseEnter={handleMouseEnter}
                           sx={{
-                            px: 1,
+                            px: 0,
                             whiteSpace: "nowrap",
                             textOverflow: "ellipsis",
                             cursor: "pointer",
                           }}
                         >
-                          <StyledListItemText
-                            primary={item.name}
-                            isFirst={filteredNavItems.indexOf(item) === 0}
-                          />
+                          <Button
+                            aria-controls={
+                              anchorEl2 ? "utilities-menu" : undefined
+                            }
+                            aria-haspopup="true"
+                            aria-expanded={anchorEl2 ? "true" : undefined}
+                            sx={{
+                              color: colors.themeGreen,
+                              fontWeight: "600",
+                              fontSize: "14px",
+                              lineHeight: "17px",
+                              textTransform: "none",
+                            }}
+                            endIcon={
+                              <KeyboardArrowDownOutlinedIcon
+                                sx={{ color: colors.themeGreen }}
+                              />
+                            }
+                          >
+                            Utilities
+                          </Button>
+
+                          <Menu
+                            id="utilities-menu"
+                            anchorEl={anchorEl2}
+                            open={Boolean(anchorEl2)}
+                            onClose={handleMouseLeave}
+                            disablePortal
+                            disableScrollLock={true}
+                            TransitionProps={{
+                              timeout: 200,
+                            }}
+                            MenuListProps={{
+                              onMouseLeave: handleMouseLeave,
+                              "aria-labelledby": "utilities-button",
+                            }}
+                            PaperProps={{
+                              sx: {
+                                borderRadius: "8px",
+                                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                                minWidth: "200px",
+                                backgroundColor: "none",
+                              },
+                            }}
+                          >
+                            <Link
+                              href="/knowledge"
+                              style={{ textDecoration: "none" }}
+                            >
+                              <MenuItem
+                                disableRipple
+                                sx={{
+                                  padding: "12px 16px",
+                                  backgroundColor: "transparent !important",
+                                  "&:hover": {
+                                    backgroundColor: "transparent !important",
+                                  },
+                                  "&.Mui-focusVisible": {
+                                    backgroundColor: "transparent",
+                                  },
+                                  "&.Mui-selected": {
+                                    backgroundColor: "transparent",
+                                  },
+                                }}
+                              >
+                                <Typography
+                                  color={colors.navyBlue900}
+                                  sx={{
+                                    fontWeight: "600",
+                                    fontSize: "14px",
+                                    lineHeight: "17px",
+                                  }}
+                                >
+                                  Knowledge
+                                </Typography>
+                              </MenuItem>
+                            </Link>
+                            <Link
+                              href="/self-help"
+                              style={{ textDecoration: "none" }}
+                            >
+                              <MenuItem
+                                disableRipple
+                                sx={{
+                                  padding: "12px 16px",
+                                  backgroundColor: "transparent !important",
+                                  "&:hover": {
+                                    backgroundColor: "transparent !important",
+                                  },
+                                  "&.Mui-focusVisible": {
+                                    backgroundColor: "transparent",
+                                  },
+                                  "&.Mui-selected": {
+                                    backgroundColor: "transparent",
+                                  },
+                                }}
+                              >
+                                <Typography
+                                  color={colors.navyBlue900}
+                                  sx={{
+                                    fontWeight: "600",
+                                    fontSize: "14px",
+                                    lineHeight: "17px",
+                                  }}
+                                >
+                                  Self Help
+                                </Typography>
+                              </MenuItem>
+                            </Link>
+                          </Menu>
                         </ListItem>
-                      </LightTooltip>
-                    ))}
-                    <ListItem
-                      onMouseLeave={handleMouseLeave}
-                      onMouseEnter={handleMouseEnter}
-                      sx={{
-                        px: 0,
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <Button
-                        aria-controls={anchorEl2 ? "utilities-menu" : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={anchorEl2 ? "true" : undefined}
-                        sx={{
-                          color: colors.themeGreen,
-                          fontWeight: "600",
-                          fontSize: "14px",
-                          lineHeight: "17px",
-                          textTransform: "none",
-                        }}
-                        endIcon={
-                          <KeyboardArrowDownOutlinedIcon
-                            sx={{ color: colors.themeGreen }}
-                          />
-                        }
-                      >
-                        Utilities
-                      </Button>
-
-                      <Menu
-                        id="utilities-menu"
-                        anchorEl={anchorEl2}
-                        open={Boolean(anchorEl2)}
-                        MenuListProps={{
-                          onMouseLeave: handleMouseLeave,
-                          "aria-labelledby": "utilities-button",
-                        }}
-                        PaperProps={{
-                          sx: {
-                            borderRadius: "8px",
-                            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                            minWidth: "200px",
-                            backgroundColor: "none",
-                          },
-                        }}
-                      >
-                        <Link href="/knowledge" style={{textDecoration:'none'}}>
-                        <MenuItem
-                        disableRipple
-                          sx={{
-                            padding: "12px 16px",
-                            backgroundColor: "transparent !important",
-                            "&:hover": {
-                              backgroundColor: "transparent !important",
-                            },
-                            "&.Mui-focusVisible": {
-                              backgroundColor: "transparent",
-                            },
-                            "&.Mui-selected": {
-                              backgroundColor: "transparent",
-                            },
-                          }}
-                        >
-                          <Typography
-                            color={colors.navyBlue900}
-                            sx={{
-                              fontWeight: "600",
-                              fontSize: "14px",
-                              lineHeight: "17px",
-                            }}
-                          >
-                            Knowledge
-                          </Typography>
-                        </MenuItem>
-                        </Link>
-                       <Link href="/self-help" style={{textDecoration:'none'}}>
-                       <MenuItem
-                       disableRipple
-                          sx={{
-                            padding: "12px 16px",
-                            backgroundColor: "transparent !important",
-                            "&:hover": {
-                              backgroundColor: "transparent !important",
-                            },
-                            "&.Mui-focusVisible": {
-                              backgroundColor: "transparent",
-                            },
-                            "&.Mui-selected": {
-                              backgroundColor: "transparent",
-                            },
-                          }}
-                        >
-                          <Typography
-                            color={colors.navyBlue900}
-                            sx={{
-                              fontWeight: "600",
-                              fontSize: "14px",
-                              lineHeight: "17px",
-                            }}
-                          >
-                            Self Help
-                          </Typography>
-                        </MenuItem>
-                       </Link>
-                       
-                      </Menu>
-                    </ListItem>
-                  </List>
-                </Box>
-              </StyledGrid1>
-
+                      </List>
+                    </Box>
+                  </StyledGrid1>
                 </Grid>
-                
-
-              </Grid>
-             
-<Grid item>
-  <Grid container alignItems="center" spacing={3}>
-  <Grid
-                item
-              
-                sx={{
-                  display: { xs: "none", sm: "flex", md: "none" },
-                  
-                }}
-              >
-                <Image src="/logo.svg" width={136} height={30} alt="logo" />
               </Grid>
 
-              <StyledGrid1>
-                <Grid item >
-                <NavbarSearch handleSearchClick={handleSearchClick} />
-                </Grid> 
-              
-                {!searchOpen && (
-                <StyledGrid4 item>
-                  <IconButton onClick={handleSearchClick}>
-                    <SearchIcon />
-                  </IconButton>
+              <Grid item>
+                <Grid container alignItems="center" spacing={3}>
+                  <Grid
+                    item
+                    sx={{
+                      display: { xs: "none", sm: "flex", md: "none" },
+                    }}
+                  >
+                    <Image src="/logo.svg" width={136} height={30} alt="logo" />
+                  </Grid>
 
-                  <IconButton onClick={toggleDrawer}>
-                    {open ? (
-                      <CloseIcon sx={{ color: "black" }} />
-                    ) : (
-                      <MenuIcon />
-                    )}
-                  </IconButton>
-                </StyledGrid4>
-              )}
-              </StyledGrid1>
+                  <StyledGrid1>
+                    <Grid item>
+                      <NavbarSearch handleSearchClick={handleSearchClick} />
+                    </Grid>
 
-            
-
-              <Grid
-                item
-                
-              >
-                {searchOpen && isSmallerThanMd && (
-                  <NavbarSearch handleSearchClick={handleSearchClick} />
-                )}
-
-                {!isSmallerThanSm && (
-                  <>
                     {!searchOpen && (
-                      <IconButton
-                        onClick={handleSearchClick}
-                        sx={{
-                          display: { xs: "none", sm: "block", md: "none" },
-                        }}
-                      >
-                        <SearchIcon />
-                      </IconButton>
-                    )}
-                    <Box sx={{display:"flex",alignItems:"center"}}>
-                    <StyledButton1
-                      sx={{
-                        marginRight: "16px",
-                        display: isAuth || session?.user ? "none" : "",
-                      }}
-                      variant="contained"
-                      onClick={() => {
-                        router.push("login");
-                      }}
-                    >
-                      Sign Up
-                    </StyledButton1>
-
-                    <Typography
-                      color={colors.navyBlue500}
-                      sx={{
-                        fontWeight: "600",
-                        fontSize: "14px",
-                        lineHeight: "17px",
-                        cursor: "pointer",
-                        display: isAuth || session?.user ? "none" : "",
-                      }}
-                      onClick={() => {
-                        router.push("login");
-                      }}
-                      disableElevation
-                    >
-                      Login
-                    </Typography>
-
-                    </Box>
-                   
-<Grid container  >
-<Box
-                      sx={{
-                        borderColor: "#172641",
-                        borderRadius: "50%",
-                        padding: "2px",
-                        width: "30px",
-                        height: "30px",
-                        display: isAuth || session?.user ? "flex" : "none",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        overflow: "hidden",
-                        flexDirection:'row'
-                      }}
-                    >
-                      <Image
-                        src={
-                          userDetails?.profile_pic
-                            ? userDetails?.profile_pic
-                            : "/dummy_image.jpg"
-                        }
-                        width={30}
-                        height={30}
-                        alt="profile"
-                        style={{ objectFit: "cover", borderRadius: "50%" }}
-                      />
-                    </Box>
-                    <IconButton
-                      id="demo-customized-button"
-                      aria-controls={opens ? "demo-customized-menu" : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={opens ? "true" : undefined}
-                      variant="contained"
-                      disableElevation
-                      onClick={handleClick}
-                      sx={{
-                        display: isAuth || session?.user ? "flex" : "none",
-                      }}
-                    >
-                      <KeyboardArrowDownOutlinedIcon />
-                    </IconButton>
-
-</Grid>
-                    
-                    <StyledMenu
-                      id="demo-customized-menu"
-                      MenuListProps={{
-                        "aria-labelledby": "demo-customized-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={opens}
-                      onClose={handleClose}
-                    >
-                      <Link href="/profile" style={{ textDecoration: "none" }}>
-                        <StyledMenuItem onClick={handleClose} disableRipple>
-                          <IconButton
-                            sx={{ "& svg path": { fill: "black" }, padding: 0 }}
-                          >
-                            <PersonOutlineIcon />
-                          </IconButton>
-                          My Account
-                        </StyledMenuItem>
-                      </Link>
-                     
-                      <Link
-                        href="/watchlist"
-                        style={{ textDecoration: "none" }}
-                      >
-                        <StyledMenuItem onClick={handleClose} disableRipple>
-                          <IconButton
-                            sx={{ "& svg path": { fill: "black" }, padding: 0 }}
-                          >
-                            <AccessTimeOutlinedIcon />
-                          </IconButton>
-                          My Watchlist
-                        </StyledMenuItem>
-                      </Link>
-
-                      <StyledMenuItem2
-                        onClick={() => {
-                          doLogout();
-                          handleClose();
-                          if (isAuth) {
-                            dispatch(logout());
-                          }
-                        }}
-                        disableRipple
-                      >
-                        <IconButton
-                          sx={{
-                            "& svg path": { fill: colors.red400 },
-                            padding: 0,
-                          }}
-                          type="submit"
-                        >
-                          <LogoutOutlinedIcon />
+                      <StyledGrid4 item>
+                        <IconButton onClick={handleSearchClick}>
+                          <SearchIcon />
                         </IconButton>
-                        Logout
-                      </StyledMenuItem2>
-                    </StyledMenu>
-                  </>
-                )}
+
+                        <IconButton onClick={toggleDrawer}>
+                          {open ? (
+                            <CloseIcon sx={{ color: "black" }} />
+                          ) : (
+                            <MenuIcon />
+                          )}
+                        </IconButton>
+                      </StyledGrid4>
+                    )}
+                  </StyledGrid1>
+
+                  <Grid item>
+                    {searchOpen && isSmallerThanMd && (
+                      <NavbarSearch handleSearchClick={handleSearchClick} />
+                    )}
+
+                    {!isSmallerThanSm && (
+                      <>
+                        {!searchOpen && (
+                          <IconButton
+                            onClick={handleSearchClick}
+                            sx={{
+                              display: { xs: "none", sm: "block", md: "none" },
+                            }}
+                          >
+                            <SearchIcon />
+                          </IconButton>
+                        )}
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <StyledButton1
+                            sx={{
+                              marginRight: "16px",
+                              display: isAuth || session?.user ? "none" : "",
+                            }}
+                            variant="contained"
+                            onClick={() => {
+                              router.push("/signup");
+                            }}
+                          >
+                            Sign Up
+                          </StyledButton1>
+
+                          <Typography
+                            color={colors.navyBlue500}
+                            sx={{
+                              fontWeight: "600",
+                              fontSize: "14px",
+                              lineHeight: "17px",
+                              cursor: "pointer",
+                              display: isAuth || session?.user ? "none" : "",
+                            }}
+                            onClick={() => {
+                              const currentPath = window.location.pathname + window.location.search;
+                              localStorage.setItem("redirectUrl", currentPath); 
+                              router.push("/login");
+                            }}
+                            disableElevation
+                          >
+                            Login
+                          </Typography>
+                        </Box>
+
+                        <Grid container>
+                          <Box
+                            sx={{
+                              borderColor: "#172641",
+                              borderRadius: "50%",
+                              padding: "2px",
+                              width: "30px",
+                              height: "30px",
+                              display:
+                                isAuth || session?.user ? "flex" : "none",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              overflow: "hidden",
+                              flexDirection: "row",
+                            }}
+                          >
+                            <Image
+                              src={
+                                userDetails?.profile_pic
+                                  ? userDetails?.profile_pic
+                                  : "/dummy_image.jpg"
+                              }
+                              width={30}
+                              height={30}
+                              alt="profile"
+                              style={{
+                                objectFit: "cover",
+                                borderRadius: "50%",
+                              }}
+                            />
+                          </Box>
+                          <IconButton
+                            id="demo-customized-button"
+                            aria-controls={
+                              opens ? "demo-customized-menu" : undefined
+                            }
+                            aria-haspopup="true"
+                            aria-expanded={opens ? "true" : undefined}
+                            variant="contained"
+                            disableElevation
+                            onClick={handleClick}
+                            sx={{
+                              display:
+                                isAuth || session?.user ? "flex" : "none",
+                            }}
+                          >
+                            <KeyboardArrowDownOutlinedIcon />
+                          </IconButton>
+                        </Grid>
+
+                        <StyledMenu
+                          id="demo-customized-menu"
+                          MenuListProps={{
+                            "aria-labelledby": "demo-customized-button",
+                          }}
+                          anchorEl={anchorEl}
+                          open={opens}
+                          onClose={handleClose}
+                          disablePortal
+                          disableScrollLock={true}
+                          TransitionProps={{
+                            timeout: 200,
+                          }}
+                        >
+                          <Link
+                            href="/profile"
+                            style={{ textDecoration: "none" }}
+                          >
+                            <StyledMenuItem onClick={handleClose} disableRipple>
+                              <IconButton
+                                sx={{
+                                  "& svg path": { fill: "black" },
+                                  padding: 0,
+                                }}
+                              >
+                                <PersonOutlineIcon />
+                              </IconButton>
+                              My Account
+                            </StyledMenuItem>
+                          </Link>
+
+                          <Link
+                            href="/watchlist"
+                            style={{ textDecoration: "none" }}
+                          >
+                            <StyledMenuItem onClick={handleClose} disableRipple>
+                              <IconButton
+                                sx={{
+                                  "& svg path": { fill: "black" },
+                                  padding: 0,
+                                }}
+                              >
+                                <AccessTimeOutlinedIcon />
+                              </IconButton>
+                              My Watchlist
+                            </StyledMenuItem>
+                          </Link>
+
+                          <StyledMenuItem2
+                            onClick={() => {
+                             
+                              handleClose();
+                              if (isAuth) {
+                                dispatch(logout());
+                                dispatch({ type: "auth/logout" });
+                              }
+                            }}
+                            disableRipple
+                          >
+                            <IconButton
+                              sx={{
+                                "& svg path": { fill: colors.red400 },
+                                padding: 0,
+                              }}
+                              type="submit"
+                            >
+                              <LogoutOutlinedIcon />
+                            </IconButton>
+                            Logout
+                          </StyledMenuItem2>
+                        </StyledMenu>
+                      </>
+                    )}
+                  </Grid>
+                </Grid>
               </Grid>
-
-  </Grid>
-
-
-</Grid>
-             
-
-            
             </Grid>
           </Toolbar>
         </Box>

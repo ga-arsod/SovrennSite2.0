@@ -53,7 +53,7 @@ const PricingPage = () => {
     <Box sx={{ width: "100%", padding: "60px 0 0px 0" }}>
       <Grid
         container
-        height={{ xs: "298px", sm: "420px" }}
+        height={{ xs: "298px", sm: "380px" }}
         justifyContent={{ xs: "flex-start", sm: "center" }}
         alignItems={{ xs: "flex-start", sm: "center" }}
         sx={{
@@ -86,7 +86,7 @@ const PricingPage = () => {
         </Grid>
       </Grid>
 
-      <Box sx={{ position: "relative", top: { xs: "-160px", sm: "-170px" } }}>
+      <Box sx={{ position: "relative", top: { xs: "-160px", sm: "-150px" } }}>
         <PricingCard planDetails={plans} />
       </Box>
     </Box>

@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import { Box, Grid, Typography, Button } from "@mui/material";
 import { gradientColors } from "../Constants/colors";
 import { colors } from "../Constants/colors";
+import Link from "next/link";
 
 const StyledGrid = styled(Box)`
   position: relative;
@@ -105,7 +106,7 @@ const TrialCard = () => {
                   textAlign={{ xs: "center", sm: "start" }}
                   marginBottom={2}
                 >
-                  Begin your 2-month trial for only ₹400 today!
+                 Begin your 45 days free trial today!
                 </StyledTypography1>
                 <StyledTypography2
                   color="#F4F3F3"
@@ -113,11 +114,12 @@ const TrialCard = () => {
                   gutterBottom
                   marginBottom={3}
                 >
-                  Unlock two months of financial insight with Sovrenn. Empower
-                  your investing journey today!
+                  Unlock 45 days of financial insight with Sovrenn. Empower your investing journey today!
                 </StyledTypography2>
               </Grid>
               <Grid item>
+                <Link href="/signup">
+                
                 <StyledButton
                   variant="contained"
                   sx={{
@@ -128,8 +130,9 @@ const TrialCard = () => {
                     textTransform: "none",
                   }}
                 >
-                  Buy Trial Now
+                 Get Free Trial Now
                 </StyledButton>
+                </Link>
               </Grid>
             </Grid>
           </Grid>

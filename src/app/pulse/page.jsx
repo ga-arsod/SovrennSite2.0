@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { pulseFilterApi } from '../Redux/Slices/pulseSlice'
 import { useDispatch } from 'react-redux'
 import Footer from '@/components/Home/Footer'
+import { getPortfolioCompanies } from '../Redux/Slices/pulseSlice'
 
 
 const PulsePage = () => {
@@ -17,8 +18,10 @@ const PulsePage = () => {
        } = useSelector(store => store.pulse);
   
   useEffect(()=>{
+    dispatch(getPortfolioCompanies())
     dispatch(pulseFilterApi())
   },[dispatch])
+
   return (
     <>
     <Container>

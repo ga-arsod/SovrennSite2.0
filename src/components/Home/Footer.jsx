@@ -119,7 +119,7 @@ const Footer = () => {
             xs: "765px",
            
             sm: "600px",
-            md:"460px",
+            md:"490px",
             
           }}
           sx={{ position: "relative" }}

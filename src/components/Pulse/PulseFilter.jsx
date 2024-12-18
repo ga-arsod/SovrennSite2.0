@@ -279,11 +279,12 @@ const PulseFilter = ({
       filterBody[key] = [];
     });
   };
-  console.log(filter, "filter");
-  console.log(filterData, "filterData");
+  const isFilterEmpty = (filter) => {
+    return Object.values(filter).every((value) => Array.isArray(value) && value.length === 0);
+  };
 
   if (!pulseFilter?.length) return <></>;
-  console.log(filter, "filter");
+ 
   return (
     <Box>
       <Drawer
@@ -472,6 +473,9 @@ const PulseFilter = ({
                       dispatch(togglePulseFilter())
                     } else {
                         dispatch(togglePulseFilter())
+                        if(isFilterEmpty(filterData))
+                          dispatch(pulseArticlesApi({ page: 1, pageSize: 20 }));
+                        else
                       dispatch(
                         pulseFilteredArticlesApi({
                           page: 1,

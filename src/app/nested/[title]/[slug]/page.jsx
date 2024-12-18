@@ -8,9 +8,10 @@ import {
   MenuItem,
   Select,
   Container,
-  Pagination,
+ 
 } from "@mui/material";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname,useParams } from "next/navigation";
+
 import DiscoveryTable from "@/components/Discovery/DiscoveryTable";
 import DiscoveryTableCard from "@/components/Cards/DiscoveryTableCard";
 import styled from "@emotion/styled";
@@ -23,7 +24,7 @@ import {
 } from "@/app/Redux/Slices/discoverySlice";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
+import Pagination from "@/components/Pagination/Pagination";
 import Spinner from "../../../../components/Common/Spinner";
 import LoginModal from "../../../../components/Modal/LoginModal";
 import Head from "next/head";
@@ -100,10 +101,12 @@ const ChildBucketCompanyContent = () => {
   const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();
+  
   const pathSegments = pathname ? decodeURIComponent(pathname).split("/") : [];
   const [currentPage,setCurrentPage]=useState(1)
-  const title = pathSegments?.[2] || "";
-  const bucketName = pathSegments?.[3] || "";
+  
+  const segments = pathname.split('/'); 
+  const lastSegment = segments.filter(Boolean).pop(); 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [isOpen, setIsOpen] = useState(true);
@@ -113,11 +116,16 @@ const ChildBucketCompanyContent = () => {
   const dispatch = useDispatch();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const filtersData = useSelector((store) => store.discovery.filtersData);
+  const title=pathSegments[2]
+   const { sortBy, sortOrder } = useSelector((state) => state.sorting);
   const tableData = useSelector(
     (store) => store.discovery.nestedBucketDiscoveryTableBucket
   );
   const pagination = useSelector(
     (store) => store.discovery.pagination
+  );
+  const {isAuth} = useSelector(
+    (store) => store.auth
   );
 
   const firstSpaceIndex = tableData?.bucket?.title?.indexOf(" ");
@@ -167,12 +175,14 @@ const ChildBucketCompanyContent = () => {
 
     dispatch(
       nestedBucketDiscoveryTableApi({
-        id: bucketName,
-        body: filterObj,
-        page: currentPage,
+        id: lastSegment,
+            body: filterObj,
+            page: currentPage,
+            sort_by: sortBy,
+            sort_order: sortOrder,
       })
     );
-  }, [filter,currentPage]);
+  }, [filter, sortBy, sortOrder, dispatch,isAuth,currentPage]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -187,6 +197,11 @@ const ChildBucketCompanyContent = () => {
       <>
         <Head>
           <title>{title}</title>
+          <link
+            rel="canonical"
+            href={`https://www.sovrenn.com/discovery/${lastSegment}`}
+            key="canonical"
+          />
         </Head>
         <Spinner margin={15} />
       </>
@@ -195,9 +210,14 @@ const ChildBucketCompanyContent = () => {
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-      </Head>
+       <Head>
+          <title>{title}</title>
+          <link
+            rel="canonical"
+            href={`https://www.sovrenn.com/discovery/${lastSegment}`}
+            key="canonical"
+          />
+        </Head>
       <Container>
        
         <Box sx={{ marginTop: "64px" }} marginBottom={{ xs: 3, sm: "28px" }}>
@@ -234,7 +254,10 @@ const ChildBucketCompanyContent = () => {
               </Box>
             </Grid>
           </Grid>
-          <Grid container justifyContent="flex-end" alignItems="center">
+          {
+            isAuth ? 
+            !filtersData ? <></>:
+            <Grid container justifyContent="flex-end" alignItems="center">
             <Grid item>
               <FormControl
                 sx={{
@@ -312,21 +335,23 @@ const ChildBucketCompanyContent = () => {
                 </StyledSelectContainer>
               </FormControl>
             </Grid>
-          </Grid>
+          </Grid>:""
+          }
+          
         </Box>
         {isSmallerThanMd ? (
           tableData?.length === 0 ? (
             <NoData text="No data available for this bucket currently." />
           ) : (
-            <DiscoveryTableCard tableData={tableData} id={title} />
+            <DiscoveryTableCard tableData={tableData} id={lastSegment} />
           )
         ) : tableData?.length === 0 ? (
           <NoData text="No data available for this bucket currently." />
         ) : (
-          <DiscoveryTable tableData={tableData} id={title} />
+          <DiscoveryTable tableData={tableData} id={lastSegment} />
         )}
-         <Box mt={2}>
-        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pagination={pagination}/>
+           <Box mt={2}>
+        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pagination={pagination} />
       </Box>
       </Container>
       {!isSmallerThanMd && <Footer />}

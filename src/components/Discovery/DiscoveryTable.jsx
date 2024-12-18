@@ -14,10 +14,10 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { colors } from "../Constants/colors";
-import Pagination from "../Pagination/Pagination";
+
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import Link from "next/link";
+import PaymentModal from "../PayU/PaymentModal";
 
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
@@ -90,7 +90,7 @@ const SlideBox = styled(Box)`
 `;
 
 const StyledTableRow = styled(TableRow)`
-  cursor:pointer;
+  cursor: pointer;
   &:hover {
     background-color: ${colors.neutral600};
   }
@@ -236,13 +236,9 @@ const wordsStr = [
 export default function DiscoveryTable({ tableData, id }) {
   const dispatch = useDispatch();
   const [hoveredRow, setHoveredRow] = useState(null);
- 
+
   const [isOpen, setIsOpen] = useState(false);
   const { sortBy, sortOrder } = useSelector((state) => state.sorting);
-  const { userDetails } = useSelector((store) => store.auth);
- 
-  const { isAuth } = useSelector((store) => store.auth);
- 
 
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
@@ -260,8 +256,13 @@ export default function DiscoveryTable({ tableData, id }) {
     }
   };
 
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
   const handleClose = () => {
     setIsOpen(false);
+  };
+  const handlePaymentClose = () => {
+    setIsPaymentOpen(false);
   };
 
   const articleRedirect = (ind, item) => {
@@ -275,7 +276,7 @@ export default function DiscoveryTable({ tableData, id }) {
       (userDetails?.subscriptions?.includes("basket") && isAuth)
     ) {
       return `/discovery/${id}/${item?.slug}`;
-    } else return "";
+    } else setIsPaymentOpen(true);
   };
 
   const handleRowClick = (index, item) => {
@@ -307,15 +308,19 @@ export default function DiscoveryTable({ tableData, id }) {
       id: "date",
     },
   ];
- 
+
   return (
     <>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />
+      <PaymentModal
+        isPaymentOpen={isPaymentOpen}
+        handlePaymentClose={handlePaymentClose}
+      />
       <Box
         sx={{
           paddingX: 0,
           marginTop: 3,
-          
+
           border: `1px solid ${colors.neutral600}`,
           borderRadius: 1,
           overflowX: "hidden",
@@ -332,28 +337,20 @@ export default function DiscoveryTable({ tableData, id }) {
                 {headerRowArray?.map((item, index) => {
                   return (
                     <>
-                      <StyledTableCell key={index}
-                       onClick={() => handleSortChange(item?.id)}
+                      <StyledTableCell
+                        key={index}
+                        onClick={() => handleSortChange(item?.id)}
                       >
                         <div style={{ display: "flex", alignItems: "center" }}>
                           {item?.name}
                           {sortBy === item.id ? (
                             sortOrder === "inc" ? (
-                              <StyledArrowUpwardIcon
-                                className="arrow-icon"
-                               
-                              />
+                              <StyledArrowUpwardIcon className="arrow-icon" />
                             ) : (
-                              <StyledArrowDownwardIcon
-                                className="arrow-icon"
-                               
-                              />
+                              <StyledArrowDownwardIcon className="arrow-icon" />
                             )
                           ) : (
-                            <StyledArrowUpwardIcon
-                              className="arrow-icon"
-                             
-                            />
+                            <StyledArrowUpwardIcon className="arrow-icon" />
                           )}
                         </div>
                       </StyledTableCell>
@@ -362,10 +359,7 @@ export default function DiscoveryTable({ tableData, id }) {
                 })}
 
                 <StyledTableCell>
-                  <HeaderTextWrapper>
-                    Remarks
-                   
-                  </HeaderTextWrapper>
+                  <HeaderTextWrapper>Remarks</HeaderTextWrapper>
                 </StyledTableCell>
               </TableRow>
             </TableHead>
@@ -416,7 +410,6 @@ export default function DiscoveryTable({ tableData, id }) {
                   </StyledBodyTableCell>
                   <StyledBodyTableCell
                     sx={{ color: colors.neutral900, position: "relative" }}
-                   
                   >
                     {item?.remark || "NA"}
                     <SlideBox hovered={hoveredRow === index}>
@@ -446,7 +439,6 @@ export default function DiscoveryTable({ tableData, id }) {
           </Table>
         </TableContainer>
       </Box>
-      
     </>
   );
 }

@@ -21,6 +21,7 @@ import { generateHashApi, setPaymentData } from "@/app/Redux/Slices/paymentSlice
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import LoginModal from "../Modal/LoginModal";
 
 const StyledButton = styled(Button)`
   text-transform: none;
@@ -118,12 +119,17 @@ const payuUrl = process.env.NEXT_PUBLIC_PAYU_URL;
 const PricingCard = ({ planDetails }) => {
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState("");
+  const [planIndex,setPlanIndex]=useState(null)
   const { isAuth, userDetails } = useSelector((store) => store.auth);
   const  {paymentData}  = useSelector((store) => store.payment);
-  
+  const [isOpen,setIsOpen]=useState(false)
+  const handleClose=()=>{
+    setIsOpen(false)
+  }
 
-  const handleOptionChange = (optionId) => {
+  const handleOptionChange = (optionId,index) => {
     setSelectedOption(optionId);
+    setPlanIndex(index)
   };
 
   const handleSubmit = async (e) => {
@@ -139,6 +145,8 @@ const PricingCard = ({ planDetails }) => {
   };
 
   return (
+    <>
+    <LoginModal isOpen={isOpen} handleClose={handleClose}/>
     <Container>
       <Grid
         container
@@ -156,7 +164,7 @@ const PricingCard = ({ planDetails }) => {
             sx={{
               display: "flex",
               justifyContent: "center",
-              order: index === 1 ? { xs: -1, sm: 0 } : 0,
+              
             }}
           >
             <StyledCard
@@ -164,7 +172,7 @@ const PricingCard = ({ planDetails }) => {
                 border: "1px solid #E4E7EC",
                 borderRadius: "16px",
                 boxShadow: "0px 12px 16px -4px #1018281A",
-                height: plan.type == "full-access" ? "730px" : "650px",
+                height: plan.type == "full-access" ? "720px" : "650px",
                 marginBottom: "20px",
                 position: "relative",
               }}
@@ -201,7 +209,7 @@ const PricingCard = ({ planDetails }) => {
                     width="100%"
                   >
                     <Box width="100%">
-                      {plan.offerings.map((option) => (
+                      {plan.offerings.map((option,index) => (
                         <Box
                           key={option.id}
                           sx={{
@@ -229,21 +237,21 @@ const PricingCard = ({ planDetails }) => {
                           >{`${option.validity_in_months} months`}</StyledTypography>
                           <Box display="flex" alignItems="center">
                             <PriceTypography color={colors.navyBlue500}>
-                              {option.offer_price}
+                              {`₹${option.offer_price}`}
                             </PriceTypography>
                             {option.mrp && (
                               <DiscountTypography
                                 color={colors.greyBlue500}
                                 sx={{ marginLeft: "2px" }}
                               >
-                                {option.mrp}
+                              {` ₹${option.mrp}`}
                               </DiscountTypography>
                             )}
                             <FormControlLabel
                               control={
                                 <Radio
                                   checked={selectedOption === option.id}
-                                  onChange={() => handleOptionChange(option.id)}
+                                  onChange={() => handleOptionChange(option.id,index)}
                                   sx={{
                                     color:
                                       selectedOption === option.id
@@ -393,15 +401,21 @@ const PricingCard = ({ planDetails }) => {
                           plan.offerings.some((opt) => opt.id === selectedOption) === false
                         }
                         onClick={() => {
+                          if(!isAuth)
+                          {
+                            setIsOpen(true)
+                            return;
+                          }
                           const data = {
                             txnid: Date.now(),
-                            amount: (isAuth ? userDetails?.to_pay_for_fa : 4500),
+                            amount:plan.offerings[planIndex].offer_price,
                             productinfo: plan.type,
                             firstname: userDetails.first_name,
                             email: userDetails.email,
                             udf1: userDetails._id,
-                            udf2: 12
+                            udf2:plan.offerings[planIndex].validity_in_months
                           }
+                          console.log(data,"data")
                           dispatch(setPaymentData({
                             ...data,
                             phone: userDetails.phone_number,
@@ -424,6 +438,7 @@ const PricingCard = ({ planDetails }) => {
         ))}
       </Grid>
     </Container>
+    </>
   );
 };
 
