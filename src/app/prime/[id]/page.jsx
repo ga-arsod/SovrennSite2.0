@@ -16,6 +16,8 @@ import Snackbar from "../../../components/Snackbar/SnackBar";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import Disclaimer from "../../../components/Common/Disclaimer";
 import { primeArticleDisclaimer } from "@/utils/Data";
+import NoLogin from "../../../components/Auth/NoLogin"
+import NoAccess from "../../../components/Auth/NoAccess"
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -91,7 +93,7 @@ const PrimeArticles = () => {
   const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false);
   const searchParams = useSearchParams();
   const search = searchParams.get("s");
-
+  const { isAuth,userDetails } = useSelector((store) => store.auth);
   const isPromoterInterviewActive = search === "promoter_interview";
   const { articleData, company_name } = useSelector((store) => store.prime);
   const { comments } = useSelector((store) => store.comments);
@@ -149,6 +151,16 @@ const PrimeArticles = () => {
       setContent(convertToHtml(articleData?.content));
     }
   }, [articleData, dispatch]);
+
+  if(!isAuth)
+    {
+     return <NoLogin/>
+    }
+    if(isAuth && ( !userDetails?.subscriptions?.includes("full-access") || !userDetails?.subscriptions?.includes("monthly") || !userDetails?.subscriptions?.includes("quarterly") || !userDetails?.subscriptions?.includes("life") || !userDetails?.subscriptions?.includes("trial") || !userDetails?.subscriptions?.includes("basket")))
+    {
+      return <NoAccess/>
+    }
+  
 
   return (
     <>

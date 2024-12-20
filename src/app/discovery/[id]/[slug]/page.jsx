@@ -28,6 +28,8 @@ import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlin
 import Disclaimer from "../../../../components/Common/Disclaimer";
 import { primeArticleDisclaimer } from "@/utils/Data";
 import Snackbar from "../../../../components/Snackbar/SnackBar";
+import NoLogin from "../../../../components/Auth/NoLogin";
+import NoAccess from "../../../../components/Auth/NoAccess";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -124,6 +126,9 @@ const DiscoveryArticle = () => {
   const { comments, isCommentsDataLoading } = useSelector(
     (store) => store.comments
   );
+  const { isAuth,userDetails } = useSelector(
+    (store) => store.auth
+  );
 
   const {
     content,
@@ -143,7 +148,7 @@ const DiscoveryArticle = () => {
   const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false);
 
   useEffect(() => {
-    if(slug)
+    if(slug && isAuth && ( userDetails?.subscriptions?.includes("full-access") || userDetails?.subscriptions?.includes("monthly") || userDetails?.subscriptions?.includes("quarterly") || userDetails?.subscriptions?.includes("life") || userDetails?.subscriptions?.includes("trial") || userDetails?.subscriptions?.includes("basket")))
     {
       dispatch(discoveryArticleApi(slug));
     }
@@ -191,7 +196,16 @@ const DiscoveryArticle = () => {
     setIsInWatchlist((prev) => !prev);
   };
 
-  if (isArticleDataLoading) {
+  if(!isAuth)
+  {
+   return <NoLogin/>
+  }
+  if(isAuth && ( !userDetails?.subscriptions?.includes("full-access") || !userDetails?.subscriptions?.includes("monthly") || !userDetails?.subscriptions?.includes("quarterly") || !userDetails?.subscriptions?.includes("life") || !userDetails?.subscriptions?.includes("trial") || !userDetails?.subscriptions?.includes("basket")))
+  {
+    return <NoAccess/>
+  }
+
+  if ( isAuth && isArticleDataLoading) {
     return (
       <>
         <Head>

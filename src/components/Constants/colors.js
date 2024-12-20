@@ -21,6 +21,7 @@ export const colors={
     greyBlue800:'#36444f',
     greyBlue900:'#29343c',
     navyBlue500:'#011627',
+    navyBlue600:'#011423',
     navyBlue400:'#344552',
     navyBlue800:'#010C15',
     blueButtonHover:'#55636E',

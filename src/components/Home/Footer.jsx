@@ -15,7 +15,7 @@ import {
   IconButton,
 } from "@mui/material";
 import React from "react";
-
+import { useRouter } from "next/navigation";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import YouTubeIcon from "@mui/icons-material/YouTube";
@@ -106,9 +106,11 @@ const StyledSubheader = styled(ListSubheader)`
 `;
 
 const Footer = () => {
-  const pathname = usePathname();
+ 
   const theme=useTheme();
+  const pathname = usePathname();
   const isXsScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isHomepage = pathname === "/";
   return (
     <>
     {
@@ -119,7 +121,7 @@ const Footer = () => {
             xs: "765px",
            
             sm: "600px",
-            md:"490px",
+            md: isHomepage ? "550px" : "450px",
             
           }}
           sx={{ position: "relative" }}

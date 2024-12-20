@@ -6,6 +6,7 @@ import { Box, Grid, Typography, Button } from "@mui/material";
 import { gradientColors } from "../Constants/colors";
 import { colors } from "../Constants/colors";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 const StyledGrid = styled(Box)`
   position: relative;
@@ -13,7 +14,7 @@ const StyledGrid = styled(Box)`
   width: 100%;
   max-width: 960px;
   margin: auto;
-  bottom: 5rem;
+  bottom: 6rem;
   left: 0;
 
   @media (min-width: 640px) and (max-width: 1080px) {
@@ -28,7 +29,7 @@ const StyledGrid = styled(Box)`
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 700;
-  font-size: 28px;
+  font-size: 26px;
   line-height: 34px;
   letter-spacing: -0.02em;
 
@@ -52,18 +53,30 @@ const StyledTypography2 = styled(Typography)`
 `;
 
 const StyledButton = styled(Button)`
-  color: ${(props) => props.theme.palette.primary.main};
+  color: ${colors.themeGreen};
   font-weight: 600;
-  border-color: ${(props) => props.theme.palette.primary.main};
-  outline: ${(props) => props.theme.palette.primary.main};
-  box-shadow: none;
-  &:hover {
-    background-color: ${colors.themeButtonHover};
-    color: white;
+  font-size: 18px;
+  line-height: 21px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: white;
+  text-transform: none;
+
+  
+  :hover {
+    background-color: white;
+  }
+  @media (max-width: 700px) {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 `;
 
 const TrialCard = () => {
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
   return (
     <>
       <Box
@@ -106,7 +119,13 @@ const TrialCard = () => {
                   textAlign={{ xs: "center", sm: "start" }}
                   marginBottom={2}
                 >
-                 Begin your 45 days free trial today!
+                  {!isAuth
+                    ? "Begin your 45 days free trial today!"
+                    : isAuth &&
+                      (userDetails?.subscriptions.includes("full-access") ||
+                        userDetails?.subscriptions.includes("life"))
+                    ? "Discover Top-Performing Stocks Today!"
+                    : "Let’s continue your investing journey by upgrading today!"}
                 </StyledTypography1>
                 <StyledTypography2
                   color="#F4F3F3"
@@ -114,25 +133,40 @@ const TrialCard = () => {
                   gutterBottom
                   marginBottom={3}
                 >
-                  Unlock 45 days of financial insight with Sovrenn. Empower your investing journey today!
+                  {!isAuth
+                    ? "Unlock 45 days of financial insight with Sovrenn. Empower your investing journey today!"
+                    : isAuth &&
+                      (userDetails?.subscriptions.includes("full-access") ||
+                        userDetails?.subscriptions.includes("life"))
+                    ? "Uncover exciting opportunities to grow your portfolio with the market's best-performing stocks, all in one place."
+                    : "Enjoy uninterrupted access! Your full access begins seamlessly once your trial period concludes"}
                 </StyledTypography2>
               </Grid>
               <Grid item>
-                <Link href="/signup">
-                
-                <StyledButton
-                  variant="contained"
-                  sx={{
-                    fontSize: { xs: "16px", sm: "16px" },
-                    backgroundColor: "white",
-                    paddingY: { xs: "12px", sm: "14px" },
-                    lineHeight: { xs: "19px", sm: "21px" },
-                    textTransform: "none",
-                  }}
-                >
-                 Get Free Trial Now
-                </StyledButton>
-                </Link>
+                {!isAuth ? (
+                  <Link href="/signup">
+                    <StyledButton variant="contained">
+                     
+                      Get 45 days Free Trial
+                    </StyledButton>
+                  </Link>
+                ) : isAuth &&
+                  (userDetails?.subscriptions.includes("full-access") ||
+                    userDetails?.subscriptions.includes("life")) ? (
+                  <Link href="/discovery">
+                    <StyledButton variant="contained">
+                      Discover Now
+                    </StyledButton>
+                  </Link>
+                ) : (
+                  <Link href="/pricing">
+                    <StyledButton variant="contained">
+                    Buy Full Access Now
+                    </StyledButton>
+                  </Link>
+                )}
+
+
               </Grid>
             </Grid>
           </Grid>

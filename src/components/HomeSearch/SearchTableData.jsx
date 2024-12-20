@@ -156,7 +156,7 @@ const SearchTableData = ({data}) => {
                   <StyledBodyTableCell sx={{ color: colors.navyBlue500 }}>{row.description}</StyledBodyTableCell>
                  
                   <StyledBodyTableCell>
-                  <Link target="blank" href={`/prime/${ele.slug}`} style={{textDecoration:"none"}}>
+                  <Link target="blank" href={`/prime/${row.slug}`} style={{textDecoration:"none"}}>
                     <StyledButton  
                           variant="outlined" endIcon={<StyledArrowForwardIosIcon />} size="small">
                       Read

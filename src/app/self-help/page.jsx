@@ -25,6 +25,8 @@ import { addToWatchlistApi } from "../Redux/Slices/discoverySlice";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import NoLogin from "../../components/Auth/NoLogin";
+import NoAccess from "../../components/Auth/NoAccess";
 
 const fadeIn = keyframes`
   from {
@@ -45,7 +47,7 @@ const FadeInFormContainer = styled.div`
   margin-bottom: 0;
   overflow: hidden;
   height: auto;
-  animation: ${fadeIn} 0.4s ease-in-out; // Apply fade-in animation
+  animation: ${fadeIn} 0.4s ease-in-out; 
 `;
 
 const StyledSelfHelpChips = styled(SelfHelpChips)`
@@ -143,6 +145,9 @@ const SelfHelp = () => {
   const { isCalculatedDataAvailable, isCalculationLoading } = useSelector(
     (store) => store.selfHelp
   );
+  const { isAuth,userDetails } = useSelector(
+    (store) => store.selfHelp
+  );
 
   const handleChipSelect = (chip) => {
     setSelectedChip(chip);
@@ -159,8 +164,17 @@ const SelfHelp = () => {
     router.back();  
   };
 
+  if(!isAuth)
+    {
+     return <NoLogin/>
+    }
+    if(isAuth && ( !userDetails?.subscriptions?.includes("full-access") || !userDetails?.subscriptions?.includes("monthly") || !userDetails?.subscriptions?.includes("quarterly") || !userDetails?.subscriptions?.includes("life") || !userDetails?.subscriptions?.includes("trial") || !userDetails?.subscriptions?.includes("basket")))
+    {
+      return <NoAccess/>
+    }
   return (
     <Container>
+     
        <Snackbar/> 
       <Grid container marginTop="60px" direction="column" marginBottom={4}>
         <Grid item paddingY={{ xs: 2, sm: 5 }}>

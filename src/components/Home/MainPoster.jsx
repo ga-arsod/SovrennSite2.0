@@ -336,12 +336,12 @@ dispatch(subscriptionDetailsApi())
                   </Grid>
                   <Grid item>
                   <StyledButton2 variant="contained">
-                  Upgrade to Full Access @ ₹4500/yr
+                  {`Upgrade to Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
                   </StyledButton2>
                 </Grid>
                 </>
                 ): userDetails?.subscriptions.length==0 ? <StyledButton2 variant="contained">
-                {`Buy Full Access @ ₹4500/yr`}
+                {`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
               </StyledButton2> :<></> }
 
                 {!isAuth ? (

@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams } from "next/navigation";
 import convertToHtml from "@/utils/convertToHtml";
 import styles from "../../../styles/ipo.module.css";
-import Link from "next/link";
-import { colors } from "@/components/Constants/colors";
+
 import { ipoArticleApi } from "@/app/Redux/Slices/ipoSlice";
 import styled from "@emotion/styled";
 import { Box, Typography, Divider } from "@mui/material";
@@ -15,6 +14,8 @@ import Disclaimer from "../../../components/Common/Disclaimer";
 import { primeArticleDisclaimer } from "@/utils/Data";
 import Spinner from "@/components/Common/Spinner";
 import Footer from "@/components/Home/Footer";
+import NoLogin from "../../../components/Auth/NoLogin";
+import NoAccess from "../../../components/Auth/NoAccess";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 36px;
@@ -32,6 +33,7 @@ const IpoArticles = () => {
   const { id } = useParams();
   
   const { ipoArticle, isIpoArticleLoading } = useSelector((store) => store.ipo);
+  const { isAuth,userDetails } = useSelector((store) => store.auth);
 
   const [showScroll, setShowScroll] = useState(false);
 
@@ -78,7 +80,18 @@ const IpoArticles = () => {
     window.scrollTo({ top: 0, behavior: "auto" });
   };
 
-  if (isIpoArticleLoading) {
+
+  if(!isAuth)
+    {
+     return <NoLogin/>
+    }
+    if(isAuth && ( !userDetails?.subscriptions?.includes("full-access") || !userDetails?.subscriptions?.includes("monthly") || !userDetails?.subscriptions?.includes("quarterly") || !userDetails?.subscriptions?.includes("life") || !userDetails?.subscriptions?.includes("trial") || !userDetails?.subscriptions?.includes("basket")))
+    {
+      return <NoAccess/>
+    }
+  
+
+  if (isAuth && isIpoArticleLoading) {
     return (
       <>
        
