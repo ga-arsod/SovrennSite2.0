@@ -235,21 +235,15 @@ const ChildBucketCompanyContent = () => {
                   />
                 )}
                 <Box display="flex" flexWrap="wrap" alignItems="center">
-                  <StyledTypography1
-                    color={colors.navyBlue500}
-                    marginRight={1}
-                    component="span"
-                    sx={{ flexShrink: 0 }}
-                  >
-                    {part1}
-                  </StyledTypography1>
-                  <StyledTypography1
-                    color={theme.palette.primary.main}
-                    component="span"
-                    sx={{ whiteSpace: "normal" }}
-                  >
-                    {part2}
-                  </StyledTypography1>
+                <StyledTypography1
+                  color={colors.navyBlue500}
+                  marginRight={1}
+                  component="span"
+                >
+                  {part1} <span style={{color:colors.themeGreen}}>{part2}</span>
+                </StyledTypography1>
+                
+                 
                 </Box>
               </Box>
             </Grid>
@@ -278,6 +272,9 @@ const ChildBucketCompanyContent = () => {
                     displayEmpty
                     inputProps={{ "aria-label": "Without label" }}
                     IconComponent={ExpandMoreIcon}
+                    MenuProps={{
+                      disableScrollLock: true,
+                    }}
                   >
                     {filtersData[0]?.options?.map((element, index) => (
                       <StyledMenuItem
@@ -300,6 +297,9 @@ const ChildBucketCompanyContent = () => {
                     displayEmpty
                     inputProps={{ "aria-label": "Without label" }}
                     IconComponent={ExpandMoreIcon}
+                    MenuProps={{
+                      disableScrollLock: true,
+                    }}
                   >
                     {filtersData[1]?.options?.map((element, index) => (
                       <StyledMenuItem
@@ -322,6 +322,9 @@ const ChildBucketCompanyContent = () => {
                     displayEmpty
                     inputProps={{ "aria-label": "Without label" }}
                     IconComponent={ExpandMoreIcon}
+                    MenuProps={{
+                      disableScrollLock: true,
+                    }}
                   >
                     {filtersData[2]?.options?.map((element, index) => (
                       <StyledMenuItem

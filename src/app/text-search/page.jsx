@@ -90,7 +90,7 @@ const TextSearch = () => {
               marginRight={1}
               component="span"
             >
-              Search Result for:
+              {"Search Result for"+" "+":"}
             </StyledTypography1>
             <StyledTypography1 color={colors.themeGreen} component="span">
               {q}

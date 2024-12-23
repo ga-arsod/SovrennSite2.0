@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { Grid, Typography, Container, Box, Button } from "@mui/material";
 import { colors } from "../../components/Constants/colors";
-import SearchTableData from "../../components/HomeSearch/SearchTableData"
+import SearchTableData from "../../components/HomeSearch/SearchTableData";
 import CompanyCard from "../../components/Cards/CompanyCard";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useMediaQuery } from "@mui/material";
@@ -13,8 +13,9 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import Head from "next/head";
 import Spinner from "@/components/Common/Spinner";
-import NoData from "../../components/NoData/NoData"
+import NoData from "../../components/NoData/NoData";
 import Link from "next/link";
+
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -67,12 +68,15 @@ const CompanyInfo = () => {
   const theme = useTheme();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const [isLoading,setIsLoading]=useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
-
+  const handleNavigation = () => {
+    const searchQuery = encodeURIComponent(companyData.company?.company_name || "");
+    router.push(`/times?search=${searchQuery}`);
+  };
   const [companyData, setCompanyData] = useState({
     company: {},
     news: [],
@@ -105,7 +109,7 @@ const CompanyInfo = () => {
     const data = await res.json();
 
     if (res.ok) {
-      setIsLoading(false)
+      setIsLoading(false);
       setCompanyData({
         company: data.company,
         news: data.news,
@@ -116,25 +120,24 @@ const CompanyInfo = () => {
       });
     }
   };
-   
-
-  if (isLoading ) {
+console.log(companyData,"company data")
+  if (isLoading) {
     return (
       <>
         <Head>
-        <title>{companyData.company.company_name}</title>
+          <title>{companyData.company.slug}</title>
 
-        <link
-          rel="canonical"
-          href="https://www.sovrenn.com/company"
-          key="canonical"
-        />
-      </Head>
+          <link
+            rel="canonical"
+            href="https://www.sovrenn.com/company"
+            key="canonical"
+          />
+        </Head>
         <Spinner margin={15} />
       </>
     );
   }
-  console.log(companyData)
+  console.log(companyData);
   return (
     <>
       <Head>
@@ -245,41 +248,36 @@ const CompanyInfo = () => {
               </Grid>
             </Grid>
           </Grid>
-          
-            <Grid item marginTop={4} width="100%">
-              <StyledTypography2>Prime Articles</StyledTypography2>
-              {!companyData?.prime.length ?  <NoData text="No Prime article available."/>:
-              isSmallerThanMd ? (
-                <SearchPrimeCard data={companyData?.prime} />
-              ) : (
-                <SearchTableData data={companyData?.prime} />
-              )}
-            </Grid>
-          
-         
-          
 
-          
-            <Grid item width="100%" marginTop={2}>
-              <StyledTypography2>Discovery</StyledTypography2>
-              {
-                !companyData?.discovery.length ? <NoData text="No bucket available currently."/>
-                :  <CompanyCard data={companyData?.discovery} slug={companyData.company.slug}/>
-              }
-             
-             
-            
-            </Grid>
-         
-          
-          
+          <Grid item marginTop={4} width="100%">
+            <StyledTypography2>Prime Articles</StyledTypography2>
+            {!companyData?.prime.length ? (
+              <NoData text="No Prime article available." />
+            ) : isSmallerThanMd ? (
+              <SearchPrimeCard data={companyData?.prime} />
+            ) : (
+              <SearchTableData data={companyData?.prime} />
+            )}
+          </Grid>
 
-         
-            <Grid item marginTop={4} width="100%">
-              <StyledTypography2>Times</StyledTypography2>
-              {
-                !companyData?.news.length ? <NoData text="No Times article available."/>:
-                <Box
+          <Grid item width="100%" marginTop={2}>
+            <StyledTypography2>Discovery</StyledTypography2>
+            {!companyData?.discovery.length ? (
+              <NoData text="No bucket available currently." />
+            ) : (
+              <CompanyCard
+                data={companyData?.discovery}
+                slug={companyData.company.slug}
+              />
+            )}
+          </Grid>
+
+          <Grid item marginTop={4} width="100%">
+            <StyledTypography2>Times</StyledTypography2>
+            {!companyData?.news.length ? (
+              <NoData text="No Times article available." />
+            ) : (
+              <Box
                 sx={{
                   paddingX: 2,
                   marginY: 3,
@@ -304,23 +302,21 @@ const CompanyInfo = () => {
                     item
                     sx={{ display: "flex", justifyContent: "flex-end" }}
                   >
-                    <Link href={`/times/${companyData?.company?.slug}` } target="blank" style={{textDecoration:"none"}}>
                    
-                    <StyledButton
-                      variant="outlined"
-                      endIcon={<StyledArrowForwardIosIcon />}
-                      size="small"
-                    >
-                      Read
-                    </StyledButton>
-                    </Link>
+                      <StyledButton
+                        variant="outlined"
+                        endIcon={<StyledArrowForwardIosIcon />}
+                        size="small"
+                        onClick={handleNavigation}
+                      >
+                        Read
+                      </StyledButton>
+                    
                   </Grid>
                 </Grid>
               </Box>
-              }
-              
-            </Grid>
-        
+            )}
+          </Grid>
         </Grid>
       </Container>
     </>

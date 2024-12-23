@@ -37,7 +37,7 @@ const CustomCard = styled(Card)`
   padding: 16px;
   background-color: #fff;
   box-shadow: none;
-  height: 278px;
+  height: 215px;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -114,6 +114,10 @@ const StyledTypographyFileLink = styled(Typography)`
   font-weight: 600;
   line-height: 17px;
   color: ${colors.themeGreen};
+  :hover {
+    color: white;
+   
+  }
 `;
 
 const FileLinkButton = styled(Button)`
@@ -205,9 +209,9 @@ const SearchCompanyPulseAdd = ({ content }) => {
               {ele?.ai_summary}
             </StyledTypography3>
 
-            <StyledButton variant="outlined">
+            {/* <StyledButton variant="outlined">
               + Add Company to Sovrenn Pulse
-            </StyledButton>
+            </StyledButton> */}
           </CardContent>
         </CustomCard>
       ))}

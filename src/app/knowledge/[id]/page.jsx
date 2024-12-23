@@ -1,8 +1,8 @@
 import React from "react";
 
-import ArticleDoc from "../../../components/Knowledge/ArticleDoc"
+import ArticleDoc from "../../../components/Knowledge/ArticleDoc";
 import Head from "next/head";
-import RelatedPosts from "../../../components/Knowledge/RelatedPosts"
+import RelatedPosts from "../../../components/Knowledge/RelatedPosts";
 
 async function fetchArticleData(id) {
   try {
@@ -13,7 +13,6 @@ async function fetchArticleData(id) {
     const data = await res.json();
     return data;
   } catch (error) {
-   
     return null;
   }
 }
@@ -21,13 +20,12 @@ async function fetchArticleData(id) {
 async function fetchRelatedPosts(categorySlug, articleSlug) {
   try {
     const res = await fetch(
-      `https://cms.sovrenn.com/api/posts?filters[category][slug][$eq][0]=${categorySlug}&filters[slug][$ne][1]=${articleSlug}&sort=createdAt:desc&pagination[limit]=5`,
+      `https://cms.sovrenn.com/api/posts?filters[category][slug][$eq][0]=${categorySlug}&filters[slug][$ne][1]=${articleSlug}&sort=createdAt:desc&pagination[limit]=5&populate=category`,
       { cache: "no-store" }
     );
     const data = await res.json();
     return data;
   } catch (error) {
-   
     return null;
   }
 }
@@ -74,7 +72,7 @@ export default async function KnowledgeArticlePage({ params }) {
   const content = await insertBannerImage(articleData.data.attributes.content);
 
   return (
-   <>
+    <>
       <Head>
         <title>{articleData.data.attributes.title}</title>
         <link
@@ -88,12 +86,11 @@ export default async function KnowledgeArticlePage({ params }) {
         data={articleData.data.attributes}
         relatedPosts={relatedPosts?.data || []}
       />
-      {
-        relatedPosts.data.length ? <RelatedPosts posts={relatedPosts?.data || []}/> : <></>
-      }
-      
-      
-      
-   </>
+      {relatedPosts.data.length ? (
+        <RelatedPosts posts={relatedPosts?.data || []} />
+      ) : (
+        <></>
+      )}
+    </>
   );
 }

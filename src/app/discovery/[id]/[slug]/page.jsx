@@ -28,6 +28,8 @@ import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlin
 import Disclaimer from "../../../../components/Common/Disclaimer";
 import { primeArticleDisclaimer } from "@/utils/Data";
 import Snackbar from "../../../../components/Snackbar/SnackBar";
+import NoLogin from "../../../../components/Auth/NoLogin";
+import NoAccess from "../../../../components/Auth/NoAccess";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -124,6 +126,7 @@ const DiscoveryArticle = () => {
   const { comments, isCommentsDataLoading } = useSelector(
     (store) => store.comments
   );
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
 
   const {
     content,
@@ -143,12 +146,19 @@ const DiscoveryArticle = () => {
   const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false);
 
   useEffect(() => {
-    if(slug)
-    {
+    if (
+      slug &&
+      isAuth &&
+      (userDetails?.subscriptions?.includes("full-access") ||
+        userDetails?.subscriptions?.includes("monthly") ||
+        userDetails?.subscriptions?.includes("quarterly") ||
+        userDetails?.subscriptions?.includes("life") ||
+        userDetails?.subscriptions?.includes("trial") ||
+        userDetails?.subscriptions?.includes("basket"))
+    ) {
       dispatch(discoveryArticleApi(slug));
     }
-    if(company_id!="")
-    {
+    if (company_id != "") {
       dispatch(
         otherBucketsCompanyPresentApi({
           company_id: company_id,
@@ -156,17 +166,15 @@ const DiscoveryArticle = () => {
         })
       );
     }
-   
-    
-  }, [dispatch, slug,company_id]);
+  }, [dispatch, slug, company_id]);
 
   useEffect(() => {
-    if (company_id!="") {
+    if (company_id != "") {
       dispatch(isBookmarkedApi({ company_id }));
       setIsInWatchlist(isBookmarked);
       dispatch(getCommentsApi({ company_id, component: "discovery" }));
     }
-  }, [dispatch,company_id]);
+  }, [dispatch, company_id]);
 
   useEffect(() => {
     const checkScrollTop = () => {
@@ -191,7 +199,11 @@ const DiscoveryArticle = () => {
     setIsInWatchlist((prev) => !prev);
   };
 
-  if (isArticleDataLoading) {
+  if (!isAuth) {
+    return <NoLogin />;
+  }
+
+  if (isAuth && isArticleDataLoading) {
     return (
       <>
         <Head>
@@ -207,307 +219,327 @@ const DiscoveryArticle = () => {
     );
   }
 
-  return (
-    <>
-      <Head>
-        <title>{title}</title>
-        <link
-          rel="canonical"
-          href={`https://www.sovrenn.com/discovery/${id}/${slug}`}
-          key="canonical"
-        />
-      </Head>
-      <article>
-        <Box sx={{ maxWidth: 915, margin: "84px auto 0px auto", padding: 2 }}>
-          <Snackbar />
-          <StyledTypography1>{title}</StyledTypography1>
+  if (
+    isAuth &&
+    (userDetails?.subscriptions?.includes("full-access") ||
+      userDetails?.subscriptions?.includes("monthly") ||
+      userDetails?.subscriptions?.includes("quarterly") ||
+      userDetails?.subscriptions?.includes("life") ||
+      userDetails?.subscriptions?.includes("trial") ||
+      userDetails?.subscriptions?.includes("basket"))
+  ) {
+    return (
+      <>
+        <Head>
+          <title>{title}</title>
+          <link
+            rel="canonical"
+            href={`https://www.sovrenn.com/discovery/${id}/${slug}`}
+            key="canonical"
+          />
+        </Head>
+        <article>
+          <Box sx={{ maxWidth: 915, margin: "84px auto 0px auto", padding: 2 }}>
+            <Snackbar />
+            <StyledTypography1>{title}</StyledTypography1>
 
-          <CustomDivider1 sx={{ marginTop: 3, marginBottom: 1 }} />
-          <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <HoverBox
-              sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-              onClick={() => {
-                setIsCommentsModalOpen(true);
-              }}
-            >
-              <ChatBubbleOutlineOutlinedIcon sx={{ marginRight: 1 }} />
-              <StyledTypography2>{`${
-                comments?.totalComments === "0" ? "No" : comments?.totalComments
-              } Comments`}</StyledTypography2>
-            </HoverBox>
-            <WatchlistBox
-              sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-              isInWatchlist={isInWatchlist}
-              onClick={() => {
-                toggleWatchlist();
+            <CustomDivider1 sx={{ marginTop: 3, marginBottom: 1 }} />
+            <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <HoverBox
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  setIsCommentsModalOpen(true);
+                }}
+              >
+                <ChatBubbleOutlineOutlinedIcon sx={{ marginRight: 1 }} />
+                <StyledTypography2>{`${
+                  comments?.totalComments === "0"
+                    ? "No"
+                    : comments?.totalComments
+                } Comments`}</StyledTypography2>
+              </HoverBox>
+              <WatchlistBox
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+                isInWatchlist={isInWatchlist}
+                onClick={() => {
+                  toggleWatchlist();
 
-                isInWatchlist
-                  ? dispatch(removeFromWatchlistApi(company_id))
-                  : dispatch(
-                      addToWatchlistApi({
-                        company_id: company_id,
-                        uptrend_potential: 0,
-                        expected_price_after_1year: 0,
-                      })
-                    );
-              }}
-            >
-              <BookmarkBorderOutlinedIcon sx={{ marginRight: 1 }} />
-              <StyledTypography2>
-                {isInWatchlist ? "Remove from watchlist" : "Add to watchlist"}
-              </StyledTypography2>
-            </WatchlistBox>
+                  isInWatchlist
+                    ? dispatch(removeFromWatchlistApi(company_id))
+                    : dispatch(
+                        addToWatchlistApi({
+                          company_id: company_id,
+                          uptrend_potential: 0,
+                          expected_price_after_1year: 0,
+                        })
+                      );
+                }}
+              >
+                <BookmarkBorderOutlinedIcon sx={{ marginRight: 1 }} />
+                <StyledTypography2>
+                  {isInWatchlist ? "Remove from watchlist" : "Add to watchlist"}
+                </StyledTypography2>
+              </WatchlistBox>
+            </Box>
+            <CustomDivider1 sx={{ marginTop: 1 }} />
+            <Box sx={{ mb: 2, mt: 3 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  mb: 2,
+                  flexWrap: "wrap",
+                }}
+              >
+                <StyledTypography2
+                  color={colors.greyBlue500}
+                  sx={{ marginRight: 1, whiteSpace: "nowrap" }}
+                >
+                  Also present in buckets:
+                </StyledTypography2>
+                {otherBucketsCompanyPresent?.map((item, index) => {
+                  return (
+                    <>
+                      <Link href={`/discovery/${item.slug}`}>
+                        <StyledChip
+                          label={item.title}
+                          variant="outlined"
+                          key={index}
+                        />
+                      </Link>
+                    </>
+                  );
+                })}
+              </Box>
+              <CustomDivider2 />
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "rows" },
+                }}
+              >
+                <Grid
+                  container
+                  rowGap={1}
+                  width="60%"
+                  marginTop={2}
+                  flexDirection={{ xs: "column", sm: "row" }}
+                >
+                  <Grid item xs={6}>
+                    <StyledTypography3
+                      color={colors.navyBlue500}
+                      sx={{ fontWeight: "600" }}
+                      component="span"
+                    >
+                      {`Prev Close: `}
+                    </StyledTypography3>
+                    <StyledTypography3
+                      color={colors.greyBlue500}
+                      sx={{ fontWeight: "400" }}
+                      component="span"
+                    >
+                      {share_price}
+                    </StyledTypography3>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <StyledTypography3
+                      color={colors.navyBlue500}
+                      sx={{ fontWeight: "600" }}
+                      component="span"
+                    >
+                      {`Sector: `}
+                    </StyledTypography3>
+                    <StyledTypography3
+                      color={colors.greyBlue500}
+                      sx={{ fontWeight: "400" }}
+                      component="span"
+                    >
+                      {sector}
+                    </StyledTypography3>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  rowGap={1}
+                  marginTop={1}
+                  width="60%"
+                  flexDirection={{ xs: "column", sm: "row" }}
+                >
+                  <Grid item xs={6}>
+                    <StyledTypography3
+                      color={colors.navyBlue500}
+                      sx={{ fontWeight: "600" }}
+                      component="span"
+                    >
+                      {`Market Cap: `}
+                    </StyledTypography3>
+                    <StyledTypography3
+                      color={colors.greyBlue500}
+                      sx={{ fontWeight: "400" }}
+                      component="span"
+                    >
+                      {market_cap}
+                    </StyledTypography3>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <StyledTypography3
+                      color={colors.navyBlue500}
+                      sx={{ fontWeight: "600" }}
+                      component="span"
+                    >
+                      {`TTM PE: `}
+                    </StyledTypography3>
+                    <StyledTypography3
+                      color={colors.greyBlue500}
+                      sx={{ fontWeight: "400" }}
+                      component="span"
+                    >
+                      {ttm_pe}
+                    </StyledTypography3>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  rowGap={1}
+                  flexDirection={{ xs: "column", sm: "row" }}
+                  marginTop={1}
+                  width="60%"
+                >
+                  <Grid item xs={6}>
+                    <StyledTypography3
+                      color={colors.navyBlue500}
+                      sx={{ fontWeight: "600" }}
+                      component="span"
+                    >
+                      {`Sectoral PE Range: `}
+                    </StyledTypography3>
+                    <StyledTypography3
+                      color={colors.greyBlue500}
+                      sx={{ fontWeight: "400" }}
+                      component="span"
+                    >
+                      {sectoral_pe_range}
+                    </StyledTypography3>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <StyledTypography3
+                      color={colors.navyBlue500}
+                      sx={{ fontWeight: "600" }}
+                      component="span"
+                    >
+                      {`PE Remark: `}
+                    </StyledTypography3>
+                    <StyledTypography3
+                      color={colors.greyBlue500}
+                      sx={{ fontWeight: "400" }}
+                      component="span"
+                    >
+                      {pe_remark}
+                    </StyledTypography3>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+            <CustomDivider2 />
+
+            <div id={styles.MainContainer}>{convertToHtml(content)}</div>
           </Box>
-          <CustomDivider1 sx={{ marginTop: 1 }} />
-          <Box sx={{ mb: 2, mt: 3 }}>
+        </article>
+
+        <Box width="915px" marginX="auto" paddingX={1} marginBottom={3}>
+          <Divider sx={{ marginY: 1 }} />
+          <Grid container justifyContent="flex-start">
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
-                gap: 1,
-                mb: 2,
-                flexWrap: "wrap",
+                justifyContent: "space-between",
+                width: "80%",
+                gap: "12px",
+                flexDirection: { xs: "column", sm: "row" },
               }}
             >
               <StyledTypography2
-                color={colors.greyBlue500}
-                sx={{ marginRight: 1, whiteSpace: "nowrap" }}
+                color="#8198AA"
+                sx={{ cursor: "pointer" }}
+                marginBottom={{ xs: 0.5, sm: 0 }}
               >
-                Also present in buckets:
+                Read More about this company
               </StyledTypography2>
-              {otherBucketsCompanyPresent?.map((item, index) => {
-                return (
-                  <>
-                    <Link href={`/discovery/${item.slug}`}>
-                      <StyledChip
-                        label={item.title}
-                        variant="outlined"
-                        key={index}
-                      />
-                    </Link>
-                  </>
-                );
-              })}
-            </Box>
-            <CustomDivider2 />
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: { xs: "column", sm: "rows" },
-              }}
-            >
-              <Grid
-                container
-                rowGap={1}
-                width="60%"
-                marginTop={2}
-                flexDirection={{ xs: "column", sm: "row" }}
-              >
-                <Grid item xs={6}>
-                  <StyledTypography3
-                    color={colors.navyBlue500}
-                    sx={{ fontWeight: "600" }}
-                    component="span"
-                  >
-                    {`Prev Close: `}
-                  </StyledTypography3>
-                  <StyledTypography3
-                    color={colors.greyBlue500}
-                    sx={{ fontWeight: "400" }}
-                    component="span"
-                  >
-                    {share_price}
-                  </StyledTypography3>
-                </Grid>
-                <Grid item xs={6}>
-                  <StyledTypography3
-                    color={colors.navyBlue500}
-                    sx={{ fontWeight: "600" }}
-                    component="span"
-                  >
-                    {`Sector: `}
-                  </StyledTypography3>
-                  <StyledTypography3
-                    color={colors.greyBlue500}
-                    sx={{ fontWeight: "400" }}
-                    component="span"
-                  >
-                    {sector}
-                  </StyledTypography3>
-                </Grid>
-              </Grid>
-              <Grid
-                container
-                rowGap={1}
-                marginTop={1}
-                width="60%"
-                flexDirection={{ xs: "column", sm: "row" }}
-              >
-                <Grid item xs={6}>
-                  <StyledTypography3
-                    color={colors.navyBlue500}
-                    sx={{ fontWeight: "600" }}
-                    component="span"
-                  >
-                    {`Market Cap: `}
-                  </StyledTypography3>
-                  <StyledTypography3
-                    color={colors.greyBlue500}
-                    sx={{ fontWeight: "400" }}
-                    component="span"
-                  >
-                    {market_cap}
-                  </StyledTypography3>
-                </Grid>
-                <Grid item xs={6}>
-                  <StyledTypography3
-                    color={colors.navyBlue500}
-                    sx={{ fontWeight: "600" }}
-                    component="span"
-                  >
-                    {`TTM PE: `}
-                  </StyledTypography3>
-                  <StyledTypography3
-                    color={colors.greyBlue500}
-                    sx={{ fontWeight: "400" }}
-                    component="span"
-                  >
-                    {ttm_pe}
-                  </StyledTypography3>
-                </Grid>
-              </Grid>
-              <Grid
-                container
-                rowGap={1}
-                flexDirection={{ xs: "column", sm: "row" }}
-                marginTop={1}
-                width="60%"
-              >
-                <Grid item xs={6}>
-                  <StyledTypography3
-                    color={colors.navyBlue500}
-                    sx={{ fontWeight: "600" }}
-                    component="span"
-                  >
-                    {`Sectoral PE Range: `}
-                  </StyledTypography3>
-                  <StyledTypography3
-                    color={colors.greyBlue500}
-                    sx={{ fontWeight: "400" }}
-                    component="span"
-                  >
-                    {sectoral_pe_range}
-                  </StyledTypography3>
-                </Grid>
-                <Grid item xs={6}>
-                  <StyledTypography3
-                    color={colors.navyBlue500}
-                    sx={{ fontWeight: "600" }}
-                    component="span"
-                  >
-                    {`PE Remark: `}
-                  </StyledTypography3>
-                  <StyledTypography3
-                    color={colors.greyBlue500}
-                    sx={{ fontWeight: "400" }}
-                    component="span"
-                  >
-                    {pe_remark}
-                  </StyledTypography3>
-                </Grid>
-              </Grid>
-            </Box>
-          </Box>
-          <CustomDivider2 />
 
-          <div id={styles.MainContainer}>{convertToHtml(content)}</div>
-        </Box>
-      </article>
-
-      <Box width="915px" marginX="auto" paddingX={1} marginBottom={3}>
-        <Divider sx={{ marginY: 1 }} />
-        <Grid container justifyContent="flex-start">
+              <StyledLink href="#">
+                <StyledTypography3
+                  color={colors.themeGreen}
+                  sx={{ fontWeight: "400" }}
+                >
+                  View in Prime
+                </StyledTypography3>
+              </StyledLink>
+              <StyledLink href="#">
+                <StyledTypography3
+                  color={colors.themeGreen}
+                  sx={{ fontWeight: "400" }}
+                >
+                  View in Times
+                </StyledTypography3>
+              </StyledLink>
+            </Box>
+          </Grid>
+          <Divider sx={{ marginY: 1 }} />
           <Box
             sx={{
+              position: "fixed",
+              bottom: 50,
+              right: 16,
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              backgroundColor: "#CED6DC",
               display: "flex",
-              justifyContent: "space-between",
-              width: "80%",
-              gap: "12px",
-              flexDirection: { xs: "column", sm: "row" },
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: 3,
+              cursor: "pointer",
+              display: showScroll ? "flex" : "none",
             }}
+            onClick={scrollTop}
           >
-            <StyledTypography2
-              color="#8198AA"
-              sx={{ cursor: "pointer" }}
-              marginBottom={{ xs: 0.5, sm: 0 }}
-            >
-              Read More about this company
-            </StyledTypography2>
-           
-            <StyledLink href="#">
-              <StyledTypography3
-                color={colors.themeGreen}
-                sx={{ fontWeight: "400" }}
-              >
-                View in Prime
-              </StyledTypography3>
-            </StyledLink>
-            <StyledLink href="#">
-              <StyledTypography3
-                color={colors.themeGreen}
-                sx={{ fontWeight: "400" }}
-              >
-                View in Times
-              </StyledTypography3>
-            </StyledLink>
+            <KeyboardArrowUpIcon />
           </Box>
-        </Grid>
-        <Divider sx={{ marginY: 1 }} />
-        <Box
-          sx={{
-            position: "fixed",
-            bottom: 50,
-            right: 16,
-            width: 48,
-            height: 48,
-            borderRadius: "50%",
-            backgroundColor: "#CED6DC",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: 3,
-            cursor: "pointer",
-            display: showScroll ? "flex" : "none",
-          }}
-          onClick={scrollTop}
-        >
-          <KeyboardArrowUpIcon />
         </Box>
-      </Box>
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Container>
-          <Grid container justifyContent="center">
-            <Grid
-              item
-              marginTop={0}
-              marginBottom={0}
-              sx={{ display: "flex", justifyContent: "center" }}
-              width="910px"
-            >
-              <Disclaimer margin="4" text={primeArticleDisclaimer} />
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Container>
+            <Grid container justifyContent="center">
+              <Grid
+                item
+                marginTop={0}
+                marginBottom={0}
+                sx={{ display: "flex", justifyContent: "center" }}
+                width="910px"
+              >
+                <Disclaimer margin="4" text={primeArticleDisclaimer} />
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
-      </Box>
-      <Comments
-        isCommentsModalOpen={isCommentsModalOpen}
-        setIsCommentsModalOpen={setIsCommentsModalOpen}
-        comments={comments}
-        company_id={company_id}
-        component="discovery"
-      />
-    </>
-  );
+          </Container>
+        </Box>
+        <Comments
+          isCommentsModalOpen={isCommentsModalOpen}
+          setIsCommentsModalOpen={setIsCommentsModalOpen}
+          comments={comments}
+          company_id={company_id}
+          component="discovery"
+        />
+      </>
+    );
+  } else return <NoAccess />;
 };
 
 export default DiscoveryArticle;

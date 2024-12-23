@@ -20,6 +20,8 @@ import Snackbar from "../../components/Snackbar/SnackBar";
 import { useDispatch } from "react-redux";
 import { subscriptionDetailsApi } from "../Redux/Slices/authSlice";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import NoLogin from "../../components/Auth/NoLogin";
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)`
   background-color: #f5f5f5;
@@ -61,6 +63,7 @@ const Profile = () => {
   const router = useRouter();
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { isAuth } = useSelector((store) => store.auth);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleAlignment = (event, newAlignment) => {
@@ -72,14 +75,12 @@ const Profile = () => {
     dispatch(subscriptionDetailsApi());
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+ 
 
-    if (!token) {
-      router.push("/login");
+  if(!isAuth)
+    {
+     return <NoLogin/>
     }
-  }, [router]);
-
   return (
     <>
       <Container>

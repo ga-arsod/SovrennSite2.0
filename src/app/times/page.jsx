@@ -15,7 +15,7 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import TimesFilter from "../../components/Common/TimesFilter";
 import TimesPdfFilter from "../../components/Common/TimesPdfFilter";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-
+import { useSearchParams } from "next/navigation";
 import ArticleBanner from "../../components/Times/ArticleBanner";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import moment from "moment";
@@ -39,6 +39,7 @@ import Head from "next/head";
 import Spinner from "../../components/Common/Spinner";
 import Footer from "@/components/Home/Footer";
 import Disclaimer from "@/components/Common/Disclaimer";
+import Link from "next/link";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -181,10 +182,15 @@ const Times = () => {
   useEffect(() => {
     dispatch(timesPdfFilterApi());
     dispatch(timesFilterApi());
+    if(searchQuery)
+      dispatch(timesArticleApi({ page: 1, data:{company_name:[searchQuery]} }));
+    else
     dispatch(timesArticleApi({ page: page1, data: {} }));
   }, []);
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const { isAuth, userDetails } = useSelector((store) => store.auth);
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("search");
 
   const groupArticlesByDate = (articles) => {
     const grouped = articles.reduce((acc, item) => {
@@ -230,7 +236,7 @@ const Times = () => {
       window.removeEventListener("contextmenu", handleContextMenu);
     };
   }, []);
-  
+ 
 
   if (isTimesArticleLoading) {
     return (
@@ -262,6 +268,26 @@ const Times = () => {
 
   return (
     <>
+      <Head>
+          <title>Be equipped with Sovrenn times Daily Bulletin</title>
+          <meta
+            name="description"
+            content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
+          />
+          <meta
+            property="og:title"
+            content="Be equipped with Sovrenn times Daily Bulletin"
+          />
+          <meta
+            property="og:description"
+            content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
+          />
+          <link
+            rel="canonical"
+            href="https://www.sovrenn.com/times"
+            key="canonical"
+          />
+        </Head>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <Grid container marginTop="60px" flexDirection="column">
         {!isSmallerThanMd ? (
@@ -294,9 +320,13 @@ const Times = () => {
                   read daily Sovrenn Times articles, you need to buy a plan.
                 </StyledTypography1>
                 {isAuth ? (
+                  <Link href="/pricing">
                   <StyledButton2 variant="contained">{`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}</StyledButton2>
+                  </Link>
                 ) : (
-                  <StyledButton2 variant="contained">{`Buy Full Access @ ₹5000/yr`}</StyledButton2>
+                  <Link href="/pricing">
+                  <StyledButton2 variant="contained">{`Buy Full Access @ ₹4500/yr`}</StyledButton2>
+                  </Link>
                 )}
               </Box>
             </Grid>

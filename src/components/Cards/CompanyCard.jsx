@@ -114,7 +114,7 @@ const CompanyCard = ({data,slug}) => {
       <GridContainer>
         {data?.map((ele, index) => (
           <StyledGrid key={index}>
-              <Link target="_blank" href={`/discovery/${ele.slug}/${slug}`} style={{textDecoration:'none'}}>
+              <Link target="_blank" href={`/discovery/${ele.slug}`} style={{textDecoration:'none'}}>
             <Box className="content">
               <Grid container>
                 <Grid item paddingY={2} paddingX="20px" width="100%">
