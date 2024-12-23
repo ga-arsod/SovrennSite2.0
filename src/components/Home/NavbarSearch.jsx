@@ -9,7 +9,7 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
   "& .MuiOutlinedInput-root": {
     padding: "4px 13px", 
     "@media (max-width: 639px)": {
-      padding: "6px 10px", 
+      padding: "4px 10px", 
     },
     "& .MuiInputBase-input": {
       padding: "10px 8px", 
@@ -93,7 +93,7 @@ const NavbarSearch = ({ handleSearchClick }) => {
           </li>
         )}
         filterOptions={() => searchResults}
-        sx={{ width: { xs: "95vw", sm: "350px" },marginTop:3, }}
+        sx={{ width: { xs: "100vw", sm: "350px" },marginTop:{xs:0,sm:3},paddingLeft:0 }}
         onChange={handleOptionChange}
 
         renderInput={(params) => (

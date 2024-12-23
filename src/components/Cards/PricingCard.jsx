@@ -134,6 +134,11 @@ const PricingCard = ({ planDetails }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(!isAuth)
+      {
+        setIsOpen(true)
+        return;
+      }
 
     const result = await dispatch(generateHashApi(paymentData));
 
@@ -406,21 +411,23 @@ const PricingCard = ({ planDetails }) => {
                             setIsOpen(true)
                             return;
                           }
-                          const data = {
-                            txnid: Date.now(),
-                            amount:plan.offerings[planIndex].offer_price,
-                            productinfo: plan.type,
-                            firstname: userDetails.first_name,
-                            email: userDetails.email,
-                            udf1: userDetails._id,
-                            udf2:plan.offerings[planIndex].validity_in_months
+                          else{
+                            const data = {
+                              txnid: Date.now(),
+                              amount:plan.offerings[planIndex].offer_price,
+                              productinfo: plan.type,
+                              firstname: userDetails.first_name,
+                              email: userDetails.email,
+                              udf1: userDetails._id,
+                              udf2:plan.offerings[planIndex].validity_in_months
+                            }
+                           
+                            dispatch(setPaymentData({
+                              ...data,
+                              phone: userDetails.phone_number,
+                              state: userDetails.state,
+                            }))
                           }
-                          console.log(data,"data")
-                          dispatch(setPaymentData({
-                            ...data,
-                            phone: userDetails.phone_number,
-                            state: userDetails.state,
-                          }))
                         }}
                       >
                         Buy Now

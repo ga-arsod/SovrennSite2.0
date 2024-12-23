@@ -257,7 +257,7 @@ const Navbar = ({ session }) => {
             margin: "0 auto",
           }}
         >
-          <Toolbar>
+          <Toolbar sx={{paddingX:0}}>
             <Grid
               container
               direction="row"
@@ -507,7 +507,7 @@ const Navbar = ({ session }) => {
                   </Grid>
 
                   <StyledGrid1>
-                    <Grid item>
+                    <Grid item >
                       <NavbarSearch handleSearchClick={handleSearchClick} />
                     </Grid>
 
@@ -528,7 +528,7 @@ const Navbar = ({ session }) => {
                     )}
                   </StyledGrid1>
 
-                  <Grid item>
+                  <Grid item >
                     {searchOpen && isSmallerThanMd && (
                       <NavbarSearch handleSearchClick={handleSearchClick} />
                     )}

@@ -21,6 +21,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { sovreenOfferArray } from "@/utils/Data";
 import { useSelector } from "react-redux";
+import Link from "next/link";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -351,9 +352,12 @@ const Offer = () => {
                                   </Grid> */}
                                   {
                                     !isAuth || userDetails?.subscriptions.length==0 ? <Grid item>
+                                      <Link href="pricing">
+                                      
                                     <StyledButton2 variant="contained">
                                     {`Buy Full Access @ ₹4500/yr`}
                                     </StyledButton2>
+                                    </Link>
                                   </Grid>:
                                     (userDetails?.subscriptions?.includes("full-access") ||
                                     userDetails?.subscriptions?.includes("life")) && isAuth ? "" :

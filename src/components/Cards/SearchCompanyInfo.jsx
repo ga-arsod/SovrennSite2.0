@@ -116,13 +116,14 @@ const SearchCompanyInfo = ({ content, textSearch }) => {
       return baseUrl;
     }
   };
+  console.log(content,"content")
   return (
     <>
       <Box marginTop={2}>
         <GridContainer>
-          {content?.map((ele, index) => (
+          {content.map((ele, index) => (
             <StyledGrid key={index}>
-              <Link target="_blank" href={getLinkHref(ele)} style={{textDecoration:"none"}}>
+               <Link target="_blank" href={`/discovery/data/${ele.data.params.slug}`} style={{textDecoration:"none"}}>
                 <Box className="content">
                   <Grid
                     container

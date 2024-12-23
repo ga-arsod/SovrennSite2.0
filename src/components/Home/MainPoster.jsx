@@ -9,10 +9,10 @@ import { useSelector } from "react-redux";
 import Link from "next/link";
 import { androidAppLink } from "@/utils/Data";
 import { useDispatch } from "react-redux";
-
+import { useRouter } from "next/navigation";
 import { colors } from "../Constants/colors";
 import { subscriptionDetailsApi } from "@/app/Redux/Slices/authSlice";
-import moment from 'moment'
+import moment from "moment";
 
 const headingsArray = [
   {
@@ -65,7 +65,7 @@ const StyledButton2 = styled(Button)`
   background-color: ${colors.themeGreen};
   text-transform: none;
 
-   width: 350px;
+  width: 350px;
   :hover {
     background-color: ${colors.themeButtonHover};
   }
@@ -186,11 +186,10 @@ const SlideInBottomBox = styled(Box)`
 const MainPoster = () => {
   const theme = useTheme();
   const [hovered, setHovered] = useState(false);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
+  const router = useRouter();
   const { userDetails, isAuth } = useSelector((store) => store.auth);
-  const {subscriptionDetails} = useSelector(
-    (store) => store.auth
-  );
+  const { subscriptionDetails } = useSelector((store) => store.auth);
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -215,11 +214,9 @@ const MainPoster = () => {
 
     return () => clearTimeout(timer);
   }, []);
-  useEffect(()=>{
-    if(isAuth)
-dispatch(subscriptionDetailsApi())
-
-  },[])
+  useEffect(() => {
+    if (isAuth) dispatch(subscriptionDetailsApi());
+  }, []);
   return (
     <Box
       width="100vw"
@@ -328,33 +325,46 @@ dispatch(subscriptionDetailsApi())
               >
                 {isAuth && userDetails?.subscriptions?.includes("trial") ? (
                   <>
-                  <Grid item>
-                    <StyledButton3 variant="contained">
-                      {`Your Trial Expires on ${moment(subscriptionDetails?.expiry_date).format("Do MMM YY")}`}
-                       
-                    </StyledButton3>
-                  </Grid>
-                  <Grid item>
-                  <StyledButton2 variant="contained">
-                  {`Upgrade to Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
-                  </StyledButton2>
-                </Grid>
-                </>
-                ): userDetails?.subscriptions.length==0 ? <StyledButton2 variant="contained">
-                {`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
-              </StyledButton2> :<></> }
+                    <Grid item>
+                      <StyledButton3 variant="contained">
+                        {`Your Trial Expires on ${moment(
+                          subscriptionDetails?.expiry_date
+                        ).format("Do MMM YY")}`}
+                      </StyledButton3>
+                    </Grid>
+                    <Grid item>
+                      <Link href="pricing">
+                        <StyledButton2 variant="contained">
+                          {`Upgrade to Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
+                        </StyledButton2>
+                      </Link>
+                    </Grid>
+                  </>
+                ) : isAuth && !userDetails?.subscriptions.length ? (
+                  <Link href="pricing">
+                    <StyledButton2 variant="contained">
+                      {`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
+                    </StyledButton2>
+                  </Link>
+                ) : (
+                  <></>
+                )}
 
                 {!isAuth ? (
                   <Grid item>
-                    <StyledButton2 variant="contained">
-                      {`Buy Full Access @ ₹4500/yr`}
-                    </StyledButton2>
+                    <Link href="pricing">
+                      <StyledButton2 variant="contained">
+                        {`Buy Full Access @ ₹4500/yr`}
+                      </StyledButton2>
+                    </Link>
                   </Grid>
                 ) : isAuth &&
                   (userDetails?.subscriptions?.includes("full-access") ||
                     userDetails?.subscriptions?.includes("life")) ? (
                   ""
-                ) :""}
+                ) : (
+                  ""
+                )}
               </Grid>
             </Grid>
           </SlideInLeftBox>

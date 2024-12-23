@@ -130,7 +130,7 @@ const Search = () => {
             ""
           )}
         </Grid>
-        <Grid item paddingTop={4}>
+        <Grid item >
           <CustomDivider sx={{ mt: 4, mb: 4 }} />
         </Grid>
         <Grid item>

@@ -80,9 +80,9 @@ const NoLogin = () => {
           <StyledTypography1 color={colors.navyBlue600}>
             Looks like you’re not logged in
           </StyledTypography1>
-          <StyledTypography2 marginTop={1.5} color={colors.navyBlue600}>
+          {/* <StyledTypography2 marginTop={1.5} color={colors.navyBlue600}>
             Login now to read the article
-          </StyledTypography2>
+          </StyledTypography2> */}
         </Grid>
         <Grid item sx={{display:'flex',gap:2}}>
           <Link href="/login">

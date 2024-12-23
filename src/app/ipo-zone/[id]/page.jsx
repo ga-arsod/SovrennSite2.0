@@ -85,10 +85,7 @@ const IpoArticles = () => {
     {
      return <NoLogin/>
     }
-    if(isAuth && ( !userDetails?.subscriptions?.includes("full-access") || !userDetails?.subscriptions?.includes("monthly") || !userDetails?.subscriptions?.includes("quarterly") || !userDetails?.subscriptions?.includes("life") || !userDetails?.subscriptions?.includes("trial") || !userDetails?.subscriptions?.includes("basket")))
-    {
-      return <NoAccess/>
-    }
+   
   
 
   if (isAuth && isIpoArticleLoading) {
@@ -100,47 +97,54 @@ const IpoArticles = () => {
     );
   }
 
-  return (
-    <>
-      
-      <article>
-        <Box sx={{ maxWidth: 990, margin: "84px auto 0px auto", padding: 2 }}>
-          <StyledTypography1>{ipoArticle?.title}</StyledTypography1>
-
-          {ipoArticle ? (
-            <div id={styles.MainContainer}>
-              {convertToHtml(ipoArticle?.content)}
-            </div>
-          ) : (
-            <></>
-          )}
-
-          <Box
-            sx={{
-              position: "fixed",
-              bottom: 50,
-              right: 16,
-              width: 48,
-              height: 48,
-              borderRadius: "50%",
-              backgroundColor: "#CED6DC",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: 3,
-              cursor: "pointer",
-              display: showScroll ? "flex" : "none",
-            }}
-            onClick={scrollTop}
-          >
-            <KeyboardArrowUpIcon />
+  if(isAuth && ( userDetails?.subscriptions?.includes("full-access") || userDetails?.subscriptions?.includes("monthly") || userDetails?.subscriptions?.includes("quarterly") || userDetails?.subscriptions?.includes("life") || userDetails?.subscriptions?.includes("trial") ))
+  {
+    return (
+      <>
+        
+        <article>
+          <Box sx={{ maxWidth: 990, margin: "84px auto 0px auto", padding: 2 }}>
+            <StyledTypography1>{ipoArticle?.title}</StyledTypography1>
+  
+            {ipoArticle ? (
+              <div id={styles.MainContainer}>
+                {convertToHtml(ipoArticle?.content)}
+              </div>
+            ) : (
+              <></>
+            )}
+  
+            <Box
+              sx={{
+                position: "fixed",
+                bottom: 50,
+                right: 16,
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                backgroundColor: "#CED6DC",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: 3,
+                cursor: "pointer",
+                display: showScroll ? "flex" : "none",
+              }}
+              onClick={scrollTop}
+            >
+              <KeyboardArrowUpIcon />
+            </Box>
+            <Disclaimer margin={3} text={primeArticleDisclaimer}  />
           </Box>
-          <Disclaimer margin={3} text={primeArticleDisclaimer}  />
-        </Box>
-      </article>
-      <Footer/>
-    </>
-  );
+        </article>
+        <Footer/>
+      </>
+    )
+
+  }
+  else 
+  return <NoAccess/>
+ 
 };
 
 
