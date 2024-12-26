@@ -47,7 +47,7 @@ const StyledToggleButton = styled(ToggleButton)`
 `;
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
-  font-size: 48px;
+  font-size: 44px;
   line-height: 56px;
   letter-spacing: -0.04em;
   @media (max-width: 639px) {

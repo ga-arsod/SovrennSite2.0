@@ -121,7 +121,7 @@ const FoundersInfo = () => {
             </Typography>
           </Grid>
 
-          <Grid item>
+          <Grid item >
             <StyledTypography2
               textAlign="center"
               component="div"

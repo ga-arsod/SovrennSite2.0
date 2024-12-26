@@ -145,6 +145,11 @@ const timesSlice = createSlice({
     });
      //times pdf list api
      builder.addCase(timesPdfListApi.pending, (state, action) => {
+     
+      if (Object.keys(action.meta.arg).length !== 0) {
+        state.isPdfListLoading = false;
+      }
+      else
       state.isPdfListLoading = true;
      
     });

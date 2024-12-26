@@ -1,17 +1,25 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Grid, Typography, Box, Button, IconButton, Container } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  Box,
+  Button,
+  IconButton,
+  Container,
+} from "@mui/material";
 import styled from "@emotion/styled";
 
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { colors } from "../Constants/colors";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Link from "next/link";
-import moment from 'moment';
+import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import Spinner from "../../components/Common/Spinner"
+import Spinner from "../../components/Common/Spinner";
+import Footer from "../Home/Footer";
 
 // Styled components
 const StyledTypographyDate = styled(Typography)`
@@ -73,7 +81,7 @@ const CustomIconButton = styled(IconButton)`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #B0B7BC;
+  border: 1px solid #b0b7bc;
   border-radius: 50%;
   background-color: ${colors.white};
   transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
@@ -90,18 +98,17 @@ const StyledCard = styled(Box)`
   padding: 16px;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
-  height: 140px; 
+  height: 140px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-   @media (max-width: 639px) {
-     height: 160px; 
-   
+  @media (max-width: 639px) {
+    height: 160px;
   }
-  
+
   &:hover {
     transform: scale(1.04);
-    
+
     .custom-icon-button {
       background-color: ${colors.themeGreen};
       border-color: ${colors.navyBlue900};
@@ -109,39 +116,36 @@ const StyledCard = styled(Box)`
 
       .arrow-icon {
         color: ${colors.white};
-        font-size:14px;
+        font-size: 14px;
       }
     }
   }
 `;
 
-
-
-const KnowledgeCard = ({ initialPosts,categories, initialPagination }) => {
+const KnowledgeCard = ({ initialPosts, categories, initialPagination }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const slug = searchParams.get("category"); 
-  
+  const slug = searchParams.get("category");
+
   const [posts, setPosts] = useState(initialPosts);
   const [pagination, setPagination] = useState(initialPagination);
   const [isLoading, setIsLoading] = useState(false);
 
-  const getPostsByCategory = async (page=1) => {
-   if(slug && pagination.page==1)
-    setIsLoading(true)
+  const getPostsByCategory = async (page = 1) => {
+    if (slug && pagination.page == 1) setIsLoading(true);
 
-    const url=!slug ? `https://cms.sovrenn.com/api/posts?sort=createdAt:desc&filters[category][slug][$ne]=chronicles&pagination[pageSize]=20&pagination[page]=${page}&populate=category` :
-    `https://cms.sovrenn.com/api/posts?filters[category][slug][$eq]=${slug}&sort=publishedAt:desc&pagination[pageSize]=20&pagination[page]=${page}&populate=category`
-    const res = await fetch(
-      url
-    );
-  
+    const url =
+      slug == "all"
+        ? `https://cms.sovrenn.com/api/posts?sort=createdAt:desc&filters[category][slug][$ne]=chronicles&pagination[pageSize]=20&pagination[page]=${page}&populate=category`
+        : `https://cms.sovrenn.com/api/posts?filters[category][slug][$eq]=${slug}&sort=publishedAt:desc&pagination[pageSize]=20&pagination[page]=${page}&populate=category`;
+    const res = await fetch(url);
+
     const data = await res.json();
-  
+
     if (res.ok) {
-      setPosts(data.data)
-      setPagination(data.meta.pagination)
-      setIsLoading(false)
+      setPosts(data.data);
+      setPagination(data.meta.pagination);
+      setIsLoading(false);
     }
     return data;
   };
@@ -149,13 +153,12 @@ const KnowledgeCard = ({ initialPosts,categories, initialPagination }) => {
   const loadMorePosts = async () => {
     if (pagination.page >= pagination.pageCount) return;
 
-   
     const nextPage = pagination.page + 1;
 
     try {
       const data = await getPostsByCategory(nextPage);
 
-      setPosts([...posts,...data.data]);
+      setPosts([...posts, ...data.data]);
       setPagination((prevPagination) => ({
         ...prevPagination,
         page: nextPage,
@@ -163,7 +166,6 @@ const KnowledgeCard = ({ initialPosts,categories, initialPagination }) => {
     } catch (error) {
       console.error("Error loading more posts:", error);
     } finally {
-      
     }
   };
   const [likedCards, setLikedCards] = useState(Array(12).fill(false));
@@ -175,86 +177,103 @@ const KnowledgeCard = ({ initialPosts,categories, initialPagination }) => {
   };
   useEffect(() => {
     if (slug) {
-      setPosts([]); 
-      setPagination(initialPagination); 
-      getPostsByCategory(1); 
+      setPosts([]);
+      setPagination(initialPagination);
+      getPostsByCategory(1);
     }
-  }, [slug]); 
+  }, [slug]);
 
-  if(isLoading)
-  {
-    return(
-      <Spinner margin={2}/>
-    )
+  if (isLoading) {
+    return <Spinner margin={2} />;
   }
-  console.log(posts.length)
+  console.log(posts.length);
   return (
     <>
-    <Container>
-      <Box sx={{ flexGrow: 1 }} marginTop={1}>
-        <Grid
-          container
-          marginBottom={5}
-          justifyContent="center"
-          sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "1fr",
-              sm: "repeat(2, minmax(0, 1fr))",
-            },
-            gap: 2,
-            padding: { xs: 1 },
-          }}
-        >
-          {posts?.map((ele, index) => (
-            <Link target="_blank" href={`/knowledge/${ele.attributes.slug}`} key={index} style={{textDecoration:"none"}}>
-            <StyledCard >
-              <Grid container justifyContent="space-between" alignItems="center">
-                <StyledTypographyDate>{moment(ele.attributes.publishedAt).format("MMM Do YY")}</StyledTypographyDate>
-                {/* <StyledIconButton onClick={() => handleLikeToggle(index)}>
+      <Container>
+        <Box sx={{ flexGrow: 1 }} marginTop={1}>
+          <Grid
+            container
+            marginBottom={5}
+            justifyContent="center"
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(2, minmax(0, 1fr))",
+              },
+              gap: 2,
+              padding: { xs: 1 },
+            }}
+          >
+            {posts?.map((ele, index) => (
+              <Link
+                target="_blank"
+                href={`/knowledge/${ele.attributes.slug}`}
+                key={index}
+                style={{ textDecoration: "none" }}
+              >
+                <StyledCard>
+                  <Grid
+                    container
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <StyledTypographyDate>
+                      {moment(ele.attributes.publishedAt).format("MMM Do YY")}
+                    </StyledTypographyDate>
+                    {/* <StyledIconButton onClick={() => handleLikeToggle(index)}>
                   {likedCards[index] ? (
                     <FavoriteIcon style={{ color: colors.red500, fontSize: "14px" }} />
                   ) : (
                     <FavoriteBorderIcon style={{ fontSize: "14px" }} />
                   )}
                 </StyledIconButton> */}
-              </Grid>
-              <StyledTypographyTitle color="#101828">
-              {ele.attributes.title}
-              </StyledTypographyTitle>
-              <Grid container justifyContent="space-between" alignItems="center">
-                <Grid item>
-                  <StyledTypographyCategory>{ele?.attributes?.category?.data?.attributes?.name}</StyledTypographyCategory>
-                </Grid>
-                <Grid item sx={{ display: "flex", alignItems: "center" }}>
-                  <StyledButton size="small" variant="text" color="primary">
-                    Read More
-                  </StyledButton>
-                  <CustomIconButton className="custom-icon-button">
-                    <ArrowForwardIcon
-                      fontSize="small"
-                      className="arrow-icon"
-                      sx={{ fontSize: "16px" }}
-                    />
-                  </CustomIconButton>
-                </Grid>
-              </Grid>
-            </StyledCard>
-            </Link>
-          ))}
-        </Grid>
-      </Box>
-      {pagination.page < pagination.pageCount && (
-        <div style={{ textAlign: "center", margin: "20px 0" }}>
-          <Box sx={{ display: "flex", justifyContent: "center" }} marginBottom={6}>
-            <StyledButton2 variant="contained" onClick={loadMorePosts}>
-              {isLoading ? "Loading..." : "Load More"}
-            </StyledButton2>
-          </Box>
-        </div>
-      )}
-    </Container>
-   
+                  </Grid>
+                  <StyledTypographyTitle color="#101828">
+                    {ele.attributes.title}
+                  </StyledTypographyTitle>
+                  <Grid
+                    container
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Grid item>
+                      <StyledTypographyCategory>
+                        {ele?.attributes?.category?.data?.attributes?.name}
+                      </StyledTypographyCategory>
+                    </Grid>
+                    <Grid item sx={{ display: "flex", alignItems: "center" }}>
+                      <StyledButton size="small" variant="text" color="primary">
+                        Read More
+                      </StyledButton>
+                      <CustomIconButton className="custom-icon-button">
+                        <ArrowForwardIcon
+                          fontSize="small"
+                          className="arrow-icon"
+                          sx={{ fontSize: "16px" }}
+                        />
+                      </CustomIconButton>
+                    </Grid>
+                  </Grid>
+                </StyledCard>
+              </Link>
+            ))}
+          </Grid>
+        </Box>
+        {pagination.page < pagination.pageCount && (
+          <div style={{ textAlign: "center", margin: "20px 0" }}>
+            <Box
+              sx={{ display: "flex", justifyContent: "center" }}
+              marginBottom={6}
+            >
+              <StyledButton2 variant="contained" onClick={loadMorePosts}>
+                {isLoading ? "Loading..." : "Load More"}
+              </StyledButton2>
+            </Box>
+          </div>
+        )}
+      </Container>
+      {!isLoading ? <Footer /> : <></>}
     </>
   );
 };

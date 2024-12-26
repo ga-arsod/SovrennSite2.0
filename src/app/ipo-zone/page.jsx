@@ -1,13 +1,13 @@
 "use client";
-import React, { useEffect ,useState} from "react";
+import React, { useEffect, useState } from "react";
 import IpoHeader from "../../components/Ipo/IpoHeader";
 import Head from "next/head";
 
 import IpoFilters from "../../components/Ipo/IpoFilters";
-
-import { ipoCompaniesListApi,ipoFilterApi } from "../Redux/Slices/ipoSlice";
-import {Box,Container} from "@mui/material";
-import Pagination from "../../components/Pagination/Pagination"
+import Spinner from "@/components/Common/Spinner";
+import { ipoCompaniesListApi, ipoFilterApi } from "../Redux/Slices/ipoSlice";
+import { Box, Container } from "@mui/material";
+import Pagination from "../../components/Pagination/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -20,22 +20,21 @@ const Ipo = () => {
   const dispatch = useDispatch();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const [windowSize, setWindowSize] = useState(undefined);
- const [currentPage,setCurrentPage]=useState(1)
- const [page,setPage]= useState(1)
- const [filterData,setFilterData]= useState({})
-  const { ipoCompaniesList ,pagination} = useSelector((store) => store.ipo);
-  const { isIpoFilterOpen, } = useSelector(
-    (store) => store.ipo
-  );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
+  const [filterData, setFilterData] = useState({});
+  const { ipoCompaniesList, pagination, isIpoCompaniesListLoading } =
+    useSelector((store) => store.ipo);
+  const { isIpoFilterOpen } = useSelector((store) => store.ipo);
 
-  const handleModalOpen=()=>{
-    setIsOpen(true)
-  }
+  const handleModalOpen = () => {
+    setIsOpen(true);
+  };
 
   useEffect(() => {
-    dispatch(ipoFilterApi())
-    dispatch(ipoCompaniesListApi({page:page,data:filterData}));
-  }, [page,dispatch]);
+    dispatch(ipoFilterApi());
+    dispatch(ipoCompaniesListApi({ page: page, data: filterData }));
+  }, [page, dispatch]);
 
   useEffect(() => {
     function handleWindowResize() {
@@ -50,7 +49,38 @@ const Ipo = () => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
- 
+
+  if (isIpoCompaniesListLoading) {
+    return (
+      <>
+        <Head>
+          <title>
+            Get in on the Action: Find information on all upcoming IPOs
+          </title>
+          <meta
+            name="description"
+            content="Discover the latest IPO opportunities. Find information on all upcoming IPOs and make informed investment decisions. Don't miss out!!"
+          />
+
+          <meta
+            property="og:title"
+            content="Get in on the Action: Find information on all upcoming IPOs"
+          />
+          <meta
+            property="og:description"
+            content="Discover the latest IPO opportunities. Find information on all upcoming IPOs and make informed investment decisions. Don't miss out!"
+          />
+
+          <link
+            rel="canonical"
+            href={`https://www.sovrenn.com/ipo-zone`}
+            key="canonical"
+          />
+        </Head>
+        <Spinner margin={15} />
+      </>
+    );
+  }
   return (
     <>
       <Head>
@@ -78,18 +108,32 @@ const Ipo = () => {
         />
       </Head>
       <IpoHeader />
-      <IpoFilters isOpen={isIpoFilterOpen} handleModalOpen={handleModalOpen} page={page} setPage={setPage} setFilterData={setFilterData}/>
+      <IpoFilters
+        isOpen={isIpoFilterOpen}
+        handleModalOpen={handleModalOpen}
+        page={page}
+        setPage={setPage}
+        setFilterData={setFilterData}
+      />
       {isSmallerThanMd ? (
         <IpoCard data={ipoCompaniesList} />
       ) : (
         <IpoTableData data={ipoCompaniesList} />
       )}
       <Container>
-       <Box mt={2}>
-        <Pagination currentPage={page} setCurrentPage={setPage} pagination={pagination}/>
-      </Box>
+        {ipoCompaniesList?.length ? (
+          <Box mt={2}>
+            <Pagination
+              currentPage={page}
+              setCurrentPage={setPage}
+              pagination={pagination}
+            />
+          </Box>
+        ) : (
+          <></>
+        )}
       </Container>
-      <Footer/>
+      <Footer />
     </>
   );
 };

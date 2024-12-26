@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
+import NoData from "../NoData/NoData";
 
 const StyledBox = styled(Box)({
   padding: "16px",
@@ -77,8 +77,15 @@ const ArticleBanner = ({ filterData2, page2, setPage2 }) => {
     dispatch(timesPdfListApi({page:page2,data:{}}));
   }, []);
 
+  if(!timesPdfList.length)
+  {
+    return(
+    <NoData text="No data available" />
+  )
+  }
   return (
     <>
+   
       {timesPdfList?.map((elem, index) => (
         <StyledBox key={index}>
           <Grid container spacing={2} alignItems="center">

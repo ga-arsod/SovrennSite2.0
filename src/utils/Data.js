@@ -523,7 +523,7 @@ export const primeArticleDisclaimer =
           "Stay informed with live alerts on the companies you follow"]
       },
       button: {
-        first: "Read Free Unlimited Articles",
+        first: "Explore This Feature Now",
         second: "Buy Full Access @ ₹5000/yr",
       },
     },
@@ -537,7 +537,7 @@ export const primeArticleDisclaimer =
           ],
       },
       button: {
-        first: "Read Free Unlimited Articles",
+        first: "Explore Now",
         second: "Buy Full Access @ ₹4500/yr",
       },
     },
@@ -551,7 +551,7 @@ export const primeArticleDisclaimer =
           ],
       },
       button: {
-        first: "Read Free Unlimited Articles",
+        first: "Explore Now",
         second: "Buy Full Access @ ₹4500/yr",
       },
     },
@@ -565,7 +565,7 @@ export const primeArticleDisclaimer =
           ],
       },
       button: {
-        first: "Read Free Unlimited Articles",
+        first: "Explore Now",
         second: "Buy Full Access @ ₹4500/yr",
       },
     },
@@ -581,7 +581,7 @@ export const primeArticleDisclaimer =
           ],
       },
       button: {
-        first: "Read Free Unlimited Articles",
+        first: "Explore Now",
         second: "Buy Full Access @ ₹5000/yr",
       },
     },
@@ -597,14 +597,14 @@ export const primeArticleDisclaimer =
           ],
       },
       button: {
-        first: "Read Free Unlimited Articles",
+        first: "Explore Now",
         second: "Buy Full Access @ ₹4500/yr",
       },
     },
     {
       imagePath: "/ledgeCarousel.png",
       Info: {
-        heading: "Sovrenn Knowledge",
+        first: "Explore Now",
         listItems: ["Explore our articles to deepen your knowledge of the finance world", 
           "Gain valuable insights into financial trends and strategies" , 
           "Stay informed with expert-driven content on the latest in finance"
@@ -614,7 +614,7 @@ export const primeArticleDisclaimer =
           ],
       },
       button: {
-        first: "Read Free Unlimited Articles",
+        first: "Explore Now",
         second: "Buy Full Access @ ₹4500/yr",
       },
     },

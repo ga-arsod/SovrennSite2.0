@@ -239,7 +239,7 @@ const TimesFilter = ({
   const [filterBody, setFilterBody] = useState({});
 
   const updateFilter = (item, key, status) => {
-    console.log(item, key, status);
+    console.log(key,"key")
     window.scrollTo({
       top: 0,
       behavior: "smooth",

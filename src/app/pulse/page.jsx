@@ -33,7 +33,7 @@ const PulsePage = () => {
         />
       </Head>
       <Container>
-        {!isAuth || !portfolioCompanies.length ? (
+        {!isAuth || !portfolioCompanies?.length ? (
           <PulseIntro />
         ) : (
           <PulseArticle />

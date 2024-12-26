@@ -5,10 +5,8 @@ import KnowledgeSearchFilter from "../../components/Knowledge/KnowledgeSearchFil
 import Head from "next/head";
 import Footer from "@/components/Home/Footer";
 
-async function fetchPosts(page=1) {
-  const url = 
-   
-     `https://cms.sovrenn.com/api/posts?sort=createdAt:desc&filters[category][slug][$ne]=chronicles&pagination[pageSize]=20&pagination[page]=${page}&populate=category`;
+async function fetchPosts(page = 1) {
+  const url = `https://cms.sovrenn.com/api/posts?sort=createdAt:desc&filters[category][slug][$ne]=chronicles&pagination[pageSize]=20&pagination[page]=${page}&populate=category`;
 
   const res = await fetch(url, { cache: "no-store" });
   const data = await res.json();
@@ -30,7 +28,7 @@ export default async function Knowledge({ searchParams }) {
 
   const posts = postsData.data || [];
   const categories = categoriesData.data || [];
-  const pagination =postsData.meta.pagination;
+  const pagination = postsData.meta.pagination;
   return (
     <>
       <Head>
@@ -44,7 +42,7 @@ export default async function Knowledge({ searchParams }) {
         categories={categories}
         initialPagination={pagination}
       />
-      <Footer />
+     
     </>
   );
 }

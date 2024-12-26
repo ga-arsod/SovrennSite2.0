@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 const StyledTypography = styled(Typography)`
   font-weight: 600;
-  font-size: 48px;
+  font-size: 44px;
   line-height: 56px;
   letter-spacing: -0.04em;
 
@@ -21,13 +21,15 @@ const StyledTypography = styled(Typography)`
 `;
 
 const StyledTypography2 = styled(Typography)`
-  font-weight: 700;
-  font-size: 23px;
-  line-height: 28px;
-   @media (max-width: 639px) {
+ font-weight: 600;
+  font-size: 17px;
+  line-height: 23px;
+  letter-spacing: 0.02em;
+  @media (max-width: 639px) {
     font-size: 14px;
+    font-weight: 400;
     line-height: 17px;
-     font-weight: 600;
+    letter-spacing: 0.02em;
   }
  
  

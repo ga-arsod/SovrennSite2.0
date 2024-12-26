@@ -115,7 +115,7 @@ const PricingPage = () => {
           </Grid>
         </Grid>
 
-        <Box sx={{ position: "relative", top: { xs: "-160px", sm: "-150px" } }}>
+        <Box sx={{ position: "relative", top: { xs: "-160px", sm: "-110px" } }}>
           <PricingCard planDetails={plans} />
         </Box>
       </Box>

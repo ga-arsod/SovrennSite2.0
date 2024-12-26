@@ -84,7 +84,7 @@ const TabLabel = ({ text, isActive }) => {
                 : colors.themeGreen
               : colors.neutral700,
             fontWeight: '600',
-            fontSize: { xs: '16px', sm: '38px', md: '48px' },
+            fontSize: { xs: '16px', sm: '38px', md: '44px' },
             lineHeight: { xs: '19px', sm: '56px' },
             letterSpacing: { xs: 0, sm: '-0.04em' },
             whiteSpace: 'nowrap',

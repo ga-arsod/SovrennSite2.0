@@ -10,6 +10,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  padding-right:0px
 }
 
 /* html {
@@ -29,6 +30,7 @@ html, body {
   padding-right:0px
 }
 body {
+ 
   width:100vw;
   padding-right:0px;
   color: rgb(var(--foreground-rgb));
