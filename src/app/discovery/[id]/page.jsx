@@ -177,7 +177,7 @@ const DiscoveryBucketContent = () => {
             id: id,
             body: filterObj,
             page: currentPage,
-            sort_by: sortBy,
+            sort_by: sortBy=="createdAt" || sortBy=="industry" || sortBy=="sector" ? "company_name" :sortBy,
             sort_order: sortOrder,
           })
         );
@@ -187,7 +187,7 @@ const DiscoveryBucketContent = () => {
             id: id,
             body: filterObj,
             page: currentPage,
-            sort_by: sortBy,
+            sort_by: sortBy=="createdAt" || sortBy=="industry" || sortBy=="sector" ? "company_name" :sortBy,
             sort_order: sortOrder,
           })
         );
@@ -363,13 +363,16 @@ const DiscoveryBucketContent = () => {
         ) : (
           <DiscoveryTable tableData={tableData} id={id} />
         )}
-        <Box mt={2}>
+        {
+          tableData?.length ? <Box mt={2}>
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             pagination={pagination}
           />
-        </Box>
+        </Box> : <></>
+        }
+        
       </Container>
       {!isSmallerThanMd && <Footer />}
     </>

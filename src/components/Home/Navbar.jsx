@@ -57,6 +57,9 @@ const StyledListItemText = styled(ListItemText)`
           ? colors.themeGreen
           : colors.black
         : colors.black};
+    &:hover {
+      color: ${colors.themeGreen};
+    }
   }
 `;
 
@@ -99,16 +102,16 @@ const StyledButton1 = styled(Button)`
 `;
 
 const StyledMenuItem = styled(MenuItem)`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  color: black;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 17px;
+  color: ${colors.navyBlue900};
 `;
 
 const StyledMenuItem2 = styled(MenuItem)`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 17px;
   color: #f83a3a;
 `;
 
@@ -257,7 +260,7 @@ const Navbar = ({ session }) => {
             margin: "0 auto",
           }}
         >
-          <Toolbar sx={{paddingX:0}}>
+          <Toolbar sx={{ paddingX: 0 }}>
             <Grid
               container
               direction="row"
@@ -280,6 +283,7 @@ const Navbar = ({ session }) => {
                         sm: "none",
                         md: "flex",
                         alignItems: "center",
+                        paddingBottom:"8px"
                       },
                     }}
                   >
@@ -329,6 +333,7 @@ const Navbar = ({ session }) => {
                           display: "flex",
                           flexDirection: "row",
                           padding: 0,
+                          alignItem:"flex-end"
                         }}
                       >
                         {filteredNavItems.map((item) => (
@@ -359,12 +364,19 @@ const Navbar = ({ session }) => {
                                 whiteSpace: "nowrap",
                                 textOverflow: "ellipsis",
                                 cursor: "pointer",
+                               
+                                "&:hover .list-item-text": {
+                                  color: `${colors.themeGreen} !important`,
+                                },
                               }}
                             >
-                              <StyledListItemText
-                                primary={item.name}
-                                isFirst={filteredNavItems.indexOf(item) === 0}
-                              />
+                              <div className="list-item-text-wrapper">
+                                <StyledListItemText
+                                  primary={item.name}
+                                  className="list-item-text"
+                                  isFirst={filteredNavItems.indexOf(item) === 0}
+                                />
+                              </div>
                             </ListItem>
                           </LightTooltip>
                         ))}
@@ -384,16 +396,31 @@ const Navbar = ({ session }) => {
                             }
                             aria-haspopup="true"
                             aria-expanded={anchorEl2 ? "true" : undefined}
+                            onMouseEnter={handleMouseEnter}
+                            onClick={(e) => setAnchorEl2(e.currentTarget)} 
                             sx={{
-                              color: colors.themeGreen,
+                              color: anchorEl2
+                                ? colors.themeGreen
+                                : colors.navyBlue900, 
                               fontWeight: "600",
                               fontSize: "14px",
                               lineHeight: "17px",
                               textTransform: "none",
+                              "&:hover": {
+                                color: colors.themeGreen,
+                                "& .MuiSvgIcon-root": {
+                                  color: colors.themeGreen, 
+                                },
+                              },
                             }}
                             endIcon={
                               <KeyboardArrowDownOutlinedIcon
-                                sx={{ color: colors.themeGreen }}
+                                sx={{
+                                  color: anchorEl2
+                                    ? colors.themeGreen
+                                    : colors.navyBlue900, 
+                                  transition: "color 0.2s ease", 
+                                }}
                               />
                             }
                           >
@@ -404,7 +431,7 @@ const Navbar = ({ session }) => {
                             id="utilities-menu"
                             anchorEl={anchorEl2}
                             open={Boolean(anchorEl2)}
-                            onClose={handleMouseLeave}
+                            onClose={() => setAnchorEl2(null)} 
                             disablePortal
                             disableScrollLock={true}
                             TransitionProps={{
@@ -431,6 +458,9 @@ const Navbar = ({ session }) => {
                                 disableRipple
                                 sx={{
                                   padding: "12px 16px",
+                                  "&:hover .menu-text": {
+                                    color: colors.themeGreen,
+                                  },
                                   backgroundColor: "transparent !important",
                                   "&:hover": {
                                     backgroundColor: "transparent !important",
@@ -444,6 +474,7 @@ const Navbar = ({ session }) => {
                                 }}
                               >
                                 <Typography
+                                  className="menu-text"
                                   color={colors.navyBlue900}
                                   sx={{
                                     fontWeight: "600",
@@ -463,6 +494,9 @@ const Navbar = ({ session }) => {
                                 disableRipple
                                 sx={{
                                   padding: "12px 16px",
+                                  "&:hover .menu-text": {
+                                    color: colors.themeGreen,
+                                  },
                                   backgroundColor: "transparent !important",
                                   "&:hover": {
                                     backgroundColor: "transparent !important",
@@ -476,6 +510,7 @@ const Navbar = ({ session }) => {
                                 }}
                               >
                                 <Typography
+                                  className="menu-text"
                                   color={colors.navyBlue900}
                                   sx={{
                                     fontWeight: "600",
@@ -507,7 +542,7 @@ const Navbar = ({ session }) => {
                   </Grid>
 
                   <StyledGrid1>
-                    <Grid item >
+                    <Grid item>
                       <NavbarSearch handleSearchClick={handleSearchClick} />
                     </Grid>
 
@@ -528,7 +563,7 @@ const Navbar = ({ session }) => {
                     )}
                   </StyledGrid1>
 
-                  <Grid item >
+                  <Grid item>
                     {searchOpen && isSmallerThanMd && (
                       <NavbarSearch handleSearchClick={handleSearchClick} />
                     )}
@@ -569,8 +604,10 @@ const Navbar = ({ session }) => {
                               display: isAuth || session?.user ? "none" : "",
                             }}
                             onClick={() => {
-                              const currentPath = window.location.pathname + window.location.search;
-                              localStorage.setItem("redirectUrl", currentPath); 
+                              const currentPath =
+                                window.location.pathname +
+                                window.location.search;
+                              localStorage.setItem("redirectUrl", currentPath);
                               router.push("/login");
                             }}
                             disableElevation
@@ -642,6 +679,14 @@ const Navbar = ({ session }) => {
                           TransitionProps={{
                             timeout: 200,
                           }}
+                          PaperProps={{
+                            sx: {
+                              borderRadius: "8px",
+                              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                              minWidth: "200px",
+                              backgroundColor: "none",
+                            },
+                          }}
                         >
                           <Link
                             href="/profile"
@@ -650,7 +695,10 @@ const Navbar = ({ session }) => {
                             <StyledMenuItem onClick={handleClose} disableRipple>
                               <IconButton
                                 sx={{
-                                  "& svg path": { fill: "black" },
+                                 "& svg path": { fill: colors.navyBlue900,
+                                    stroke: colors.navyBlue900, 
+                                    strokeWidth: 0.7, 
+                                   },
                                   padding: 0,
                                 }}
                               >
@@ -667,7 +715,11 @@ const Navbar = ({ session }) => {
                             <StyledMenuItem onClick={handleClose} disableRipple>
                               <IconButton
                                 sx={{
-                                  "& svg path": { fill: "black" },
+                                  "& svg path": { fill: colors.navyBlue900,
+                                    stroke: colors.navyBlue900, 
+                                    strokeWidth: 0.7, 
+                                   },
+
                                   padding: 0,
                                 }}
                               >
@@ -679,7 +731,6 @@ const Navbar = ({ session }) => {
 
                           <StyledMenuItem2
                             onClick={() => {
-                             
                               handleClose();
                               if (isAuth) {
                                 dispatch(logout());
@@ -690,7 +741,10 @@ const Navbar = ({ session }) => {
                           >
                             <IconButton
                               sx={{
-                                "& svg path": { fill: colors.red400 },
+                                "& svg path": { fill: colors.red400 ,
+                                  stroke: colors.red400, 
+                                  strokeWidth: 0.7, 
+                                },
                                 padding: 0,
                               }}
                               type="submit"

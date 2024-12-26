@@ -47,7 +47,7 @@ const StyledTypography2 = styled(Typography)`
 `;
 const StyledTypography3 = styled(Typography)`
   font-weight: 600;
-  font-size: 22px;
+  font-size: 20px;
   line-height: 32px;
 `;
 
@@ -214,7 +214,7 @@ const TutorialSection = () => {
 
                         <StyledTypography3
                           color="#101828"
-                          marginLeft={3}
+                          marginLeft={{xs:2,sm:3}}
                           paddingY={3}
                         >
                           {element?.title}

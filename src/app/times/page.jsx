@@ -40,6 +40,7 @@ import Spinner from "../../components/Common/Spinner";
 import Footer from "@/components/Home/Footer";
 import Disclaimer from "@/components/Common/Disclaimer";
 import Link from "next/link";
+import NoData from "@/components/NoData/NoData";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -152,10 +153,11 @@ const Times = () => {
   const [groupedArticles, setGroupedArticles] = useState({});
   const [collapsedGroups, setCollapsedGroups] = useState({});
   const dispatch = useDispatch();
-  const {   isTimesArticleLoading,
+  const {  
     timesArticle,
     isArticleFilterOpen,
     isPdfModalOpen,
+    isTimesArticleLoading,isPdfListLoading,
     pagination,} = useSelector(
     (store) => store.times
   );
@@ -238,34 +240,9 @@ const Times = () => {
   }, []);
  
 
-  if (isTimesArticleLoading) {
-    return (
-      <>
-        <Head>
-          <title>Be equipped with Sovrenn times Daily Bulletin</title>
-          <meta
-            name="description"
-            content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
-          />
-          <meta
-            property="og:title"
-            content="Be equipped with Sovrenn times Daily Bulletin"
-          />
-          <meta
-            property="og:description"
-            content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
-          />
-          <link
-            rel="canonical"
-            href="https://www.sovrenn.com/times"
-            key="canonical"
-          />
-        </Head>
-        <Spinner margin={15} />
-      </>
-    );
-  }
-
+ 
+ 
+ 
   return (
     <>
       <Head>
@@ -358,6 +335,8 @@ const Times = () => {
               setPage2={setPage2}
             />
           ) : (
+           
+           
             <Grid item>
               {Object.keys(groupedArticles)?.map((date, index) => (
                 <div className={styles.newsDiv} key={index}>

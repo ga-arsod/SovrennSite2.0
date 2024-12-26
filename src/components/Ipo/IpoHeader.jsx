@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
-  font-size: 48px;
+  font-size: 44px;
   line-height: 56px;
   letter-spacing: -0.04em;
   @media (max-width: 639px) {
@@ -28,7 +28,7 @@ const StyledTypography1 = styled(Typography)`
 `;
 const StyledTypography2 = styled(Typography)`
   font-weight: 600;
-  font-size: 19px;
+  font-size: 17px;
   line-height: 23px;
   letter-spacing: 0.02em;
   @media (max-width: 639px) {

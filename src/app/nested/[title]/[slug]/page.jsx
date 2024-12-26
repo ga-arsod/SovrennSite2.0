@@ -178,7 +178,7 @@ const ChildBucketCompanyContent = () => {
         id: lastSegment,
             body: filterObj,
             page: currentPage,
-            sort_by: sortBy,
+            sort_by:  sortBy=="createdAt" || sortBy=="industry" || sortBy=="sector" ? "company_name" :sortBy,
             sort_order: sortOrder,
       })
     );
@@ -353,9 +353,12 @@ const ChildBucketCompanyContent = () => {
         ) : (
           <DiscoveryTable tableData={tableData} id={lastSegment} />
         )}
-           <Box mt={2}>
-        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pagination={pagination} />
-      </Box>
+        {
+          tableData?.length ?  <Box mt={2}>
+          <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pagination={pagination} />
+        </Box> : <></>
+        }
+          
       </Container>
       {!isSmallerThanMd && <Footer />}
     </>

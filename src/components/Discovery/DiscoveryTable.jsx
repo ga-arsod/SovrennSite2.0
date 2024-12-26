@@ -251,6 +251,8 @@ export default function DiscoveryTable({ tableData, id }) {
   const handleSortChange = (field) => {
     dispatch(setSortBy(field));
 
+    
+
     if (sortBy === field) {
       dispatch(toggleSortOrder());
     }

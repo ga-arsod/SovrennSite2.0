@@ -15,8 +15,10 @@ import { useDispatch } from "react-redux";
 import { toggleEditModal } from "../Redux/Slices/watchlistSlice";
 import Snackbar from "../../components/Snackbar/SnackBar"
 import EmptyWatchlist from "../../components/Watchlist/EmptyWatchlist";
+import { useRouter } from "next/navigation";
+
 const StyledTypography1 = styled(Typography)`
-  font-size: 48px;
+  font-size: 44px;
   font-weight: 600;
   line-height: 56px;
   letter-spacing: -0.04em;
@@ -31,11 +33,16 @@ const StyledTypography1 = styled(Typography)`
 const WatchlistMainPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [companyData,setCompanyData]=useState({})
+  const router=useRouter()
   const theme = useTheme();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch=useDispatch();
   const { watchlistData,isEditModalOpen } = useSelector((state) => state.watchlist);
   const [open,setOpen]=useState(false);
+
+  const handleBackClick = () => {
+    router.back();  
+  };
 
   useEffect(()=>{
     dispatch(getWatchlistApi())
@@ -57,6 +64,7 @@ const WatchlistMainPage = () => {
                     marginRight: { xs: 1, sm: 2 },
                     color: colors.navyBlue500,
                   }}
+                  onClick={handleBackClick}
                 />
               )}
               <StyledTypography1

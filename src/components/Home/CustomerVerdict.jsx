@@ -30,8 +30,8 @@ const StyledTypography2 = styled(Typography)`
   line-height: 24px;
   @media (max-width: 700px) {
     font-weight: 400;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 12px;
+    line-height: 14px;
   }
 `;
 const StyledBox = styled(Box)`
@@ -128,7 +128,7 @@ const CustomerVerdict = () => {
       <Grid
         container
         spacing={4}
-        paddingTop={2}
+        paddingTop={3}
         paddingBottom={{ xs: "20px", sm: 6 }}
         ref={ref}
         sx={{ opacity: inView ? 1 : 0 }}

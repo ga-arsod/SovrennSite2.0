@@ -62,13 +62,12 @@ const StyledButton = styled(Button)`
   background-color: white;
   text-transform: none;
 
-  
   :hover {
     background-color: white;
   }
   @media (max-width: 700px) {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 22px;
     padding-top: 12px;
     padding-bottom: 12px;
@@ -146,7 +145,6 @@ const TrialCard = () => {
                 {!isAuth ? (
                   <Link href="/signup">
                     <StyledButton variant="contained">
-                     
                       Get 45 days Free Trial
                     </StyledButton>
                   </Link>
@@ -161,12 +159,10 @@ const TrialCard = () => {
                 ) : (
                   <Link href="/pricing">
                     <StyledButton variant="contained">
-                    Buy Full Access Now
+                      Buy Full Access Now
                     </StyledButton>
                   </Link>
                 )}
-
-
               </Grid>
             </Grid>
           </Grid>

@@ -70,12 +70,18 @@ const ipoSlice = createSlice({
 
     // IPO Companies List Api
     builder.addCase(ipoCompaniesListApi.pending, (state, action) => {
+      
+      if (Object.keys(action.meta.arg).length !== 0) {
+        state.isIpoCompaniesListLoading = false;
+      }
+      else
       state.isIpoCompaniesListLoading = true;
     });
     builder.addCase(ipoCompaniesListApi.fulfilled, (state, action) => {
       state.ipoCompaniesList = action.payload.list;
       state.isIpoCompaniesListLoading = false;
-      state.pagination=action.payload.pagination
+      state.pagination=action.payload.pagination;
+      
     });
     builder.addCase(ipoCompaniesListApi.rejected, (state, action) => {
       state.isError = true;

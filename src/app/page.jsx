@@ -57,8 +57,8 @@ const Home = async () => {
       <Faq />
 
       <AppInfo />
-      <TrialCard />
-      <Footer />
+     <TrialCard/>
+     <Footer/>
     </>
   );
 };

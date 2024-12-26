@@ -126,7 +126,7 @@ const Information = () => {
           alignItems="center"
           spacing={1}
           paddingX={{ xs: 2, sm: 3, md: 2 }}
-          paddingY={6}
+          paddingY={12}
         >
           <FadeInBox ref={domRef} className={isVisible ? "visible" : ""}>
             <Grid item>

@@ -10,7 +10,7 @@ import Link from 'next/link'
 const FoundersCard = ({ item }) => {
   const pathname=usePathname();
   return (
-    <Grid item paddingY={{xs:"20px",sm:pathname==="/"?"6":"20px",md:6}} paddingX={{xs:4,sm:2,md:4}} xs={12} sm={pathname==="/" ? "6":"12"} sx={{position:'relative'}}>
+    <Grid item paddingY={{xs:"20px",sm:pathname==="/"?"6":"20px",md:6}} paddingX={{xs:4,sm:2,md:4}} xs={12} sm={pathname==="/" ? "6":"8"} sx={{position:'relative'}}>
       <Grid
         container
         direction="column"

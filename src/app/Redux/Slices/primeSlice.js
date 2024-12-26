@@ -29,28 +29,28 @@ export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
     return response.json();
   });
 
-  export const primeCompaniesListApi = createAsyncThunk("primeCompaniesListApi", async ( { page,data},{dispatch}) => {
-    const response = await fetch(`${url}/prime-research/list?page=${page}&page_size=200`, {
+  export const primeCompaniesListApi = createAsyncThunk("primeCompaniesListApi", async ( {body, page,sort_by,sort_order},{dispatch}) => {
+    const response = await fetch(`${url}/prime-research/list?page=${page}&page_size=200&sort_by=${sort_by}&sort_order=${sort_order}`, {
       method: "POST",
       headers: {
        
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(body),
     });
   
     
     return response.json();
   });
 
-  export const promoterCompaniesListApi = createAsyncThunk("promoterCompaniesListApi", async ({ page,data},{dispatch}) => {
-    const response = await fetch(`${url}/promoter-interviews/list?page=${page}&page_size=200`, {
+  export const promoterCompaniesListApi = createAsyncThunk("promoterCompaniesListApi", async ({  body, page,sort_by,sort_order},{dispatch}) => {
+    const response = await fetch(`${url}/promoter-interviews/list?page=${page}&page_size=200&sort_by=${sort_by}&sort_order=${sort_order}`, {
       method: "POST",
       headers: {
        
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(body),
     });
   
     return response.json();

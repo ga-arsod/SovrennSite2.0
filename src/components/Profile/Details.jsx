@@ -114,7 +114,7 @@ const StyledTextField = styled(TextField)`
   }
 
   & .MuiInputBase-input {
-    padding: 10px 12px; /* Adjust padding here: 8px for vertical and 12px for horizontal */
+    padding: 10px 12px;
   }
 
   /* Styling the placeholder */
@@ -122,7 +122,7 @@ const StyledTextField = styled(TextField)`
     font-weight: 400;
     font-size: 16px;
     line-height: 21px;
-    color: #96a7b4; /* Change this to your desired placeholder color */
+    color: #96a7b4;
     opacity: 1;
   }
 `;
@@ -197,17 +197,21 @@ const Details = () => {
       [name]: value,
     }));
   };
-console.log(avatar,"avatar")
+ 
   return (
     <Container
       sx={{ width: { xs: "100%", md: "1000px" }, justifyContent: "center" }}
     >
       <ProfileContainer item xs={3}>
         <AvatarWrapper>
-          <AvatarStyled alt="User Avatar" src={avatar}  onError={(e) => {
-    e.target.onerror = null; // Prevent infinite loop
-    e.target.src = "/dummy_image.jpeg"; // Fallback image
-  }}/>
+          <AvatarStyled
+            alt="User Avatar"
+            src={avatar}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "/dummy_image.jpeg";
+            }}
+          />
           <EditIconButton component="label">
             <input
               type="file"

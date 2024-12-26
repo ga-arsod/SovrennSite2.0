@@ -82,9 +82,6 @@ const StyledBodyTableCell = styled(TableCell)`
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
-  &:hover {
-    color: ${colors.themeGreen};
-  }
 `;
 const StyledButton2 = styled(Button)`
   color: white;
@@ -128,9 +125,16 @@ const TableData = ({ data, activeTab }) => {
   const { sortBy, sortOrder } = useSelector((state) => state.sorting);
 
   const handleSortChange = (field) => {
-    dispatch(setSortBy(field));
+  
+    if (field == "date") dispatch(setSortBy("createdAt"));
+    else if (field == "industry") dispatch(setSortBy("market_cap"));
+    else dispatch(setSortBy(field));
 
-    if (sortBy === field) {
+    if (
+      (sortBy == "createdAt" && field == "date") ||
+      (sortBy == "market_cap" && field == "industry") ||
+      field == sortBy
+    ) {
       dispatch(toggleSortOrder());
     }
   };
@@ -175,7 +179,7 @@ const TableData = ({ data, activeTab }) => {
         isPaymentOpen={isPaymentOpen}
         handlePaymentClose={handlePaymentClose}
       />
-      {data.length == 0 ? (
+      {data?.length == 0 ? (
         <NoData text="No data available." />
       ) : (
         <Box

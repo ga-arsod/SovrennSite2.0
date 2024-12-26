@@ -59,7 +59,7 @@ const StyledSelfHelpChips = styled(SelfHelpChips)`
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
-  font-size: 48px;
+  font-size: 44px;
   line-height: 56px;
   letter-spacing: -0.04em;
   @media (max-width: 639px) {
@@ -145,7 +145,7 @@ const SelfHelp = () => {
   const { isCalculatedDataAvailable, isCalculationLoading } = useSelector(
     (store) => store.selfHelp
   );
-  const { isAuth, userDetails } = useSelector((store) => store.selfHelp);
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
 
   const handleChipSelect = (chip) => {
     setSelectedChip(chip);
@@ -163,7 +163,7 @@ const SelfHelp = () => {
   };
 
   if (!isAuth) {
-    return <NoLogin />;
+    return <NoLogin />
   }
   if (
     isAuth &&

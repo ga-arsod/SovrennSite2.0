@@ -63,6 +63,7 @@ const StyledBodyTableCell = styled(TableCell)`
   line-height: 19px;
   letter-spacing:-0.02em;
   
+  
 `;
 
 const StyledButton2 = styled(Button)`
@@ -186,7 +187,8 @@ const IpoTableData = ({data}) => {
                      "&:last-child td": { borderBottom: "none" },
                    }}
                  >
-                   <StyledBodyTableCell sx={{ color: colors.navyBlue500 }}>
+                  
+                   <StyledBodyTableCell  sx={{ color: colors.navyBlue500, width: "200px" }}>
                    {row.company_Id?.company_name}
                    </StyledBodyTableCell>
                    <StyledBodyTableCell sx={{ color: colors.neutral900 }}>

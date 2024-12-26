@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Typography,
   Box,
@@ -65,7 +65,7 @@ const StyledButton1 = styled(Button)`
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
-  background-color:white;
+  background-color: white;
   text-transform: none;
   :hover {
     background-color: ${colors.blueButtonHover};
@@ -103,8 +103,6 @@ const StyledButton2 = styled(Button)`
   }
 `;
 
-
-
 const FadeInBox = styled(Box)(({ theme }) => ({
   opacity: 0,
   transform: "translateY(30px)",
@@ -118,9 +116,7 @@ const FadeInBox = styled(Box)(({ theme }) => ({
 const Offer = () => {
   const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const {isAuth,userDetails } = useSelector(
-    (store) => store.auth
-  );
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % sovreenOfferArray.length);
   };
@@ -189,9 +185,9 @@ const Offer = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
-    }, 7000); 
+    }, 7000);
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -205,40 +201,78 @@ const Offer = () => {
       <Grid
         container
         paddingY={{ xs: "10px", sm: 5 }}
-       
         direction="column"
         justifyContent="center"
       >
         <Grid itemID="">
           <FadeInBox ref={domRef} className={isVisible ? "visible" : ""}>
-            <Typography sx={{ textAlign: "center" }}  marginBottom={{xs:1,sm:"20px"}}>
-              <StyledTypography1 component="span" color="#0D1726" marginRight={1}>
+            <Typography
+              sx={{ textAlign: "center" }}
+              marginBottom={{ xs: 1, sm: "20px" }}
+            >
+              <StyledTypography1
+                component="span"
+                color="#0D1726"
+                marginRight={1}
+              >
                 This is What we offer
               </StyledTypography1>
               <StyledTypography1 component="span" color={colors.themeGreen}>
                 You
               </StyledTypography1>
             </Typography>
-            <StyledTypography2 component="div" color="#627B8F" textAlign="center" paddingX={2}>
+            <StyledTypography2
+              component="div"
+              color="#627B8F"
+              textAlign="center"
+              paddingX={2}
+            >
               Here is everything that you will get from Sovrenn
             </StyledTypography2>
           </FadeInBox>
         </Grid>
         <Fade in={inView} timeout={1000}>
-          <Grid container ref={ref} sx={{ opacity: inView ? 1 : 0 }} justifyContent="center">
-            <Box sx={{ position: "relative", overflow: "hidden", width: "100%" }}>
-            <Box sx={{display:{xs:"flex",sm:"none",md:"none"},justifyContent:'center'}} marginTop={3}>
-        <StyledIconButton
+          <Grid
+            container
+            ref={ref}
+            sx={{ opacity: inView ? 1 : 0 }}
+            justifyContent="center"
+          >
+            <Box
+              sx={{ position: "relative", overflow: "hidden", width: "100%" }}
+            >
+              <Box
+                sx={{
+                  display: { xs: "flex", sm: "none", md: "none" },
+                  justifyContent: "center",
+                }}
+                marginTop={3}
+              >
+                <StyledIconButton
                   onClick={prevSlide}
-                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",right:"1vw"}} >
-                  <ArrowBackIcon sx={{color:colors.navyBlue500}}/>
+                  sx={{
+                    backgroundColor: colors.white,
+                    borderRadius: "50%",
+                    height: "38px",
+                    position: "relative",
+                    right: "1vw",
+                  }}
+                >
+                  <ArrowBackIcon sx={{ color: colors.navyBlue500 }} />
                 </StyledIconButton>
                 <StyledIconButton
-                 onClick={nextSlide}
-                sx={{backgroundColor:colors.white,borderRadius:"50%",height:"38px",position:"relative",left:"1vw"}} >
-                  <ArrowForwardIcon sx={{color:colors.navyBlue500}}/>
+                  onClick={nextSlide}
+                  sx={{
+                    backgroundColor: colors.white,
+                    borderRadius: "50%",
+                    height: "38px",
+                    position: "relative",
+                    left: "1vw",
+                  }}
+                >
+                  <ArrowForwardIcon sx={{ color: colors.navyBlue500 }} />
                 </StyledIconButton>
-        </Box>
+              </Box>
               <Box
                 sx={{
                   display: "flex",
@@ -256,7 +290,7 @@ const Offer = () => {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                   paddingLeft={6}
+                    paddingLeft={6}
                     display={index === currentIndex ? "block" : "none"}
                   >
                     <Grid
@@ -273,7 +307,11 @@ const Offer = () => {
                         xs={5}
                         sm={5.5}
                         md={4.8}
-                        sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
                         marginTop={{ xs: 0, sm: 0 }}
                         paddingRight={3}
                       >
@@ -287,30 +325,52 @@ const Offer = () => {
                         />
                       </Grid>
                       <Grid item>
-              <Box sx={{ width: '100%', display: {xs:"flex",sm:"none"}, justifyContent: 'center'  }} marginBottom={3}>
-        {sovreenOfferArray.map((_, index) => (
-          <IconButton
-            key={index}
-            onClick={() => goToSlide(index)}
-            sx={{
-              padding: theme.spacing(0.5),
-              color: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
-            }}
-          >
-            <Box
-              sx={{
-                width: '10px',
-                height: '10px',
-                borderRadius: '50%',
-                backgroundColor: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
-              }}
-            ></Box>
-          </IconButton>
-        ))}
-      </Box>
-              </Grid>
-                      <Grid item marginTop={1} sm={5.5} sx={{ display: "flex", alignItems: "center" }}>
-                        <Grid container justifyContent="center" alignItems="center">
+                        <Box
+                          sx={{
+                            width: "100%",
+                            display: { xs: "flex", sm: "none" },
+                            justifyContent: "center",
+                          }}
+                          marginBottom={3}
+                        >
+                          {sovreenOfferArray.map((_, index) => (
+                            <IconButton
+                              key={index}
+                              onClick={() => goToSlide(index)}
+                              sx={{
+                                padding: theme.spacing(0.5),
+                                color:
+                                  currentIndex === index
+                                    ? colors.themeGreen
+                                    : colors.navyBlue200,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  width: "10px",
+                                  height: "10px",
+                                  borderRadius: "50%",
+                                  backgroundColor:
+                                    currentIndex === index
+                                      ? colors.themeGreen
+                                      : colors.navyBlue200,
+                                }}
+                              ></Box>
+                            </IconButton>
+                          ))}
+                        </Box>
+                      </Grid>
+                      <Grid
+                        item
+                        marginTop={1}
+                        sm={5.5}
+                        sx={{ display: "flex", alignItems: "center" }}
+                      >
+                        <Grid
+                          container
+                          justifyContent="center"
+                          alignItems="center"
+                        >
                           <Grid item>
                             <StyledTypography1 color="#0D1726">
                               {element.Info.heading}
@@ -331,14 +391,21 @@ const Offer = () => {
                                           }}
                                         />
                                       </ListItemIcon>
-                                      <StyledTypography3>{item}</StyledTypography3>
+                                      <StyledTypography3>
+                                        {item}
+                                      </StyledTypography3>
                                     </ListItem>
                                   ))}
                                 </List>
                               </Grid>
                               <Grid item>
-                                <Grid container my={2} gap={2} direction={{ xs: "column", md: "row" }}>
-                                  {/* <Grid item>
+                                <Grid
+                                  container
+                                  my={2}
+                                  gap={2}
+                                  direction={{ xs: "column", md: "row" }}
+                                >
+                                  <Grid item>
                                     <StyledButton1
                                       variant="outlined"
                                       sx={{
@@ -349,21 +416,27 @@ const Offer = () => {
                                     >
                                       {element.button.first}
                                     </StyledButton1>
-                                  </Grid> */}
-                                  {
-                                    !isAuth || userDetails?.subscriptions.length==0 ? <Grid item>
+                                  </Grid>
+                                  {!isAuth ||
+                                  userDetails?.subscriptions.length == 0 ? (
+                                    <Grid item>
                                       <Link href="pricing">
-                                      
-                                    <StyledButton2 variant="contained">
-                                    {`Buy Full Access @ ₹4500/yr`}
-                                    </StyledButton2>
-                                    </Link>
-                                  </Grid>:
-                                    (userDetails?.subscriptions?.includes("full-access") ||
-                                    userDetails?.subscriptions?.includes("life")) && isAuth ? "" :
+                                        <StyledButton2 variant="contained">
+                                          {`Buy Full Access @ ₹4500/yr`}
+                                        </StyledButton2>
+                                      </Link>
+                                    </Grid>
+                                  ) : (userDetails?.subscriptions?.includes(
+                                      "full-access"
+                                    ) ||
+                                      userDetails?.subscriptions?.includes(
+                                        "life"
+                                      )) &&
+                                    isAuth ? (
                                     ""
-                                  }
-                                  
+                                  ) : (
+                                    ""
+                                  )}
                                 </Grid>
                               </Grid>
                             </Grid>
@@ -406,7 +479,13 @@ const Offer = () => {
               </StyledIconButton>
             </Box>
             <Grid item>
-              <Box sx={{ display: { xs: "none", sm: "flex", md: "none" }, justifyContent: "center" }} marginBottom={2}>
+              <Box
+                sx={{
+                  display: { xs: "none", sm: "flex", md: "none" },
+                  justifyContent: "center",
+                }}
+                marginBottom={2}
+              >
                 <StyledIconButton
                   onClick={prevSlide}
                   sx={{
@@ -432,14 +511,25 @@ const Offer = () => {
                   <ArrowForwardIcon sx={{ color: colors.navyBlue500 }} />
                 </StyledIconButton>
               </Box>
-              <Box sx={{ width: "100%", display: { xs: "none", sm: "flex" }, justifyContent: "center", position: "relative", bottom: "8px" }}>
+              <Box
+                sx={{
+                  width: "100%",
+                  display: { xs: "none", sm: "flex" },
+                  justifyContent: "center",
+                  position: "relative",
+                  bottom: "8px",
+                }}
+              >
                 {sovreenOfferArray.map((_, index) => (
                   <IconButton
                     key={index}
                     onClick={() => goToSlide(index)}
                     sx={{
                       padding: theme.spacing(0.5),
-                      color: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
+                      color:
+                        currentIndex === index
+                          ? colors.themeGreen
+                          : colors.navyBlue200,
                     }}
                   >
                     <Box
@@ -447,7 +537,10 @@ const Offer = () => {
                         width: "10px",
                         height: "10px",
                         borderRadius: "50%",
-                        backgroundColor: currentIndex === index ? colors.themeGreen : colors.navyBlue200,
+                        backgroundColor:
+                          currentIndex === index
+                            ? colors.themeGreen
+                            : colors.navyBlue200,
                       }}
                     ></Box>
                   </IconButton>

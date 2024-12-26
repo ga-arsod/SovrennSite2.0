@@ -318,7 +318,7 @@ const MainPoster = () => {
               <Grid
                 container
                 direction={{ xs: "column", sm: "row" }}
-                spacing={2}
+               gap={2}
                 alignItems="center"
                 justifyContent={{ xs: "center", md: "start" }}
                 width="100%"

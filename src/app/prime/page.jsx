@@ -25,7 +25,7 @@ import {
 import { useDispatch } from "react-redux";
 import Pagination from "@/components/Pagination/Pagination";
 import Footer from "@/components/Home/Footer";
-
+import { setSortBy } from "../Redux/Slices/sortingSlice";
 const StyledButton = styled(Button)`
   font-weight: 600;
   font-size: 14px;
@@ -68,6 +68,7 @@ const Prime = () => {
     promoterPagination,
   } = useSelector((store) => store.prime);
   const { sortBy, sortOrder } = useSelector((state) => state.sorting);
+  const { isAuth } = useSelector((state) => state.auth);
 
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -78,22 +79,34 @@ const Prime = () => {
     else dispatch(togglePromoterFilter());
   };
 
+  useEffect(()=>{
+  dispatch(setSortBy("company_name"))
+  },[])
+
   useEffect(() => {
+   
     dispatch(primeFilterApi());
     dispatch(promoterFilterApi());
+    
     dispatch(
       primeCompaniesListApi({
-        page: 1,
-        data: filterData1,
+       
+        body: filterData1,
+        page: page1,
+        sort_by: sortBy=="ttm_pe" || sortBy=="date" ? "company_name" : sortBy ,
+        sort_order: sortOrder,
       })
     );
     dispatch(
       promoterCompaniesListApi({
-        page: 1,
-        data: filterData2,
+       
+        body: filterData1,
+        page: page2,
+        sort_by: sortBy=="ttm_pe" || sortBy=="date" ? "company_name" : sortBy ,
+        sort_order: sortOrder,
       })
     );
-  }, [dispatch]);
+  }, [ sortBy, sortOrder,page1,page2,isAuth, dispatch]);
 
   return (
     <>
@@ -172,7 +185,9 @@ const Prime = () => {
             setFilterData2={setFilterData2}
           />
         )}
-        <Box mt={2}>
+        {
+         activeTab == "one" && primeCompaniesList?.length ||  activeTab == "two" && promoterCompaniesList?.length  ?
+         <Box mt={2}>
           <Pagination
             currentPage={activeTab == "one" ? page1 : page2}
             setCurrentPage={activeTab == "one" ? setPage1 : setPage2}
@@ -180,7 +195,9 @@ const Prime = () => {
               activeTab == "one" ? primePagination : promoterPagination
             }
           />
-        </Box>
+        </Box> : <></>
+        }
+        
       </Container>
       <Footer/>
     </>
