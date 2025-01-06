@@ -40,7 +40,9 @@ const StyledTypography2 = styled(Typography)`
 
 const StyledGrid = styled(Box)`
   cursor: pointer;
-  background-color: ${colors.navyBlue50};
+  background-color: #FAF9F9;
+ 
+   border: 1px solid  #E6E8E9;
   border-radius: 3px;
   display: flex;
   flex-direction: column;
@@ -73,15 +75,15 @@ const StyledGrid = styled(Box)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 11px;
+    padding: 12px 20px;
     margin-top: auto;  // Pushes it to the bottom
   }
 `;
 
 const StyledTypography3 = styled(Typography)`
   font-weight: 700;
-  font-size: 28px;
-  line-height: 34px;
+  font-size: 23px;
+  line-height: 28px;
   letter-spacing: -0.02em;
   color: ${colors.navyBlue900};
   @media (max-width: 639px) {
@@ -91,7 +93,7 @@ const StyledTypography3 = styled(Typography)`
 `;
 
 const HoverBox = styled(Box)`
-  background-color: #f6f5f5;
+  background-color:#F6F5F5 ;
   border-radius: 4px;
   margin-bottom: 8px;
   cursor: pointer;
@@ -182,7 +184,7 @@ const DiscoveryCard = ({ title, data }) => {
   return (
     <Box marginBottom={6}>
       <HoverBox onClick={handleToggle} className={isGridOpen ? "" : "collapsed"}>
-        <Grid container justifyContent="space-between" paddingY={1} paddingX="12px" alignItems="center">
+        <Grid container justifyContent="space-between" paddingY={0.5} paddingX="12px" alignItems="center">
           <Grid item>
             <StyledTypography3 className="header-text">{title}</StyledTypography3>
           </Grid>
@@ -223,7 +225,7 @@ const DiscoveryCard = ({ title, data }) => {
                         )}
                       </Box>
                     </Grid>
-                  <Grid item paddingX="11px">
+                  <Grid item paddingX="20px">
                     <StyledTypography1 gutterBottom>
                       {item?.title}
                     </StyledTypography1>

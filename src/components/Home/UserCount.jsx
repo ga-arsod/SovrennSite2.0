@@ -3,9 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   Grid,
   Typography,
-  IconButton,
-  Paper,
-  Avatar,
+ 
   Box,
 } from "@mui/material";
 import styled from "@emotion/styled";
@@ -74,7 +72,8 @@ const UserCount = () => {
           justifyContent="center"
           direction="row"
           paddingX={{ xs: 2, lg: 10 }}
-          paddingY={{ xs: 2, sm: 6 }}
+          paddingTop={{ xs:8, sm: 6 }}
+          paddingBottom={{ xs: 2, sm: 6 }}
           spacing={{xs:6,sm:4}}
           ref={ref}
           sx={{ opacity: inView ? 1 : 0 }}

@@ -50,6 +50,10 @@ const StyledTypography3 = styled(Typography)`
   font-size: 18px;
   line-height: 28px;
   color: #667085;
+  @media (max-width: 639px) {
+      font-size: 16px;
+    line-height: 19px;
+  }
 `;
 
 const StyledListItemText = styled(ListItemText)`
@@ -67,6 +71,7 @@ const StyledButton1 = styled(Button)`
   line-height: 17px;
   background-color: white;
   text-transform: none;
+  width:100%;
   :hover {
     background-color: ${colors.blueButtonHover};
     border-color: ${colors.blueButtonHover};
@@ -90,6 +95,7 @@ const StyledButton2 = styled(Button)`
   text-transform: none;
   padding-top: 8px;
   padding-bottom: 8px;
+   width:100%;
   :hover {
     background-color: ${colors.themeButtonHover};
     border-color: ${colors.themeButtonHover};
@@ -185,7 +191,7 @@ const Offer = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
-    }, 7000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
@@ -209,11 +215,12 @@ const Offer = () => {
             <Typography
               sx={{ textAlign: "center" }}
               marginBottom={{ xs: 1, sm: "20px" }}
+             paddingTop={1}
             >
               <StyledTypography1
                 component="span"
                 color="#0D1726"
-                marginRight={1}
+                marginRight={{xs:0.8,sm:0}}
               >
                 This is What we offer
               </StyledTypography1>
@@ -290,7 +297,7 @@ const Offer = () => {
                       justifyContent: "center",
                       alignItems: "center",
                     }}
-                    paddingLeft={6}
+                    paddingX={4}
                     display={index === currentIndex ? "block" : "none"}
                   >
                     <Grid
@@ -304,7 +311,7 @@ const Offer = () => {
                     >
                       <Grid
                         item
-                        xs={5}
+                        xs={6}
                         sm={5.5}
                         md={4.8}
                         sx={{
@@ -313,12 +320,12 @@ const Offer = () => {
                           alignItems: "center",
                         }}
                         marginTop={{ xs: 0, sm: 0 }}
-                        paddingRight={3}
+                        paddingRight={{xs:0,sm:3}}
                       >
                         <Image
                           src={element?.imagePath}
                           alt="offer"
-                          width={550}
+                          width={560}
                           height={351}
                           layout="responsive"
                           priority
@@ -368,33 +375,38 @@ const Offer = () => {
                       >
                         <Grid
                           container
-                          justifyContent="center"
+                        
                           alignItems="center"
                         >
                           <Grid item>
-                            <StyledTypography1 color="#0D1726">
+                            <StyledTypography1 color="#0D1726" textAlign={{xs:"center",sm:"left"}}>
                               {element.Info.heading}
                             </StyledTypography1>
                             <Grid container direction="column">
                               <Grid item>
                                 <List>
                                   {element.Info.listItems.map((item, index) => (
-                                    <ListItem key={index}>
-                                      <ListItemIcon>
-                                        <CheckIcon
-                                          fontSize="medium"
-                                          sx={{
-                                            color: colors.themeGreen,
-                                            backgroundColor: "#B9E2DF",
-                                            borderRadius: "50%",
-                                            padding: "4px",
-                                          }}
-                                        />
-                                      </ListItemIcon>
-                                      <StyledTypography3>
-                                        {item}
-                                      </StyledTypography3>
-                                    </ListItem>
+                                   <ListItem key={index} alignItems="flex-start" sx={{ alignItems: "flex-start" ,paddingX:0}}>
+                                   <ListItemIcon
+                                     sx={{
+                                       minWidth: "auto",
+                                       marginRight: "12px", 
+                                       alignSelf: "flex-start", 
+                                     }}
+                                   >
+                                     <CheckIcon
+                                       fontSize="medium"
+                                       sx={{
+                                         color: colors.themeGreen,
+                                         backgroundColor: "#B9E2DF",
+                                         borderRadius: "50%",
+                                         padding: "4px",
+                                       }}
+                                     />
+                                   </ListItemIcon>
+                                   <StyledTypography3 textAlign="left">{item}</StyledTypography3>
+                                 </ListItem>
+                                 
                                   ))}
                                 </List>
                               </Grid>
@@ -406,6 +418,7 @@ const Offer = () => {
                                   direction={{ xs: "column", md: "row" }}
                                 >
                                   <Grid item>
+                                    <Link href={element.button.link}>
                                     <StyledButton1
                                       variant="outlined"
                                       sx={{
@@ -416,6 +429,7 @@ const Offer = () => {
                                     >
                                       {element.button.first}
                                     </StyledButton1>
+                                    </Link>
                                   </Grid>
                                   {!isAuth ||
                                   userDetails?.subscriptions.length == 0 ? (

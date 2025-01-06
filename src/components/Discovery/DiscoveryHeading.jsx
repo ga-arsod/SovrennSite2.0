@@ -48,7 +48,7 @@ const DiscoveryHeading = ({headingObject}) => {
   
   return (
     <>
-      <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "28px" }}>
+      <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "14px" }}>
       <Snackbar />
         <Grid container alignItems="center">
           <Grid item paddingY={{ xs: 2, sm: 5 }}>

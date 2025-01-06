@@ -52,8 +52,16 @@ const StyledAccordion = styled(Accordion)`
   }
 `;
 const StyledAccordionSummary = styled(AccordionSummary)`
-  && {
+ && {
     padding: 0;
+    .MuiAccordionSummary-content {
+      margin-right: 24px;
+      align-items: flex-start; 
+    }
+    .MuiAccordionSummary-expandIconWrapper {
+      align-self: flex-start; 
+      margin-top: 12px;
+    }
   }
 `;
 const StyledAccordionDetails = styled(AccordionDetails)`

@@ -67,8 +67,9 @@ const EducationTrialCard = () => {
     <>
       <Box
         sx={{ position: "absolute" }}
-        bgcolor={{ xs: "#0D1726", sm: "transparent" }}
+        bgcolor={{ xs: "#000910", sm: "transparent", }}
         width="100%"  
+       
       >
         <StyledGrid
           container
@@ -80,8 +81,7 @@ const EducationTrialCard = () => {
             item
             sx={{
               background: `linear-gradient(45deg, ${gradientColors.c1}, ${gradientColors.c2})`,
-              boxShadow:
-                "0px 8px 8px -4px #1018280A, 0px 20px 24px -4px #1018281A",
+             
               borderRadius: "8px",
               maxWidth: "960px", 
               width: "100%",
@@ -93,8 +93,10 @@ const EducationTrialCard = () => {
               spacing={0}
               alignItems="center"
               justifyContent="space-between"
-              paddingY={{ xs: 1, sm: 4 }}
-              paddingX={{ xs: 2, sm: 4, md: 4 }} 
+              paddingY={{ xs: 2, sm: 4 }}
+              paddingX={{ xs: 2, sm: 4, md: 4 }}
+
+             
             >
               <Grid item width={{ xs: "100%", sm: "70%" }}>
                 <StyledTypography1

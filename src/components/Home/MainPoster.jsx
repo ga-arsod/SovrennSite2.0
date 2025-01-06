@@ -35,11 +35,10 @@ const StyledButton1 = styled(Button)`
   font-weight: 500;
   font-size: 18px;
   line-height: 21px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding:12px 20px;
   text-transform: none;
   background-color: white;
-  width: 350px;
+ 
   :hover {
     background-color: ${colors.themeButtonHover};
     color: white;
@@ -47,6 +46,8 @@ const StyledButton1 = styled(Button)`
     outline: ${colors.themeButtonHover};
   }
   @media (max-width: 639px) {
+  width:100%;
+   padding:12px 0px;
     font-size: 16px;
     font-weight: 500;
     line-height: 20px;
@@ -60,16 +61,18 @@ const StyledButton2 = styled(Button)`
   font-weight: 500;
   font-size: 18px;
   line-height: 21px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding:12px 20px;
   background-color: ${colors.themeGreen};
   text-transform: none;
 
-  width: 350px;
+ 
   :hover {
     background-color: ${colors.themeButtonHover};
   }
   @media (max-width: 700px) {
+  width:100%;
+   padding-top:12px;
+   padding-bottom:12px;
     font-size: 16px;
     font-weight: 500;
     line-height: 22px;
@@ -246,7 +249,7 @@ const MainPoster = () => {
             className={animate ? "animate" : ""}
           >
             <Grid item>
-              <StyledTyography3 marginBottom={1}>
+              <StyledTyography3 marginBottom={1.5}>
                 <Typography
                   component="span"
                   sx={{
@@ -296,7 +299,7 @@ const MainPoster = () => {
               </Box>
               <Box
                 sx={{ textAlign: { xs: "center", lg: "start" } }}
-                marginTop="4px"
+                marginTop="8px"
                 marginBottom="28px"
               >
                 <Typography
@@ -351,13 +354,39 @@ const MainPoster = () => {
                 )}
 
                 {!isAuth ? (
-                  <Grid item>
-                    <Link href="pricing">
-                      <StyledButton2 variant="contained">
-                        {`Buy Full Access @ ₹4500/yr`}
-                      </StyledButton2>
-                    </Link>
-                  </Grid>
+                 <Grid
+                 item
+                 sx={{
+                   display: "flex",
+                   flexDirection: { xs: "column", sm: "row" },
+                   gap: 2,
+                 }}
+                 width="100%"
+               >
+                 <Link href="pricing">
+                   <StyledButton1
+                     variant="outlined"
+                     sx={{
+                       width: { xs: "100%", sm: "auto" },
+                       padding: { xs: "16px", sm: "8px 16px" },
+                     }}
+                   >
+                     Get 45 Days Trial For Free
+                   </StyledButton1>
+                 </Link>
+                 <Link href="pricing">
+                   <StyledButton2
+                     variant="contained"
+                     sx={{
+                       width: { xs: "100%", sm: "auto" },
+                       padding: { xs: "16px", sm: "8px 16px" },
+                     }}
+                   >
+                     {`Buy Full Access @ ₹4500/yr`}
+                   </StyledButton2>
+                 </Link>
+               </Grid>
+               
                 ) : isAuth &&
                   (userDetails?.subscriptions?.includes("full-access") ||
                     userDetails?.subscriptions?.includes("life")) ? (
