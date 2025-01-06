@@ -80,7 +80,7 @@ const TrialCard = () => {
     <>
       <Box
         sx={{ position: "absolute" }}
-        bgcolor={{ xs: "#0D1726", sm: "transparent" }}
+        bgcolor={{ xs: "#000910", sm: "transparent" }}
         width="100%"
       >
         <StyledGrid
@@ -109,7 +109,7 @@ const TrialCard = () => {
               spacing={0}
               alignItems="center"
               justifyContent="space-between"
-              paddingY={{ xs: 1, sm: 4 }}
+              paddingY={{ xs: 2, sm: 4 }}
               paddingX={{ xs: 2, sm: 4, md: 4 }}
             >
               <Grid item width={{ xs: "100%", sm: "70%" }}>

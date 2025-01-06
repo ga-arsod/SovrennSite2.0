@@ -296,9 +296,9 @@ const Times = () => {
                   You are only reading free Sovrenn Times Monday articles. To
                   read daily Sovrenn Times articles, you need to buy a plan.
                 </StyledTypography1>
-                {isAuth ? (
+                {!isAuth ? (
                   <Link href="/pricing">
-                  <StyledButton2 variant="contained">{`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}</StyledButton2>
+                  <StyledButton2 variant="contained">Get 45 Days Trial For Free</StyledButton2>
                   </Link>
                 ) : (
                   <Link href="/pricing">

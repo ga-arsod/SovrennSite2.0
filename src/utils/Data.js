@@ -523,6 +523,7 @@ export const primeArticleDisclaimer =
           "Stay informed with live alerts on the companies you follow"]
       },
       button: {
+        link:"/pulse",
         first: "Explore This Feature Now",
         second: "Buy Full Access @ ₹5000/yr",
       },
@@ -537,7 +538,8 @@ export const primeArticleDisclaimer =
           ],
       },
       button: {
-        first: "Explore Now",
+        link:"/discovery",
+        first: "Explore This Feature Now",
         second: "Buy Full Access @ ₹4500/yr",
       },
     },
@@ -551,7 +553,8 @@ export const primeArticleDisclaimer =
           ],
       },
       button: {
-        first: "Explore Now",
+        link:"/times",
+        first: "Explore This Feature Now",
         second: "Buy Full Access @ ₹4500/yr",
       },
     },
@@ -565,7 +568,8 @@ export const primeArticleDisclaimer =
           ],
       },
       button: {
-        first: "Explore Now",
+        link:"/prime",
+        first: "Explore This Feature Now",
         second: "Buy Full Access @ ₹4500/yr",
       },
     },
@@ -581,7 +585,8 @@ export const primeArticleDisclaimer =
           ],
       },
       button: {
-        first: "Explore Now",
+        link:"/ipo-zone",
+        first: "Explore This Feature Now",
         second: "Buy Full Access @ ₹5000/yr",
       },
     },
@@ -597,24 +602,24 @@ export const primeArticleDisclaimer =
           ],
       },
       button: {
-        first: "Explore Now",
+        link:"/self-help",
+        first: "Explore This Feature Now",
         second: "Buy Full Access @ ₹4500/yr",
       },
     },
     {
       imagePath: "/ledgeCarousel.png",
       Info: {
-        first: "Explore Now",
-        listItems: ["Explore our articles to deepen your knowledge of the finance world", 
-          "Gain valuable insights into financial trends and strategies" , 
-          "Stay informed with expert-driven content on the latest in finance"
-          
-          
+        heading: "Sovrenn Knowledge",
+        listItems: ["Access IPO stock articles to equip yourself with crucial information",  
+          "Stay informed before making investment decisions with in-depth IPO insights",  
+          "Get detailed coverage on upcoming IPOs to make informed choices"
           
           ],
       },
       button: {
-        first: "Explore Now",
+        link:"/knowledge",
+        first: "Explore This Feature Now",
         second: "Buy Full Access @ ₹4500/yr",
       },
     },

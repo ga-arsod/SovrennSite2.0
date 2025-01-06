@@ -109,12 +109,12 @@ const Footer = () => {
   const isHomepage = pathname === "/" || pathname === "/education";
   return (
     <>
-      {!isXsScreen && (
-        <Grid container justifyContent="center" bgcolor="#000910">
+      
+        <Grid container justifyContent="center" bgcolor="#000910" >
           <Grid item width={{ xs: "100%", sm: "95%", lg: "1280px" }}>
             <Box
               height={{
-                xs: "765px",
+                xs: isHomepage ? "1000px" : "790px",
 
                 sm: isHomepage ? "530px" : "450px",
                 md: isHomepage ? "530px" : "450px",
@@ -132,7 +132,7 @@ const Footer = () => {
                 }}
                 paddingX={{ xs: 1, sm: 4, md: 4 }}
               >
-                <Grid item marginTop={{ xs: 3, lg: 0 }}>
+                <Grid item marginTop={{ xs: 3, lg: 0 }} xs={12} sm={4}>
                   <List
                     subheader={
                       <StyledSubheader
@@ -191,7 +191,7 @@ const Footer = () => {
                   </List>
                 </Grid>
 
-                <Grid item marginTop={{ xs: 3, lg: 0 }}>
+                <Grid item marginTop={{ xs: 3, lg: 0 }} xs={12} sm={3} >
                   <List
                     subheader={
                       <StyledSubheader
@@ -233,8 +233,9 @@ const Footer = () => {
                   item
                   marginTop={{ xs: 3, lg: 0 }}
                   paddingX={{ xs: 1.6, sm: 0 }}
+                  xs={12} sm={4}
                 >
-                  <Grid container color="white" direction="column" spacing={1}>
+                  <Grid container color="white" direction="column" spacing={1} >
                     <Grid item>
                       <Typography
                         sx={{
@@ -243,6 +244,7 @@ const Footer = () => {
                           lineHeight: "17px",
                           color: "white",
                         }}
+                       
                       >
                         Get the app
                       </Typography>
@@ -287,15 +289,15 @@ const Footer = () => {
                 paddingX={{ xs: 3, sm: 4, md: 4 }}
                 sx={{
                   position: "absolute",
-                  bottom: { xs: "6rem", sm: "4rem", md: "3.5rem" },
+                  bottom: { xs: "5rem", sm: "4rem", md: "3.5rem" },
                 }}
               >
-                <Grid item display="inline" xs={0.8} sm={0.5} md={0.2}>
+                <Grid item display="inline" xs={0.7} sm={0.3} md={0.2}>
                   <ErrorOutlineIcon
                     sx={{
                       color: "#8195A5",
                       padding: 0,
-                      fontSize: { xs: "12px", sm: "16px" },
+                      fontSize: { xs: "14px", sm: "16px" },
                     }}
                     marginBottom={3}
                   />
@@ -321,7 +323,7 @@ const Footer = () => {
                 justifyContent="space-between"
                 paddingX={{ xs: 3, sm: 4, md: 4 }}
                 alignItems="center"
-                sx={{ position: "absolute", bottom: "1rem" }}
+                sx={{ position: "absolute", bottom: "0.5rem" }}
                 marginBottom={1}
                 marginTop={3}
               >
@@ -361,7 +363,7 @@ const Footer = () => {
             </Box>
           </Grid>
         </Grid>
-      )}
+      
     </>
   );
 };

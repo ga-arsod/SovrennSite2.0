@@ -45,12 +45,13 @@ const StyledTypography2 = styled(Typography)`
 
 const StyledGrid = styled(Box)`
   cursor: pointer;
-  background-color: ${colors.navyBlue50};
-  border-radius: 3px;
+  background-color:#FAF9F9;
+  border-radius: 4px;
+  border: 1px solid  #E6E8E9;
   display: flex;
   flex-direction: column;
   transition: background-color 0.3s;
-  min-height: 315px; /* Minimum height to start with */
+  min-height: 315px;
 
   &:hover {
     background-color: ${colors.green50};
@@ -77,15 +78,15 @@ const StyledGrid = styled(Box)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 11px;
+   padding: 12px 20px;
     margin-top: auto;
   }
 `;
 
 const StyledTypography3 = styled(Typography)`
   font-weight: 700;
-  font-size: 28px;
-  line-height: 34px;
+  font-size: 23px;
+  line-height: 28px;
   letter-spacing: -0.02em;
   color: ${colors.navyBlue900};
   @media (max-width: 639px) {
@@ -95,7 +96,7 @@ const StyledTypography3 = styled(Typography)`
 `;
 
 const HoverBox = styled(Box)`
-  background-color: #f6f5f5;
+  background-color:#F6F5F5;
   border-radius: 4px;
   margin-bottom: 8px;
   cursor: pointer;
@@ -208,7 +209,7 @@ const CustomDiscoveryCard = ({ title, data }) => {
           <Grid
             container
             justifyContent="space-between"
-            paddingY={1}
+            paddingY={0.5}
             paddingX="12px"
             alignItems="center"
           >

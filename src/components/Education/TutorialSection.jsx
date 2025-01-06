@@ -215,7 +215,7 @@ const TutorialSection = () => {
                         <StyledTypography3
                           color="#101828"
                           marginLeft={{xs:2,sm:3}}
-                          paddingY={3}
+                          paddingY={2}
                         >
                           {element?.title}
                         </StyledTypography3>

@@ -51,7 +51,7 @@ const FoundersCard = ({ item }) => {
               component="div"
               justifyContent="center"
               color="#4D5E7C"
-              textAlign="justify"
+              textAlign="center"
               sx={{ fontWeight: "400", fontSize: "16px", lineHeight: "19px",textJustify:'center' }}
               
             >

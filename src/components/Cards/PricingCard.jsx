@@ -51,9 +51,9 @@ const StyledTypography1 = styled(Typography)`
   line-height: 56px;
   letter-spacing: -0.04em;
   @media (max-width: 639px) {
-    font-size: 34px;
-    font-weight: 600;
-    line-height: 40px;
+    font-size: 23px;
+   margin-bottom:3px;
+    line-height: 28px;
   }
 `;
 
@@ -61,6 +61,11 @@ const StyledTypography2 = styled(Typography)`
   font-size: 16px;
   font-weight: 400;
   line-height: 19px;
+   @media (max-width: 639px) {
+    font-size: 12px;
+   
+    line-height: 14px;
+  }
 `;
 
 const StyledCard = styled(Card)`
@@ -75,12 +80,20 @@ const StyledTypography = styled(Typography)`
   font-size: 20px;
   font-weight: 400;
   line-height: 24px;
+    @media (max-width: 639px) {
+   font-size: 14px;
+   line-height: 17px;
+  }
 `;
 
 const PriceTypography = styled(Typography)`
   font-size: 23px;
   font-weight: 600;
   line-height: 28px;
+  @media (max-width: 639px) {
+   font-size: 19px;
+   line-height: 23px;
+  }
 `;
 
 const DiscountTypography = styled(Typography)`
@@ -88,6 +101,10 @@ const DiscountTypography = styled(Typography)`
   font-weight: 400;
   line-height: 24px;
   text-decoration: line-through;
+  @media (max-width: 639px) {
+   font-size: 16px;
+   line-height: 24px;
+  }
 `;
 
 const PopularBadge = styled(Box)`
@@ -116,6 +133,11 @@ const FullWidthBadge = styled(Box)`
   top: 0;
   left: 0;
   border-radius: 0;
+   @media (max-width: 639px) {
+    font-size: 12px;
+   
+    line-height: 14px;
+  }
 `;
 
 const payuUrl = process.env.NEXT_PUBLIC_PAYU_URL;
@@ -178,7 +200,7 @@ const PricingCard = ({ planDetails }) => {
                   border: "1px solid #E4E7EC",
                   borderRadius: "16px",
                   boxShadow: "0px 12px 16px -4px #1018281A",
-                  height: plan.type == "full-access" ? {xs:"600px",sm:"720px"} : {xs:"590px",sm:"650px"},
+                  height: plan.type == "full-access" ? {xs:"570px",sm:"720px"} : {xs:"560px",sm:"650px"},
                   marginBottom: "20px",
                   position: "relative",
                 }}
@@ -288,7 +310,7 @@ const PricingCard = ({ planDetails }) => {
 
                     <Box sx={{ marginY: 1.5 }}>
                       {plan.products.included.map((feature, index) => (
-                        <Box key={index} display="flex" alignItems="center">
+                        <Box key={index} display="flex" alignItems="center" marginBottom={1}>
                           <Box sx={{ marginRight: "8px" }}>
                             {feature.prefix_icon_url ? (
                               <Image
@@ -305,12 +327,12 @@ const PricingCard = ({ planDetails }) => {
                             )}
                           </Box>
                           <Typography
-                            marginBottom={1}
+                          
                             sx={{
                               color: colors.greyBlue500,
                               fontWeight: "400",
-                              fontSize: "20px",
-                              lineHeight: "24px",
+                              fontSize: {xs:"16px",sm:"20px"},
+                              lineHeight:{xs:"19px",sm:"24px"} ,
                             }}
                           >
                             {feature.text}
@@ -333,7 +355,7 @@ const PricingCard = ({ planDetails }) => {
                           Not Included:
                         </Typography>
                         {plan.products.not_included.map((item, index) => (
-                          <Box key={index} display="flex" alignItems="center">
+                          <Box key={index} sx={{display:"flex",alignItems:'center'}} marginBottom={1}>
                             <Box sx={{ marginRight: "8px" }}>
                               {item.prefix_icon_url ? (
                                 <Image
@@ -350,12 +372,12 @@ const PricingCard = ({ planDetails }) => {
                               )}
                             </Box>
                             <Typography
-                              marginBottom={1}
+                              
                               sx={{
                                 color: colors.greyBlue500,
                                 fontWeight: "400",
-                                fontSize: "20px",
-                                lineHeight: "24px",
+                                fontSize: {xs:"16px",sm:"20px"},
+                              lineHeight:{xs:"19px",sm:"24px"} ,
                               }}
                             >
                               {item.text}
