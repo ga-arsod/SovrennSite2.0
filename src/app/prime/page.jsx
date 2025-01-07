@@ -13,6 +13,7 @@ import styled from "@emotion/styled";
 import { colors } from "@/components/Constants/colors";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import Head from "next/head";
+import ScrollCircle from "@/components/Common/ScrollCircle";
 import { Container, Box } from "@mui/material";
 import {
   primeCompaniesListApi,
@@ -197,7 +198,7 @@ const Prime = () => {
           />
         </Box> : <></>
         }
-        
+        <ScrollCircle/>
       </Container>
       <Footer/>
     </>

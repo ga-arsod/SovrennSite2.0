@@ -39,9 +39,9 @@ console.log(convertToHtml(data.content))
         <article id={styles.MainContainer} >
 
             <div className={styles.titleDiv}>
-                <h2>{data.company_name}</h2>
+                <h2 className={styles.titleDivBtnsHeading}>{data.company_name}</h2>
 
-                <div className={styles.titleDivBtns}>
+                <div className={styles.titleDivBtns} >
                     {discovery_route ?
                         <Link className={styles.discoveryRouteBtn} href={discovery_route} target='_blank'>Read Discovery</Link>
                         :

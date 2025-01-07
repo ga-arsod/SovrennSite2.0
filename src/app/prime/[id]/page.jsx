@@ -18,6 +18,7 @@ import Disclaimer from "../../../components/Common/Disclaimer";
 import { primeArticleDisclaimer } from "@/utils/Data";
 import NoLogin from "../../../components/Auth/NoLogin"
 import NoAccess from "../../../components/Auth/NoAccess"
+import ScrollCircle from "@/components/Common/ScrollCircle";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -99,7 +100,7 @@ const PrimeArticles = () => {
   const { comments } = useSelector((store) => store.comments);
 
   const [value, setValue] = useState(isPromoterInterviewActive ? "two" : "one");
-  const [showScroll, setShowScroll] = useState(false);
+ 
   const [content, setContent] = useState(null);
   const [fadeIn, setFadeIn] = useState(true);
 
@@ -126,24 +127,7 @@ const PrimeArticles = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const checkScrollTop = () => {
-      if (!showScroll && window.pageYOffset > 300) {
-        setShowScroll(true);
-      } else if (showScroll && window.pageYOffset <= 300) {
-        setShowScroll(false);
-      }
-    };
-
-    window.addEventListener("scroll", checkScrollTop);
-    return () => {
-      window.removeEventListener("scroll", checkScrollTop);
-    };
-  }, [showScroll]);
-
-  const scrollTop = () => {
-    window.scrollTo({ top: 0, behavior: "auto" });
-  };
+ 
 
   useEffect(() => {
     if (articleData) {
@@ -215,6 +199,7 @@ const PrimeArticles = () => {
                   >
                     {content && <div id={styles.MainContainer}>{content}</div>}
                   </Box>
+                 <ScrollCircle/>
                   <Disclaimer margin={3} text={primeArticleDisclaimer}  />
               </Box>
             </article>

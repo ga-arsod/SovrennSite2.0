@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams } from "next/navigation";
 import convertToHtml from "@/utils/convertToHtml";
 import styles from "../../../styles/ipo.module.css";
-
+import ScrollCircle from "../../../components/Common/ScrollCircle";
 import { ipoArticleApi } from "@/app/Redux/Slices/ipoSlice";
 import styled from "@emotion/styled";
 import { Box, Typography, Divider } from "@mui/material";
@@ -31,11 +31,9 @@ const StyledTypography1 = styled(Typography)`
 const IpoArticles = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  
-  const { ipoArticle, isIpoArticleLoading } = useSelector((store) => store.ipo);
-  const { isAuth,userDetails } = useSelector((store) => store.auth);
 
-  const [showScroll, setShowScroll] = useState(false);
+  const { ipoArticle, isIpoArticleLoading } = useSelector((store) => store.ipo);
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
 
   useEffect(() => {
     dispatch(ipoArticleApi(id));
@@ -61,51 +59,32 @@ const IpoArticles = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const checkScrollTop = () => {
-      if (!showScroll && window.pageYOffset > 300) {
-        setShowScroll(true);
-      } else if (showScroll && window.pageYOffset <= 300) {
-        setShowScroll(false);
-      }
-    };
-
-    window.addEventListener("scroll", checkScrollTop);
-    return () => {
-      window.removeEventListener("scroll", checkScrollTop);
-    };
-  }, [showScroll]);
-
-  const scrollTop = () => {
-    window.scrollTo({ top: 0, behavior: "auto" });
-  };
-
-
-  if(!isAuth)
-    {
-     return <NoLogin/>
-    }
-   
-  
+  if (!isAuth) {
+    return <NoLogin />;
+  }
 
   if (isAuth && isIpoArticleLoading) {
     return (
       <>
-       
         <Spinner margin={15} />
       </>
     );
   }
 
-  if(isAuth && ( userDetails?.subscriptions?.includes("full-access") || userDetails?.subscriptions?.includes("monthly") || userDetails?.subscriptions?.includes("quarterly") || userDetails?.subscriptions?.includes("life") || userDetails?.subscriptions?.includes("trial") ))
-  {
+  if (
+    isAuth &&
+    (userDetails?.subscriptions?.includes("full-access") ||
+      userDetails?.subscriptions?.includes("monthly") ||
+      userDetails?.subscriptions?.includes("quarterly") ||
+      userDetails?.subscriptions?.includes("life") ||
+      userDetails?.subscriptions?.includes("trial"))
+  ) {
     return (
       <>
-        
         <article>
           <Box sx={{ maxWidth: 990, margin: "84px auto 0px auto", padding: 2 }}>
             <StyledTypography1>{ipoArticle?.title}</StyledTypography1>
-  
+
             {ipoArticle ? (
               <div id={styles.MainContainer}>
                 {convertToHtml(ipoArticle?.content)}
@@ -113,42 +92,15 @@ const IpoArticles = () => {
             ) : (
               <></>
             )}
-  
-            <Box
-              sx={{
-                position: "fixed",
-                bottom: 50,
-                right: 16,
-                width: 48,
-                height: 48,
-                borderRadius: "50%",
-                backgroundColor: "#CED6DC",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: 3,
-                cursor: "pointer",
-                display: showScroll ? "flex" : "none",
-              }}
-              onClick={scrollTop}
-            >
-              <KeyboardArrowUpIcon />
-            </Box>
-            <Disclaimer margin={3} text={primeArticleDisclaimer}  />
+
+            <ScrollCircle />
+            <Disclaimer margin={3} text={primeArticleDisclaimer} />
           </Box>
         </article>
-        <Footer/>
+        <Footer />
       </>
-    )
-
-  }
-  else 
-  return <NoAccess/>
- 
+    );
+  } else return <NoAccess />;
 };
-
-
-
-
 
 export default IpoArticles;
