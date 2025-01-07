@@ -30,6 +30,7 @@ import { primeArticleDisclaimer } from "@/utils/Data";
 import Snackbar from "../../../../components/Snackbar/SnackBar";
 import NoLogin from "../../../../components/Auth/NoLogin";
 import NoAccess from "../../../../components/Auth/NoAccess";
+import ScrollCircle from "@/components/Common/ScrollCircle";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -141,7 +142,6 @@ const DiscoveryArticle = () => {
     company_id,
   } = articleData;
 
-  const [showScroll, setShowScroll] = useState(false);
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false);
 
@@ -175,25 +175,6 @@ const DiscoveryArticle = () => {
       dispatch(getCommentsApi({ company_id, component: "discovery" }));
     }
   }, [dispatch, company_id]);
-
-  useEffect(() => {
-    const checkScrollTop = () => {
-      if (!showScroll && window.pageYOffset > 300) {
-        setShowScroll(true);
-      } else if (showScroll && window.pageYOffset <= 300) {
-        setShowScroll(false);
-      }
-    };
-
-    window.addEventListener("scroll", checkScrollTop);
-    return () => {
-      window.removeEventListener("scroll", checkScrollTop);
-    };
-  }, [showScroll]);
-
-  const scrollTop = () => {
-    window.scrollTo({ top: 0, behavior: "auto" });
-  };
 
   const toggleWatchlist = () => {
     setIsInWatchlist((prev) => !prev);
@@ -455,7 +436,12 @@ const DiscoveryArticle = () => {
           </Box>
         </article>
 
-        <Box width="915px" marginX="auto" paddingX={1} marginBottom={3}>
+        <Box
+          width={{ maxWidth: 915 }}
+          marginX="auto"
+          paddingX={1}
+          marginBottom={3}
+        >
           <Divider sx={{ marginY: 1 }} />
           <Grid container justifyContent="flex-start">
             <Box
@@ -494,26 +480,7 @@ const DiscoveryArticle = () => {
             </Box>
           </Grid>
           <Divider sx={{ marginY: 1 }} />
-          <Box
-            sx={{
-              position: "fixed",
-              bottom: 50,
-              right: 16,
-              width: 48,
-              height: 48,
-              borderRadius: "50%",
-              backgroundColor: "#CED6DC",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: 3,
-              cursor: "pointer",
-              display: showScroll ? "flex" : "none",
-            }}
-            onClick={scrollTop}
-          >
-            <KeyboardArrowUpIcon />
-          </Box>
+          <ScrollCircle />
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Container>

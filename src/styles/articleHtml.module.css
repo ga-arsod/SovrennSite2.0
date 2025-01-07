@@ -83,7 +83,7 @@
 }
 
 /* Responsiveness for tablet view */
-@media only screen and (max-width : 920px) {
+@media only screen and (max-width : 1040px) {
     
 
     #MainContainer img {
@@ -106,7 +106,7 @@
 }
 
 /* Responsiveness for mobile view */
-@media only screen and (max-width : 440px) {
+@media only screen and (max-width : 639px) {
     
 
     #MainContainer ul {

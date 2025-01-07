@@ -31,6 +31,7 @@ import Head from "next/head";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Footer from "@/components/Home/Footer";
 import Pagination from "@/components/Pagination/Pagination";
+import ScrollCircle from "@/components/Common/ScrollCircle";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -362,7 +363,9 @@ const DiscoveryBucketContent = () => {
           <NoData text="No data available for this bucket currently." />
         ) : (
           <DiscoveryTable tableData={tableData} id={id} />
+
         )}
+        <ScrollCircle/>
         {
           tableData?.length ? <Box mt={2}>
           <Pagination

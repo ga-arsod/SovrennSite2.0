@@ -1,28 +1,32 @@
 import React from 'react';
-import { Snackbar, Alert, IconButton } from '@mui/material';
+import { Snackbar, Alert, IconButton, Slide } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetSnackStatus } from '@/app/Redux/Slices/snackbarSlice';
+
+
+const SlideTransition = (props) => {
+  return <Slide {...props} direction="left" />;
+};
 
 const CustomSnackbar = ({ isCommentsModalOpen }) => {
   const dispatch = useDispatch();
   const { status, severity, message } = useSelector((store) => store.snackbar);
 
-  
-
   return (
     <Snackbar
       open={status}
       onClose={() => dispatch(resetSnackStatus())}
+      TransitionComponent={SlideTransition}
       anchorOrigin={{
         vertical: isCommentsModalOpen ? 'bottom' : 'top',
-        horizontal: isCommentsModalOpen ? 'center' : 'right',
+        horizontal: isCommentsModalOpen ? 'right' : 'right',
       }}
       style={{
         marginTop: isCommentsModalOpen ? '0px' : '60px',
         marginBottom: isCommentsModalOpen ? '20px' : '0px',
       }}
-      autoHideDuration={4000}
+      autoHideDuration={3000}
     >
       <Alert
         severity={severity}

@@ -91,7 +91,7 @@ const IpoCard = ({ data }) => {
                 sm: "repeat(2, minmax(0, 1fr))",
               },
               gap: 2,
-              padding: { xs: 1 },
+            
             }}
           >
             {data?.map((row, index) => {
@@ -104,7 +104,8 @@ const IpoCard = ({ data }) => {
                     flexDirection: "column",
                     maxWidth: "400px",
                     position: "relative",
-                    backgroundColor: "#EFF2F4",
+                    border:"1px solid  #E6E8E9",
+                    backgroundColor: "#FAF9F9",
                     borderRadius: "4px",
                     maxWidth: "474px",
                     width: "100%",

@@ -72,7 +72,7 @@ const UserCount = () => {
           justifyContent="center"
           direction="row"
           paddingX={{ xs: 2, lg: 10 }}
-          paddingTop={{ xs:8, sm: 6 }}
+          paddingTop={{ xs:4, sm: 6 }}
           paddingBottom={{ xs: 2, sm: 6 }}
           spacing={{xs:6,sm:4}}
           ref={ref}

@@ -102,14 +102,15 @@ const PrimeCard = ({ data, activeTab }) => {
             sm: "repeat(2, minmax(0, 1fr))",
           },
           gap: 2,
-          padding: { xs: 1 }, 
+          
         }}
       >
         {data?.map((elem, index) => (
           <Box
             key={index}
             sx={{
-              backgroundColor: "#EFF2F4",
+              backgroundColor: "#FAF9F9",
+              border:"1px solid  #E6E8E9",
               borderRadius: "4px",
               maxWidth: "472px",
               width: "100%",

@@ -14,6 +14,7 @@ import { useTheme } from "@mui/material/styles";
 import IpoCard from "../../components/Cards/IpoCard";
 import IpoTableData from "../../components/Ipo/IpoTableData";
 import Footer from "@/components/Home/Footer";
+import ScrollCircle from "@/components/Common/ScrollCircle";
 
 const Ipo = () => {
   const theme = useTheme();
@@ -120,6 +121,7 @@ const Ipo = () => {
       ) : (
         <IpoTableData data={ipoCompaniesList} />
       )}
+      <ScrollCircle/>
       <Container>
         {ipoCompaniesList?.length ? (
           <Box mt={2}>

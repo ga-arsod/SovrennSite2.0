@@ -1,10 +1,12 @@
 "use client";
 import DiscoveryHeading from "@/components/Discovery/DiscoveryHeading";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
+
 import { Container } from "@mui/material";
 
 import { useSelector } from "react-redux";
 import Spinner from "@/components/Common/Spinner";
+
 import Head from "next/head";
 import { useDispatch } from "react-redux";
 import {
@@ -12,12 +14,13 @@ import {
   bucketsApiCall,
   discoveryFiltersApiCall
 } from "../Redux/Slices/discoverySlice";
-
+import ScrollCircle from "../../components/Common/ScrollCircle"
 import DiscoveryCard from "@/components/Cards/DiscoveryCard";
 import CustomDiscoveryCard from "@/components/Cards/CustomDiscoveryCard";
 import DiscoveryFilter from "@/components/Discovery/DiscoveryFilter";
 
 const Discovery = () => {
+  const [showScroll, setShowScroll] = useState(false);
   const { isAllBucketsLoading, isMyBucketsLoading,filtersData } = useSelector(
     (store) => store.discovery
   );
@@ -28,6 +31,8 @@ const Discovery = () => {
     (store) => store.discovery.buckets
   );
   const myBuckets = useSelector((store) => store.discovery.myBuckets);
+ 
+ 
   useEffect(() => {
     dispatch(myBucketsApiCall());
   }, [dispatch]);
@@ -103,6 +108,7 @@ const Discovery = () => {
         <DiscoveryCard title="Sectoral" data={sectoral} />
 
         <DiscoveryCard title="Important Buckets" data={important} />
+       <ScrollCircle/>
       </Container>
     </>
   );

@@ -20,11 +20,11 @@ const StyledTypography4 = styled(Typography)`
   font-size: 14px;
   line-height: 17px;
   color: black;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  // display: -webkit-box;
+  // -webkit-line-clamp: 2;
+  // -webkit-box-orient: vertical;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
 `;
 const StyledTypography2 = styled(Typography)`
   font-weight: 600;
@@ -216,10 +216,12 @@ const DiscoveryTableCard = ({ tableData, id }) => {
           }}
         >
           {tableData?.companies?.map((item, index) => (
+          
             <Box
               key={index}
               sx={{
-                backgroundColor: "#EFF2F4",
+                backgroundColor: "#FAF9F9",
+                border: "1px solid  #E6E8E9",
                 borderRadius: "4px",
                 maxWidth: "472px",
                 width: "100%",
@@ -228,6 +230,7 @@ const DiscoveryTableCard = ({ tableData, id }) => {
                 margin: "auto",
               }}
             >
+            
               <StyledTypography1
                 color={colors.greyBlue900}
                 sx={{ fontWeight: "400" }}

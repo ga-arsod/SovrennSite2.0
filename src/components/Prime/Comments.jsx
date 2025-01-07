@@ -96,7 +96,6 @@ const CustomMenuItem = styled(MenuItem)`
   font-weight: 600;
   line-height: 14px;
   padding: 2px 4px;
- 
 `;
 
 const CommentDrawer = ({
@@ -104,7 +103,7 @@ const CommentDrawer = ({
   setIsCommentsModalOpen,
   comments,
   company_id,
-  component
+  component,
 }) => {
   const [newComment, setNewComment] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
@@ -143,9 +142,9 @@ const CommentDrawer = ({
     dispatch(
       postCommentApi({
         comment: newComment,
-        company_id:company_id,
+        company_id: company_id,
         user_id: userDetails._id,
-        component:component
+        component: component,
       })
     );
 
@@ -153,7 +152,6 @@ const CommentDrawer = ({
   };
 
   const handleMenuClick = (event, commentId) => {
-   
     setAnchorEl(event.currentTarget);
     setSelectedCommentId(commentId);
   };
@@ -167,7 +165,7 @@ const CommentDrawer = ({
       commentDeleteApi({
         company_id: company_id,
         comment_id: selectedCommentId,
-        component:component
+        component: component,
       })
     );
 
@@ -185,9 +183,21 @@ const CommentDrawer = ({
   const handleLikeToggle = (commentId) => {
     const comment = commentList.find((c) => c._id === commentId);
     if (comment.has_liked) {
-      dispatch(commentunLikeApi({ company_id:company_id, comment_id: commentId,component:component }));
+      dispatch(
+        commentunLikeApi({
+          company_id: company_id,
+          comment_id: commentId,
+          component: component,
+        })
+      );
     } else {
-      dispatch(commentLikeApi({ company_id:company_id, comment_id: commentId,component:component }));
+      dispatch(
+        commentLikeApi({
+          company_id: company_id,
+          comment_id: commentId,
+          component: component,
+        })
+      );
     }
 
     setCommentList((prevList) =>
@@ -214,15 +224,14 @@ const CommentDrawer = ({
         PaperProps={{
           sx: {
             width: {
-              xs: '100%', 
-              sm: '425px', 
+              xs: "100%",
+              sm: "425px",
             },
           },
         }}
       >
         <Box
           sx={{
-           
             padding: 2,
             display: "flex",
             flexDirection: "column",
@@ -255,7 +264,7 @@ const CommentDrawer = ({
             InputProps={{
               sx: {
                 "& .MuiInputBase-input": {
-                  color: colors.navyBlue500, 
+                  color: colors.navyBlue500,
                 },
                 fontSize: "14px",
                 fontWeight: "400",
@@ -294,128 +303,143 @@ const CommentDrawer = ({
               Comment
             </StyledButton1>
           </Box>
-          {
-            commentList?.length==0 ? <Box sx={{display:'flex',alignItems:'center',justifyContent:'center',flexGrow:1}}>
-            <Typography sx={{fontWeight:'600',fontSize:'14px',lineHeight:'17px'}} color={colors.neutral700}>There are no comments yet, be the first one to comment</Typography>
-          </Box> :
-           <List
-           sx={{
-             flexGrow: 1,
-             overflow: "auto",
-             "&::-webkit-scrollbar": { display: "none" },
-           }}
-         >
-           {commentList?.map((element, index) => (
-             <React.Fragment key={element._id}>
-               <ListItem
-                 alignItems="flex-start"
-                 sx={{
-                   display: "flex",
-                   justifyContent: "space-between",
-                   paddingX: 0,
-                   gap: 2,
-                 }}
-               >
-                 <Box sx={{ display: "flex" }}>
-                   <Avatar sx={{ backgroundColor: avatarColors[index] }}>
-                     {element.commenter
-                       .split(" ")
-                       .map((word, index) =>
-                         index === 0 || index === 1 ? word[0] : null
-                       )
-                       .join("")
-                       .toUpperCase()}
-                   </Avatar>
-                   <Box sx={{ marginLeft: 2, flexGrow: 1 }}>
-                     <Box
-                       sx={{ display: "flex", alignItems: "center", gap: 1 }}
-                     >
-                       <StyledTypography2>
-                         {element.commenter}
-                       </StyledTypography2>
-                       <Typography
-                         variant="caption"
-                         color="#8EA7BB"
-                       ></Typography>
-                       <IconButton
-                         size="small"
-                         onClick={(event) =>
-                           handleMenuClick(event, element._id)
-                         }
-                       >
-                         <MoreHorizOutlinedIcon
-                           fontSize="small"
-                           sx={{ color: "black" }}
-                         />
-                       </IconButton>
-                     </Box>
-                     <StyledListItemText primary={element.comment} />
-                   </Box>
-                 </Box>
-                 <Box sx={{ display: "flex", flexDirection: "column" }}>
-                   <IconButton
-                     onClick={() => handleLikeToggle(element._id)}
-                     size="small"
-                     sx={{ padding: 0, color: colors.navyBlue500 }}
-                   >
-                     {element.has_liked ? (
-                       <ThumbUpIcon fontSize="small" />
-                     ) : (
-                       <ThumbUpOutlinedIcon fontSize="small" />
-                     )}
-                   </IconButton>
-                   <Typography
-                     sx={{
-                       fontSize: "12px",
-                       fontWeight: "400",
-                       lineHeight: "15px",
-                       marginTop: 1,
-                     }}
-                     color={colors.navyBlue500}
-                   >
-                     {element.total_likes}
-                   </Typography>
-                 </Box>
-               </ListItem>
-               <CustomDivider />
-             </React.Fragment>
-           ))}
-         </List>
-          }
-         
-         
+          {commentList?.length == 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexGrow: 1,
+              }}
+            >
+              <Typography
+                sx={{ fontWeight: "600", fontSize: "14px", lineHeight: "17px" }}
+                color={colors.neutral700}
+              >
+                There are no comments yet, be the first one to comment
+              </Typography>
+            </Box>
+          ) : (
+            <List
+              sx={{
+                flexGrow: 1,
+                overflow: "auto",
+                "&::-webkit-scrollbar": { display: "none" },
+              }}
+            >
+              {commentList?.map((element, index) => (
+                <React.Fragment key={element._id}>
+                  <ListItem
+                    alignItems="flex-start"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      paddingX: 0,
+                      gap: 2,
+                    }}
+                  >
+                    <Box sx={{ display: "flex" }}>
+                      <Avatar sx={{ backgroundColor: avatarColors[index] }}>
+                        {element.commenter
+                          .split(" ")
+                          .map((word, index) =>
+                            index === 0 || index === 1 ? word[0] : null
+                          )
+                          .join("")
+                          .toUpperCase()}
+                      </Avatar>
+                      <Box sx={{ marginLeft: 2, flexGrow: 1 }}>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                        >
+                          <StyledTypography2>
+                            {element.commenter}
+                          </StyledTypography2>
+                          <Typography
+                            variant="caption"
+                            color="#8EA7BB"
+                          ></Typography>
+                          {element?.commenter_id === userDetails?._id ? (
+                            <IconButton
+                              size="small"
+                              onClick={(event) =>
+                                handleMenuClick(event, element._id)
+                              }
+                            >
+                              <MoreHorizOutlinedIcon
+                                fontSize="small"
+                                sx={{ color: "black" }}
+                              />
+                            </IconButton>
+                          ) : (
+                            <></>
+                          )}
+                        </Box>
+                        <StyledListItemText primary={element.comment} />
+                      </Box>
+                    </Box>
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                      <IconButton
+                        onClick={() => handleLikeToggle(element._id)}
+                        size="small"
+                        sx={{ padding: 0, color: colors.navyBlue500 }}
+                      >
+                        {element.has_liked ? (
+                          <ThumbUpIcon fontSize="small" />
+                        ) : (
+                          <ThumbUpOutlinedIcon fontSize="small" />
+                        )}
+                      </IconButton>
+                      <Typography
+                        sx={{
+                          fontSize: "12px",
+                          fontWeight: "400",
+                          lineHeight: "15px",
+                          marginTop: 1,
+                        }}
+                        color={colors.navyBlue500}
+                      >
+                        {element.total_likes}
+                      </Typography>
+                    </Box>
+                  </ListItem>
+                  <CustomDivider />
+                </React.Fragment>
+              ))}
+            </List>
+          )}
         </Box>
-        {/* Delete Comment Menu */}
+
         <Menu
-  anchorEl={anchorEl}
-  open={Boolean(anchorEl)}
-  onClose={handleMenuClose}
-  PaperProps={{
-    elevation: 2,
-    sx: {
-      width: 132,
-      padding: {
-        xs: '4px -4px',
-        sm: '8px -4px', 
-      },
-      maxHeight: {
-        xs: '45px', 
-        overflow:'hidden',
-      },
-    },
-  }}
-  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-  transformOrigin={{ vertical: "top", horizontal: "center" }}
-  sx={{ zIndex: 1500 }}
->
-  <CustomMenuItem
-    onClick={handleDeleteComment}
-    style={{ color: colors.red500, margin: 0 }}
-  >
-    <Delete fontSize="small" sx={{ marginRight: 1 }} />
-    Delete Comment
-  </CustomMenuItem>
-</Menu>
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          PaperProps={{
+            elevation: 2,
+            sx: {
+              width: 132,
+              padding: {
+                xs: "4px -4px",
+                sm: "8px -4px",
+              },
+              maxHeight: {
+                xs: "45px",
+                overflow: "hidden",
+              },
+            },
+          }}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          transformOrigin={{ vertical: "top", horizontal: "center" }}
+          sx={{ zIndex: 1500 }}
+        >
+          <CustomMenuItem
+            onClick={handleDeleteComment}
+            style={{ color: colors.red500, margin: 0 }}
+          >
+            <Delete fontSize="small" sx={{ marginRight: 1 }} />
+            Delete Comment
+          </CustomMenuItem>
+        </Menu>
       </Drawer>
     </>
   );

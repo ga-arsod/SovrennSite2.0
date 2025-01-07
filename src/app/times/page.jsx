@@ -266,7 +266,7 @@ const Times = () => {
           />
         </Head>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />
-      <Grid container marginTop="60px" flexDirection="column">
+      <Grid container marginTop="64px" flexDirection="column">
         {!isSmallerThanMd ? (
           isAuth &&
           (userDetails?.subscriptions?.includes("full-access") ||
@@ -275,7 +275,7 @@ const Times = () => {
           ) : (
             <Grid
               item
-              paddingY={1.5}
+              paddingY={1}
               sx={{
                 backgroundColor: "#FCE1B3",
                 display: "flex",

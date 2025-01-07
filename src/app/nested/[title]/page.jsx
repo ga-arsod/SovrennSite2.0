@@ -5,7 +5,7 @@ import { Container, Grid, Typography, IconButton, Box } from "@mui/material";
 import styled from "@emotion/styled";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Image from "next/image"; 
-
+import ScrollCircle from "../../../components/Common/ScrollCircle"
 import { colors } from "@/components/Constants/colors";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
@@ -202,6 +202,7 @@ const Discovery = () => {
               </StyledGrid>
             ))}
           </GridContainer>
+          <ScrollCircle/>
         </Box>
       </Container>
     </>

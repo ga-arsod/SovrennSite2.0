@@ -28,6 +28,11 @@ const listArray = [
   {
     products: [
       {
+        name: "Pulse",
+        url: "/pulse",
+        hot: true,
+      },
+      {
         name: "Prime Articles",
         url: "/prime",
         hot: false,

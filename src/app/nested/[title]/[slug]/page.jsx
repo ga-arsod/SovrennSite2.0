@@ -8,10 +8,9 @@ import {
   MenuItem,
   Select,
   Container,
- 
 } from "@mui/material";
-import { useRouter, usePathname,useParams } from "next/navigation";
-
+import { useRouter, usePathname, useParams } from "next/navigation";
+import ScrollCircle from "../../../../components/Common/ScrollCircle";
 import DiscoveryTable from "@/components/Discovery/DiscoveryTable";
 import DiscoveryTableCard from "@/components/Cards/DiscoveryTableCard";
 import styled from "@emotion/styled";
@@ -101,12 +100,12 @@ const ChildBucketCompanyContent = () => {
   const theme = useTheme();
   const router = useRouter();
   const pathname = usePathname();
-  
+
   const pathSegments = pathname ? decodeURIComponent(pathname).split("/") : [];
-  const [currentPage,setCurrentPage]=useState(1)
-  
-  const segments = pathname.split('/'); 
-  const lastSegment = segments.filter(Boolean).pop(); 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const segments = pathname.split("/");
+  const lastSegment = segments.filter(Boolean).pop();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [isOpen, setIsOpen] = useState(true);
@@ -116,17 +115,13 @@ const ChildBucketCompanyContent = () => {
   const dispatch = useDispatch();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const filtersData = useSelector((store) => store.discovery.filtersData);
-  const title=pathSegments[2]
-   const { sortBy, sortOrder } = useSelector((state) => state.sorting);
+  const title = pathSegments[2];
+  const { sortBy, sortOrder } = useSelector((state) => state.sorting);
   const tableData = useSelector(
     (store) => store.discovery.nestedBucketDiscoveryTableBucket
   );
-  const pagination = useSelector(
-    (store) => store.discovery.pagination
-  );
-  const {isAuth} = useSelector(
-    (store) => store.auth
-  );
+  const pagination = useSelector((store) => store.discovery.pagination);
+  const { isAuth } = useSelector((store) => store.auth);
 
   const firstSpaceIndex = tableData?.bucket?.title?.indexOf(" ");
   const part1 = tableData?.bucket?.title.substring(0, firstSpaceIndex);
@@ -176,13 +171,16 @@ const ChildBucketCompanyContent = () => {
     dispatch(
       nestedBucketDiscoveryTableApi({
         id: lastSegment,
-            body: filterObj,
-            page: currentPage,
-            sort_by:  sortBy=="createdAt" || sortBy=="industry" || sortBy=="sector" ? "company_name" :sortBy,
-            sort_order: sortOrder,
+        body: filterObj,
+        page: currentPage,
+        sort_by:
+          sortBy == "createdAt" || sortBy == "industry" || sortBy == "sector"
+            ? "company_name"
+            : sortBy,
+        sort_order: sortOrder,
       })
     );
-  }, [filter, sortBy, sortOrder, dispatch,isAuth,currentPage]);
+  }, [filter, sortBy, sortOrder, dispatch, isAuth, currentPage]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -210,16 +208,15 @@ const ChildBucketCompanyContent = () => {
 
   return (
     <>
-       <Head>
-          <title>{title}</title>
-          <link
-            rel="canonical"
-            href={`https://www.sovrenn.com/discovery/${lastSegment}`}
-            key="canonical"
-          />
-        </Head>
+      <Head>
+        <title>{title}</title>
+        <link
+          rel="canonical"
+          href={`https://www.sovrenn.com/discovery/${lastSegment}`}
+          key="canonical"
+        />
+      </Head>
       <Container>
-       
         <Box sx={{ marginTop: "64px" }} marginBottom={{ xs: 3, sm: "28px" }}>
           <Grid container alignItems="center">
             <Grid item paddingY={{ xs: 2, sm: 5 }}>
@@ -235,112 +232,118 @@ const ChildBucketCompanyContent = () => {
                   />
                 )}
                 <Box display="flex" flexWrap="wrap" alignItems="center">
-                <StyledTypography1
-                  color={colors.navyBlue500}
-                  marginRight={1}
-                  component="span"
-                >
-                  {part1} <span style={{color:colors.themeGreen}}>{part2}</span>
-                </StyledTypography1>
-                
-                 
+                  <StyledTypography1
+                    color={colors.navyBlue500}
+                    marginRight={1}
+                    component="span"
+                  >
+                    {part1}{" "}
+                    <span style={{ color: colors.themeGreen }}>{part2}</span>
+                  </StyledTypography1>
                 </Box>
               </Box>
             </Grid>
           </Grid>
-          {
-            isAuth ? 
-            !filtersData ? <></>:
-            <Grid container justifyContent="flex-end" alignItems="center">
-            <Grid item>
-              <FormControl
-                sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", md: "row" },
-                  alignItems: { xs: "flex-end", md: "flex-end" },
-                  justifyContent: { xs: "flex-start", md: "flex-end" },
-                  gap: { xs: 0, md: 2 },
-                }}
-              >
-                {/* Market Cap */}
-                <StyledSelectContainer>
-                  <StyledInputLabel>{`Market Cap `}</StyledInputLabel>
-                  <StyledSelect
-                    name="market_cap"
-                    value={filter.market_cap}
-                    onChange={handleFilterChange}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    IconComponent={ExpandMoreIcon}
-                    MenuProps={{
-                      disableScrollLock: true,
+          {isAuth ? (
+            !filtersData ? (
+              <></>
+            ) : (
+              <Grid container justifyContent="flex-end" alignItems="center">
+                <Grid item>
+                  <FormControl
+                    sx={{
+                      display: "flex",
+                      flexDirection: { xs: "column", md: "row" },
+                      alignItems: { xs: "flex-end", md: "flex-end" },
+                      justifyContent: { xs: "flex-start", md: "flex-end" },
+                      gap: { xs: 0, md: 2 },
                     }}
                   >
-                    {filtersData[0]?.options?.map((element, index) => (
-                      <StyledMenuItem
-                        key={index}
-                        value={index === 0 ? "all" : index === 1 ? "lte" : "gt"}
+                    {/* Market Cap */}
+                    <StyledSelectContainer>
+                      <StyledInputLabel>{`Market Cap `}</StyledInputLabel>
+                      <StyledSelect
+                        name="market_cap"
+                        value={filter.market_cap}
+                        onChange={handleFilterChange}
+                        displayEmpty
+                        inputProps={{ "aria-label": "Without label" }}
+                        IconComponent={ExpandMoreIcon}
+                        MenuProps={{
+                          disableScrollLock: true,
+                        }}
                       >
-                        {element.placeholder}
-                      </StyledMenuItem>
-                    ))}
-                  </StyledSelect>
-                </StyledSelectContainer>
+                        {filtersData[0]?.options?.map((element, index) => (
+                          <StyledMenuItem
+                            key={index}
+                            value={
+                              index === 0 ? "all" : index === 1 ? "lte" : "gt"
+                            }
+                          >
+                            {element.placeholder}
+                          </StyledMenuItem>
+                        ))}
+                      </StyledSelect>
+                    </StyledSelectContainer>
 
-                {/* PE */}
-                <StyledSelectContainer>
-                  <StyledInputLabel>{`PE `}</StyledInputLabel>
-                  <StyledSelect
-                    name="ttm_pe"
-                    value={filter.ttm_pe}
-                    onChange={handleFilterChange}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    IconComponent={ExpandMoreIcon}
-                    MenuProps={{
-                      disableScrollLock: true,
-                    }}
-                  >
-                    {filtersData[1]?.options?.map((element, index) => (
-                      <StyledMenuItem
-                        key={index}
-                        value={index === 0 ? "all" : index === 1 ? "lte" : "gt"}
+                    {/* PE */}
+                    <StyledSelectContainer>
+                      <StyledInputLabel>{`PE `}</StyledInputLabel>
+                      <StyledSelect
+                        name="ttm_pe"
+                        value={filter.ttm_pe}
+                        onChange={handleFilterChange}
+                        displayEmpty
+                        inputProps={{ "aria-label": "Without label" }}
+                        IconComponent={ExpandMoreIcon}
+                        MenuProps={{
+                          disableScrollLock: true,
+                        }}
                       >
-                        {element.placeholder}
-                      </StyledMenuItem>
-                    ))}
-                  </StyledSelect>
-                </StyledSelectContainer>
+                        {filtersData[1]?.options?.map((element, index) => (
+                          <StyledMenuItem
+                            key={index}
+                            value={
+                              index === 0 ? "all" : index === 1 ? "lte" : "gt"
+                            }
+                          >
+                            {element.placeholder}
+                          </StyledMenuItem>
+                        ))}
+                      </StyledSelect>
+                    </StyledSelectContainer>
 
-                {/* Company Type */}
-                <StyledSelectContainer>
-                  <StyledInputLabel>{`Company Type `}</StyledInputLabel>
-                  <StyledSelect
-                    name="company_type"
-                    value={filter.company_type}
-                    onChange={handleFilterChange}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    IconComponent={ExpandMoreIcon}
-                    MenuProps={{
-                      disableScrollLock: true,
-                    }}
-                  >
-                    {filtersData[2]?.options?.map((element, index) => (
-                      <StyledMenuItem
-                        key={index}
-                        value={index === 0 ? "all" : element.id}
+                    {/* Company Type */}
+                    <StyledSelectContainer>
+                      <StyledInputLabel>{`Company Type `}</StyledInputLabel>
+                      <StyledSelect
+                        name="company_type"
+                        value={filter.company_type}
+                        onChange={handleFilterChange}
+                        displayEmpty
+                        inputProps={{ "aria-label": "Without label" }}
+                        IconComponent={ExpandMoreIcon}
+                        MenuProps={{
+                          disableScrollLock: true,
+                        }}
                       >
-                        {element.placeholder}
-                      </StyledMenuItem>
-                    ))}
-                  </StyledSelect>
-                </StyledSelectContainer>
-              </FormControl>
-            </Grid>
-          </Grid>:""
-          }
-          
+                        {filtersData[2]?.options?.map((element, index) => (
+                          <StyledMenuItem
+                            key={index}
+                            value={index === 0 ? "all" : element.id}
+                          >
+                            {element.placeholder}
+                          </StyledMenuItem>
+                        ))}
+                      </StyledSelect>
+                    </StyledSelectContainer>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            )
+          ) : (
+            ""
+          )}
         </Box>
         {isSmallerThanMd ? (
           tableData?.length === 0 ? (
@@ -353,12 +356,18 @@ const ChildBucketCompanyContent = () => {
         ) : (
           <DiscoveryTable tableData={tableData} id={lastSegment} />
         )}
-        {
-          tableData?.length ?  <Box mt={2}>
-          <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pagination={pagination} />
-        </Box> : <></>
-        }
-          
+        {tableData?.length ? (
+          <Box mt={2}>
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              pagination={pagination}
+            />
+          </Box>
+        ) : (
+          <></>
+        )}
+        <ScrollCircle />
       </Container>
       {!isSmallerThanMd && <Footer />}
     </>

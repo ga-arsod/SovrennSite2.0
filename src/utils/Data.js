@@ -515,7 +515,7 @@ export const primeArticleDisclaimer =
   export const selfHelpDisclaimer="Self-help tool is a simplistic model to predict potential future share price. It is important to note that if used incorrectly, it may lead to erratic results. Further, investment decisions should not be made solely on the basis of this model as it is only to serve as a guide and hence must be supplemented with detailed fundamental research and analysis."
  export const sovreenOfferArray = [
     {
-      imagePath: "/pulseCarousel.png",
+      imagePath: "/pulse.png",
       Info: {
         heading: "Sovrenn Pulse",
         listItems: [ "Create your personalized watchlist of stocks for easy tracking",  
@@ -608,7 +608,7 @@ export const primeArticleDisclaimer =
       },
     },
     {
-      imagePath: "/ledgeCarousel.png",
+      imagePath: "/knowledge.png",
       Info: {
         heading: "Sovrenn Knowledge",
         listItems: ["Access IPO stock articles to equip yourself with crucial information",  
