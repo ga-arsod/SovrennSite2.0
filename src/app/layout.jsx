@@ -6,7 +6,7 @@ import { theme } from "@/theme/theme";
 import Navbar from "@/components/Home/Navbar";
 import { Providers } from "./Redux/provider";
 import {auth} from "@/auth";
-import Footer from "@/components/Home/Footer";
+import Footer from "../components/Home/Footer"
 
 
 const inter = Inter({
