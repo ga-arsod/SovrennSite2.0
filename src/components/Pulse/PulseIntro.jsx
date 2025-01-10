@@ -139,7 +139,7 @@ export default function Portfolio() {
               </Link>
               :
               <StyledButton variant="contained" fullWidth onClick={()=>{setIsOpen(true)}} >
-               Please login to proceed
+               Set Up Now
               </StyledButton>
             }
             

@@ -392,6 +392,7 @@ const Offer = () => {
                                        minWidth: "auto",
                                        marginRight: "12px", 
                                        alignSelf: "flex-start", 
+                                       marginTop:"3px",
                                      }}
                                    >
                                      <CheckIcon
