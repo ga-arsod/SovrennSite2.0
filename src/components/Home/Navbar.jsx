@@ -869,7 +869,7 @@ const Navbar = ({ session }) => {
             onClick={() => handleNavigation("/education")}
             sx={{ minWidth: "0px" }}
           />
-          <BottomNavigationAction sx={{ minWidth: "0px" }} label="Times" icon={<FeedIcon />}   onClick={() => handleNavigation("/times")} sx={{ minWidth: 0 }}/>
+          <BottomNavigationAction sx={{ minWidth: "0px" }} label="Times" icon={<FeedIcon />}   onClick={() => handleNavigation("/times")} />
           <BottomNavigationAction sx={{ minWidth: "0px" }} label="Prime" icon={<WebStoriesIcon />}  onClick={() => handleNavigation("/prime")}/>
           <BottomNavigationAction sx={{ minWidth: "0px" }} label="Discovery" icon={<QueryStatsIcon />} onClick={() => handleNavigation("/discovery")} />
           <BottomNavigationAction  sx={{ minWidth: "0px" }} label="Ipo" icon={<AddchartIcon />}  onClick={() => handleNavigation("/ipo-zone")}/>
