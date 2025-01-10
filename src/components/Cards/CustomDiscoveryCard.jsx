@@ -45,32 +45,34 @@ const StyledTypography2 = styled(Typography)`
 
 const StyledGrid = styled(Box)`
   cursor: pointer;
-  background-color:#FAF9F9;
-  border-radius: 4px;
-  border: 1px solid  #E6E8E9;
+  background-color: #FAF9F9;
+ 
+   border: 1px solid  #E6E8E9;
+  border-radius: 3px;
   display: flex;
   flex-direction: column;
-  transition: background-color 0.3s;
-  min-height: 315px;
+  position: relative;
+  transition: background-color 0.8s;
 
   &:hover {
     background-color: ${colors.green50};
 
     .arrow-icon {
-      transform: rotate(-45deg); 
-      color: ${colors.white}; 
+      transform: rotate(-45deg);
+      color: white;
+      font-size: 14px;
     }
 
     .icon-button {
-      background-color: ${colors.themeGreen}; 
-      border-color: ${colors.navyBlue900}; 
+      background-color: ${colors.themeGreen};
+      border-color: ${colors.navyBlue900};
     }
   }
-  
+
   .content {
-    flex: 1; /* Allow content to grow */
     display: flex;
     flex-direction: column;
+    flex: 1;  
     justify-content: space-between;
   }
 
@@ -78,8 +80,8 @@ const StyledGrid = styled(Box)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-   padding: 12px 20px;
-    margin-top: auto;
+    padding: 12px 20px;
+    margin-top: auto;  
   }
 `;
 

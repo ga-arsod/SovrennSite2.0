@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { Grid, Typography,Button } from "@mui/material";
 import { colors } from "../Constants/colors";
 import { useSelector } from "react-redux";
-import Footer from "../Home/Footer";
+
 import Link from "next/link";
 
 const StyledTypography1 = styled(Typography)`
@@ -89,7 +89,7 @@ const NoAccess = () => {
           </Link>
         </Grid>
       </Grid>
-      <Footer/>
+  
     </>
   );
 };

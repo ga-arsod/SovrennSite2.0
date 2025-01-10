@@ -37,7 +37,7 @@ import NewsDataView from "../../components/Times/NewsDataView";
 import TimesHeader from "../../components/Times/TimesHeader";
 import Head from "next/head";
 import Spinner from "../../components/Common/Spinner";
-import Footer from "@/components/Home/Footer";
+
 import Disclaimer from "@/components/Common/Disclaimer";
 import Link from "next/link";
 import NoData from "@/components/NoData/NoData";
@@ -118,8 +118,8 @@ const StyledButton = styled(Button)`
     background-color: ${colors.navyBlue200};
     color: white;
     border-color: ${colors.navyBlue200};
-      & .MuiSvgIcon-root {
-      color: white; 
+    & .MuiSvgIcon-root {
+      color: white;
     }
   }
 `;
@@ -152,16 +152,17 @@ const Times = () => {
   const [filterData2, setFilterData2] = useState({});
   const [groupedArticles, setGroupedArticles] = useState({});
   const [collapsedGroups, setCollapsedGroups] = useState({});
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
-  const {  
+  const {
     timesArticle,
     isArticleFilterOpen,
     isPdfModalOpen,
-    isTimesArticleLoading,isPdfListLoading,
-    pagination,} = useSelector(
-    (store) => store.times
-  );
-
+    isTimesArticleLoading,
+    isPdfListLoading,
+    pagination,
+  } = useSelector((store) => store.times);
+  
   const handleModalOpen = () => {
     setIsopen(true);
   };
@@ -184,13 +185,14 @@ const Times = () => {
   useEffect(() => {
     dispatch(timesPdfFilterApi());
     dispatch(timesFilterApi());
-    if(searchQuery)
-      dispatch(timesArticleApi({ page: 1, data:{company_name:[searchQuery]} }));
-    else
-    dispatch(timesArticleApi({ page: page1, data: {} }));
-  }, []);
+    if (searchQuery)
+      dispatch(
+        timesArticleApi({ page: 1, data: { company_name: [searchQuery] } })
+      );
+    else dispatch(timesArticleApi({ page: page1, data: {} }));
+  }, [isAuth,dispatch]);
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
-  const { isAuth, userDetails } = useSelector((store) => store.auth);
+ 
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search");
 
@@ -238,34 +240,30 @@ const Times = () => {
       window.removeEventListener("contextmenu", handleContextMenu);
     };
   }, []);
- 
 
- 
- 
- 
   return (
     <>
       <Head>
-          <title>Be equipped with Sovrenn times Daily Bulletin</title>
-          <meta
-            name="description"
-            content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
-          />
-          <meta
-            property="og:title"
-            content="Be equipped with Sovrenn times Daily Bulletin"
-          />
-          <meta
-            property="og:description"
-            content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
-          />
-          <link
-            rel="canonical"
-            href="https://www.sovrenn.com/times"
-            key="canonical"
-          />
-        </Head>
-      <LoginModal isOpen={isOpen} handleClose={handleClose} />
+        <title>Be equipped with Sovrenn times Daily Bulletin</title>
+        <meta
+          name="description"
+          content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
+        />
+        <meta
+          property="og:title"
+          content="Be equipped with Sovrenn times Daily Bulletin"
+        />
+        <meta
+          property="og:description"
+          content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
+        />
+        <link
+          rel="canonical"
+          href="https://www.sovrenn.com/times"
+          key="canonical"
+        />
+      </Head>
+     
       <Grid container marginTop="64px" flexDirection="column">
         {!isSmallerThanMd ? (
           isAuth &&
@@ -298,11 +296,13 @@ const Times = () => {
                 </StyledTypography1>
                 {!isAuth ? (
                   <Link href="/pricing">
-                  <StyledButton2 variant="contained">Get 45 Days Trial For Free</StyledButton2>
+                    <StyledButton2 variant="contained">
+                      Get 45 Days Trial For Free
+                    </StyledButton2>
                   </Link>
                 ) : (
                   <Link href="/pricing">
-                  <StyledButton2 variant="contained">{`Buy Full Access @ ₹4500/yr`}</StyledButton2>
+                    <StyledButton2 variant="contained">{`Buy Full Access @ ₹4500/yr`}</StyledButton2>
                   </Link>
                 )}
               </Box>
@@ -335,8 +335,6 @@ const Times = () => {
               setPage2={setPage2}
             />
           ) : (
-           
-           
             <Grid item>
               {Object.keys(groupedArticles)?.map((date, index) => (
                 <div className={styles.newsDiv} key={index}>
@@ -363,13 +361,11 @@ const Times = () => {
                             <KeyboardArrowUpIcon
                               sx={{ color: colors.navyBlue900 }}
                               fontSize="large"
-                            
                             />
                           ) : (
                             <KeyboardArrowDownIcon
                               sx={{ color: colors.navyBlue900 }}
                               fontSize="large"
-                              
                             />
                           )}
                         </IconButton>
@@ -377,33 +373,29 @@ const Times = () => {
                     </Grid>
                   </HoverBox>
                   {!collapsedGroups[date] &&
-                      groupedArticles[date].map((item, index) => (
-                        <div className={styles.newsCard} key={index}>
+                    groupedArticles[date].map((item, index) => (
+                      <div className={styles.newsCard} key={index}>
                         <NewsDataView
-                        data={{
-                          company_name: item.company_name,
-                          company_slug: item.company_slug,
-                          content: item.content,
-                        }}
-                        isAuth={true}
-                        discovery_route={
-                          Object.keys(item.is_available_in_discovery).length ===
-                          0
-                            ? ""
-                            : `/discovery/${item.is_available_in_discovery?.slug}/${item.company_slug}`
-                        }
-                        prime_route={
-                          Object.keys(item.is_available_in_prime).length ===
-                          0
-                            ? ""
-                            : `/prime/${item.is_available_in_prime?.slug}`
-                        }
-                      
+                          data={{
+                            company_name: item.company_name,
+                            company_slug: item.company_slug,
+                            content: item.content,
+                          }}
+                          isAuth={true}
+                          discovery_route={
+                            Object.keys(item.is_available_in_discovery)
+                              .length === 0
+                              ? ""
+                              : `/discovery/${item.is_available_in_discovery?.slug}/${item.company_slug}`
+                          }
+                          prime_route={
+                            Object.keys(item.is_available_in_prime).length === 0
+                              ? ""
+                              : `/prime/${item.is_available_in_prime?.slug}`
+                          }
                         />
-                        </div>
-                      ))}
-
-                 
+                      </div>
+                    ))}
                 </div>
               ))}
               {pagination?.total_pages === pagination?.page ||
@@ -429,7 +421,7 @@ const Times = () => {
               )}
             </Grid>
           )}
-            <Disclaimer margin={3} text={primeArticleDisclaimer}  />
+          <Disclaimer margin={3} text={primeArticleDisclaimer} />
         </Container>
       </Grid>
       <Box
@@ -456,6 +448,7 @@ const Times = () => {
         <TimesFilter
           isOpen={isArticleFilterOpen}
           handleModalOpen={handleModalOpen}
+       
           page1={page1}
           setPage1={setPage1}
           setFilterData={setFilterData}
@@ -469,8 +462,6 @@ const Times = () => {
           setFilterData2={setFilterData2}
         />
       ) : null}
-     
-      <Footer />
     </>
   );
 };

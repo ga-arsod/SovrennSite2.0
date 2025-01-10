@@ -3,7 +3,7 @@ import KnowledgeHeader from "../../components/Knowledge/KnowledgeHeader";
 import KnowledgeCard from "../../components/Cards/KnowledgeCard";
 import KnowledgeSearchFilter from "../../components/Knowledge/KnowledgeSearchFilter";
 import Head from "next/head";
-import Footer from "@/components/Home/Footer";
+
 
 async function fetchPosts(page = 1) {
   const url = `https://cms.sovrenn.com/api/posts?sort=createdAt:desc&filters[category][slug][$ne]=chronicles&pagination[pageSize]=20&pagination[page]=${page}&populate=category`;

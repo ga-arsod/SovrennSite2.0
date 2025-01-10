@@ -24,7 +24,7 @@ const Discovery = () => {
   const { isAllBucketsLoading, isMyBucketsLoading,filtersData } = useSelector(
     (store) => store.discovery
   );
-  const { userDetails } = useSelector((store) => store.auth);
+  const { userDetails ,isAuth} = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
   const { functional, sectoral, important } = useSelector(
@@ -35,7 +35,7 @@ const Discovery = () => {
  
   useEffect(() => {
     dispatch(myBucketsApiCall());
-  }, [dispatch]);
+  }, [dispatch,isAuth]);
 
   useEffect(() => {
     dispatch(bucketsApiCall());
@@ -100,7 +100,7 @@ const Discovery = () => {
           userDetails?.subscriptions?.includes("life") ||
           userDetails?.subscriptions?.includes("basket") ||
           userDetails?.subscriptions?.includes("trial")) &&
-          myBuckets?.length ?
+          myBuckets?.length && isAuth ?
             <CustomDiscoveryCard title="My Buckets" data={myBuckets} />:<></>
           }
 

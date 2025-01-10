@@ -44,7 +44,9 @@ const StyledTypography2 = styled(Typography)`
 
 const StyledGrid = styled(Box)`
   cursor: pointer;
-  background-color: ${colors.navyBlue50};
+ background-color: #FAF9F9;
+ 
+   border: 1px solid  #E6E8E9;
   border-radius: 3px;
   display: flex;
   flex-direction: column;
@@ -77,7 +79,8 @@ const StyledGrid = styled(Box)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 11px;
+    padding: 12px 20px;
+    margin-top: auto;
   }
 `;
 
@@ -183,7 +186,7 @@ const Discovery = () => {
                         )}
                       </Box>
                     </Grid>
-                    <Grid item paddingX="11px">
+                    <Grid item paddingX="20px">
                       <StyledTypography1 gutterBottom>{item?.bucket_name}</StyledTypography1>
                       <StyledTypography2 color={colors.navyBlue400} sx={{ fontWeight: 500 }} marginBottom={1}>
                         {item?.about}

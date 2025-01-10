@@ -15,7 +15,7 @@ import ProfileSettings from "../../components/Profile/ProfileSettings";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { colors } from "@/components/Constants/colors";
 import { useTheme } from "@mui/material/styles";
-import Footer from "@/components/Home/Footer";
+
 import Snackbar from "../../components/Snackbar/SnackBar";
 import { useDispatch } from "react-redux";
 import { subscriptionDetailsApi } from "../Redux/Slices/authSlice";
@@ -75,12 +75,9 @@ const Profile = () => {
     dispatch(subscriptionDetailsApi());
   }, []);
 
- 
-
-  if(!isAuth)
-    {
-     return <NoLogin/>
-    }
+  if (!isAuth) {
+    return <NoLogin />;
+  }
   return (
     <>
       <Container>
@@ -140,7 +137,6 @@ const Profile = () => {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 };

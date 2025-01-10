@@ -129,6 +129,7 @@ const IpoCard = ({ data }) => {
                           ? "#FB8E8E"
                           : row.status == "Listing Today"
                           ? "#011627"
+                           : row.status == "Listed" ? "#627B8F" 
                           : "",
                       color:
                         row.status == "Open"
@@ -140,7 +141,7 @@ const IpoCard = ({ data }) => {
                           : row.status == "Closed"
                           ? "black"
                           : row.status == "Listing Today"
-                          ? "white"
+                          ? "white" : row.status == "Listed" ? "white" 
                           : "",
                       borderRadius: "0px 4px 0px 4px",
                       padding: "8px 22px",
@@ -153,8 +154,8 @@ const IpoCard = ({ data }) => {
                         lineHeight: "12px",
                       }}
                     >
-                      {row.status=="Listed" ?"":row.status
-                       }
+                      {row.status}
+                       
                     </Typography>
                   </Box>
 

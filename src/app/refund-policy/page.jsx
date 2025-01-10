@@ -5,7 +5,7 @@ import styles from "../../styles/Privacy&Policy.module.css";
 import styled from "@emotion/styled";
 import { colors } from "@/components/Constants/colors";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import Footer from "@/components/Home/Footer";
+
 
 const StyledTypography1 = styled(Typography)`
   font-size: 36px;
@@ -113,7 +113,7 @@ const RefundPolicy = () => {
           </StyledButton>
         </Grid>
       </Grid>
-      <Footer />
+    
     </>
   );
 };

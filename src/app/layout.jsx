@@ -6,7 +6,7 @@ import { theme } from "@/theme/theme";
 import Navbar from "@/components/Home/Navbar";
 import { Providers } from "./Redux/provider";
 import {auth} from "@/auth";
-
+import Footer from "@/components/Home/Footer";
 
 
 const inter = Inter({
@@ -30,7 +30,7 @@ export default async function RootLayout({ children }) {
         {children}
       
         </body>
-    
+    <Footer/>
     </html>
     </Providers>
     </ThemeProvider>

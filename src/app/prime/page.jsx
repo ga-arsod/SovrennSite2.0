@@ -25,7 +25,7 @@ import {
 } from "../Redux/Slices/primeSlice";
 import { useDispatch } from "react-redux";
 import Pagination from "@/components/Pagination/Pagination";
-import Footer from "@/components/Home/Footer";
+
 import { setSortBy } from "../Redux/Slices/sortingSlice";
 const StyledButton = styled(Button)`
   font-weight: 600;
@@ -80,34 +80,33 @@ const Prime = () => {
     else dispatch(togglePromoterFilter());
   };
 
-  useEffect(()=>{
-  dispatch(setSortBy("company_name"))
-  },[])
+  useEffect(() => {
+    dispatch(setSortBy("company_name"));
+  }, []);
 
   useEffect(() => {
-   
     dispatch(primeFilterApi());
     dispatch(promoterFilterApi());
-    
+
     dispatch(
       primeCompaniesListApi({
-       
         body: filterData1,
         page: page1,
-        sort_by: sortBy=="ttm_pe" || sortBy=="date" ? "company_name" : sortBy ,
+        sort_by:
+          sortBy == "ttm_pe" || sortBy == "date" ? "company_name" : sortBy,
         sort_order: sortOrder,
       })
     );
     dispatch(
       promoterCompaniesListApi({
-       
         body: filterData1,
         page: page2,
-        sort_by: sortBy=="ttm_pe" || sortBy=="date" ? "company_name" : sortBy ,
+        sort_by:
+          sortBy == "ttm_pe" || sortBy == "date" ? "company_name" : sortBy,
         sort_order: sortOrder,
       })
     );
-  }, [ sortBy, sortOrder,page1,page2,isAuth, dispatch]);
+  }, [sortBy, sortOrder, page1, page2, isAuth, dispatch]);
 
   return (
     <>
@@ -186,21 +185,22 @@ const Prime = () => {
             setFilterData2={setFilterData2}
           />
         )}
-        {
-         activeTab == "one" && primeCompaniesList?.length ||  activeTab == "two" && promoterCompaniesList?.length  ?
-         <Box mt={2}>
-          <Pagination
-            currentPage={activeTab == "one" ? page1 : page2}
-            setCurrentPage={activeTab == "one" ? setPage1 : setPage2}
-            pagination={
-              activeTab == "one" ? primePagination : promoterPagination
-            }
-          />
-        </Box> : <></>
-        }
-        <ScrollCircle/>
+        {(activeTab == "one" && primeCompaniesList?.length) ||
+        (activeTab == "two" && promoterCompaniesList?.length) ? (
+          <Box mt={2}>
+            <Pagination
+              currentPage={activeTab == "one" ? page1 : page2}
+              setCurrentPage={activeTab == "one" ? setPage1 : setPage2}
+              pagination={
+                activeTab == "one" ? primePagination : promoterPagination
+              }
+            />
+          </Box>
+        ) : (
+          <></>
+        )}
+        <ScrollCircle />
       </Container>
-      <Footer/>
     </>
   );
 };
