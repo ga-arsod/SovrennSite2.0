@@ -7,7 +7,7 @@ import PulseArticle from "../../components/Pulse/PulseArticle";
 import { useSelector } from "react-redux";
 import { pulseFilterApi } from "../Redux/Slices/pulseSlice";
 import { useDispatch } from "react-redux";
-import Footer from "@/components/Home/Footer";
+
 import { getPortfolioCompanies } from "../Redux/Slices/pulseSlice";
 import Head from "next/head";
 
@@ -39,7 +39,6 @@ const PulsePage = () => {
           <PulseArticle />
         )}
       </Container>
-      <Footer />
     </>
   );
 };

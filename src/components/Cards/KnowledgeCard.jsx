@@ -19,9 +19,9 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import Spinner from "../../components/Common/Spinner";
-import Footer from "../Home/Footer";
 
-// Styled components
+
+
 const StyledTypographyDate = styled(Typography)`
   font-weight: 600;
   font-size: 12px;
@@ -273,7 +273,7 @@ const KnowledgeCard = ({ initialPosts, categories, initialPagination }) => {
           </div>
         )}
       </Container>
-      {!isLoading ? <Footer /> : <></>}
+     
     </>
   );
 };

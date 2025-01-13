@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from "react";
 import PdfViewer from "../../../components/PdfViewer"
 import Spinner from "../../../components/Common/Spinner.jsx";
-
+import { useSelector } from "react-redux";
 import styles from "../../../styles/NewsPdfList.module.css"
 
 const ReadPDF = () => {
@@ -12,15 +12,15 @@ const ReadPDF = () => {
     const path = searchParams.get('path');
     const [pdfUrl, setPdfUrl] = useState(null);
     const [isPdfLoading, setIsPdfLoading] = useState(true);
-
+    const { isAuth, userDetails } = useSelector((store) => store.auth);
     useEffect(() => {
         if (path) {
             // Construct the full PDF URL using the 'path'
             setPdfUrl(`https://api.sovrenn.com/news/pdf/read?path=${path}`);
             setIsPdfLoading(false);
         }
-    }, [path]);
-console.log(pdfUrl,"pdfUrl")
+    }, [path,isAuth]);
+
     if (isPdfLoading || !pdfUrl) {
         return (
            <>

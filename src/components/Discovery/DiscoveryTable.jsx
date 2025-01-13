@@ -373,13 +373,13 @@ export default function DiscoveryTable({ tableData, id }) {
                   onMouseLeave={handleMouseLeave}
                   onClick={() => handleRowClick(index, item)}
                 >
-                  {(index % 2 === 0 && tableData?.basket?.avail_free) ||
+                  {isAuth && ((index % 2 === 0 && tableData?.basket?.avail_free) ||
                   userDetails?.subscriptions?.includes("full-access") ||
                   userDetails?.subscriptions?.includes("monthly") ||
                   userDetails?.subscriptions?.includes("quarterly") ||
                   userDetails?.subscriptions?.includes("life") ||
                   userDetails?.subscriptions?.includes("trial") ||
-                  userDetails?.subscriptions?.includes("basket") ? (
+                  userDetails?.subscriptions?.includes("basket")) ? (
                     <StyledBodyTableCell
                       sx={{ color: colors.navyBlue500, fontWeight: "600" }}
                       align="left"

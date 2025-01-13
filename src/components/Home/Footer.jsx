@@ -119,10 +119,10 @@ const Footer = () => {
           <Grid item width={{ xs: "100%", sm: "95%", lg: "1280px" }}>
             <Box
               height={{
-                xs: isHomepage ? "1000px" : "790px",
+                xs: isHomepage ? "1080px" : "850px",
 
                 sm: isHomepage ? "530px" : "450px",
-                md: isHomepage ? "530px" : "450px",
+                md: isHomepage ? "560px" : "500px",
               }}
               sx={{ position: "relative" }}
               id="target-section"

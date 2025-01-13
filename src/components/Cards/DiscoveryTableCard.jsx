@@ -246,13 +246,13 @@ const DiscoveryTableCard = ({ tableData, id }) => {
                 {item?.date ? moment(item?.date).format("Do MMM YY") : "NA"}
               </StyledTypography1>
 
-              {(index % 2 === 0 && tableData?.basket?.avail_free) ||
+              {isAuth && ((index % 2 === 0 && tableData?.basket?.avail_free) ||
               userDetails?.subscriptions?.includes("full-access") ||
               userDetails?.subscriptions?.includes("monthly") ||
               userDetails?.subscriptions?.includes("quarterly") ||
               userDetails?.subscriptions?.includes("life") ||
               userDetails?.subscriptions?.includes("trial") ||
-              userDetails?.subscriptions?.includes("basket") ? (
+              userDetails?.subscriptions?.includes("basket")) ? (
                 <StyledTypography2
                   marginTop={1}
                   color={colors.navyBlue500}
@@ -307,7 +307,7 @@ const DiscoveryTableCard = ({ tableData, id }) => {
                 </Grid>
               </Box>
               <Divider sx={{ paddingBottom: "8px", borderColor: "#E6E6E6" }} />
-              <StyledTypography4 textAlign="justify" marginTop={1}>
+              <StyledTypography4 textAlign="left" marginTop={1}>
                 {item?.remark || "NA"}
               </StyledTypography4>
               <Divider sx={{ paddingTop: "8px", borderColor: "#E6E6E6" }} />

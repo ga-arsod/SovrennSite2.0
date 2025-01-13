@@ -28,7 +28,7 @@ const StyledButton = styled(Button)`
 `;
 const DiscoveryFilter = () => {
   const [open, setOpen] = useState(false);
-  const { userDetails } = useSelector((store) => store.auth);
+  const { userDetails,isAuth } = useSelector((store) => store.auth);
   const { isCreateBucketModalOpen, customBucketData } = useSelector(
     (store) => store.discovery
   );
@@ -62,12 +62,12 @@ const DiscoveryFilter = () => {
           width={{ xs: "100%", sm: "auto" }}
           sx={{ display: { xs: "flex", sm: "", justifyContent: "center" } }}
         >
-          {userDetails?.subscriptions?.includes("full-access") ||
+          {isAuth && (userDetails?.subscriptions?.includes("full-access") ||
           userDetails?.subscriptions?.includes("monthly") ||
           userDetails?.subscriptions?.includes("quarterly") ||
           userDetails?.subscriptions?.includes("life") ||
           userDetails?.subscriptions?.includes("basket") ||
-          userDetails?.subscriptions?.includes("trial") ? (
+          userDetails?.subscriptions?.includes("trial")) ? (
             <StyledButton
               onClick={() => {
                 setOpen(true);

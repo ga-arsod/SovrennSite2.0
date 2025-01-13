@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Footer from "@/components/Home/Footer";
+
 import styles from "../../styles/Privacy&Policy.module.css";
 
 const PrivacyPolicy = () => {
@@ -191,7 +191,7 @@ const PrivacyPolicy = () => {
 
                 <p className={styles.reachOut}><mark>If you have questions or concerns, feel free to email to Our Grievance Officer [ Name: Aditya Joshi] at aditya.joshi@sovrenn.com and We will attempt to address Your concerns.</mark></p>
             </div>
-            <Footer/>
+           
         </>
     )
 }

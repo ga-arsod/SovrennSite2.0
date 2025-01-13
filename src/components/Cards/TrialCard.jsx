@@ -62,8 +62,9 @@ const StyledButton = styled(Button)`
   background-color: white;
   text-transform: none;
 
-  :hover {
-    background-color: white;
+  &:hover {
+    background-color:${colors.themeButtonHover}; 
+    color: white; 
   }
   @media (max-width: 700px) {
     font-size: 16px;

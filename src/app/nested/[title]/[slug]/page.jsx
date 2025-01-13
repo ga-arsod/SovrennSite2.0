@@ -28,7 +28,7 @@ import Spinner from "../../../../components/Common/Spinner";
 import LoginModal from "../../../../components/Modal/LoginModal";
 import Head from "next/head";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Footer from "@/components/Home/Footer";
+
 import NoData from "../../../../components/NoData/NoData";
 
 const StyledTypography1 = styled(Typography)`
@@ -356,7 +356,7 @@ const ChildBucketCompanyContent = () => {
         ) : (
           <DiscoveryTable tableData={tableData} id={lastSegment} />
         )}
-        {tableData?.length ? (
+        {tableData?.companies?.length ? (
           <Box mt={2}>
             <Pagination
               currentPage={currentPage}
@@ -369,7 +369,7 @@ const ChildBucketCompanyContent = () => {
         )}
         <ScrollCircle />
       </Container>
-      {!isSmallerThanMd && <Footer />}
+     
     </>
   );
 };

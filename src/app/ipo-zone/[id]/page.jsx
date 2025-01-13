@@ -13,7 +13,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Disclaimer from "../../../components/Common/Disclaimer";
 import { primeArticleDisclaimer } from "@/utils/Data";
 import Spinner from "@/components/Common/Spinner";
-import Footer from "@/components/Home/Footer";
+
 import NoLogin from "../../../components/Auth/NoLogin";
 import NoAccess from "../../../components/Auth/NoAccess";
 
@@ -97,7 +97,6 @@ const IpoArticles = () => {
             <Disclaimer margin={3} text={primeArticleDisclaimer} />
           </Box>
         </article>
-        <Footer />
       </>
     );
   } else return <NoAccess />;

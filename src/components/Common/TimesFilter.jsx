@@ -22,6 +22,8 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import FilterComponent from "../Common/FilterComponent";
+import LoginModal from "../../components/Modal/LoginModal";
+import PaymentModal from "../PayU/PaymentModal";
 
 import { useSelector } from "react-redux";
 import {
@@ -29,7 +31,7 @@ import {
   toggleArticleFilter,
 } from "../../app/Redux/Slices/timesSlice";
 import { useDispatch } from "react-redux";
-import LoginModal from "../../components/Modal/LoginModal";
+
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -208,7 +210,8 @@ const StyledButton = styled(Button)`
 
 const TimesFilter = ({
   isOpen,
-  handleModalOpen,
+ 
+ 
   page1,
   setPage1,
   setFilterData,
@@ -222,24 +225,31 @@ const TimesFilter = ({
   const [findIndustry, setFindIndustry] = useState("");
   const [findCompany, setFindCompany] = useState("");
   const [showAllIndustries, setShowAllIndustries] = useState(false);
-
+ const [isOpen2, setIsOpen2] = useState(false);
+  const [isPaymentOpen,setIsPaymentOpen]=useState(false)
+  const { isAuth ,userDetails} = useSelector((store) => store.auth);
+  
+  const handlePaymentClose=()=>{
+    setIsPaymentOpen(false)
+  }
+const handleClose=()=>{
+  setIsOpen2(false)
+}
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const { timesFilter } = useSelector((store) => store.times);
-  const { isAuth } = useSelector((store) => store.auth);
+ 
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = () => {
     dispatch(toggleArticleFilter());
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  
 
   const [filter, setFilter] = useState({});
   const [filterBody, setFilterBody] = useState({});
 
   const updateFilter = (item, key, status) => {
-    console.log(key,"key")
+    
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -318,6 +328,8 @@ const TimesFilter = ({
 
   return (
     <>
+     <LoginModal isOpen={isOpen2} handleClose={handleClose} />
+     <PaymentModal isPaymentOpen={isPaymentOpen} handlePaymentClose={handlePaymentClose}/>
       <Box>
         <Drawer
           anchor="left"
@@ -775,11 +787,18 @@ const TimesFilter = ({
                   variant="contained"
                   // disabled={isApplyButtonDisabled}
                   onClick={() => {
-                    if (isAuth) {
+                    if (isAuth &&  (userDetails?.subscriptions?.includes("full-access") ||
+                    userDetails?.subscriptions?.includes("life") || userDetails?.subscriptions?.includes("trial"))) {
                       dispatch(timesArticleApi({ page: 1, data: filterBody }));
                       setPage1(1);
-                    } else {
-                      handleModalOpen();
+                    } 
+                    else if(isAuth &&  !(userDetails?.subscriptions?.includes("full-access") ||
+                    userDetails?.subscriptions?.includes("life") || userDetails?.subscriptions?.includes("trial")))
+                    {
+                     setIsPaymentOpen(true)
+                    }
+                    else {
+                     setIsOpen2(true);
                     }
                     dispatch(toggleArticleFilter());
                   }}

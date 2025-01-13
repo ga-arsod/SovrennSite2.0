@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { Grid, Typography,Button } from "@mui/material";
 import { colors } from "../Constants/colors";
 import Link from "next/link";
-import Footer from "../Home/Footer";
+
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -93,7 +93,7 @@ const NoLogin = () => {
           </Link>
         </Grid>
       </Grid>
-      <Footer/>
+     
     </>
   );
 };

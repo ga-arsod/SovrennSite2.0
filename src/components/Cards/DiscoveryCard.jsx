@@ -67,7 +67,7 @@ const StyledGrid = styled(Box)`
   .content {
     display: flex;
     flex-direction: column;
-    flex: 1;  // Allow content to grow and fill the available space
+    flex: 1;  
     justify-content: space-between;
   }
 
@@ -76,7 +76,7 @@ const StyledGrid = styled(Box)`
     justify-content: space-between;
     align-items: center;
     padding: 12px 20px;
-    margin-top: auto;  // Pushes it to the bottom
+    margin-top: auto;  
   }
 `;
 

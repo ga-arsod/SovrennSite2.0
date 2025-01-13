@@ -349,7 +349,9 @@ const MainPoster = () => {
                       {`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
                     </StyledButton2>
                   </Link>
-                ) : (
+                ) :
+                
+                (
                   <></>
                 )}
 
@@ -389,9 +391,40 @@ const MainPoster = () => {
                
                 ) : isAuth &&
                   (userDetails?.subscriptions?.includes("full-access") ||
-                    userDetails?.subscriptions?.includes("life")) ? (
-                  ""
-                ) : (
+                    userDetails?.subscriptions?.includes("life")) ? 
+                    <Grid
+                    item
+                    sx={{
+                      display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
+                      gap: 2,
+                    }}
+                    width="100%"
+                  >
+                    <Link href="/education">
+                      <StyledButton1
+                        variant="outlined"
+                        sx={{
+                          width: { xs: "100%", sm: "auto" },
+                          padding: { xs: "16px", sm: "8px 16px" },
+                        }}
+                      >
+                      Learn Investing
+                      </StyledButton1>
+                    </Link>
+                    <Link href="/discovery">
+                      <StyledButton2
+                        variant="contained"
+                        sx={{
+                          width: { xs: "100%", sm: "auto" },
+                          padding: { xs: "16px", sm: "8px 16px" },
+                        }}
+                      >
+                      Discover Stocks Now
+                      </StyledButton2>
+                    </Link>
+                  </Grid>
+                    : (
                   ""
                 )}
               </Grid>

@@ -7,7 +7,7 @@ import Offer from "@/components/Home/Offer";
 import PlanInfo from "@/components/Home/PlanInfo";
 import Faq from "@/components/Home/Faq";
 import AppInfo from "@/components/Home/AppInfo";
-import Footer from "@/components/Home/Footer";
+
 import TrialCard from "@/components/Cards/TrialCard";
 import Updates from "@/components/Home/Updates";
 import { auth } from "@/auth";
@@ -57,8 +57,7 @@ const Home = async () => {
       <Faq />
 
       <AppInfo />
-     <TrialCard/>
-     <Footer/>
+      <TrialCard />
     </>
   );
 };

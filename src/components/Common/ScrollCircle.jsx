@@ -28,7 +28,7 @@ const ScrollCircle = () => {
       <Box
         sx={{
           position: "fixed",
-          bottom: 50,
+          bottom: 70,
           right: 16,
           width: 48,
           height: 48,

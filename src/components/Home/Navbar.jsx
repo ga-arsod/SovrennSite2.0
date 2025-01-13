@@ -15,8 +15,17 @@ import {
   Menu,
   MenuItem,
   TextField,
+  BottomNavigation,
+  BottomNavigationAction,
+  Paper,
 } from "@mui/material";
-
+import MenuIcon from "@mui/icons-material/Menu";
+import ShoppingBagTwoToneIcon from "@mui/icons-material/ShoppingBagTwoTone";
+import FeedIcon from "@mui/icons-material/Feed";
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import WebStoriesIcon from "@mui/icons-material/WebStories";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import AddchartIcon from "@mui/icons-material/Addchart";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
@@ -25,7 +34,7 @@ import styled from "@emotion/styled";
 import SearchIcon from "@mui/icons-material/Search";
 import { usePathname } from "next/navigation";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import CloseIcon from "@mui/icons-material/Close";
 import { colors } from "../Constants/colors";
 import { useMediaQuery } from "@mui/material";
@@ -34,16 +43,15 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { navItems } from "@/utils/Data";
 import { useRouter } from "next/navigation";
-import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
+
 import { doLogout } from "../../app/actions/index";
 import { logout } from "@/app/Redux/Slices/authSlice";
 import { userDetailsApi } from "@/app/Redux/Slices/authSlice";
 import NavbarSearch from "../Home/NavbarSearch";
-import { googleLogin } from "@/app/Redux/Slices/authSlice";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+
 
 const StyledListItemText = styled(ListItemText)`
   && .MuiTypography-root {
@@ -199,6 +207,10 @@ const Navbar = ({ session }) => {
   const [anchorEl2, setAnchorEl2] = useState(null);
   const open2 = Boolean(anchorEl2);
 
+  const handleNavigation = (url) => {
+    router.push(url);
+  };
+
   const handleMouseEnter = (event) => {
     setAnchorEl2(event.currentTarget);
   };
@@ -283,7 +295,7 @@ const Navbar = ({ session }) => {
                         sm: "none",
                         md: "flex",
                         alignItems: "center",
-                        paddingBottom:"8px"
+                        paddingBottom: "8px",
                       },
                     }}
                   >
@@ -333,7 +345,7 @@ const Navbar = ({ session }) => {
                           display: "flex",
                           flexDirection: "row",
                           padding: 0,
-                          alignItem:"flex-end"
+                          alignItem: "flex-end",
                         }}
                       >
                         {filteredNavItems.map((item) => (
@@ -364,7 +376,7 @@ const Navbar = ({ session }) => {
                                 whiteSpace: "nowrap",
                                 textOverflow: "ellipsis",
                                 cursor: "pointer",
-                               
+
                                 "&:hover .list-item-text": {
                                   color: `${colors.themeGreen} !important`,
                                 },
@@ -397,11 +409,11 @@ const Navbar = ({ session }) => {
                             aria-haspopup="true"
                             aria-expanded={anchorEl2 ? "true" : undefined}
                             onMouseEnter={handleMouseEnter}
-                            onClick={(e) => setAnchorEl2(e.currentTarget)} 
+                            onClick={(e) => setAnchorEl2(e.currentTarget)}
                             sx={{
                               color: anchorEl2
                                 ? colors.themeGreen
-                                : colors.navyBlue900, 
+                                : colors.navyBlue900,
                               fontWeight: "600",
                               fontSize: "14px",
                               lineHeight: "17px",
@@ -409,7 +421,7 @@ const Navbar = ({ session }) => {
                               "&:hover": {
                                 color: colors.themeGreen,
                                 "& .MuiSvgIcon-root": {
-                                  color: colors.themeGreen, 
+                                  color: colors.themeGreen,
                                 },
                               },
                             }}
@@ -418,8 +430,8 @@ const Navbar = ({ session }) => {
                                 sx={{
                                   color: anchorEl2
                                     ? colors.themeGreen
-                                    : colors.navyBlue900, 
-                                  transition: "color 0.2s ease", 
+                                    : colors.navyBlue900,
+                                  transition: "color 0.2s ease",
                                 }}
                               />
                             }
@@ -431,7 +443,7 @@ const Navbar = ({ session }) => {
                             id="utilities-menu"
                             anchorEl={anchorEl2}
                             open={Boolean(anchorEl2)}
-                            onClose={() => setAnchorEl2(null)} 
+                            onClose={() => setAnchorEl2(null)}
                             disablePortal
                             disableScrollLock={true}
                             TransitionProps={{
@@ -695,10 +707,11 @@ const Navbar = ({ session }) => {
                             <StyledMenuItem onClick={handleClose} disableRipple>
                               <IconButton
                                 sx={{
-                                 "& svg path": { fill: colors.navyBlue900,
-                                    stroke: colors.navyBlue900, 
-                                    strokeWidth: 0.7, 
-                                   },
+                                  "& svg path": {
+                                    fill: colors.navyBlue900,
+                                    stroke: colors.navyBlue900,
+                                    strokeWidth: 0.7,
+                                  },
                                   padding: 0,
                                 }}
                               >
@@ -715,10 +728,11 @@ const Navbar = ({ session }) => {
                             <StyledMenuItem onClick={handleClose} disableRipple>
                               <IconButton
                                 sx={{
-                                  "& svg path": { fill: colors.navyBlue900,
-                                    stroke: colors.navyBlue900, 
-                                    strokeWidth: 0.7, 
-                                   },
+                                  "& svg path": {
+                                    fill: colors.navyBlue900,
+                                    stroke: colors.navyBlue900,
+                                    strokeWidth: 0.7,
+                                  },
 
                                   padding: 0,
                                 }}
@@ -741,9 +755,10 @@ const Navbar = ({ session }) => {
                           >
                             <IconButton
                               sx={{
-                                "& svg path": { fill: colors.red400 ,
-                                  stroke: colors.red400, 
-                                  strokeWidth: 0.7, 
+                                "& svg path": {
+                                  fill: colors.red400,
+                                  stroke: colors.red400,
+                                  strokeWidth: 0.7,
                                 },
                                 padding: 0,
                               }}
@@ -841,6 +856,28 @@ const Navbar = ({ session }) => {
           </List>
         </Box>
       </Drawer>
+      {
+        isSmallerThanSm ? 
+        <Paper
+        sx={{ position: "fixed", bottom: 0, left: 0, right: 0,zIndex:1200000, }}
+        elevation={3}
+      >
+        <BottomNavigation showLabels>
+          <BottomNavigationAction
+            label="Education"
+            icon={<MenuBookIcon />}
+            onClick={() => handleNavigation("/education")}
+            sx={{ minWidth: "0px" }}
+          />
+          <BottomNavigationAction sx={{ minWidth: "0px" }} label="Times" icon={<FeedIcon />}   onClick={() => handleNavigation("/times")} />
+          <BottomNavigationAction sx={{ minWidth: "0px" }} label="Prime" icon={<WebStoriesIcon />}  onClick={() => handleNavigation("/prime")}/>
+          <BottomNavigationAction sx={{ minWidth: "0px" }} label="Discovery" icon={<QueryStatsIcon />} onClick={() => handleNavigation("/discovery")} />
+          <BottomNavigationAction  sx={{ minWidth: "0px" }} label="Ipo" icon={<AddchartIcon />}  onClick={() => handleNavigation("/ipo-zone")}/>
+        </BottomNavigation>
+      </Paper> :
+      <></>
+      }
+    
     </>
   );
 };

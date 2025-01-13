@@ -29,7 +29,7 @@ import { useParams } from "next/navigation";
 import Spinner from "../../../components/Common/Spinner";
 import Head from "next/head";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Footer from "@/components/Home/Footer";
+
 import Pagination from "@/components/Pagination/Pagination";
 import ScrollCircle from "@/components/Common/ScrollCircle";
 
@@ -178,7 +178,12 @@ const DiscoveryBucketContent = () => {
             id: id,
             body: filterObj,
             page: currentPage,
-            sort_by: sortBy=="createdAt" || sortBy=="industry" || sortBy=="sector" ? "company_name" :sortBy,
+            sort_by:
+              sortBy == "createdAt" ||
+              sortBy == "industry" ||
+              sortBy == "sector"
+                ? "company_name"
+                : sortBy,
             sort_order: sortOrder,
           })
         );
@@ -188,7 +193,12 @@ const DiscoveryBucketContent = () => {
             id: id,
             body: filterObj,
             page: currentPage,
-            sort_by: sortBy=="createdAt" || sortBy=="industry" || sortBy=="sector" ? "company_name" :sortBy,
+            sort_by:
+              sortBy == "createdAt" ||
+              sortBy == "industry" ||
+              sortBy == "sector"
+                ? "company_name"
+                : sortBy,
             sort_order: sortOrder,
           })
         );
@@ -363,21 +373,20 @@ const DiscoveryBucketContent = () => {
           <NoData text="No data available for this bucket currently." />
         ) : (
           <DiscoveryTable tableData={tableData} id={id} />
-
         )}
-        <ScrollCircle/>
-        {
-          tableData?.length ? <Box mt={2}>
-          <Pagination
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            pagination={pagination}
-          />
-        </Box> : <></>
-        }
-        
+        <ScrollCircle />
+        {tableData?.companies?.length ? (
+          <Box mt={2}>
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              pagination={pagination}
+            />
+          </Box>
+        ) : (
+          <></>
+        )}
       </Container>
-      {!isSmallerThanMd && <Footer />}
     </>
   );
 };
