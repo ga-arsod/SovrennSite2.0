@@ -47,14 +47,16 @@ const WatchlistMainPage = () => {
   useEffect(()=>{
     dispatch(getWatchlistApi())
   },[])
-
+console.log(companyData,"company data")
   return (
     <>
     
       <WatchlistEditModal isOpen={isEditModalOpen}   company={companyData} />
       <Container>
+      
         <Grid container justifyContent="space-between" alignItems="center" marginTop={{xs:"70px",sm:"104px"}} spacing={isSmallerThanMd ? 2 : 0}>
         <Snackbar/>
+       
           <Grid item xs={12} md={6}>
             <Box marginBottom={1} display="flex" alignItems="center">
               {isSmallerThanMd && (

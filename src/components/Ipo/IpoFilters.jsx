@@ -472,7 +472,7 @@ setFilterData(filterObj)
             padding: "8px 12px",
             boxShadow: "0px -2px 12px 0px #0000001F",
             backgroundColor: "white",
-            zIndex: 1401,
+            zIndex: 1400000000,
           }}
         >
           <Grid container spacing={2}>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Tabs,
   Tab,
@@ -49,11 +49,11 @@ const CustomTabs = styled(Tabs)`
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  white-space: nowrap; 
-  padding: 0 10px;
+  white-space: nowrap;
+
   -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar {
-    height: 6px; 
+    height: 6px;
   }
   &::-webkit-scrollbar-thumb {
     background-color: ${colors.grey300};
@@ -69,7 +69,7 @@ const CustomTab = styled(Tab)`
   font-weight: 600;
   padding: 6px 10px;
   color: ${colors.greyBlue300};
-  white-space: nowrap; 
+  white-space: nowrap;
 
   &:hover {
     color: ${colors.themeGreen};
@@ -83,10 +83,12 @@ const CustomTab = styled(Tab)`
 const KnowledgeSearchFilter = ({ categories }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const selectedCategorySlug = searchParams.get("category"); 
+  const selectedCategorySlug = searchParams.get("category");
 
   const [value, setValue] = useState(
-    categories.findIndex((cat) => cat.attributes.slug === selectedCategorySlug) || 0
+    categories.findIndex(
+      (cat) => cat.attributes.slug === selectedCategorySlug
+    ) || 0
   );
 
   const handleChange = (event, newValue) => {
@@ -102,8 +104,7 @@ const KnowledgeSearchFilter = ({ categories }) => {
     }
 
     // Push updated URL
-    router.push(`/knowledge?${params.toString()}`); 
-    
+    router.push(`/knowledge?${params.toString()}`);
   };
 
   return (
@@ -143,11 +144,15 @@ const KnowledgeSearchFilter = ({ categories }) => {
           </Grid>
         </Grid> */}
         <Box sx={{ width: "100%" }}>
-          <CustomTabs value={value} onChange={handleChange} aria-label="nav tabs" 
-          variant="scrollable"
-          scrollButtons={false}
- 
-  >
+          <CustomTabs
+            value={value}
+            onChange={handleChange}
+            aria-label="nav tabs"
+            variant="scrollable"
+            scrollButtons
+            allowScrollButtonsMobile
+            
+          >
             {categories.map((category, index) => (
               <CustomTab key={index} label={category.attributes.name} />
             ))}

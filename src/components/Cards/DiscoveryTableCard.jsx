@@ -228,6 +228,7 @@ const DiscoveryTableCard = ({ tableData, id }) => {
                 padding: 2,
                 boxSizing: "border-box",
                 margin: "auto",
+                minHeight: { sm: "270px" },
               }}
             >
             

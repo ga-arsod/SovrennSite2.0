@@ -88,7 +88,7 @@ const PrimeCard = ({ data, activeTab }) => {
         handlePaymentClose={handlePaymentClose}
       />
     {
-      data.length== 0 ?  <NoData text="No data available" />
+      data?.length== 0 ?  <NoData text="No data available" />
       :
       <Box sx={{ flexGrow: 1, paddingY: 2 }}>
       <Grid

@@ -65,7 +65,7 @@ const StyledButton1 = styled(Button)`
   width: 100%;
 
   :hover {
-    background-color: ${colors.themeButtonHover};
+    background-color:#F4F3F3;
     color: ${colors.navyBlue500};
     border-color: ${colors.navyBlue500};
     outline: ${colors.navyBlue500};
@@ -105,28 +105,49 @@ const StyledBox = styled(Box)`
 
 const WatchlistEditModal = ({ isOpen, company }) => {
   const [editedValues, setEditedValues] = useState({
-    uptrend_potential: '',
-    expected_price_after_1year: ''
+    uptrend_potential: company.uptrend_potential || '',
+    expected_price_after_1year: company.expected_price_after_1year || ''
   });
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsSaveDisabled(!(editedValues.uptrend_potential && editedValues.expected_price_after_1year));
-  }, [editedValues]);
+    setIsSaveDisabled(
+      editedValues.uptrend_potential === company.uptrend_potential &&
+      editedValues.expected_price_after_1year === company.expected_price_after_1year
+    );
+  }, [editedValues, company]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedValues((prevValues) => ({
       ...prevValues,
-      [name]: value,
+      [name]: value
     }));
   };
 
+
+  const handleSave = () => {
+    // Merge editedValues with original company values
+    const finalValues = {
+      uptrend_potential: editedValues.uptrend_potential || company.uptrend_potential,
+      expected_price_after_1year: editedValues.expected_price_after_1year || company.expected_price_after_1year
+    };
+
+    dispatch(editWatchlistApi({ id: company?.company_Id._id, editedValues: finalValues }));
+    setEditedValues({ uptrend_potential: '', expected_price_after_1year: '' });
+   
+  };
   const handleClosed = () => {
+    setEditedValues({
+      uptrend_potential: company.uptrend_potential || '',
+      expected_price_after_1year: company.expected_price_after_1year || ''
+    });
     dispatch(toggleEditModal());
   };
-  
+ 
+  console.log(company,"company")
+  console.log(editedValues,"edited values")
   return (
     <Modal
       open={isOpen}
@@ -216,10 +237,7 @@ const WatchlistEditModal = ({ isOpen, company }) => {
                     <StyledButton2
                       variant="contained"
                       disabled={isSaveDisabled}
-                      onClick={() => {
-                        dispatch(editWatchlistApi({ id: company?.company_Id._id, editedValues }));
-                        setEditedValues({ uptrend_potential: '', expected_price_after_1year: '' });
-                      }}
+                      onClick={handleSave}
                     >
                       Save
                     </StyledButton2>

@@ -39,23 +39,29 @@ const StyledTypography1 = styled(Typography)`
 
 const StyledTextField = styled(TextField)`
   width: 100%;
+  
   & .MuiInputBase-root {
     font-size: 16px;
     color: #344054;
     border-radius: 8px;
   }
+
   & .MuiOutlinedInput-notchedOutline {
     border: 1px solid #d0d5dd;
   }
+
   &:hover .MuiOutlinedInput-notchedOutline {
     border: 1px solid #d0d5dd;
   }
+
   &.Mui-focused .MuiOutlinedInput-notchedOutline {
     border: 1px solid #d0d5dd;
   }
+
   & .MuiInputBase-input {
     padding: 10px 12px;
   }
+
   & .MuiInputBase-input::placeholder {
     font-weight: 400;
     font-size: 15px;
@@ -63,7 +69,21 @@ const StyledTextField = styled(TextField)`
     color: ${colors.greyBlue300};
     opacity: 1;
   }
+
+  /* Remove spinner in number input */
+  & input[type="number"]::-webkit-outer-spin-button, 
+  & input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; 
+    margin: 0;
+  }
+
+  & input[type="number"] {
+    -moz-appearance: textfield; 
+  }
 `;
+
+
+
 
 const StyledAutocomplete = styled(Autocomplete)`
   width: 100%;
@@ -394,6 +414,7 @@ const SelfHelpForm = ({ selectedChip,setCompanyId }) => {
                   name={field.name}
                   placeholder={field.placeholder}
                   required
+                  type="number"
                   value={inputData[field.name] }
                   onChange={handleChange}
                 />
@@ -412,6 +433,7 @@ const SelfHelpForm = ({ selectedChip,setCompanyId }) => {
               <StyledTextField
                 id={field.name}
                 name={field.name}
+                type="number"
                 placeholder={field.placeholder}
                 required
                 value={inputData[field.name]}

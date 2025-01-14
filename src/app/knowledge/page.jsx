@@ -21,14 +21,22 @@ async function fetchCategories() {
 
 export default async function Knowledge({ searchParams }) {
   const categorySlug = searchParams?.category || null;
-
+  const allCat = {
+    "id": 0,
+    "attributes": {
+    "name": "All",
+    "slug": null
+    }
+    }
+    
   // Fetch data based on current search params
   const postsData = await fetchPosts();
   const categoriesData = await fetchCategories();
 
   const posts = postsData.data || [];
-  const categories = categoriesData.data || [];
+  const categories = [allCat,...categoriesData.data] || [];
   const pagination = postsData.meta.pagination;
+ 
   return (
     <>
       <Head>

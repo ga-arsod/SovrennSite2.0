@@ -43,10 +43,11 @@ const StyledButton1 = styled(Button)`
     padding-bottom: 8px;
   }
   :hover {
-    background-color: ${colors.themeButtonHover};
+    background-color:#F4F3F3;
     color: ${colors.navyBlue500};
     border-color: ${colors.navyBlue500};
     outline: ${colors.navyBlue500};
+   
   }
 `;
 
@@ -200,6 +201,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                 </StyledInputLabel>
                 <StyledTextField
                   placeholder="Enter current password"
+                  required
                   id="current_password"
                   name="current_password"
                   type="password"
@@ -212,6 +214,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                 </StyledInputLabel>
                 <StyledTextField
                   placeholder="Enter new password"
+                  required
                   id="new_password"
                   name="new_password"
                   type="password"
@@ -226,6 +229,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
                   placeholder="Re-enter new password"
                   id="confirm_password"
                   name="confirm_password"
+                  required
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -252,6 +256,9 @@ const ProfileModal = ({ isOpen, onClose }) => {
                   <Grid item xs={6}>
                     <StyledButton2
                       variant="contained"
+                      disabled={
+                        !currentPassword.trim() || !newPassword.trim() || !confirmPassword.trim()
+                      }
                       onClick={handleSubmit}
                     >
                       Change Password

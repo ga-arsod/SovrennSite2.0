@@ -76,8 +76,7 @@ const StyledButton2 = styled(Button)`
     font-size: 16px;
     font-weight: 500;
     line-height: 22px;
-    padding-top: 12px;
-    padding-bottom: 12px;
+   
   }
 `;
 const StyledButton3 = styled(Button)`
@@ -90,16 +89,17 @@ const StyledButton3 = styled(Button)`
   background-color: #f8be5c;
   text-transform: none;
 
-  width: 350px;
+  width: 322px;
   :hover {
     background-color: #f8be5c;
   }
-  @media (max-width: 700px) {
+  @media (max-width: 639px) {
+   width: 300px;
     font-size: 16px;
     font-weight: 500;
     line-height: 22px;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 `;
 
@@ -249,7 +249,7 @@ const MainPoster = () => {
             className={animate ? "animate" : ""}
           >
             <Grid item>
-              <StyledTyography3 marginBottom={1.5}>
+              <StyledTyography3 marginBottom={1}>
                 <Typography
                   component="span"
                   sx={{
@@ -320,9 +320,9 @@ const MainPoster = () => {
 
               <Grid
                 container
-                direction={{ xs: "column", sm: "row" }}
+                direction={{ xs: "column" }}
                gap={2}
-                alignItems="center"
+                alignItems={{xs:"center",md:"start"}}
                 justifyContent={{ xs: "center", md: "start" }}
                 width="100%"
               >
@@ -336,7 +336,7 @@ const MainPoster = () => {
                       </StyledButton3>
                     </Grid>
                     <Grid item>
-                      <Link href="pricing">
+                      <Link href="/pricing">
                         <StyledButton2 variant="contained">
                           {`Upgrade to Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
                         </StyledButton2>
@@ -344,7 +344,7 @@ const MainPoster = () => {
                     </Grid>
                   </>
                 ) : isAuth && !userDetails?.subscriptions.length ? (
-                  <Link href="pricing">
+                  <Link href="/pricing">
                     <StyledButton2 variant="contained">
                       {`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
                     </StyledButton2>
@@ -365,23 +365,23 @@ const MainPoster = () => {
                  }}
                  width="100%"
                >
-                 <Link href="pricing">
+                 <Link href="/signup">
                    <StyledButton1
                      variant="outlined"
                      sx={{
                        width: { xs: "100%", sm: "auto" },
-                       padding: { xs: "16px", sm: "8px 16px" },
+                       padding: { xs: "16px", sm: "12px 16px" },
                      }}
                    >
                      Get 45 Days Trial For Free
                    </StyledButton1>
                  </Link>
-                 <Link href="pricing">
+                 <Link href="/pricing">
                    <StyledButton2
                      variant="contained"
                      sx={{
                        width: { xs: "100%", sm: "auto" },
-                       padding: { xs: "16px", sm: "8px 16px" },
+                       padding: { xs: "16px", sm: "12px 16px" },
                      }}
                    >
                      {`Buy Full Access @ ₹4500/yr`}
@@ -398,6 +398,8 @@ const MainPoster = () => {
                       display: "flex",
                       flexDirection: { xs: "column", sm: "row" },
                       gap: 2,
+                      justifyContent:{sm:"Center",md:"start"}
+                     
                     }}
                     width="100%"
                   >
@@ -406,7 +408,7 @@ const MainPoster = () => {
                         variant="outlined"
                         sx={{
                           width: { xs: "100%", sm: "auto" },
-                          padding: { xs: "16px", sm: "8px 16px" },
+                          padding: { xs: "16px", sm: "12px 16px" },
                         }}
                       >
                       Learn Investing
@@ -417,7 +419,7 @@ const MainPoster = () => {
                         variant="contained"
                         sx={{
                           width: { xs: "100%", sm: "auto" },
-                          padding: { xs: "16px", sm: "8px 16px" },
+                          padding: { xs: "16px", sm: "12px 16px" },
                         }}
                       >
                       Discover Stocks Now

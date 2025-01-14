@@ -39,7 +39,7 @@ const StyledButton1 = styled(Button)`
   background-color: ${colors.white};
 
   :hover {
-    background-color: ${colors.themeButtonHover};
+    background-color:#F4F3F3;
     color: ${colors.navyBlue500};
     border-color: ${colors.navyBlue500};
     outline: ${colors.navyBlue500};
@@ -66,7 +66,7 @@ const StyledButton2 = styled(Button)`
   background-color: ${colors.red300};
 
   :hover {
-    background-color: ${colors.themeButtonHover};
+    background-color: #F60909;
     color: ${colors.white};
     border-color: ${colors.themeButtonHover};
     outline: ${colors.themeButtonHover};

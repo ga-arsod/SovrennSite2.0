@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import {
   Paper,
   Table,
@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { colors } from "../Constants/colors";
-
+import { resetSorting } from "@/app/Redux/Slices/sortingSlice";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import PaymentModal from "../PayU/PaymentModal";
@@ -236,7 +236,7 @@ const wordsStr = [
 export default function DiscoveryTable({ tableData, id }) {
   const dispatch = useDispatch();
   const [hoveredRow, setHoveredRow] = useState(null);
-
+  
   const [isOpen, setIsOpen] = useState(false);
   const { sortBy, sortOrder } = useSelector((state) => state.sorting);
 
@@ -292,6 +292,7 @@ export default function DiscoveryTable({ tableData, id }) {
     }
   };
 
+  
   const headerRowArray = [
     {
       name: "Company Name",
