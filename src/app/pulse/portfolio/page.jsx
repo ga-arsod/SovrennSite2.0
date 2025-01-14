@@ -14,6 +14,7 @@ import {
   Container,
   InputAdornment,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "@emotion/styled";
 import AddIcon from "@mui/icons-material/Add";
@@ -21,6 +22,8 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { debounce, throttle } from "lodash";
 import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
+
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   getPortfolioCompanies,
   searchAllCompanies,
@@ -30,6 +33,7 @@ import {
 import { setSnackStatus } from "../../Redux/Slices/snackbarSlice";
 import { colors } from "@/components/Constants/colors";
 import Snackbar from "../../../components/Snackbar/SnackBar";
+import NoLogin from "../../../components/Auth/NoLogin";
 
 const StyledTypography = styled(Typography)`
   font-weight: 400;
@@ -41,11 +45,13 @@ const StyledTypography1 = styled(Typography)`
   font-size: 44px;
   line-height: 56px;
   letter-spacing: -0.04em;
-  @media (max-width: 639px) {
+
+   @media (max-width: 639px) {
     font-size: 23px;
     line-height: 28px;
   }
 `;
+
 const StyledTypography2 = styled(Typography)`
  font-weight: 600;
   font-size: 17px;
@@ -90,14 +96,23 @@ const DEBOUNCE_DELAY = 300;
 
 const PulseSearch = () => {
   const dispatch = useDispatch();
+  const router=useRouter();
   const { portfolioCompanies, isCompaniesLoading, allCompanies } = useSelector(
     (store) => store.pulse
   );
-
+  
+  const { isAuth } = useSelector(
+    (store) => store.auth
+  );
   const [companies, setCompanies] = useState([]);
   const [companyIds, setCompanyIds] = useState([]);
   const [recentlyAdded, setRecentlyAdded] = useState([]);
   const [searchText, setSearchText] = useState("");
+
+
+  const handleBackClick = () => {
+    router.back();  
+  };
 
   useEffect(() => {
     dispatch(clearAllCompanies());
@@ -151,25 +166,26 @@ const PulseSearch = () => {
 
     setRecentlyAdded(arr);
   };
-
   const addToRecentlyAdded = (value) => {
-    if (companyIds.includes(value._id)) {
+    // Check if the company is already in the recently added list
+    if (recentlyAdded.some((company) => company._id === value._id)) {
       dispatch(
         setSnackStatus({
           status: true,
-          message: "Company already avaialable in the portfolio",
+          message: "Company already added to the recently added list",
           severity: "error",
         })
       );
-
       return;
     }
-
+  
+    // Add the company to the recently added list
     setRecentlyAdded([...recentlyAdded, value]);
   };
+  
 
   const updatePortfolio = () => {
-    dispatch(updatePortfolioApi([...recentlyAdded, ...companies]));
+    dispatch(updatePortfolioApi({data:[...recentlyAdded, ...companies],router}));
 
     dispatch(
       setSnackStatus({
@@ -186,6 +202,10 @@ const PulseSearch = () => {
     dispatch(clearAllCompanies());
   };
 
+  if (!isAuth) {
+    return <NoLogin />;
+  }
+
   return (
     <>
       <Head>
@@ -197,12 +217,19 @@ const PulseSearch = () => {
           key="canonical"
         />
       </Head>
+    
       <Container sx={{ paddingBottom: "80px" }}>
+      <Snackbar/>
         <Grid container marginTop="90px">
           <Grid item>
-            <StyledTypography1 variant="h1" color={colors.navyBlue500}>
+          <Box display="flex" alignItems="center">
+         
+            <ArrowBackIcon onClick={handleBackClick} sx={{ display: { xs: 'block', sm: 'block', md: 'none', fontSize: 28, }, mr: 1 }} />
+            <StyledTypography1 color={colors.navyBlue500}>
               My <span style={{ color: colors.themeGreen }}>Portfolio</span>
             </StyledTypography1>
+          </Box>
+           
             <StyledTypography2 color={colors.navyBlue300} mt={1}>
               Receive refined updates for the stocks in your portfolio
             </StyledTypography2>
@@ -439,27 +466,21 @@ const PulseSearch = () => {
                       ))}
                     </List>
                   </Grid>
-                </Grid>
-              </div>
-
-              <Box
-                sx={{
-                  position: "fixed",
-                  bottom: 0,
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  width: "100%",
-                  maxWidth: "520px",
-                }}
-              >
-                <StyledButton
+                  <Grid item marginTop={3}>
+                  <StyledButton
                   onClick={updatePortfolio}
-                  sx={{ width: "100%" }}
+                fullWidth
                   variant="contained"
                 >
                   {portfolioCompanies?.length ? "Save" : "Create Now"}
                 </StyledButton>
-              </Box>
+                  </Grid>
+                </Grid>
+              </div>
+
+            
+                
+             
             </div>
           </Box>
         </Grid>

@@ -1,5 +1,6 @@
 
 import {createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { setSnackStatus } from './snackbarSlice';
 const url = process.env.NEXT_PUBLIC_API_URL;
 
 const initialState = {
@@ -33,11 +34,19 @@ export const editWatchlistApi = createAsyncThunk(
           body: JSON.stringify(editedValues),
       });
       const data= await response.json();
-      if (response.ok) {
+      
+       if (response.ok) {
         dispatch(getWatchlistApi())
         dispatch(toggleEditModal())
-       
-      }
+          
+            dispatch(
+              setSnackStatus({
+                status: true,
+                severity: "success",
+                message:"Watchlist updated successfully.",
+              })
+            );
+          }
       
       return data;
     }

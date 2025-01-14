@@ -6,6 +6,7 @@ const url = process.env.NEXT_PUBLIC_API_URL;
 const initialState = {
   portfolioCompanies:[],
   isCompaniesLoading:false,
+  isPortfolioUpdated:false,
   allCompanies:[],
   isPulseFilterOpen:false,
   pulseFilter:[],
@@ -56,7 +57,7 @@ export const getPortfolioCompanies = createAsyncThunk(
 
   export const updatePortfolioApi = createAsyncThunk(
     "updatePortfolioApi",
-    async (data,{dispatch}) => {
+    async ({data,router},{dispatch}) => {
       const response = await fetch(`${url}/user/update-portfolio`, {
         method: "PATCH",
         headers: {
@@ -70,6 +71,7 @@ export const getPortfolioCompanies = createAsyncThunk(
       });
       if(response.ok)
       {
+        router.push("/pulse")
         dispatch(getPortfolioCompanies())
       }
       return response.json();

@@ -263,7 +263,7 @@ const Filters = ({ isOpen, handleModalOpen }) => {
         open={isOpen}
         onClose={togglePrimeFilter}
         sx={{
-          zIndex: 1400,
+          zIndex: 140000000,
           "& .MuiDrawer-paper": {
             width: isSmallerThanSm ? "100%" :"350px",
             position: 'relative',

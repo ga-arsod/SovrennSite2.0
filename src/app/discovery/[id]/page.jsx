@@ -109,7 +109,7 @@ const DiscoveryBucketContent = () => {
     .replace(/-/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
   const { sortBy, sortOrder } = useSelector((state) => state.sorting);
-
+  
   const { isTableDataLoading } = useSelector((store) => store.discovery);
   const dispatch = useDispatch();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));

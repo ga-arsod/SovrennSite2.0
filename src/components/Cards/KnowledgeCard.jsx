@@ -132,10 +132,10 @@ const KnowledgeCard = ({ initialPosts, categories, initialPagination }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const getPostsByCategory = async (page = 1) => {
-    if (slug && pagination.page == 1) setIsLoading(true);
+    if (pagination.page == 1) setIsLoading(true);
 
     const url =
-      slug == "all"
+      slug === null
         ? `https://cms.sovrenn.com/api/posts?sort=createdAt:desc&filters[category][slug][$ne]=chronicles&pagination[pageSize]=20&pagination[page]=${page}&populate=category`
         : `https://cms.sovrenn.com/api/posts?filters[category][slug][$eq]=${slug}&sort=publishedAt:desc&pagination[pageSize]=20&pagination[page]=${page}&populate=category`;
     const res = await fetch(url);
@@ -176,11 +176,11 @@ const KnowledgeCard = ({ initialPosts, categories, initialPagination }) => {
     );
   };
   useEffect(() => {
-    if (slug) {
+   
       setPosts([]);
       setPagination(initialPagination);
       getPostsByCategory(1);
-    }
+    
   }, [slug]);
 
   if (isLoading) {

@@ -106,8 +106,10 @@ const StyledButton2 = styled(Button)`
   text-transform: none;
   background-color:${colors.red300};
   border-color:${colors.red300};
+
+   
   &:hover {
-    background-color:${colors.red300};
+    background-color:#F60909;
   border-color:${colors.red300}
     color: white;
    

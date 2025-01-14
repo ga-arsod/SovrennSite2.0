@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    sortBy: 'company_name', 
-    sortOrder: 'inc',  
+    sortBy: 'date', 
+    sortOrder: 'dec',  
 };
 
 const sortingSlice = createSlice({

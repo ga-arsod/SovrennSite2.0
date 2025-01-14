@@ -15,11 +15,11 @@ import ProfileSettings from "../../components/Profile/ProfileSettings";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { colors } from "@/components/Constants/colors";
 import { useTheme } from "@mui/material/styles";
-
+import { useRouter } from "next/navigation";
 import Snackbar from "../../components/Snackbar/SnackBar";
 import { useDispatch } from "react-redux";
 import { subscriptionDetailsApi } from "../Redux/Slices/authSlice";
-import { useRouter } from "next/navigation";
+
 import { useSelector } from "react-redux";
 import NoLogin from "../../components/Auth/NoLogin";
 
@@ -65,11 +65,14 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { isAuth } = useSelector((store) => store.auth);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+  
   const handleAlignment = (event, newAlignment) => {
     if (newAlignment !== null) {
       setAlignment(newAlignment);
     }
+  };
+  const handleBackClick = () => {
+    router.back();  
   };
   useEffect(() => {
     dispatch(subscriptionDetailsApi());
@@ -78,6 +81,7 @@ const Profile = () => {
   if (!isAuth) {
     return <NoLogin />;
   }
+  
   return (
     <>
       <Container>
@@ -92,6 +96,7 @@ const Profile = () => {
                     marginRight: { xs: 1, sm: 2 },
                     color: colors.navyBlue500,
                   }}
+                 onClick={handleBackClick}
                 />
               )}
               <StyledTypography1

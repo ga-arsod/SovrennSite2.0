@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { colors } from "../../components/Constants/colors";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
@@ -28,11 +28,11 @@ import { useRouter } from "next/navigation";
 import NoLogin from "../../components/Auth/NoLogin";
 import NoAccess from "../../components/Auth/NoAccess";
 import Head from "next/head";
-
+import Image from "next/image";
 const fadeIn = keyframes`
   from {
     opacity: 0;
-    transform: translateY(20px); // Move form slightly up
+    transform: translateY(20px); 
   }
   to {
     opacity: 1;
@@ -106,9 +106,9 @@ const HoverContainer = styled(Box)`
   color: ${colors.greyBlue500};
   transition: color 0.3s;
 
-  &:hover {
-    color: ${colors.themeGreen};
-  }
+  // &:hover {
+  //   color: ${colors.themeGreen};
+  // }
 `;
 
 const StickyChipsContainer = styled(Grid)`
@@ -117,6 +117,18 @@ const StickyChipsContainer = styled(Grid)`
   z-index: 10;
 `;
 
+const StyledImage = styled.div`
+  display: inline-block;
+  img {
+    filter: grayscale(100%) brightness(0%) sepia(100%) hue-rotate(90deg)
+      saturate(1000%) brightness(90%);
+    transition: filter 0.3s ease;
+  }
+  &:hover img {
+    filter: grayscale(0%) brightness(100%) sepia(100%) hue-rotate(90deg)
+      saturate(300%) brightness(120%);
+  }
+`;
 const WatchlistButton = styled(Button)(({ theme }) => ({
   borderRadius: "4px",
   textTransform: "none",
@@ -140,6 +152,7 @@ const WatchlistButton = styled(Button)(({ theme }) => ({
 const SelfHelp = () => {
   const dispatch = useDispatch();
   const [companyId, setCompanyId] = useState(null);
+  const expectedResultRef = useRef(null);
   const [selectedChip, setSelectedChip] = useState(null);
   const router = useRouter();
   const { isCalculatedDataAvailable, isCalculationLoading } = useSelector(
@@ -156,6 +169,14 @@ const SelfHelp = () => {
   useEffect(() => {
     dispatch(resetCalculatedData());
   }, [dispatch]);
+  useEffect(() => {
+    if (isCalculatedDataAvailable && expectedResultRef.current) {
+      expectedResultRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [isCalculatedDataAvailable]);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const handleBackClick = () => {
@@ -163,7 +184,7 @@ const SelfHelp = () => {
   };
 
   if (!isAuth) {
-    return <NoLogin />
+    return <NoLogin />;
   }
   if (
     isAuth &&
@@ -244,6 +265,7 @@ const SelfHelp = () => {
                       <StyledSelfHelpChips
                         onChipSelect={handleChipSelect}
                         selectedChip={selectedChip}
+                        justify="start"
                       />
                     </StickyChipsContainer>
                   )}
@@ -294,11 +316,14 @@ const SelfHelp = () => {
                       width="200px"
                     >
                       <HoverContainer
-                        onClick={() =>
-                          window.scrollTo({ top: 0, behavior: "smooth" })
-                        }
+                        onClick={() => window.scrollTo({ top: 0 })}
                       >
-                        <ExpandCircleDownIcon />
+                        <Image
+                          src="/scrollupicon.png"
+                          alt="Scroll Up"
+                          width={30}
+                          height={30}
+                        />
                         <StyledTypography2>Scroll Up</StyledTypography2>
                       </HoverContainer>
                     </Grid>
@@ -324,6 +349,7 @@ const SelfHelp = () => {
                 <StyledSelfHelpChips
                   onChipSelect={handleChipSelect}
                   selectedChip={selectedChip}
+                  justify="center"
                 />
               </Grid>
             )}
@@ -338,7 +364,9 @@ const SelfHelp = () => {
                   marginBottom: 0,
                 }}
               >
-                <ExpectedResult company_id={companyId} />
+                <div ref={expectedResultRef}>
+                  <ExpectedResult company_id={companyId} />
+                </div>
               </Grid>
             )}
 

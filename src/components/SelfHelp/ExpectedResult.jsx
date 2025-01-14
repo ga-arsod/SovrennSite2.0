@@ -103,7 +103,7 @@ const ExpectedResult = (company_id) => {
   };
   dispatch(addToWatchlistApi({company_id:company_id.company_id,uptrend_potential:uptrend_potential,expected_price_after_1year:expected_price_after_1year}))
   };
-console.log(company_id.company_id,"id")
+
   return (
     <Grid container justifyContent="center" sx={{ overflowX: 'hidden' }}>
       <Box
@@ -125,7 +125,7 @@ console.log(company_id.company_id,"id")
         <Grid container spacing={1.5} marginTop={6} direction={{xs:'column',sm:'row'}}>
           {selfHelpCalculatedData.map((item, index) => (
             <React.Fragment key={index}>
-              <Grid item xs={6} sx={{ overflow: 'hidden' }}>
+              <Grid item xs={8} sx={{ overflow: 'hidden' }}>
                 <StyledTypography2>
                   {`${item.heading}:`}
                   <CustomTooltip
@@ -150,7 +150,7 @@ console.log(company_id.company_id,"id")
                   </CustomTooltip>
                 </StyledTypography2>
               </Grid>
-              <Grid item xs={6} textAlign={{xs:"left",sm:"right"}} sx={{ overflow: 'hidden' }}>
+              <Grid item xs={4} textAlign={{xs:"left",sm:"right"}} sx={{ overflow: 'hidden' }}>
                 <StyledTypography3>
                <span>{item.currency}</span><span>{item.value ? item.value : 0}</span>{item.amount_in}
                 </StyledTypography3>

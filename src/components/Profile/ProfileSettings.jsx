@@ -5,7 +5,7 @@ import {
   Box,
   Typography,
   Button,
-  InputAdornment,
+  InputAdornment,Grid
 } from "@mui/material";
 import { colors } from "../Constants/colors";
 import { styled } from "@mui/system";
@@ -16,6 +16,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { togglePasswordModal } from "@/app/Redux/Slices/authSlice";
 import moment from "moment";
+import PaymentButton from "../Common/PaymentButton"
+import Link from "next/link";
 
 const StyledInputLabel = styled(Typography)`
   font-weight: 500;
@@ -72,7 +74,28 @@ const GreenBorderColorOutlinedIcon = styled(BorderColorOutlinedIcon)`
   cursor: pointer;
   font-size: 17px;
 `;
+const StyledButton1 = styled(Button)`
+  border-color: ${colors.themeGreen};
+  color: ${colors.themeGreen};
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  
+  text-transform: none;
+  background-color: ${colors.white};
 
+  
+  @media (max-width: 639px) {
+  width:100%;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+`;
 const StyledTypography = styled(Typography)`
   font-weight: 400;
   font-size: 18px;
@@ -145,8 +168,33 @@ const ProfileSettings = () => {
             justifyContent: "space-between",
           }}
         >
-          
-          <Box>
+         <Grid container>
+          <Grid item>
+          <Typography sx={{fontSize:"18px",lineHeight:"21px"}} gutterBottom>You do not have any access, upgrade now continue your investing journey.</Typography>
+          </Grid>
+          <Grid item>
+          <Grid
+                container
+                display="flex"
+               
+              gap={1}
+                width="100%"
+              >
+                <Grid item width={{xs:"100%",sm:"auto"}}  >
+                  <Link href="/pricing">
+                    <StyledButton1 variant="outlined">View Plans</StyledButton1>
+                  </Link>
+                </Grid>
+
+                <Grid item width={{xs:"100%",sm:"auto"}} >
+                  <PaymentButton/>
+                </Grid>
+              </Grid>
+          </Grid>
+          </Grid>
+        
+      
+          {/* <Box>
             <StyledTypography sx={{ marginBottom: "8px" }}>
               Access
             </StyledTypography>
@@ -189,7 +237,7 @@ const ProfileSettings = () => {
             <StyledTypography color={colors.navyBlue300}>
               {moment(subscriptionDetails?.expiry_date).format("Do MMM YY")}
             </StyledTypography>
-          </Box>
+          </Box> */}
         </Box>
       </StyledBox>
     </>

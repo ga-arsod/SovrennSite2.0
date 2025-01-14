@@ -93,7 +93,7 @@ const Prime = () => {
         body: filterData1,
         page: page1,
         sort_by:
-          sortBy == "ttm_pe" || sortBy == "date" ? "company_name" : sortBy,
+          sortBy == "ttm_pe" || sortBy == "date" ? "createdAt" : sortBy,
         sort_order: sortOrder,
       })
     );
@@ -102,7 +102,7 @@ const Prime = () => {
         body: filterData1,
         page: page2,
         sort_by:
-          sortBy == "ttm_pe" || sortBy == "date" ? "company_name" : sortBy,
+          sortBy == "ttm_pe" || sortBy == "date" ? "createdAt" : sortBy,
         sort_order: sortOrder,
       })
     );

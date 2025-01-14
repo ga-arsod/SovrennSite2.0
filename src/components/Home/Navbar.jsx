@@ -52,7 +52,6 @@ import { logout } from "@/app/Redux/Slices/authSlice";
 import { userDetailsApi } from "@/app/Redux/Slices/authSlice";
 import NavbarSearch from "../Home/NavbarSearch";
 
-
 const StyledListItemText = styled(ListItemText)`
   && .MuiTypography-root {
     font-weight: 600;
@@ -207,10 +206,23 @@ const Navbar = ({ session }) => {
   const [anchorEl2, setAnchorEl2] = useState(null);
   const open2 = Boolean(anchorEl2);
 
-  const handleNavigation = (url) => {
-    router.push(url);
+  const [activeTab, setActiveTab] = useState(0);
+
+  const routeMap = {
+    "/education": 0,
+    "/times": 1,
+    "/prime": 2,
+    "/discovery": 3,
+    "/ipo-zone": 4,
   };
 
+  useEffect(() => {
+    setActiveTab(routeMap[pathname] || -1); // -1 if no route matches
+  }, [pathname]);
+
+  const handleNavigation = (path) => {
+    router.push(path);
+  };
   const handleMouseEnter = (event) => {
     setAnchorEl2(event.currentTarget);
   };
@@ -856,28 +868,53 @@ const Navbar = ({ session }) => {
           </List>
         </Box>
       </Drawer>
-      {
-        isSmallerThanSm ? 
+      {isSmallerThanSm ? (
         <Paper
-        sx={{ position: "fixed", bottom: 0, left: 0, right: 0,zIndex:1200000, }}
-        elevation={3}
-      >
-        <BottomNavigation showLabels>
-          <BottomNavigationAction
-            label="Education"
-            icon={<MenuBookIcon />}
-            onClick={() => handleNavigation("/education")}
-            sx={{ minWidth: "0px" }}
-          />
-          <BottomNavigationAction sx={{ minWidth: "0px" }} label="Times" icon={<FeedIcon />}   onClick={() => handleNavigation("/times")} />
-          <BottomNavigationAction sx={{ minWidth: "0px" }} label="Prime" icon={<WebStoriesIcon />}  onClick={() => handleNavigation("/prime")}/>
-          <BottomNavigationAction sx={{ minWidth: "0px" }} label="Discovery" icon={<QueryStatsIcon />} onClick={() => handleNavigation("/discovery")} />
-          <BottomNavigationAction  sx={{ minWidth: "0px" }} label="Ipo" icon={<AddchartIcon />}  onClick={() => handleNavigation("/ipo-zone")}/>
-        </BottomNavigation>
-      </Paper> :
-      <></>
-      }
-    
+          sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1400 }}
+          elevation={3}
+        >
+          <BottomNavigation
+            showLabels
+            value={activeTab}
+            onChange={(event, newValue) => {
+              setActiveTab(newValue);
+              const path = Object.keys(routeMap).find(
+                (key) => routeMap[key] === newValue
+              );
+              if (path) handleNavigation(path);
+            }}
+          >
+            <BottomNavigationAction
+              label="Education"
+              icon={<MenuBookIcon />}
+              onClick={() => handleNavigation("/education")}
+              sx={{ minWidth: "0px" }}
+            />
+            <BottomNavigationAction
+              sx={{ minWidth: "0px" }}
+              label="Times"
+              icon={<FeedIcon />}
+            />
+            <BottomNavigationAction
+              sx={{ minWidth: "0px" }}
+              label="Prime"
+              icon={<WebStoriesIcon />}
+            />
+            <BottomNavigationAction
+              sx={{ minWidth: "0px" }}
+              label="Discovery"
+              icon={<QueryStatsIcon />}
+            />
+            <BottomNavigationAction
+              sx={{ minWidth: "0px" }}
+              label="Ipo"
+              icon={<AddchartIcon />}
+            />
+          </BottomNavigation>
+        </Paper>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

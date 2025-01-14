@@ -9,6 +9,9 @@ import {
   IconButton,
   InputAdornment,
   Divider,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
@@ -16,6 +19,7 @@ import { colors } from "../Constants/colors";
 import { useSelector } from "react-redux";
 import { editUserDetailsApi } from "@/app/Redux/Slices/authSlice";
 import { useDispatch } from "react-redux";
+import { states } from "@/utils/States";
 
 const Container = styled(Box)`
   display: flex;
@@ -42,6 +46,7 @@ const ProfileContainer = styled(Grid)`
   align-items: center;
   justify-content: center;
   margin-right: 60px;
+  
 `;
 
 const AvatarWrapper = styled(Box)`
@@ -52,6 +57,7 @@ const AvatarWrapper = styled(Box)`
   box-shadow: 0px 4px 6px -2px #1018280d;
   box-shadow: 0px 12px 16px -4px #1018281a;
   border-radius: 50%;
+  flex-shrink: 0;
 `;
 
 const AvatarStyled = styled(Avatar)`
@@ -87,7 +93,6 @@ const StyledInputLabel = styled(Typography)`
   font-size: 14px;
   line-height: 20px;
   color: #344054;
-  padding: 0px 24px;
 `;
 
 const StyledTextField = styled(TextField)`
@@ -117,7 +122,6 @@ const StyledTextField = styled(TextField)`
     padding: 10px 12px;
   }
 
-  /* Styling the placeholder */
   & .MuiOutlinedInput-input::placeholder {
     font-weight: 400;
     font-size: 16px;
@@ -127,16 +131,30 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
+const StyledSelect = styled(Select)`
+  & .MuiInputBase-root {
+    padding: 10px 12px;
+    font-size: 18px;
+    color: ${colors.navyBlue800};
+    border-radius: 8px;
+  }
+
+  & .MuiSelect-select {
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+  }
+`;
 const StyledButton = styled(Button)`
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
-  background-color: ${colors.greyBlue100};
-  color: ${colors.greyBlue600};
+  background-color: ${colors.themeGreen};
+  color: white;
   text-transform: none;
   padding: 12px 18px;
   &:hover {
-    background-color: #556677;
+    background-color: ${colors.themeButtonHover};
   }
 `;
 
@@ -163,14 +181,20 @@ const Details = () => {
     fullName: false,
     state: false,
   });
-  const [formData, setFormData] = useState({
-    fullName: userDetails
+ 
+
+  // Separate state for display name
+  const [displayName, setDisplayName] = useState(
+    userDetails
       ? `${userDetails?.first_name} ${userDetails?.last_name}`
-      : "",
+      : ""
+  );
+  const [formData, setFormData] = useState({
+    fullName: displayName,
     state: userDetails?.state || "",
     profile_pic: userDetails?.profile_pic,
   });
-
+  const [isEdited, setIsEdited] = useState(false);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setFormData({ ...formData, profile_pic: file });
@@ -197,7 +221,22 @@ const Details = () => {
       [name]: value,
     }));
   };
- 
+
+  const handleSaveChanges = () => {
+    dispatch(editUserDetailsApi({ formData }));
+    setDisplayName(formData.fullName); 
+    setIsEdited(false);
+    setEditableFields({ fullName: false, state: false });
+  };
+  useEffect(() => {
+    const initialFullName = `${userDetails?.first_name} ${userDetails?.last_name}`;
+    const initialState = userDetails?.state || "";
+
+    setIsEdited(
+      formData.fullName !== initialFullName || formData.state !== initialState
+    );
+  }, [formData, userDetails]);
+
   return (
     <Container
       sx={{ width: { xs: "100%", md: "1000px" }, justifyContent: "center" }}
@@ -223,12 +262,14 @@ const Details = () => {
           </EditIconButton>
         </AvatarWrapper>
         <StyledTypography sx={{ marginTop: 1 }}>
-          {formData.fullName}
+        {displayName}
         </StyledTypography>
       </ProfileContainer>
       <StyledGrid item width="100%">
         <Box component="form" noValidate autoComplete="off" paddingY="16px">
-          <StyledInputLabel htmlFor="full_name">Full Name</StyledInputLabel>
+          <StyledInputLabel htmlFor="full_name" sx={{ paddingX: "24px" }}>
+            Full Name
+          </StyledInputLabel>
           <StyledTextField
             placeholder={formData.fullName}
             id="full_name"
@@ -248,7 +289,9 @@ const Details = () => {
             sx={{ marginBottom: 3 }}
           />
 
-          <StyledInputLabel htmlFor="phone_number">Phone No.</StyledInputLabel>
+          <StyledInputLabel htmlFor="phone_number" sx={{ paddingX: "24px" }}>
+            Phone No.
+          </StyledInputLabel>
           <StyledTextField
             placeholder={userDetails ? userDetails?.phone_number : ""}
             id="phone_number"
@@ -256,7 +299,9 @@ const Details = () => {
             sx={{ marginBottom: 3 }}
           />
 
-          <StyledInputLabel htmlFor="email">Email</StyledInputLabel>
+          <StyledInputLabel htmlFor="email" sx={{ paddingX: "24px" }}>
+            Email
+          </StyledInputLabel>
           <StyledTextField
             placeholder={userDetails ? userDetails?.email : ""}
             id="email"
@@ -264,7 +309,7 @@ const Details = () => {
             sx={{ marginBottom: 3 }}
           />
 
-          <StyledInputLabel htmlFor="state">State</StyledInputLabel>
+          {/* <StyledInputLabel htmlFor="state">State</StyledInputLabel>
           <StyledTextField
             placeholder={formData.state}
             id="state"
@@ -282,7 +327,44 @@ const Details = () => {
               ),
             }}
             sx={{ marginBottom: 3 }}
-          />
+          /> */}
+          <FormControl
+            fullWidth
+            sx={{
+              padding: "0px 24px",
+              marginBottom: 3,
+            }}
+          >
+            <StyledInputLabel htmlFor="state">Select State</StyledInputLabel>
+            <StyledSelect
+              labelId="state"
+              id="state"
+              name="state"
+              defaultValue="Select State"
+              fullWidth
+              onChange={handleInputChange}
+              value={formData.state}
+              displayEmpty
+             
+              MenuProps={{
+                PaperProps: {
+                  elevation: 0,
+                  sx: {
+                    zIndex: 1400,
+                  },
+                },
+                disableScrollLock: true,
+              }}
+            >
+              {states.map((ele, index) => {
+                return (
+                  <MenuItem value={ele} key={index}>
+                    {ele}
+                  </MenuItem>
+                );
+              })}
+            </StyledSelect>
+          </FormControl>
           <Divider sx={{ marginBottom: "16px" }} />
           <Box
             paddingX="24px"
@@ -290,9 +372,9 @@ const Details = () => {
           >
             <StyledButton
               variant="contained"
-              onClick={() => {
-                dispatch(editUserDetailsApi({ formData: formData }));
-              }}
+              disabled={!isEdited}
+              onClick={handleSaveChanges}
+            
             >
               Save Changes
             </StyledButton>

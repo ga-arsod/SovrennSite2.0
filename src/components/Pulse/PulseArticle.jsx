@@ -12,6 +12,7 @@ import {
   Collapse,
   IconButton,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useTheme } from "@mui/material/styles";
 import { colors } from "../Constants/colors";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -164,6 +165,10 @@ const PulseArticle = () => {
   const [filterData, setFilterData] = useState({});
   const [windowSize, setWindowSize] = useState(undefined);
 
+  const handleBackClick = () => {
+    router.back();  
+  };
+
   useEffect(() => {
     dispatch(pulseArticlesApi({ page: 1, pageSize: 20 }));
   }, [dispatch]);
@@ -252,6 +257,7 @@ const PulseArticle = () => {
                 <Box
                   display={{ xs: "block", sm: "block", md: "none" }}
                   marginRight={1}
+                  onClick={handleBackClick}
                 >
                   <ArrowBackIcon
                     sx={{ fontSize: 28, }}

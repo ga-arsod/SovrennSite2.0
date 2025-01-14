@@ -42,7 +42,7 @@ const chipsArray = [{
 },
 ];
 
-const SelfHelpChips = ({ onChipSelect, selectedChip }) => {
+const SelfHelpChips = ({ onChipSelect, selectedChip,justify }) => {
   const [selectedChipComp, setSelectedChipComp] = useState(selectedChip);
 
   const handleChipClick = (chip) => {
@@ -57,6 +57,7 @@ const SelfHelpChips = ({ onChipSelect, selectedChip }) => {
         flexWrap: "wrap", 
         gap: 1,
         maxWidth: "100%", 
+        justifyContent:justify,
         boxSizing: "border-box",
       }}
     >
