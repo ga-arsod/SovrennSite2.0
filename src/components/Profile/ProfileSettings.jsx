@@ -80,8 +80,8 @@ const StyledButton1 = styled(Button)`
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   
   text-transform: none;
   background-color: ${colors.white};
@@ -168,7 +168,10 @@ const ProfileSettings = () => {
             justifyContent: "space-between",
           }}
         >
-         <Grid container>
+        
+        {
+          !subscriptionDetails ?
+          <Grid container>
           <Grid item>
           <Typography sx={{fontSize:"18px",lineHeight:"21px"}} gutterBottom>You do not have any access, upgrade now continue your investing journey.</Typography>
           </Grid>
@@ -191,10 +194,9 @@ const ProfileSettings = () => {
                 </Grid>
               </Grid>
           </Grid>
-          </Grid>
-        
-      
-          {/* <Box>
+          </Grid>  :
+          <>
+           <Box>
             <StyledTypography sx={{ marginBottom: "8px" }}>
               Access
             </StyledTypography>
@@ -237,7 +239,11 @@ const ProfileSettings = () => {
             <StyledTypography color={colors.navyBlue300}>
               {moment(subscriptionDetails?.expiry_date).format("Do MMM YY")}
             </StyledTypography>
-          </Box> */}
+          </Box>
+          </>
+        }
+      
+         
         </Box>
       </StyledBox>
     </>

@@ -233,12 +233,12 @@ const wordsStr = [
   "CZ",
 ];
 
-export default function DiscoveryTable({ tableData, id }) {
+export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,sortBy,setSortBy}) {
   const dispatch = useDispatch();
   const [hoveredRow, setHoveredRow] = useState(null);
   
   const [isOpen, setIsOpen] = useState(false);
-  const { sortBy, sortOrder } = useSelector((state) => state.sorting);
+ 
 
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
@@ -249,13 +249,9 @@ export default function DiscoveryTable({ tableData, id }) {
   };
 
   const handleSortChange = (field) => {
-    dispatch(setSortBy(field));
-
-    
-
-    if (sortBy === field) {
-      dispatch(toggleSortOrder());
-    }
+    setSortBy(field);
+    if (sortOrder == "inc") setSortOrder("dec");
+    else setSortOrder("inc");
   };
 
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
@@ -299,7 +295,7 @@ export default function DiscoveryTable({ tableData, id }) {
       id: "company_name",
     },
     {
-      name: "Market Cap",
+      name: "Market Cap (In Crore)",
       id: "market_cap",
     },
     {

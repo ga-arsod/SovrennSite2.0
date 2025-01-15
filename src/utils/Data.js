@@ -205,7 +205,7 @@ export const navItems = [
     description:""
   },
   {
-    name: "Education",
+    name: "Learn",
     link: "/education",
      description:"Detailed information about upcoming IPOs."
   },

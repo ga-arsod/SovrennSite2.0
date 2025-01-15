@@ -482,7 +482,7 @@ setFilterData2(filterObj)
                 onClick={()=>{
                   if(isAuth)
                   {
-                    dispatch(promoterCompaniesListApi({page:1,data:filterBody}))
+                    dispatch(promoterCompaniesListApi({data: filterBody,page: 1,sort_by:"createdAt" ,sort_order:"dec"}))
                     setPage2(1)
                   }
                  

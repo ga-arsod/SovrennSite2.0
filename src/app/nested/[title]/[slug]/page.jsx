@@ -116,13 +116,14 @@ const ChildBucketCompanyContent = () => {
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const filtersData = useSelector((store) => store.discovery.filtersData);
   const title = pathSegments[2];
-  const { sortBy, sortOrder } = useSelector((state) => state.sorting);
+ 
   const tableData = useSelector(
     (store) => store.discovery.nestedBucketDiscoveryTableBucket
   );
   const pagination = useSelector((store) => store.discovery.pagination);
   const { isAuth } = useSelector((store) => store.auth);
-
+  const [sortBy, setSortBy] = useState("date");
+     const [sortOrder, setSortOrder] = useState("dec");
   const firstSpaceIndex = tableData?.bucket?.title?.indexOf(" ");
   const part1 = tableData?.bucket?.title.substring(0, firstSpaceIndex);
   const part2 = tableData?.bucket?.title.substring(firstSpaceIndex + 1);
@@ -174,9 +175,7 @@ const ChildBucketCompanyContent = () => {
         body: filterObj,
         page: currentPage,
         sort_by:
-          sortBy == "createdAt" || sortBy == "industry" || sortBy == "sector"
-            ? "company_name"
-            : sortBy,
+          sortBy,
         sort_order: sortOrder,
       })
     );
@@ -354,7 +353,12 @@ const ChildBucketCompanyContent = () => {
         ) : tableData?.length === 0 ? (
           <NoData text="No data available for this bucket currently." />
         ) : (
-          <DiscoveryTable tableData={tableData} id={lastSegment} />
+          <DiscoveryTable tableData={tableData} id={lastSegment}  
+          sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+          />
         )}
         {tableData?.companies?.length ? (
           <Box mt={2}>
