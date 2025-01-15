@@ -22,6 +22,7 @@ import AttachFileTwoToneIcon from "@mui/icons-material/AttachFileTwoTone";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import moment from "moment";
 import Link from "next/link";
+import NoData from "../NoData/NoData";
 import { useSelector, useDispatch } from "react-redux";
 import {
   togglePulseFilter,
@@ -318,7 +319,9 @@ const PulseArticle = () => {
         </Grid>
       </Box>
 
-      {groupedByDate &&
+      {Object.entries(groupedByDate).length==0 ? 
+      <NoData text="No data available" /> 
+      :
         Object.entries(groupedByDate).map(([date, articles]) => (
           <React.Fragment key={date}>
             <HeaderBox onClick={() => handleToggle(date)}>
@@ -449,12 +452,15 @@ const PulseArticle = () => {
               ))}
             </Collapse>
           </React.Fragment>
-        ))}
+        ))
+        
+        }
 
       {pagination?.total_pages === pagination?.page ||
       !pulseArticleData.length ? (
         ""
       ) : (
+        
         <Box
           sx={{ display: "flex", justifyContent: "center" }}
           marginBottom={6}

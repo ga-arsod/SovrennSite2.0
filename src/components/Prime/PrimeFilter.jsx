@@ -507,7 +507,7 @@ const PrimeFilter = ({
                 onClick={() => {
                   if (isAuth) {
                     dispatch(
-                      primeCompaniesListApi({ page: 1, data: filterBody })
+                      primeCompaniesListApi({ data: filterBody,page: 1,sort_by:"createdAt" ,sort_order:"dec"})
                     );
                     setPage1(1);
                   } else {

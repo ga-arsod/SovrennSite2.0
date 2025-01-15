@@ -19,6 +19,7 @@ import { useSearchParams } from "next/navigation";
 import ArticleBanner from "../../components/Times/ArticleBanner";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import moment from "moment";
+import NoData from "@/components/NoData/NoData";
 import {
   timesFilterApi,
   timesPdfFilterApi,
@@ -27,9 +28,9 @@ import {
   togglePdfFilter,
 } from "../Redux/Slices/timesSlice";
 import { useMediaQuery } from "@mui/material";
-import LoginModal from "../../components/Modal/LoginModal";
-import { useTheme } from "@mui/material/styles";
 
+import { useTheme } from "@mui/material/styles";
+import PaymentButton from "../../components/Common/PaymentButton";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../../styles/News.module.css";
 import NewsDataView from "../../components/Times/NewsDataView";
@@ -37,10 +38,10 @@ import NewsDataView from "../../components/Times/NewsDataView";
 import TimesHeader from "../../components/Times/TimesHeader";
 import Head from "next/head";
 import Spinner from "../../components/Common/Spinner";
-
+import LoginModal from "../../components/Modal/LoginModal";
 import Disclaimer from "@/components/Common/Disclaimer";
 import Link from "next/link";
-import NoData from "@/components/NoData/NoData";
+
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -144,9 +145,10 @@ const StyledTypography3 = styled(Typography)`
 const Times = () => {
   const theme = useTheme();
   const [activeTab, setActiveTab] = useState("one");
-  const [isOpen, setIsopen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [page1, setPage1] = useState(1);
   const [page2, setPage2] = useState(1);
+
   const [showScroll, setShowScroll] = useState(false);
   const [filterData, setFilterData] = useState({});
   const [filterData2, setFilterData2] = useState({});
@@ -162,7 +164,7 @@ const Times = () => {
     isPdfListLoading,
     pagination,
   } = useSelector((store) => store.times);
-  
+
   const handleModalOpen = () => {
     setIsopen(true);
   };
@@ -171,7 +173,7 @@ const Times = () => {
   };
 
   const handleClose = () => {
-    setIsopen(false);
+    setIsOpen(false);
   };
 
   const toggleDrawer = () => {
@@ -190,9 +192,9 @@ const Times = () => {
         timesArticleApi({ page: 1, data: { company_name: [searchQuery] } })
       );
     else dispatch(timesArticleApi({ page: page1, data: {} }));
-  }, [isAuth,dispatch]);
+  }, [isAuth, dispatch]);
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
- 
+
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search");
 
@@ -263,12 +265,13 @@ const Times = () => {
           key="canonical"
         />
       </Head>
-     
+      <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <Grid container marginTop="64px" flexDirection="column">
         {!isSmallerThanMd ? (
           isAuth &&
           (userDetails?.subscriptions?.includes("full-access") ||
-            userDetails?.subscriptions?.includes("life")) ? (
+            userDetails?.subscriptions?.includes("life") ||
+            userDetails?.subscriptions?.includes("trial")) ? (
             ""
           ) : (
             <Grid
@@ -294,17 +297,14 @@ const Times = () => {
                   You are only reading free Sovrenn Times Monday articles. To
                   read daily Sovrenn Times articles, you need to buy a plan.
                 </StyledTypography1>
-                {!isAuth ? (
-                  <Link href="/pricing">
-                    <StyledButton2 variant="contained">
-                      Get 45 Days Trial For Free
-                    </StyledButton2>
-                  </Link>
-                ) : (
-                  <Link href="/pricing">
-                    <StyledButton2 variant="contained">{`Buy Full Access @ ₹4500/yr`}</StyledButton2>
-                  </Link>
-                )}
+
+                <Box
+                  onClick={() => {
+                    if (!isAuth) setIsOpen(true);
+                  }}
+                >
+                  <PaymentButton />
+                </Box>
               </Box>
             </Grid>
           )
@@ -335,7 +335,9 @@ const Times = () => {
               setPage2={setPage2}
             />
           ) : (
-            <Grid item>
+            Object.keys(groupedArticles).length==0 ?   <NoData text="No data available" />
+             :
+             <Grid item>
               {Object.keys(groupedArticles)?.map((date, index) => (
                 <div className={styles.newsDiv} key={index}>
                   <HoverBox
@@ -420,6 +422,7 @@ const Times = () => {
                 </Box>
               )}
             </Grid>
+            
           )}
           <Disclaimer margin={3} text={primeArticleDisclaimer} />
         </Container>
@@ -448,7 +451,6 @@ const Times = () => {
         <TimesFilter
           isOpen={isArticleFilterOpen}
           handleModalOpen={handleModalOpen}
-       
           page1={page1}
           setPage1={setPage1}
           setFilterData={setFilterData}

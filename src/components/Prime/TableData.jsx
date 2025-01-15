@@ -103,7 +103,7 @@ const StyledButton2 = styled(Button)`
 const headerRowArray = [
   {
     name: "Date of Info",
-    id: "date",
+    id: "createdAt",
   },
   {
     name: "Company Name",
@@ -119,24 +119,15 @@ const headerRowArray = [
   },
 ];
 
-const TableData = ({ data, activeTab }) => {
+const TableData = ({ data, activeTab,sortOrder,setSortOrder,sortBy,setSortBy }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { sortBy, sortOrder } = useSelector((state) => state.sorting);
 
-  const handleSortChange = (field) => {
   
-    if (field == "date") dispatch(setSortBy("createdAt"));
-    else if (field == "industry") dispatch(setSortBy("market_cap"));
-    else dispatch(setSortBy(field));
-
-    if (
-      (sortBy == "createdAt" && field == "date") ||
-      (sortBy == "market_cap" && field == "industry") ||
-      field == sortBy
-    ) {
-      dispatch(toggleSortOrder());
-    }
+  const handleSortChange = (field) => {
+    setSortBy(field);
+    if (sortOrder == "inc") setSortOrder("dec");
+    else setSortOrder("inc");
   };
   const [isOpen, setIsOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);

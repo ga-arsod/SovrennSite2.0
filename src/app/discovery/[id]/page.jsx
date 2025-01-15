@@ -108,8 +108,8 @@ const DiscoveryBucketContent = () => {
     .replace(/&/g, "and")
     .replace(/-/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
-  const { sortBy, sortOrder } = useSelector((state) => state.sorting);
-  
+    const [sortBy, setSortBy] = useState("date");
+    const [sortOrder, setSortOrder] = useState("dec");
   const { isTableDataLoading } = useSelector((store) => store.discovery);
   const dispatch = useDispatch();
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
@@ -179,11 +179,7 @@ const DiscoveryBucketContent = () => {
             body: filterObj,
             page: currentPage,
             sort_by:
-              sortBy == "createdAt" ||
-              sortBy == "industry" ||
-              sortBy == "sector"
-                ? "company_name"
-                : sortBy,
+              sortBy,
             sort_order: sortOrder,
           })
         );
@@ -194,11 +190,7 @@ const DiscoveryBucketContent = () => {
             body: filterObj,
             page: currentPage,
             sort_by:
-              sortBy == "createdAt" ||
-              sortBy == "industry" ||
-              sortBy == "sector"
-                ? "company_name"
-                : sortBy,
+             sortBy,
             sort_order: sortOrder,
           })
         );
@@ -372,7 +364,12 @@ const DiscoveryBucketContent = () => {
         ) : tableData?.companies?.length === 0 ? (
           <NoData text="No data available for this bucket currently." />
         ) : (
-          <DiscoveryTable tableData={tableData} id={id} />
+          <DiscoveryTable tableData={tableData} id={id} 
+          sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+          />
         )}
         <ScrollCircle />
         {tableData?.companies?.length ? (

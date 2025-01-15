@@ -16,6 +16,7 @@ import { toggleEditModal } from "../Redux/Slices/watchlistSlice";
 import Snackbar from "../../components/Snackbar/SnackBar"
 import EmptyWatchlist from "../../components/Watchlist/EmptyWatchlist";
 import { useRouter } from "next/navigation";
+import NoLogin from "../../components/Auth/NoLogin";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 44px;
@@ -39,6 +40,7 @@ const WatchlistMainPage = () => {
   const dispatch=useDispatch();
   const { watchlistData,isEditModalOpen } = useSelector((state) => state.watchlist);
   const [open,setOpen]=useState(false);
+const { isAuth } = useSelector((store) => store.auth);
 
   const handleBackClick = () => {
     router.back();  
@@ -47,7 +49,10 @@ const WatchlistMainPage = () => {
   useEffect(()=>{
     dispatch(getWatchlistApi())
   },[])
-console.log(companyData,"company data")
+
+  if (!isAuth) {
+    return <NoLogin />;
+  }
   return (
     <>
     

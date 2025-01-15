@@ -192,8 +192,10 @@ const MainPoster = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { userDetails, isAuth } = useSelector((store) => store.auth);
-  const { subscriptionDetails } = useSelector((store) => store.auth);
-
+ 
+   const subscriptionDetails = useSelector(
+      (store) => store.auth.subscriptionDetails[0]
+    );
   const handleMouseEnter = () => {
     setHovered(true);
   };

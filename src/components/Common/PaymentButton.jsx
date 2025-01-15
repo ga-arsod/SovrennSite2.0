@@ -12,8 +12,8 @@ const StyledButton2 = styled(Button)`
   font-size: 16px;
   line-height: 19px;
  white-space:nowrap;
- padding-top: 12px;
-    padding-bottom: 12px;
+ padding-top: 10px;
+    padding-bottom: 10px;
   background-color: ${colors.themeGreen};
   text-transform: none;
 
@@ -33,7 +33,7 @@ const StyledButton2 = styled(Button)`
 const payuUrl = process.env.NEXT_PUBLIC_PAYU_URL;
 const PaymentButton = () => {
   const { commonPrice } = useSelector((store) => store.plan);
-  const {userDetails } = useSelector((store) => store.auth);
+  const {userDetails ,isAuth} = useSelector((store) => store.auth);
   const { paymentData } = useSelector((store) => store.payment);
  const dispatch=useDispatch()
   const handleSubmit = async (e) => {
@@ -49,8 +49,8 @@ const PaymentButton = () => {
   };
   useEffect(()=>{
   dispatch(commonPricingApi())
-  },[])
-  console.log(commonPrice, "common Price");
+  },[isAuth,dispatch])
+ 
   return (
     <>
       <form
@@ -84,21 +84,21 @@ const PaymentButton = () => {
               txnid: Date.now(),
               amount: commonPrice?.full_access,
               productinfo: "full-access",
-              firstname: userDetails.first_name,
-              email: userDetails.email,
-              udf1: userDetails._id,
+              firstname: userDetails?.first_name,
+              email: userDetails?.email,
+              udf1: userDetails?._id,
               udf2: 12,
             };
             dispatch(
               setPaymentData({
                 ...data,
-                phone: userDetails.phone_number,
-                state: userDetails.state,
+                phone: userDetails?.phone_number,
+                state: userDetails?.state,
               })
             );
           }}
         >
-          {`Buy Full Access @${commonPrice?.full_access}/yr`}
+          {`Buy Full Access @ ₹${commonPrice?.full_access}/yr`}
         </StyledButton2>
       </form>
     </>

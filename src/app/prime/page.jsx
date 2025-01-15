@@ -68,9 +68,10 @@ const Prime = () => {
     primePagination,
     promoterPagination,
   } = useSelector((store) => store.prime);
-  const { sortBy, sortOrder } = useSelector((state) => state.sorting);
-  const { isAuth } = useSelector((state) => state.auth);
 
+  const { isAuth } = useSelector((state) => state.auth);
+  const [sortBy, setSortBy] = useState("createdAt");
+  const [sortOrder, setSortOrder] = useState("dec");
   const handleModalOpen = () => {
     setIsOpen(true);
   };
@@ -81,10 +82,6 @@ const Prime = () => {
   };
 
   useEffect(() => {
-    dispatch(setSortBy("company_name"));
-  }, []);
-
-  useEffect(() => {
     dispatch(primeFilterApi());
     dispatch(promoterFilterApi());
 
@@ -92,8 +89,7 @@ const Prime = () => {
       primeCompaniesListApi({
         body: filterData1,
         page: page1,
-        sort_by:
-          sortBy == "ttm_pe" || sortBy == "date" ? "createdAt" : sortBy,
+        sort_by: sortBy,
         sort_order: sortOrder,
       })
     );
@@ -101,8 +97,7 @@ const Prime = () => {
       promoterCompaniesListApi({
         body: filterData1,
         page: page2,
-        sort_by:
-          sortBy == "ttm_pe" || sortBy == "date" ? "createdAt" : sortBy,
+        sort_by: sortBy,
         sort_order: sortOrder,
       })
     );
@@ -165,6 +160,10 @@ const Prime = () => {
               activeTab == "one" ? primeCompaniesList : promoterCompaniesList
             }
             activeTab={activeTab}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
           />
         )}
 
