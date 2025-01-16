@@ -9,33 +9,34 @@ import {
   setPaymentData,
 } from "@/app/Redux/Slices/paymentSlice";
 import { commonPricingApi } from "@/app/Redux/Slices/PlanSlice";
-import LoginModal from "../Modal/LoginModal";
-const StyledButton2 = styled(Button)`
-  color: white;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  white-space: nowrap;
+
+
+
+const StyledButton = styled(Button)`
+  color: ${colors.themeGreen};
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
   padding-top: 12px;
   padding-bottom: 12px;
-  background-color: ${colors.themeGreen};
+  background-color: white;
   text-transform: none;
 
-  :hover {
-    background-color: ${colors.themeButtonHover};
+  &:hover {
+    background-color:${colors.themeButtonHover}; 
+    color: white; 
   }
-  @media (max-width: 639px) {
-    width: 100%;
-    padding-top: 12px;
-    padding-bottom: 12px;
+  @media (max-width: 700px) {
     font-size: 16px;
     font-weight: 600;
     line-height: 22px;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 `;
 
 const payuUrl = process.env.NEXT_PUBLIC_PAYU_URL;
-const PaymentButton = () => {
+const TrialCardPaymentButton = () => {
   const { commonPrice } = useSelector((store) => store.plan);
   const { userDetails, isAuth } = useSelector((store) => store.auth);
   const { paymentData } = useSelector((store) => store.payment);
@@ -81,7 +82,8 @@ const PaymentButton = () => {
         <input type="hidden" name="udf2" value={paymentData.udf2} />
         <input type="hidden" name="hash" value={paymentData.hash} />
 
-        <StyledButton2
+       
+        <StyledButton
           type="submit"
           variant="contained"
           onClick={() => {
@@ -103,11 +105,11 @@ const PaymentButton = () => {
             );
           }}
         >
-          { `Buy Full Access @ ₹${commonPrice?.full_access}/yr`}
-        </StyledButton2>
+        Buy Full Access Now
+        </StyledButton>
       </form>
     </>
   );
 };
 
-export default PaymentButton;
+export default TrialCardPaymentButton;

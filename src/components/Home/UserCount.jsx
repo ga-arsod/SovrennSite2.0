@@ -14,19 +14,19 @@ const UserCount = () => {
   const analyticsArray = [
     {
       icon: "/icon1.svg",
-      heading: "15k+ Daily Readers",
+      heading: "30k+ Daily Readers",
     },
     {
       icon: "/icon2.svg",
-      heading: "1k+ Articles with daily updates",
+      heading: "10k+ Articles with daily updates",
     },
     {
       icon: "/icon3.svg",
-      heading: "Community of 10k+ Investors",
+      heading: "Community of 30k+ Investors",
     },
     {
       icon: "/icon4.svg",
-      heading: "4.5+ Rating on Playstore",
+      heading: "4.2+ Rating on Playstore",
     },
   ];
   const [inView, setInView] = useState(false);

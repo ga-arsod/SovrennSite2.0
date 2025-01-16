@@ -1,10 +1,12 @@
 "use client";
 
-import React from "react";
+import React,{useState} from "react";
 import styled from "@emotion/styled";
 import { Box, Grid, Typography, Button } from "@mui/material";
 import { gradientColors } from "../Constants/colors";
 import { colors } from "../Constants/colors";
+import TrialcardPaymentButton from "../Common/TrialCardPaymentButton";
+import LoginModal from "../Modal/LoginModal";
 
 const StyledGrid = styled(Box)`
   position: relative;
@@ -63,8 +65,13 @@ const StyledButton = styled(Button)`
 `;
 
 const EducationTrialCard = () => {
+   const [isOpen,setIsOpen]=useState(false)
+    const handleClose=()=>{
+      setIsOpen(false)
+    }
   return (
     <>
+     <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <Box
         sx={{ position: "absolute" }}
         bgcolor={{ xs: "#000910", sm: "transparent", }}
@@ -116,18 +123,7 @@ const EducationTrialCard = () => {
                 </StyledTypography2>
               </Grid>
               <Grid item>
-                <StyledButton
-                  variant="contained"
-                  sx={{
-                    fontSize: { xs: "16px", sm: "16px" },
-                    backgroundColor: "white",
-                    paddingY: { xs: "12px", sm: "14px" },
-                    lineHeight: { xs: "19px", sm: "21px" },
-                    textTransform: "none",
-                  }}
-                >
-                 Buy Full Access Now
-                </StyledButton>
+               <TrialcardPaymentButton/>
               </Grid>
             </Grid>
           </Grid>

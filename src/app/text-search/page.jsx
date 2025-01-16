@@ -119,7 +119,7 @@ const TextSearch = () => {
         <title>Result for the searched text</title>
       </Head>
       <Container>
-        <Box marginTop="90px">
+        <Box marginY="90px" >
           {isXsOrSm && (
             <IconButton onClick={() => router.back()} aria-label="go back">
               <ArrowBack sx={{fontSize: 28,}}/>

@@ -94,7 +94,7 @@ const StyledGrid3 = styled(Grid)`
 `;
 
 const StyledGrid4 = styled(Grid)`
-  @media (min-width: 501px) {
+  @media (min-width: 639px) {
     display: none;
   }
 `;
@@ -110,9 +110,9 @@ const StyledButton1 = styled(Button)`
 
 const StyledMenuItem = styled(MenuItem)`
   font-weight: 600;
-  font-size: 15px;
-  line-height: 17px;
-  color: ${colors.navyBlue900};
+  font-size: 14px;
+  line-height: 20px;
+  color:black;
 `;
 
 const StyledMenuItem2 = styled(MenuItem)`
@@ -217,7 +217,7 @@ const Navbar = ({ session }) => {
   };
 
   useEffect(() => {
-    setActiveTab(routeMap[pathname] || -1); // -1 if no route matches
+    setActiveTab(routeMap[pathname] || -1);
   }, [pathname]);
 
   const handleNavigation = (path) => {
@@ -232,6 +232,7 @@ const Navbar = ({ session }) => {
   };
 
   const handleSearchClick = () => {
+    if(isSmallerThanMd)
     setSearchOpen(!searchOpen);
   };
 
@@ -252,7 +253,7 @@ const Navbar = ({ session }) => {
   if (!isLoaded) return null;
 
   const toggleDrawer = () => {
-    if (isXsOrSm) {
+    if (isSmallerThanMd) {
       setOpen(!open);
     }
   };
@@ -291,290 +292,451 @@ const Navbar = ({ session }) => {
               alignItems="center"
               justifyContent="space-between"
               display={{ xs: "flex", md: "flex" }}
+            
             >
-              <Grid item width={{ xs: "100%", sm: "auto" }}>
-                <Grid
-                  container
-                  alignItems="center"
-                  width="100%"
-                  justifyContent="space-between"
-                >
-                  <Grid
-                    item
-                    sx={{
-                      display: {
-                        xs: "flex",
-                        sm: "none",
-                        md: "flex",
-                        alignItems: "center",
-                        paddingBottom: "8px",
-                      },
-                    }}
-                  >
-                    <Link href="/" passHref>
-                      {!searchOpen && isSmallerThanSm ? (
-                        <Image
-                          src="/logo.svg"
-                          width={146}
-                          height={25}
-                          alt="logo"
-                        />
-                      ) : isGeaterThanSm ? (
-                        <Image
-                          src="/logo.svg"
-                          width={146}
-                          height={25}
-                          alt="logo"
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </Link>
+             
+             {
+              !searchOpen && 
+              <Grid item width={{ xs: "100%", sm: "auto" }} >
+              <Grid
+                container
+                alignItems="center"
+                width="100%"
+                justifyContent="space-between"
+              >
+                <Grid item sx={{display:{xs:"none",sm:"block",md:"none"}}}>
+                <IconButton onClick={toggleDrawer}>
+                        {open ? (
+                          <CloseIcon sx={{ color: "black" }} />
+                        ) : (
+                          <MenuIcon />
+                        )}
+                      </IconButton>
                   </Grid>
-
-                  <StyledGrid3 item>
-                    {!searchOpen && (
-                      <>
-                        <IconButton onClick={handleSearchClick}>
-                          <SearchIcon />
-                        </IconButton>
-
-                        <IconButton onClick={toggleDrawer}>
-                          {open ? (
-                            <CloseIcon sx={{ color: "black" }} />
-                          ) : (
-                            <MenuIcon />
-                          )}
-                        </IconButton>
-                      </>
+               
+                <Grid
+                  item
+                  sx={{
+                    display: {
+                      xs: searchOpen ? "none" :'flex',
+                      sm: "none",
+                      md: "flex",
+                      alignItems: "center",
+                      paddingBottom: "8px",
+                    },
+                  }}
+                >
+                  <Link href="/" passHref>
+                    {!searchOpen && isSmallerThanSm ? (
+                      <Image
+                        src="/logo.svg"
+                        width={146}
+                        height={25}
+                        alt="logo"
+                      />
+                    ) : isGeaterThanSm ? (
+                      <Image
+                        src="/logo.svg"
+                        width={146}
+                        height={25}
+                        alt="logo"
+                      />
+                    ) : (
+                      ""
                     )}
-                  </StyledGrid3>
+                  </Link>
+                </Grid>
 
-                  <StyledGrid1 item>
-                    <Box>
-                      <List
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          padding: 0,
-                          alignItem: "flex-end",
+                <StyledGrid3 item sx={{display:"flex",flexDirection:"row"}}>
+                  {!searchOpen && (
+                    <>
+                      <IconButton onClick={handleSearchClick}>
+                        <SearchIcon />
+                      </IconButton>
+                      <Grid container alignItems="center">
+                        <Box
+                          sx={{
+                            borderColor: "#172641",
+                            borderRadius: "50%",
+                            padding: "2px",
+                            width: "30px",
+                            height: "30px",
+                            display:
+                              isAuth || session?.user ? "flex" : "none",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            overflow: "hidden",
+                            flexDirection: "row",
+                          }}
+                        >
+                          <Image
+                            src={
+                              userDetails?.profile_pic
+                                ? userDetails?.profile_pic
+                                : "/dummy_image.jpg"
+                            }
+                            width={25}
+                            height={25}
+                            alt="profile"
+                            style={{
+                              objectFit: "cover",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </Box>
+                        <IconButton
+                          id="demo-customized-button"
+                          aria-controls={
+                            opens ? "demo-customized-menu" : undefined
+                          }
+                          aria-haspopup="true"
+                          aria-expanded={opens ? "true" : undefined}
+                          variant="contained"
+                          disableElevation
+                          onClick={handleClick}
+                          sx={{
+                            padding:0,
+                            display:
+                              isAuth || session?.user ? "flex" : "none",
+                          }}
+                        >
+                          <KeyboardArrowDownOutlinedIcon />
+                        </IconButton>
+                      </Grid>
+
+                      <StyledMenu
+                        id="demo-customized-menu"
+                        MenuListProps={{
+                          "aria-labelledby": "demo-customized-button",
+                        }}
+                        anchorEl={anchorEl}
+                        open={opens}
+                        onClose={handleClose}
+                        disablePortal
+                        disableScrollLock={true}
+                        TransitionProps={{
+                          timeout: 200,
+                        }}
+                        PaperProps={{
+                          sx: {
+                            borderRadius: "8px",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                            minWidth: "200px",
+                            backgroundColor: "none",
+                          },
                         }}
                       >
-                        {filteredNavItems.map((item) => (
-                          <LightTooltip
-                            key={item.name}
+                        <Link
+                          href="/profile"
+                          style={{ textDecoration: "none" }}
+                        >
+                          <StyledMenuItem onClick={handleClose} disableRipple>
+                            <IconButton
+                              sx={{
+                                "& svg path": {
+                                  fill: colors.navyBlue900,
+                                  stroke: colors.navyBlue900,
+                                  strokeWidth: 0.7,
+                                },
+                                padding: 0,
+                              }}
+                            >
+                              <PersonOutlineIcon />
+                            </IconButton>
+                            My Account
+                          </StyledMenuItem>
+                        </Link>
+
+                        <Link
+                          href="/watchlist"
+                          style={{ textDecoration: "none" }}
+                        >
+                          <StyledMenuItem onClick={handleClose} disableRipple>
+                            <IconButton
+                              sx={{
+                                "& svg path": {
+                                  fill: colors.navyBlue900,
+                                  stroke: colors.navyBlue900,
+                                  strokeWidth: 0.7,
+                                },
+
+                                padding: 0,
+                              }}
+                            >
+                              <AccessTimeOutlinedIcon />
+                            </IconButton>
+                            My Watchlist
+                          </StyledMenuItem>
+                        </Link>
+
+                        <StyledMenuItem2
+                          onClick={() => {
+                            handleClose();
+                            if (isAuth) {
+                              dispatch(logout());
+                              dispatch({ type: "auth/logout" });
+                            }
+                          }}
+                          disableRipple
+                        >
+                          <IconButton
                             sx={{
-                              "& .MuiTooltip-tooltip": {
-                                backgroundColor: "white",
-                                color: "black",
+                              "& svg path": {
+                                fill: colors.red400,
+                                stroke: colors.red400,
+                                strokeWidth: 0.7,
+                              },
+                              padding: 0,
+                            }}
+                            type="submit"
+                          >
+                            <LogoutOutlinedIcon />
+                          </IconButton>
+                          Logout
+                        </StyledMenuItem2>
+                      </StyledMenu>
+
+                      <IconButton onClick={toggleDrawer}>
+                        {open ? (
+                          <CloseIcon sx={{ color: "black" }} />
+                        ) : (
+                          <MenuIcon />
+                        )}
+                      </IconButton>
+                    </>
+                  )}
+                </StyledGrid3>
+
+                <StyledGrid1 item>
+                  <Box>
+                    <List
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        padding: 0,
+                        alignItem: "flex-end",
+                      }}
+                    >
+                      {filteredNavItems.map((item) => (
+                        <LightTooltip
+                          key={item.name}
+                          sx={{
+                            "& .MuiTooltip-tooltip": {
+                              backgroundColor: "white",
+                              color: "black",
+                            },
+                          }}
+                          title={
+                            <TooltipContent
+                              heading={item.name}
+                              description={item.description}
+                            />
+                          }
+                          placement="bottom"
+                          arrow
+                          disablePortal={false}
+                        >
+                          <ListItem
+                            component={Link}
+                            href={item.link}
+                            onClick={toggleDrawer}
+                            sx={{
+                              px: 1,
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                              cursor: "pointer",
+
+                              "&:hover .list-item-text": {
+                                color: `${colors.themeGreen} !important`,
                               },
                             }}
-                            title={
-                              <TooltipContent
-                                heading={item.name}
-                                description={item.description}
-                              />
-                            }
-                            placement="bottom"
-                            arrow
-                            disablePortal={false}
                           >
-                            <ListItem
-                              component={Link}
-                              href={item.link}
-                              onClick={toggleDrawer}
+                            <div className="list-item-text-wrapper">
+                              <StyledListItemText
+                                primary={item.name}
+                                className="list-item-text"
+                                isFirst={filteredNavItems.indexOf(item) === 0}
+                              />
+                            </div>
+                          </ListItem>
+                        </LightTooltip>
+                      ))}
+                      <ListItem
+                        onMouseLeave={handleMouseLeave}
+                        onMouseEnter={handleMouseEnter}
+                        sx={{
+                          px: 0,
+                          whiteSpace: "nowrap",
+                          textOverflow: "ellipsis",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <Button
+                          aria-controls={
+                            anchorEl2 ? "utilities-menu" : undefined
+                          }
+                          aria-haspopup="true"
+                          aria-expanded={anchorEl2 ? "true" : undefined}
+                          onMouseEnter={handleMouseEnter}
+                          onClick={(e) => setAnchorEl2(e.currentTarget)}
+                          sx={{
+                            color: anchorEl2
+                              ? colors.themeGreen
+                              : colors.navyBlue900,
+                            fontWeight: "600",
+                            fontSize: "14px",
+                            lineHeight: "17px",
+                            textTransform: "none",
+                            "&:hover": {
+                              color: colors.themeGreen,
+                              "& .MuiSvgIcon-root": {
+                                color: colors.themeGreen,
+                              },
+                            },
+                          }}
+                          endIcon={
+                            <KeyboardArrowDownOutlinedIcon
                               sx={{
-                                px: 1,
-                                whiteSpace: "nowrap",
-                                textOverflow: "ellipsis",
-                                cursor: "pointer",
+                                color: anchorEl2
+                                  ? colors.themeGreen
+                                  : colors.navyBlue900,
+                                transition: "color 0.2s ease",
+                              }}
+                            />
+                          }
+                        >
+                          Utilities
+                        </Button>
 
-                                "&:hover .list-item-text": {
-                                  color: `${colors.themeGreen} !important`,
+                        <Menu
+                          id="utilities-menu"
+                          anchorEl={anchorEl2}
+                          open={Boolean(anchorEl2)}
+                          onClose={() => setAnchorEl2(null)}
+                          disablePortal
+                          disableScrollLock={true}
+                          TransitionProps={{
+                            timeout: 200,
+                          }}
+                          MenuListProps={{
+                            onMouseLeave: handleMouseLeave,
+                            "aria-labelledby": "utilities-button",
+                          }}
+                          PaperProps={{
+                            sx: {
+                              borderRadius: "8px",
+                              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                              minWidth: "200px",
+                              backgroundColor: "none",
+                            },
+                          }}
+                        >
+                          <Link
+                            href="/knowledge"
+                            style={{ textDecoration: "none" }}
+                          >
+                            <MenuItem
+                              disableRipple
+                              sx={{
+                                padding: "12px 16px",
+                                "&:hover .menu-text": {
+                                  color: colors.themeGreen,
+                                },
+                                backgroundColor: "transparent !important",
+                                "&:hover": {
+                                  backgroundColor: "transparent !important",
+                                },
+                                "&.Mui-focusVisible": {
+                                  backgroundColor: "transparent",
+                                },
+                                "&.Mui-selected": {
+                                  backgroundColor: "transparent",
                                 },
                               }}
                             >
-                              <div className="list-item-text-wrapper">
-                                <StyledListItemText
-                                  primary={item.name}
-                                  className="list-item-text"
-                                  isFirst={filteredNavItems.indexOf(item) === 0}
-                                />
-                              </div>
-                            </ListItem>
-                          </LightTooltip>
-                        ))}
-                        <ListItem
-                          onMouseLeave={handleMouseLeave}
-                          onMouseEnter={handleMouseEnter}
-                          sx={{
-                            px: 0,
-                            whiteSpace: "nowrap",
-                            textOverflow: "ellipsis",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <Button
-                            aria-controls={
-                              anchorEl2 ? "utilities-menu" : undefined
-                            }
-                            aria-haspopup="true"
-                            aria-expanded={anchorEl2 ? "true" : undefined}
-                            onMouseEnter={handleMouseEnter}
-                            onClick={(e) => setAnchorEl2(e.currentTarget)}
-                            sx={{
-                              color: anchorEl2
-                                ? colors.themeGreen
-                                : colors.navyBlue900,
-                              fontWeight: "600",
-                              fontSize: "14px",
-                              lineHeight: "17px",
-                              textTransform: "none",
-                              "&:hover": {
-                                color: colors.themeGreen,
-                                "& .MuiSvgIcon-root": {
+                              <Typography
+                                className="menu-text"
+                                color={colors.navyBlue900}
+                                sx={{
+                                  fontWeight: "600",
+                                  fontSize: "14px",
+                                  lineHeight: "17px",
+                                }}
+                              >
+                                Knowledge
+                              </Typography>
+                            </MenuItem>
+                          </Link>
+                          <Link
+                            href="/self-help"
+                            style={{ textDecoration: "none" }}
+                          >
+                            <MenuItem
+                              disableRipple
+                              sx={{
+                                padding: "12px 16px",
+                                "&:hover .menu-text": {
                                   color: colors.themeGreen,
                                 },
-                              },
-                            }}
-                            endIcon={
-                              <KeyboardArrowDownOutlinedIcon
-                                sx={{
-                                  color: anchorEl2
-                                    ? colors.themeGreen
-                                    : colors.navyBlue900,
-                                  transition: "color 0.2s ease",
-                                }}
-                              />
-                            }
-                          >
-                            Utilities
-                          </Button>
-
-                          <Menu
-                            id="utilities-menu"
-                            anchorEl={anchorEl2}
-                            open={Boolean(anchorEl2)}
-                            onClose={() => setAnchorEl2(null)}
-                            disablePortal
-                            disableScrollLock={true}
-                            TransitionProps={{
-                              timeout: 200,
-                            }}
-                            MenuListProps={{
-                              onMouseLeave: handleMouseLeave,
-                              "aria-labelledby": "utilities-button",
-                            }}
-                            PaperProps={{
-                              sx: {
-                                borderRadius: "8px",
-                                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                                minWidth: "200px",
-                                backgroundColor: "none",
-                              },
-                            }}
-                          >
-                            <Link
-                              href="/knowledge"
-                              style={{ textDecoration: "none" }}
-                            >
-                              <MenuItem
-                                disableRipple
-                                sx={{
-                                  padding: "12px 16px",
-                                  "&:hover .menu-text": {
-                                    color: colors.themeGreen,
-                                  },
+                                backgroundColor: "transparent !important",
+                                "&:hover": {
                                   backgroundColor: "transparent !important",
-                                  "&:hover": {
-                                    backgroundColor: "transparent !important",
-                                  },
-                                  "&.Mui-focusVisible": {
-                                    backgroundColor: "transparent",
-                                  },
-                                  "&.Mui-selected": {
-                                    backgroundColor: "transparent",
-                                  },
+                                },
+                                "&.Mui-focusVisible": {
+                                  backgroundColor: "transparent",
+                                },
+                                "&.Mui-selected": {
+                                  backgroundColor: "transparent",
+                                },
+                              }}
+                            >
+                              <Typography
+                                className="menu-text"
+                                color={colors.navyBlue900}
+                                sx={{
+                                  fontWeight: "600",
+                                  fontSize: "14px",
+                                  lineHeight: "17px",
                                 }}
                               >
-                                <Typography
-                                  className="menu-text"
-                                  color={colors.navyBlue900}
-                                  sx={{
-                                    fontWeight: "600",
-                                    fontSize: "14px",
-                                    lineHeight: "17px",
-                                  }}
-                                >
-                                  Knowledge
-                                </Typography>
-                              </MenuItem>
-                            </Link>
-                            <Link
-                              href="/self-help"
-                              style={{ textDecoration: "none" }}
-                            >
-                              <MenuItem
-                                disableRipple
-                                sx={{
-                                  padding: "12px 16px",
-                                  "&:hover .menu-text": {
-                                    color: colors.themeGreen,
-                                  },
-                                  backgroundColor: "transparent !important",
-                                  "&:hover": {
-                                    backgroundColor: "transparent !important",
-                                  },
-                                  "&.Mui-focusVisible": {
-                                    backgroundColor: "transparent",
-                                  },
-                                  "&.Mui-selected": {
-                                    backgroundColor: "transparent",
-                                  },
-                                }}
-                              >
-                                <Typography
-                                  className="menu-text"
-                                  color={colors.navyBlue900}
-                                  sx={{
-                                    fontWeight: "600",
-                                    fontSize: "14px",
-                                    lineHeight: "17px",
-                                  }}
-                                >
-                                  Self Help
-                                </Typography>
-                              </MenuItem>
-                            </Link>
-                          </Menu>
-                        </ListItem>
-                      </List>
-                    </Box>
-                  </StyledGrid1>
-                </Grid>
+                                Self Help
+                              </Typography>
+                            </MenuItem>
+                          </Link>
+                        </Menu>
+                      </ListItem>
+                    </List>
+                  </Box>
+                </StyledGrid1>
               </Grid>
-
-              <Grid item>
-                <Grid container alignItems="center" spacing={3}>
-                  <Grid
-                    item
-                    sx={{
-                      display: { xs: "none", sm: "flex", md: "none" },
-                    }}
-                  >
-                    <Image src="/logo.svg" width={136} height={30} alt="logo" />
-                  </Grid>
-
+            </Grid>
+             }
+             
+              {
+                !searchOpen && <Grid item display={{xs:"none",sm:"block",md:"none"}}>
+                <Image
+                            src="/logo.svg"
+                            width={146}
+                            height={25}
+                            alt="logo"
+                          />
+                </Grid>
+  
+              }
+              
+              <Grid item >
+                <Grid container alignItems="center" spacing={3} justifyContent="center">
+                 
                   <StyledGrid1>
-                    <Grid item>
+                    <Grid item width="100%">
                       <NavbarSearch handleSearchClick={handleSearchClick} />
                     </Grid>
 
                     {!searchOpen && (
                       <StyledGrid4 item>
-                        <IconButton onClick={handleSearchClick}>
+                        {/* <IconButton onClick={handleSearchClick}>
                           <SearchIcon />
-                        </IconButton>
+                        </IconButton> */}
 
                         <IconButton onClick={toggleDrawer}>
                           {open ? (
@@ -587,15 +749,19 @@ const Navbar = ({ session }) => {
                     )}
                   </StyledGrid1>
 
-                  <Grid item>
+                  <Grid item sx={{padding:0}}>
                     {searchOpen && isSmallerThanMd && (
                       <NavbarSearch handleSearchClick={handleSearchClick} />
                     )}
 
                     {!isSmallerThanSm && (
                       <>
-                        {!searchOpen && (
-                          <IconButton
+                       
+                       
+
+                        <Grid container alignItems="center">
+                          {
+                            !searchOpen &&  <IconButton
                             onClick={handleSearchClick}
                             sx={{
                               display: { xs: "none", sm: "block", md: "none" },
@@ -603,8 +769,10 @@ const Navbar = ({ session }) => {
                           >
                             <SearchIcon />
                           </IconButton>
-                        )}
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          }
+                          {
+                            !searchOpen && 
+                             <Box sx={{ display: "flex", alignItems: "center" }}>
                           <StyledButton1
                             sx={{
                               marginRight: "16px",
@@ -639,9 +807,11 @@ const Navbar = ({ session }) => {
                             Login
                           </Typography>
                         </Box>
-
-                        <Grid container>
-                          <Box
+                          }
+                       
+                       {
+                        !searchOpen && <>
+                         <Box
                             sx={{
                               borderColor: "#172641",
                               borderRadius: "50%",
@@ -682,12 +852,16 @@ const Navbar = ({ session }) => {
                             disableElevation
                             onClick={handleClick}
                             sx={{
+                              padding:0,
                               display:
                                 isAuth || session?.user ? "flex" : "none",
                             }}
                           >
                             <KeyboardArrowDownOutlinedIcon />
                           </IconButton>
+                        </>
+                       }
+                         
                         </Grid>
 
                         <StyledMenu

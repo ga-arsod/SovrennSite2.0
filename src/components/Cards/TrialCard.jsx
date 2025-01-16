@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
+import React,{useState} from "react";
 import styled from "@emotion/styled";
 import { Box, Grid, Typography, Button } from "@mui/material";
 import { gradientColors } from "../Constants/colors";
 import { colors } from "../Constants/colors";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import TrialCardPaymentButton from "../../components/Common/TrialCardPaymentButton"
+import LoginModal from "../Modal/LoginModal";
 
 const StyledGrid = styled(Box)`
   position: relative;
@@ -77,8 +79,13 @@ const StyledButton = styled(Button)`
 
 const TrialCard = () => {
   const { isAuth, userDetails } = useSelector((store) => store.auth);
+  const [isOpen,setIsOpen]=useState(false)
+  const handleClose=()=>{
+    setIsOpen(false)
+  }
   return (
     <>
+     <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <Box
         sx={{ position: "absolute" }}
         bgcolor={{ xs: "#000910", sm: "transparent" }}
@@ -158,11 +165,7 @@ const TrialCard = () => {
                     </StyledButton>
                   </Link>
                 ) : (
-                  <Link href="/pricing">
-                    <StyledButton variant="contained">
-                      Buy Full Access Now
-                    </StyledButton>
-                  </Link>
+                 <TrialCardPaymentButton/>
                 )}
               </Grid>
             </Grid>

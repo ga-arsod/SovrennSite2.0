@@ -125,7 +125,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
       localStorage.setItem("token", data.token);
       dispatch(loginSuccess(data));
 
-      router.push("/");
+      router.push("/payment_confirmation?sub=free_trial");
 
       return;
     }
