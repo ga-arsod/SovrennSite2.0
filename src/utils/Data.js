@@ -390,7 +390,7 @@ export const fieldOptions = {
       {
         label:
           "Percent Utilization of Raised Capital Towards Creation of Revenue Generating Asset (%)",
-        name: " utilization_of_raised_capital",
+        name: "utilization_of_raised_capital",
         type: "number",
         placeholder: "Enter only digits",
       },
@@ -415,7 +415,7 @@ export const fieldOptions = {
       {
         label: "Market Cap (In Crores)",
         type: "number",
-        name: "market_cap",
+        name: "current_market_cap",
         placeholder: "Enter only digits",
       },
       {
@@ -444,12 +444,7 @@ export const fieldOptions = {
         name: "current_orderbook",
         placeholder: "Enter only digits",
       },
-      {
-        label: "Timeline (In Months)",
-        type: "number",
-        name: "timeline",
-        placeholder: "Enter only digits",
-      },
+    
       {
         label: "Fair PE (X)",
         type: "number",
@@ -469,7 +464,7 @@ export const fieldOptions = {
       {
         label: "Market Cap (In Crores)",
         type: "number",
-        name: "market_cap",
+        name: "current_market_cap",
         placeholder: "Enter only digits",
       },
       {
@@ -487,7 +482,7 @@ export const fieldOptions = {
       {
         label: "TTM Net Profit (In Crores)",
         type: "number",
-        name: "ttm_profit",
+        name: "ttm_net_profit",
         placeholder: "Enter only digits",
       },
     ],

@@ -15,7 +15,7 @@ const Disclaimer = ({ margin, text }) => {
           fontWeight: '400',
         
           marginLeft: '4px', 
-          textAlign: "justify",
+          textAlign: "left",
         }}
         
       >

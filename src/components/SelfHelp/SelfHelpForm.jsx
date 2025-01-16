@@ -424,7 +424,7 @@ const SelfHelpForm = ({ selectedChip,setCompanyId }) => {
         </Grid>
 
         <Grid item xs={12} sm={6} marginTop={2}>
-          <StyledTypography1 marginBottom={3}>Order Data</StyledTypography1>
+          <StyledTypography1 marginBottom={3}>{`${selectedChip} Data`}</StyledTypography1>
           {fieldOptions[selectedForm].orderData.map((field, index) => (
             <Box key={index} marginTop={3}>
               <StyledInputLabel htmlFor={field.name}>

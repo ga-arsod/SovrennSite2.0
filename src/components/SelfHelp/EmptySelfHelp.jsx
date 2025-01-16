@@ -1,22 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
 import styled from "@emotion/styled";
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { colors } from '../Constants/colors';
 
-const StyledTypography1 = styled(Typography)`
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 24px;
-  text-align: center;
-  margin-top: 16px;
-`;
-
 const ImageWrapper = styled.div`
-  max-width: 420px; /* Set the maximum width for larger screens */
-  width: 100%; /* Ensures the image scales down on smaller screens */
-  position: relative;
-  aspect-ratio: 420 / 330; /* Maintain aspect ratio */
+  width: 100%;
+  max-width: 420px;  /* Maximum width for the image */
+  height: auto;      /* Keep the height proportional */
 `;
 
 const EmptySelfHelp = () => {
@@ -27,13 +18,12 @@ const EmptySelfHelp = () => {
           <Image
             src="/self-help.png"
             alt="Self Help"
-            layout="fill" 
-            objectFit="contain" 
+            width={420}  
+            height={330}  
+            layout="responsive" 
+            objectFit="contain"
           />
         </ImageWrapper>
-        <StyledTypography1 color={colors.greyBlue800}>
-          Select an option for which you want to calculate
-        </StyledTypography1>
       </Grid>
     </Grid>
   );

@@ -162,6 +162,7 @@ const PulseArticle = () => {
   const { pulseArticleData, pagination, isPulseFilterOpen } = useSelector(
     (store) => store.pulse
   );
+  const { isAuth } = useSelector((store) => store.auth);
   const [expanded, setExpanded] = useState({});
   const [filterData, setFilterData] = useState({});
   const [windowSize, setWindowSize] = useState(undefined);
@@ -172,7 +173,7 @@ const PulseArticle = () => {
 
   useEffect(() => {
     dispatch(pulseArticlesApi({ page: 1, pageSize: 20 }));
-  }, [dispatch]);
+  }, [dispatch,isAuth]);
 
   useEffect(() => {
     const initialExpandedState = pulseArticleData?.reduce((acc, article) => {
@@ -181,7 +182,7 @@ const PulseArticle = () => {
       return acc;
     }, {});
     setExpanded(initialExpandedState || {});
-  }, [pulseArticleData]);
+  }, [pulseArticleData,isAuth]);
 
   const handleToggle = (date) => {
     setExpanded((prev) => ({ ...prev, [date]: !prev[date] }));
@@ -190,7 +191,7 @@ const PulseArticle = () => {
   const setPaginate = () => {
     setPage(page + 1);
 
-    if (Object.entries(filterData).length)
+    if (Object.entries(filterData)?.length)
       dispatch(
         pulseFilteredArticlesApi({
           page: page + 1,
@@ -319,7 +320,7 @@ const PulseArticle = () => {
         </Grid>
       </Box>
 
-      {Object.entries(groupedByDate).length==0 ? 
+      {!pulseArticleData?.length ? 
       <NoData text="No data available" /> 
       :
         Object.entries(groupedByDate).map(([date, articles]) => (
