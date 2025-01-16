@@ -35,7 +35,7 @@ const StyledTypography3 = styled(Typography)`
   font-size: 23px;
   line-height: 28px;
   letter-spacing: -0.02em;
-  white-space: nowrap;
+ 
 `;
 
 const StyledGrid = styled(Box)`
@@ -116,7 +116,7 @@ const SearchCompanyInfo = ({ content, textSearch }) => {
       return baseUrl;
     }
   };
-  console.log(content,"content")
+  
   return (
     <>
       <Box marginTop={2}>

@@ -26,6 +26,10 @@ const StyledTypography2 = styled(Typography)`
 const PaymentConfirmation = () => {
   const searchParams = useSearchParams();
   const to = searchParams.get("to") || "/";
+  const subscriptionType = searchParams.get("sub"); 
+
+
+  const isFreeTrial = subscriptionType === "free_trial";
   return (
     <>
       <Head>
@@ -48,10 +52,17 @@ const PaymentConfirmation = () => {
             <StyledTypography1 color="#034635" paddingTop={5}>
               Congrats! You have successfully subscribed!
             </StyledTypography1>
+            {
+              isFreeTrial ?  <StyledTypography2 marginTop={1} color={colors.navyBlue200}>
+              This is official confirmation.You got <b>Trial Access</b> for free.
+            
+            </StyledTypography2> :
             <StyledTypography2 marginTop={1} color={colors.navyBlue200}>
               This is official confirmation. Thanks for joining Sovrenn Full
               Access.
             </StyledTypography2>
+            }
+            
 
           
             <Box sx={{ marginBottom: "24px" }}>
@@ -114,19 +125,21 @@ const PaymentConfirmation = () => {
               </Grid>
             </Grid>
 
-          
-            <StyledTypography2 color={colors.navyBlue200}>
-              You will be added to Sovrenn Times group shortly in the next 24-48
-              hours. In case you are not added, please send an email at{" "}
-              <Typography
-                component="a"
-                href="mailto:help@sovrenn.com"
-                sx={{ color: colors.themeGreen }}
-              >
-                help@sovrenn.com.
-              </Typography>
-              .
-            </StyledTypography2>
+          {
+            !isFreeTrial ?  <StyledTypography2 color={colors.navyBlue200}>
+            You will be added to Sovrenn Times group shortly in the next 24-48
+            hours. In case you are not added, please send an email at{" "}
+            <Typography
+              component="a"
+              href="mailto:help@sovrenn.com"
+              sx={{ color: colors.themeGreen }}
+            >
+              help@sovrenn.com.
+            </Typography>
+            .
+          </StyledTypography2> : <></>
+          }
+           
 
             <Box sx={{ textAlign: "left", marginY: "24px" }}>
               <StyledTypography2 color={colors.navyBlue200}>
@@ -164,7 +177,7 @@ const PaymentConfirmation = () => {
             </Box>
 
            
-            <Grid container gap={2} justifyContent="center" marginBottom={2}>
+            <Grid container gap={2} justifyContent="center" marginBottom={12}>
               <Grid item xs={12} sm="auto">
                 <Link href="/discovery" replace>
                   <Button

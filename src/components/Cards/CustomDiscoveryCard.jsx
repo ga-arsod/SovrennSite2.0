@@ -162,11 +162,11 @@ const DefaultImageContainer = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 140px; /* Adjust as needed */
+  height: 140px; 
   border-radius: 3px;
   text-align: center;
   font-weight: 600;
-  font-size: 16px; /* Adjust as needed */
+  font-size: 16px; 
 `;
 
 const CustomDiscoveryCard = ({ title, data }) => {

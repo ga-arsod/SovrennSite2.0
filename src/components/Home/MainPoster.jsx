@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation";
 import { colors } from "../Constants/colors";
 import { subscriptionDetailsApi } from "@/app/Redux/Slices/authSlice";
 import moment from "moment";
+import PaymentButton from "../Common/PaymentButton";
+import LoginModal from "../Modal/LoginModal";
 
 const headingsArray = [
   {
@@ -194,7 +196,7 @@ const MainPoster = () => {
   const { userDetails, isAuth } = useSelector((store) => store.auth);
  
    const subscriptionDetails = useSelector(
-      (store) => store.auth.subscriptionDetails[0]
+      (store) => store.auth.subscriptionDetails
     );
   const handleMouseEnter = () => {
     setHovered(true);
@@ -211,7 +213,10 @@ const MainPoster = () => {
   const hoverTransform5 = hovered ? "translate(20px, 0px)" : "translate(0, 0)";
   const hoverTransform6 = hovered ? "translate(-20px, 0px)" : "translate(0, 0)";
   const [animate, setAnimate] = useState(false);
-
+  const [isOpen,setIsOpen]=useState(false)
+  const handleClose=()=>{
+    setIsOpen(false)
+  }
   useEffect(() => {
     const timer = setTimeout(() => {
       setAnimate(true);
@@ -220,9 +225,12 @@ const MainPoster = () => {
     return () => clearTimeout(timer);
   }, []);
   useEffect(() => {
+
     if (isAuth) dispatch(subscriptionDetailsApi());
   }, []);
   return (
+    <>
+    <LoginModal isOpen={isOpen} handleClose={handleClose} />
     <Box
       width="100vw"
       sx={{
@@ -333,24 +341,21 @@ const MainPoster = () => {
                     <Grid item>
                       <StyledButton3 variant="contained">
                         {`Your Trial Expires on ${moment(
-                          subscriptionDetails?.expiry_date
+                          subscriptionDetails[0]?.expiry_date
                         ).format("Do MMM YY")}`}
                       </StyledButton3>
                     </Grid>
                     <Grid item>
-                      <Link href="/pricing">
-                        <StyledButton2 variant="contained">
-                          {`Upgrade to Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
-                        </StyledButton2>
-                      </Link>
+                     <PaymentButton/>
                     </Grid>
                   </>
-                ) : isAuth && !userDetails?.subscriptions.length ? (
-                  <Link href="/pricing">
-                    <StyledButton2 variant="contained">
-                      {`Buy Full Access @ ₹${userDetails?.to_pay_for_fa}/yr`}
-                    </StyledButton2>
-                  </Link>
+                ) : 
+                
+                isAuth && !userDetails?.subscriptions.length ? (
+                  <Grid item width="100%">
+                     <PaymentButton/>
+                    </Grid>
+                
                 ) :
                 
                 (
@@ -378,17 +383,10 @@ const MainPoster = () => {
                      Get 45 Days Trial For Free
                    </StyledButton1>
                  </Link>
-                 <Link href="/pricing">
-                   <StyledButton2
-                     variant="contained"
-                     sx={{
-                       width: { xs: "100%", sm: "auto" },
-                       padding: { xs: "16px", sm: "12px 16px" },
-                     }}
-                   >
-                     {`Buy Full Access @ ₹4500/yr`}
-                   </StyledButton2>
-                 </Link>
+                 <Box onClick={()=>{setIsOpen(true)}}>
+                 <PaymentButton/>
+                 </Box>
+               
                </Grid>
                
                 ) : isAuth &&
@@ -606,6 +604,7 @@ const MainPoster = () => {
         </Grid>
       </Grid>
     </Box>
+    </>
   );
 };
 export default MainPoster;

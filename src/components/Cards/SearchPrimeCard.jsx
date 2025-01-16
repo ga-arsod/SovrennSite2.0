@@ -63,7 +63,9 @@ const SearchPrimeCard = ({data}) => {
           <Box
             key={index}
             sx={{
-              backgroundColor: "#EFF2F4",
+              backgroundColor: "#FAF9F9",
+ 
+              border:" 1px solid  #E6E8E9",
               borderRadius: "4px",
               maxWidth: "472px",
               width: "100%",

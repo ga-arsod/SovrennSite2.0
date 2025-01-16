@@ -173,7 +173,7 @@ const ProfileSettings = () => {
           !subscriptionDetails ?
           <Grid container>
           <Grid item>
-          <Typography sx={{fontSize:"18px",lineHeight:"21px"}} gutterBottom>You do not have any access, upgrade now continue your investing journey.</Typography>
+          <Typography sx={{fontSize:"18px",lineHeight:"21px"}} gutterBottom>You do not have any access, upgrade now to continue your investing journey.</Typography>
           </Grid>
           <Grid item>
           <Grid
