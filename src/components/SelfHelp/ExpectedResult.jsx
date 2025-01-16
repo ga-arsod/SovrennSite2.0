@@ -103,7 +103,7 @@ const ExpectedResult = (company_id) => {
   };
   dispatch(addToWatchlistApi({company_id:company_id.company_id,uptrend_potential:uptrend_potential,expected_price_after_1year:expected_price_after_1year}))
   };
-
+console.log(selfHelpCalculatedData,"calculated data")
   return (
     <Grid container justifyContent="center" sx={{ overflowX: 'hidden' }}>
       <Box

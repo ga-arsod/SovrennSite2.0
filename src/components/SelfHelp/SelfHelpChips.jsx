@@ -4,7 +4,7 @@ import { colors } from "../Constants/colors";
 import styled from "@emotion/styled";
 
 const StyledChip = styled(Chip)`
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 14px;
   color: ${colors.greyBlue400};
@@ -56,6 +56,7 @@ const SelfHelpChips = ({ onChipSelect, selectedChip,justify }) => {
         display: "flex",
         flexWrap: "wrap", 
         gap: 1,
+      
         maxWidth: "100%", 
         justifyContent:justify,
         boxSizing: "border-box",

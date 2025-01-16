@@ -19,7 +19,7 @@ const PulsePage = () => {
   useEffect(() => {
     dispatch(getPortfolioCompanies());
     dispatch(pulseFilterApi());
-  }, [dispatch]);
+  }, [dispatch,isAuth]);
 
   return (
     <>

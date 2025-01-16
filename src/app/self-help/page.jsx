@@ -250,17 +250,13 @@ const SelfHelp = () => {
                     flexDirection: { xs: "column", sm: "row" },
                   }}
                 >
-                  {selectedChip !== null && (
+                 
                     <StyledTypography2
                       sx={{ whiteSpace: "nowrap" }}
                     >{`Calculate For :`}</StyledTypography2>
-                  )}
+                 
 
-                  {selectedChip === null ? (
-                    <StyledTypography2 color={colors.greyBlue500}>
-                      Select from the options below
-                    </StyledTypography2>
-                  ) : (
+                  
                     <StickyChipsContainer container justifyContent="center">
                       <StyledSelfHelpChips
                         onChipSelect={handleChipSelect}
@@ -268,7 +264,7 @@ const SelfHelp = () => {
                         justify="start"
                       />
                     </StickyChipsContainer>
-                  )}
+                  
                 </Grid>
 
                 <Grid
@@ -340,7 +336,7 @@ const SelfHelp = () => {
               </Grid>
             )}
 
-            {selectedChip === null && (
+            {/* {selectedChip === null && (
               <Grid
                 item
                 marginTop={3}
@@ -352,7 +348,7 @@ const SelfHelp = () => {
                   justify="center"
                 />
               </Grid>
-            )}
+            )} */}
 
             {isCalculatedDataAvailable && (
               <Grid
@@ -376,7 +372,7 @@ const SelfHelp = () => {
               marginBottom={0}
               sx={{ display: "flex", justifyContent: "center" }}
             >
-              <Disclaimer margin="120px" text={selfHelpDisclaimer} />
+              <Disclaimer margin="90px" text={selfHelpDisclaimer} />
             </Grid>
           </Grid>
         </Container>
