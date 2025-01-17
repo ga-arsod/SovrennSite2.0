@@ -237,7 +237,7 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen,page2,setPage2,setFilterData2 }
     const [filterBody, setFilterBody] = useState({});
    
     const updateFilter = (item, key, status) => {
-      console.log(item,key,status)
+      
       window.scrollTo({
         top: 0,
         behavior: 'smooth'

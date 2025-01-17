@@ -146,8 +146,7 @@ const WatchlistEditModal = ({ isOpen, company }) => {
     dispatch(toggleEditModal());
   };
  
-  console.log(company,"company")
-  console.log(editedValues,"edited values")
+  
   return (
     <Modal
       open={isOpen}

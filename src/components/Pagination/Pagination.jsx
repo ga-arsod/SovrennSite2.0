@@ -68,7 +68,7 @@ const Pagination = ({ currentPage, setCurrentPage,pagination }) => {
   };
 
   useEffect(() => {
-    console.log(currentPage, "current page");
+   
   }, [currentPage]);
 
   return (

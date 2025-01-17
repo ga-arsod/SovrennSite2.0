@@ -108,7 +108,7 @@ const StyledCard = styled(Box)`
 `;
 
 const RelatedPosts = ({ posts }) => {
-  console.log(posts,"posts")
+  
   const theme = useTheme();
   const [showScroll, setShowScroll] = useState(false);
 

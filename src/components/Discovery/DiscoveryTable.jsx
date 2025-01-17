@@ -233,7 +233,7 @@ const wordsStr = [
   "CZ",
 ];
 
-export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,sortBy,setSortBy,bucket}) {
+export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,sortBy,setSortBy,bucket,isNestedRoute}) {
   const dispatch = useDispatch();
   const [hoveredRow, setHoveredRow] = useState(null);
   
@@ -308,7 +308,7 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
     },
   ];
   const headerRowArray2 = headerRowArray.slice(0, -1);
-
+  
   return (
     <>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />
@@ -334,7 +334,7 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
           <Table sx={{ borderCollapse: "separate" }}>
             <TableHead>
               <TableRow>
-                {(!bucket ? headerRowArray : headerRowArray2)?.map((item, index) => {
+                {((bucket || isNestedRoute) ? headerRowArray2 : headerRowArray)?.map((item, index) => {
                   return (
                     <>
                       <StyledTableCell
@@ -358,7 +358,7 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
                   );
                 })}
                {
-                !bucket &&  <StyledTableCell>
+              ( bucket || isNestedRoute) ? <></>:  <StyledTableCell>
                 <HeaderTextWrapper>Remarks</HeaderTextWrapper>
               </StyledTableCell>
                }
@@ -405,7 +405,7 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
                   >
                     {item?.ttm_pe ? `${item?.ttm_pe}x` : "NA"}
                     {
-                      bucket && 
+                     ( bucket || isNestedRoute) && 
                       <SlideBox hovered={hoveredRow === index}>
                       <Typography
                         sx={{
@@ -429,7 +429,7 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
                     }
                   </StyledBodyTableCell>
                   {
-                    !bucket && 
+                    item?.date && 
                     <StyledBodyTableCell
                     sx={{ color: colors.neutral900, fontWeight: "400" }}
                   >
@@ -439,7 +439,7 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
                  
                   
                   {
-                    !bucket &&
+                   item?.remark &&
                     <StyledBodyTableCell
                     sx={{ color: colors.neutral900, position: "relative" }}
                   >

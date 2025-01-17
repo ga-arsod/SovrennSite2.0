@@ -59,7 +59,7 @@
 //         <Head>
 //           <title>Error</title>
 //         </Head>
-//         <div>Error loading article.</div>
+//         <div style={{marginTop:"100px"}}>Error loading article.</div>
 //       </>
 //     );
 //   }
@@ -105,12 +105,14 @@ async function fetchArticleData(id) {
   try {
     const res = await fetch(
       `https://cms.sovrenn.com/api/posts/${id}?populate=*`,
-      { cache: "no-store" }
+      { cache: "no-store" } 
     );
-    const data = await res.json();
-    return data;
+    if (!res.ok) {
+      throw new Error("Failed to fetch article data");
+    }
+    return res.json();
   } catch (error) {
-    console.error("Error fetching article data:", error);
+    
     return null;
   }
 }
@@ -122,16 +124,19 @@ async function fetchRelatedPosts(categorySlug, articleSlug) {
       `https://cms.sovrenn.com/api/posts?filters[category][slug][$eq]=${categorySlug}&filters[slug][$ne]=${articleSlug}&sort=createdAt:desc&pagination[limit]=5&populate=category`,
       { cache: "no-store" }
     );
-    const data = await res.json();
-    return data;
+    if (!res.ok) {
+      throw new Error("Failed to fetch related posts");
+    }
+    return res.json();
   } catch (error) {
-    console.error("Error fetching related posts:", error);
+   
     return null;
   }
 }
 
-// Insert banner image
+// Insert banner image into article content
 async function insertBannerImage(content) {
+  if (!content) return "";
   const pTagCount = (content.match(/<p/g) || []).length;
   const bannerImageHTML = `
     <div style="text-align: center; margin: 20px 0;">
@@ -140,7 +145,6 @@ async function insertBannerImage(content) {
       </a>
     </div>
   `;
-
   const position = Math.round(pTagCount / 3);
   const contentParts = content.split("</p>");
   if (contentParts.length > position) {
@@ -150,19 +154,21 @@ async function insertBannerImage(content) {
   return content + bannerImageHTML;
 }
 
+
 export default async function KnowledgeArticlePage({ params }) {
   const { id } = params;
 
-  // Fetch the article data
+ 
+  
   const articleData = await fetchArticleData(id);
   if (!articleData?.data) {
     return (
-      <div>
+      <>
         <Head>
           <title>Error</title>
         </Head>
-        <h1>Error loading article.</h1>
-      </div>
+        <div style={{ marginTop: "100px" }}>Error loading article.</div>
+      </>
     );
   }
 
@@ -172,16 +178,17 @@ export default async function KnowledgeArticlePage({ params }) {
     id
   );
 
-  // Add banner image
+ 
   const content = await insertBannerImage(articleData.data.attributes.content);
 
   return (
-    <div>
+    <>
       <Head>
         <title>{articleData.data.attributes.title}</title>
         <link
           rel="canonical"
           href={`https://www.sovrenn.com/knowledge/${id}`}
+          key="canonical"
         />
       </Head>
       <ArticleDoc
@@ -192,7 +199,16 @@ export default async function KnowledgeArticlePage({ params }) {
       {relatedPosts?.data?.length ? (
         <RelatedPosts posts={relatedPosts.data} />
       ) : null}
-    </div>
+    </>
   );
 }
 
+
+export async function generateStaticParams() {
+  const res = await fetch("https://cms.sovrenn.com/api/posts");
+  const posts = await res.json();
+
+  return posts.data.map((post) => ({
+    id: post.id.toString(),
+  }));
+}

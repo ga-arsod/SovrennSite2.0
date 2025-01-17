@@ -164,8 +164,9 @@ const KnowledgeCard = ({ initialPosts, categories, initialPagination }) => {
         page: nextPage,
       }));
     } catch (error) {
-      console.error("Error loading more posts:", error);
+      return;
     } finally {
+      return;
     }
   };
   const [likedCards, setLikedCards] = useState(Array(12).fill(false));
@@ -186,7 +187,7 @@ const KnowledgeCard = ({ initialPosts, categories, initialPagination }) => {
   if (isLoading) {
     return <Spinner margin={2} />;
   }
-  console.log(posts.length);
+  
   return (
     <>
       <Container>

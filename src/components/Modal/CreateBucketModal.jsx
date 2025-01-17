@@ -146,8 +146,7 @@ const CreateBucketModal = ({ open, handleClose }) => {
   useEffect(() => {
     dispatch(commonCompanyListApi(formData.bucket_list));
   }, [formData,dispatch]);
-  console.log(isCreateBucketModalOpen, "isCreateBucketModalOpen");
-  console.log(customBucketData, "customBucketData");
+  
   const renderField = (field) => {
     switch (field.type) {
       case "text":

@@ -111,9 +111,7 @@ const PaymentModal = ({ isPaymentOpen, handlePaymentClose }) => {
 
     if (result.meta.requestStatus === "fulfilled") {
       document.getElementById("paymentForm").submit();
-    } else {
-      console.error("Error generating hash:", result.error.message);
-    }
+    } 
   };
   return (
     <Modal

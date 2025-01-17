@@ -31,11 +31,9 @@ const PayUForm = () => {
         const data = await response.json();
         setHash(data.data.hash);
         setIsLoading(false);
-      } else {
-        console.error('Error fetching hash:', response.statusText);
       }
     } catch (error) {
-      console.error('Error:', error);
+    return;
     }
   };
 

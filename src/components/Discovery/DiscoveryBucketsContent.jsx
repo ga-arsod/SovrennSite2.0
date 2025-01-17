@@ -105,7 +105,7 @@ const DiscoveryBucketContent = () => {
    
       const filterObj = {};
       if (filter.company_type === "all") {
-        console.log("inside company type")
+      
         filterObj["company_type"] = "";
       }
       else {

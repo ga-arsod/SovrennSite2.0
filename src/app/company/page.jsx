@@ -120,7 +120,7 @@ const CompanyInfo = () => {
       });
     }
   };
-console.log(companyData,"company data")
+
   if (isLoading) {
     return (
       <>
@@ -137,7 +137,7 @@ console.log(companyData,"company data")
       </>
     );
   }
-  console.log(companyData);
+  
   return (
     <>
       <Head>
@@ -267,7 +267,7 @@ console.log(companyData,"company data")
             ) : (
               <CompanyCard
                 data={companyData?.discovery}
-                slug={companyData.company.slug}
+                slug={companyData?.company?.slug}
               />
             )}
           </Grid>

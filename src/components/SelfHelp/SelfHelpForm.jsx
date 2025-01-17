@@ -203,6 +203,7 @@ const SelfHelpForm = ({ selectedChip,setCompanyId }) => {
       return;
   }
   dispatch(selfHelpCalculationApi(inputData))
+ 
   }
  
 

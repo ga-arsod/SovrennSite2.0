@@ -103,7 +103,7 @@ const ChildBucketCompanyContent = () => {
 
   const pathSegments = pathname ? decodeURIComponent(pathname).split("/") : [];
   const [currentPage, setCurrentPage] = useState(1);
-
+  const isNestedRoute = pathname.includes('/nested');
   const segments = pathname.split("/");
   const lastSegment = segments.filter(Boolean).pop();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -358,6 +358,7 @@ const ChildBucketCompanyContent = () => {
             setSortOrder={setSortOrder}
             sortBy={sortBy}
             setSortBy={setSortBy}
+            isNestedRoute={isNestedRoute}
           />
         )}
         {tableData?.companies?.length ? (

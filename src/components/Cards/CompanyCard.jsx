@@ -38,14 +38,13 @@ const StyledTypography2 = styled(Typography)`
 
 const StyledGrid = styled(Box)`
   cursor: pointer;
-    background-color: #FAF9F9;
- 
-   border: 1px solid  #E6E8E9;
- 
+  background-color: #FAF9F9;
+  border: 1px solid #E6E8E9;
   border-radius: 3px;
   display: flex;
+  height:350px;
   flex-direction: column;
-  position: relative;
+  position: relative; /* Added for absolute positioning of child elements */
   transition: background-color 0.8s;
 
   &:hover {
@@ -66,7 +65,7 @@ const StyledGrid = styled(Box)`
   .content {
     display: flex;
     flex-direction: column;
-    flex: 1; 
+    flex: 1;  
     justify-content: space-between;
   }
 
@@ -75,7 +74,66 @@ const StyledGrid = styled(Box)`
     justify-content: space-between;
     align-items: center;
     padding: 12px 20px;
-    margin-top: auto;  
+    position: absolute; /* Make it fixed to the bottom */
+    bottom: 20px; /* Distance from the bottom boundary */
+    left: 0;
+    right: 0;
+  }
+`;
+
+
+const StyledTypography3 = styled(Typography)`
+  font-weight: 700;
+  font-size: 23px;
+  line-height: 28px;
+  letter-spacing: -0.02em;
+  color: ${colors.navyBlue900};
+  @media (max-width: 639px) {
+    font-size: 23px;
+    line-height: 28px;
+  }
+`;
+
+const HoverBox = styled(Box)`
+  background-color:#F6F5F5 ;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${colors.neutral900};
+
+    .header-text {
+      color: ${colors.white};
+    }
+
+    .header-icon {
+      color: ${colors.white};
+    }
+  }
+
+  &.collapsed {
+    background-color: ${colors.neutral400};
+
+    .header-text {
+      color: ${colors.navyBlue900};
+    }
+
+    .header-icon {
+      color: ${colors.navyBlue900};
+    }
+
+    &:hover {
+      background-color: ${colors.neutral900};
+
+      .header-text {
+        color: ${colors.white};
+      }
+
+      .header-icon {
+        color: ${colors.white};
+      }
+    }
   }
 `;
 
@@ -86,13 +144,13 @@ const CustomIconButton = styled(IconButton)`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #B0B7BC;
+  border: 1px solid #b0b7bc;
   border-radius: 50%;
   background-color: ${colors.white};
-  transition: background-color 0.5s, border-color 0.5s, transform 0.5s; 
-  
+  transition: background-color 0.5s, border-color 0.5s, transform 0.5s;
+
   .arrow-icon {
-    transition: transform 0.8s; 
+    transition: transform 0.8s;
   }
 `;
 
@@ -102,7 +160,7 @@ const DefaultImageContainer = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 140px; 
+  height: 140px;
   border-radius: 3px;
   text-align: center;
   font-weight: 600;
@@ -110,14 +168,14 @@ const DefaultImageContainer = styled(Box)`
 `;
 
 const CompanyCard = ({data,slug}) => {
-  console.log(data,"data")
+ 
   return (
     <Box marginTop={2}>
      
       <GridContainer>
         {data?.map((ele, index) => (
           <StyledGrid key={index}>
-              <Link target="_blank" href={`/discovery/${ele.slug}`} style={{textDecoration:'none'}}>
+              <Link target="_blank" href={`/discovery/${ele.slug}/${slug}`} style={{textDecoration:'none'}}>
             <Box className="content">
               <Grid container>
                 <Grid item paddingY={2} paddingX="20px" width="100%">
@@ -140,6 +198,7 @@ const CompanyCard = ({data,slug}) => {
                   </StyledTypography2>
                 </Grid>
               </Grid>
+              
               <Box className="bottom-section">
                 <StyledTypography2 component="span" color={colors.themeGreen} sx={{ fontWeight: 600 }}>
                   {`Bucket- ${ele.type}`}
