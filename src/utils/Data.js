@@ -441,7 +441,7 @@ export const fieldOptions = {
       {
         label: "Last Quarter Profit (In Crores)",
         type: "number",
-        name: "current_orderbook",
+        name: "lq_profit",
         placeholder: "Enter only digits",
       },
     

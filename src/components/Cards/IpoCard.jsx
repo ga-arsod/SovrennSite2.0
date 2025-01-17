@@ -119,29 +119,29 @@ const IpoCard = ({ data }) => {
                       top: 0,
                       right: 0,
                       backgroundColor:
-                        row.status == "Open"
+                        row.status.text == "Open"
                           ? "#C5EFC5"
-                          : row.status == "Upcoming"
+                          : row.status.text == "Upcoming"
                           ? "#FAD28F"
-                          : row.status == "Closing Today"
+                          : row.status.text == "Closing Today"
                           ? "#F60909"
-                          : row.status == "Closed"
+                          : row.status.text == "Closed"
                           ? "#FB8E8E"
-                          : row.status == "Listing Today"
+                          : row.status.text == "Listing Today"
                           ? "#011627"
-                           : row.status == "Listed" ? "#627B8F" 
+                           : row.status.text == "Listed" ? "#627B8F" 
                           : "",
                       color:
-                        row.status == "Open"
+                        row.status.text == "Open"
                           ? "#000000"
-                          : row.status == "Upcoming"
+                          : row.status.text == "Upcoming"
                           ? "#000000"
-                          : row.status == "Closing Today"
+                          : row.status.text == "Closing Today"
                           ? "white"
-                          : row.status == "Closed"
+                          : row.status.text == "Closed"
                           ? "black"
-                          : row.status == "Listing Today"
-                          ? "white" : row.status == "Listed" ? "white" 
+                          : row.status.text == "Listing Today"
+                          ? "white" : row.status.text == "Listed" ? "white" 
                           : "",
                       borderRadius: "0px 4px 0px 4px",
                       padding: "8px 22px",
@@ -154,7 +154,7 @@ const IpoCard = ({ data }) => {
                         lineHeight: "12px",
                       }}
                     >
-                      {row.status}
+                      {row.status.text}
                        
                     </Typography>
                   </Box>
