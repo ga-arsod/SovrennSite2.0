@@ -39,6 +39,7 @@ const StyledTypography2 = styled(Typography)`
 
 const PricingPage = () => {
   const { plans } = useSelector((store) => store.plan);
+  const {isAuth} = useSelector((store) => store.auth);
   const router = useRouter();
   const handleBackClick = () => {
     router.back();
@@ -46,7 +47,7 @@ const PricingPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(allPlansApi());
-  }, []);
+  }, [isAuth]);
   return (
     <>
       <Head>

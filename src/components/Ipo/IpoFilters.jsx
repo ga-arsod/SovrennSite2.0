@@ -24,6 +24,7 @@ import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import { ipoCompaniesListApi,toggleIpoFilter } from "@/app/Redux/Slices/ipoSlice";
 import { useDispatch } from "react-redux";
+import { setSnackStatus } from "@/app/Redux/Slices/snackbarSlice";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -265,7 +266,17 @@ setFilterData(filterObj)
   };
 
   const resetFilters = () => {
-  
+  dispatch(
+         setSnackStatus({
+             status: true,
+             severity: "success",
+             message: "Data has been reset successfully.",
+           })
+         );
+        dispatch(
+          ipoCompaniesListApi({ data: {},page: 1,sort_by:"createdAt" ,sort_order:"dec"})
+        );
+        dispatch(toggleIpoFilter())
    
     window.scrollTo({
       top: 0,

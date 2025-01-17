@@ -41,6 +41,7 @@ import Spinner from "../../components/Common/Spinner";
 import LoginModal from "../../components/Modal/LoginModal";
 import Disclaimer from "@/components/Common/Disclaimer";
 import Link from "next/link";
+import Snackbar from "@/components/Snackbar/SnackBar";
 
 
 const StyledTypography1 = styled(Typography)`
@@ -265,8 +266,9 @@ const Times = () => {
           key="canonical"
         />
       </Head>
-      <LoginModal isOpen={isOpen} handleClose={handleClose} />
+      
       <Grid container marginTop="64px" flexDirection="column">
+        <Snackbar/>
         {!isSmallerThanMd ? (
           isAuth &&
           (userDetails?.subscriptions?.includes("full-access") ||
@@ -299,9 +301,7 @@ const Times = () => {
                 </StyledTypography1>
 
                 <Box
-                  onClick={() => {
-                    if (!isAuth) setIsOpen(true);
-                  }}
+                 
                 >
                   <PaymentButton />
                 </Box>

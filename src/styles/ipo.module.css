@@ -4,8 +4,8 @@
     padding: 10px 0;
     font-family: 'Inter', sans-serif;
     font-weight:400;
-    font-size:16px;
-    line-height:19px;
+    font-size:17px;
+    line-height:21px;
 
     -webkit-user-select: none;
     -webkit-touch-callout: none;
@@ -40,11 +40,12 @@
 }
 
 #MainContainer h3 {
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 #MainContainer p {
-    text-align: justify;
+    margin-top:10px;
+    text-align: left;
     margin-bottom: 20px;
 }
 

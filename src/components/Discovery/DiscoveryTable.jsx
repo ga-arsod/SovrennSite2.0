@@ -233,7 +233,7 @@ const wordsStr = [
   "CZ",
 ];
 
-export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,sortBy,setSortBy}) {
+export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,sortBy,setSortBy,bucket}) {
   const dispatch = useDispatch();
   const [hoveredRow, setHoveredRow] = useState(null);
   
@@ -307,6 +307,7 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
       id: "date",
     },
   ];
+  const headerRowArray2 = headerRowArray.slice(0, -1);
 
   return (
     <>
@@ -333,7 +334,7 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
           <Table sx={{ borderCollapse: "separate" }}>
             <TableHead>
               <TableRow>
-                {headerRowArray?.map((item, index) => {
+                {(!bucket ? headerRowArray : headerRowArray2)?.map((item, index) => {
                   return (
                     <>
                       <StyledTableCell
@@ -356,10 +357,12 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
                     </>
                   );
                 })}
-
-                <StyledTableCell>
-                  <HeaderTextWrapper>Remarks</HeaderTextWrapper>
-                </StyledTableCell>
+               {
+                !bucket &&  <StyledTableCell>
+                <HeaderTextWrapper>Remarks</HeaderTextWrapper>
+              </StyledTableCell>
+               }
+               
               </TableRow>
             </TableHead>
             <TableBody>
@@ -401,16 +404,46 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
                     sx={{ color: colors.neutral900, fontWeight: "400" }}
                   >
                     {item?.ttm_pe ? `${item?.ttm_pe}x` : "NA"}
+                    {
+                      bucket && 
+                      <SlideBox hovered={hoveredRow === index}>
+                      <Typography
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: "14px",
+                          marginRight: "8px",
+                        }}
+                      >
+                        Read More
+                      </Typography>
+                      <CustomIconButton>
+                        <ArrowForwardIosIcon
+                          fontSize="small"
+                          sx={{
+                            color: colors.themeGreen,
+                            fontSize: "12px",
+                          }}
+                        />
+                      </CustomIconButton>
+                    </SlideBox>
+                    }
                   </StyledBodyTableCell>
-                  <StyledBodyTableCell
+                  {
+                    !bucket && 
+                    <StyledBodyTableCell
                     sx={{ color: colors.neutral900, fontWeight: "400" }}
                   >
                     {item?.date ? moment(item.date).format("Do MMM YY") : "NA"}
                   </StyledBodyTableCell>
-                  <StyledBodyTableCell
+                  }
+                 
+                  
+                  {
+                    !bucket &&
+                    <StyledBodyTableCell
                     sx={{ color: colors.neutral900, position: "relative" }}
                   >
-                    {item?.remark || "NA"}
+                    {item?.remark }
                     <SlideBox hovered={hoveredRow === index}>
                       <Typography
                         sx={{
@@ -432,6 +465,8 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
                       </CustomIconButton>
                     </SlideBox>
                   </StyledBodyTableCell>
+                  }
+                  
                 </StyledTableRow>
               ))}
             </TableBody>

@@ -25,7 +25,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useParams } from "next/navigation";
-
+import { useSearchParams } from "next/navigation";
 import Spinner from "../../../components/Common/Spinner";
 import Head from "next/head";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -112,6 +112,10 @@ const DiscoveryBucketContent = () => {
     const [sortOrder, setSortOrder] = useState("dec");
   const { isTableDataLoading } = useSelector((store) => store.discovery);
   const dispatch = useDispatch();
+  const searchParams = useSearchParams();
+
+ 
+  const bucket = searchParams.get("bucket");
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const filtersData = useSelector((store) => store.discovery.filtersData);
   const tableData = useSelector(
@@ -369,6 +373,7 @@ const DiscoveryBucketContent = () => {
             setSortOrder={setSortOrder}
             sortBy={sortBy}
             setSortBy={setSortBy}
+            bucket={bucket}
           />
         )}
         <ScrollCircle />

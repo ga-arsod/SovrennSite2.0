@@ -21,10 +21,10 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
     },
     "& .MuiInputBase-input": {
       padding: '10px 8px',
-      fontSize: '12px',
+      fontSize: '16px', 
       color: 'black',
       "&::placeholder": {
-        fontSize: '12px',
+        fontSize: '12px', 
       },
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
@@ -38,6 +38,7 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
     border: 'none',
   },
 }));
+
 
 const NavbarSearch = ({ handleSearchClick }) => {
   const [searchText, setSearchText] = useState('');

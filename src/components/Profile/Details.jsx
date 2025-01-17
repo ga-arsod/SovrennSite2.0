@@ -231,12 +231,14 @@ const Details = () => {
   useEffect(() => {
     const initialFullName = `${userDetails?.first_name} ${userDetails?.last_name}`;
     const initialState = userDetails?.state || "";
-
+    const initialAvatar = userDetails?.profile_pic || "/dummy_image.jpg";
+  
     setIsEdited(
-      formData.fullName !== initialFullName || formData.state !== initialState
+      formData.fullName !== initialFullName ||
+      formData.state !== initialState ||
+      formData.profile_pic !== initialAvatar
     );
   }, [formData, userDetails]);
-
   return (
     <Container
       sx={{ width: { xs: "100%", md: "1000px" }, justifyContent: "center" }}
@@ -309,25 +311,7 @@ const Details = () => {
             sx={{ marginBottom: 3 }}
           />
 
-          {/* <StyledInputLabel htmlFor="state">State</StyledInputLabel>
-          <StyledTextField
-            placeholder={formData.state}
-            id="state"
-            name="state"
-            value={formData.state}
-            onChange={handleInputChange}
-            disabled={!editableFields.state}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <GreenBorderColorOutlinedIcon
-                    onClick={() => toggleEditable("state")}
-                  />
-                </InputAdornment>
-              ),
-            }}
-            sx={{ marginBottom: 3 }}
-          /> */}
+         
           <FormControl
             fullWidth
             sx={{

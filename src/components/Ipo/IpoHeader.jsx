@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { toggleIpoFilter } from "@/app/Redux/Slices/ipoSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import Snackbar from "../Snackbar/SnackBar";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -82,6 +83,7 @@ const IpoHeader = () => {
     <>
      <Container>
       <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "28px" }}>
+        <Snackbar/>
         <Grid container alignItems="center">
           <Grid item paddingY={{ xs: 2, sm: 5 }}>
             <Box marginBottom={1}>

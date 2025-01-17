@@ -24,6 +24,7 @@ import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import { promoterCompaniesListApi, togglePromoterFilter } from "@/app/Redux/Slices/primeSlice";
 import { useDispatch } from "react-redux";
+import { setSnackStatus } from "../../app/Redux/Slices/snackbarSlice";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -266,7 +267,17 @@ setFilterData2(filterObj)
   };
 
   const resetFilters = () => {
-  
+  dispatch(
+       setSnackStatus({
+           status: true,
+           severity: "success",
+           message: "Data has been reset successfully.",
+         })
+       );
+      dispatch(
+        promoterCompaniesListApi({ data: {},page: 1,sort_by:"createdAt" ,sort_order:"dec"})
+      );
+      dispatch(togglePromoterFilter())
    
     window.scrollTo({
       top: 0,

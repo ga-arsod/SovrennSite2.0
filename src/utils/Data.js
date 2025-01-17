@@ -603,7 +603,7 @@ export const primeArticleDisclaimer =
       },
     },
     {
-      imagePath: "/knowledge.png",
+      imagePath: "/anonymous.png",
       Info: {
         heading: "Sovrenn Knowledge",
         listItems: ["Access IPO stock articles to equip yourself with crucial information",  

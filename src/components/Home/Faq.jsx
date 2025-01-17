@@ -92,6 +92,7 @@ const Faq = () => {
   const faqData = useSelector((store) => store.home.faqsArray);
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(null);
+  const {isAuth} = useSelector((store) => store.auth);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : null);
@@ -138,7 +139,7 @@ const Faq = () => {
   }, []);
 useEffect(()=>{
   dispatch(faqApi())
-},[])
+},[isAuth])
   return (
     <Box
       width="100%"

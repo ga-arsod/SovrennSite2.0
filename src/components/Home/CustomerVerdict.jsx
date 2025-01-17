@@ -51,6 +51,7 @@ const FadeInBox = styled(Box)(({ theme }) => ({
 const CustomerVerdict = () => {
   const dispatch=useDispatch();
   const reviewData = useSelector((store) => store.home.customerReviews);
+  const {isAuth} = useSelector((store) => store.auth);
   const [inView, setInView] = useState(false);
   const ref = useRef(null);
 
@@ -94,7 +95,7 @@ const CustomerVerdict = () => {
   }, []);
   useEffect(()=>{
     dispatch(customerReviewsApi())
-  },[])
+  },[isAuth])
 
   return (
     <StyledBox>

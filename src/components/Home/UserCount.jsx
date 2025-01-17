@@ -9,6 +9,7 @@ import {
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { Fade } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const UserCount = () => {
   const analyticsArray = [
@@ -30,6 +31,8 @@ const UserCount = () => {
     },
   ];
   const [inView, setInView] = useState(false);
+  const { isAuth } = useSelector((store) => store.auth);
+   
   const ref = useRef(null);
 
   useEffect(() => {
@@ -72,7 +75,7 @@ const UserCount = () => {
           justifyContent="center"
           direction="row"
           paddingX={{ xs: 2, lg: 10 }}
-          paddingTop={{ xs:4, sm: 6 }}
+          paddingTop={{ xs:isAuth ? 4 : 8, sm: 6 }}
           paddingBottom={{ xs: 2, sm: 6 }}
           spacing={{xs:6,sm:4}}
           ref={ref}
