@@ -226,7 +226,7 @@ const PrimeFilter = ({
   const [filterBody, setFilterBody] = useState({});
 
   const updateFilter = (item, key, status) => {
-    console.log(item, key, status);
+   
     window.scrollTo({
       top: 0,
       behavior: "smooth",

@@ -34,7 +34,7 @@ const NewsDataView = ({data, isAuth, discovery_route,prime_route }) => {
 
         setTables(tableStr);
     };
-console.log(convertToHtml(data.content))
+
     return (
         <article id={styles.MainContainer} >
 

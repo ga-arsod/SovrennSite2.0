@@ -173,7 +173,7 @@ const SignUp = ({ form, setForm }) => {
     return;
    
   };
-  console.log(form, "form");
+ 
   return (
     <>
       {basicInfo ? (

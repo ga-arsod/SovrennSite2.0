@@ -105,14 +105,14 @@ async function fetchArticleData(id) {
   try {
     const res = await fetch(
       `https://cms.sovrenn.com/api/posts/${id}?populate=*`,
-      { cache: "no-store" } // Ensures fresh data on each request
+      { cache: "no-store" } 
     );
     if (!res.ok) {
       throw new Error("Failed to fetch article data");
     }
     return res.json();
   } catch (error) {
-    console.error("Error fetching article data:", error);
+    
     return null;
   }
 }
@@ -129,7 +129,7 @@ async function fetchRelatedPosts(categorySlug, articleSlug) {
     }
     return res.json();
   } catch (error) {
-    console.error("Error fetching related posts:", error);
+   
     return null;
   }
 }

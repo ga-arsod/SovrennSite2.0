@@ -53,9 +53,7 @@ const PaymentButton = () => {
     const result = await dispatch(generateHashApi(paymentData));
     if (result.meta.requestStatus === "fulfilled") {
       document.getElementById("paymentForm").submit();
-    } else {
-      console.error("Error generating hash:", result.error.message);
-    }
+    } 
   };
 
   useEffect(() => {
@@ -64,7 +62,7 @@ const PaymentButton = () => {
 
   const handleButtonClick = async () => {
     if (!isAuth) {
-      setIsOpen(true); // Show login modal if the user is not logged in
+      setIsOpen(true); 
     } else {
       const data = {
         txnid: Date.now(),
@@ -87,8 +85,6 @@ const PaymentButton = () => {
       const result = await dispatch(generateHashApi(data));
       if (result.meta.requestStatus === "fulfilled") {
         document.getElementById("paymentForm").submit(); // Explicit form submission
-      } else {
-        console.error("Error generating hash:", result.error.message);
       }
     }
   };

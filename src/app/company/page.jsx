@@ -137,7 +137,7 @@ const CompanyInfo = () => {
       </>
     );
   }
-  console.log(companyData,"company data")
+  
   return (
     <>
       <Head>

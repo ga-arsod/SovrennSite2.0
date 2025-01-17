@@ -19,18 +19,18 @@ function PDFViewer({ pdfPath }) {
                 : window.innerWidth < 1281
                 ? window.innerWidth / 1.6
                 : window.innerWidth / 2.2;
-            setPageWidth(newWidth || 600); // fallback to 600px width if undefined
+            setPageWidth(newWidth || 600); 
         }
     
         window.addEventListener("resize", updatePageWidth);
-        updatePageWidth(); // Initial width calculation
+        updatePageWidth();
         return () => window.removeEventListener("resize", updatePageWidth);
     }, []);
 
     return (
         <div className="pdf-div" style={{display: "flex", justifyContent: "center"}}>
             <Document file={pdfPath} onLoadSuccess={onDocumentLoadSuccess}
-            onLoadError={(error) => console.error("Error loading PDF:", error)} // Catch PDF loading errors
+            // onLoadError={(error) => console.error("Error loading PDF:", error)} // 
             >
                 {Array.apply(null, Array(numPages))
                     .map((x, i) => i + 1)

@@ -202,7 +202,7 @@ const StyledButton = styled(Button)`
 
 
 const IpoFilters = ({ isOpen ,handleModalOpen,page,setPage,setFilterData}) => {
-  console.log(page,setPage,"setPage")
+  
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllSectors, setShowAllSectors] = useState(false);

@@ -203,7 +203,7 @@ const SelfHelpForm = ({ selectedChip,setCompanyId }) => {
       return;
   }
   dispatch(selfHelpCalculationApi(inputData))
-  console.log("api called")
+ 
   }
  
 
@@ -315,7 +315,7 @@ const SelfHelpForm = ({ selectedChip,setCompanyId }) => {
     );
     setIsFormValid(isValid);
   }, [formData, selectedForm]);
-console.log(inputData,"input data")
+
   return (
     <Box width="100%">
       <Stepper

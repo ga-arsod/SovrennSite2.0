@@ -94,7 +94,7 @@ const LiveSessionInfo = () => {
   useEffect(() => {
     dispatch(educationSlotsApi());
   }, []);
-  console.log(data, "data");
+ 
   return (
     <>
       {open ? (

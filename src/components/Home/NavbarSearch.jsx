@@ -62,9 +62,7 @@ const NavbarSearch = ({ handleSearchClick }) => {
           sector: '',
         },
       ]);
-    } else {
-      console.error('Error fetching data:', data);
-    }
+    } 
   };
 
   useEffect(() => {

@@ -308,7 +308,7 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
     },
   ];
   const headerRowArray2 = headerRowArray.slice(0, -1);
-  console.log(bucket,isNestedRoute)
+  
   return (
     <>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />

@@ -154,7 +154,7 @@ const Login = ({ component, handleClose }) => {
     }
     setValidate(false);
   };
-console.log(redirectUrl,"redirectUrl")
+
   return (
     <Grid
       container
