@@ -9,6 +9,7 @@ import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 import { useRouter } from 'next/navigation';
+import Snackbar from '../Snackbar/SnackBar';
 
 
 const ArrowBoxContainer = styled(Box)(({ theme }) => ({
@@ -128,6 +129,7 @@ const PrimeHeading = ({ setActiveTab }) => {
   return (
    
       <Box sx={{ width: '100%' }} marginTop={{xs:"70px",sm:"90px"}}>
+        <Snackbar/>
         <Box
           sx={{
             position: 'relative',

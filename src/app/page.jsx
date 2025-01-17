@@ -24,6 +24,10 @@ const Home = async () => {
           India
         </title>
         <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+       />
+       <meta
           name="description"
           content="Sovrenn: Information platform to discover the best MicroCap stocks to buy in India. We teach investing and provide high quality and timely information to our readers which empowers them to take smart investment decisions"
         />

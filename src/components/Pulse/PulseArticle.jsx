@@ -30,6 +30,7 @@ import {
   pulseFilteredArticlesApi,
 } from "@/app/Redux/Slices/pulseSlice";
 import PulseFilter from "../../components/Pulse/PulseFilter";
+import Snackbar from "../Snackbar/SnackBar";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -252,6 +253,7 @@ const PulseArticle = () => {
         setFilterData={setFilterData}
       />
       <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "28px" }}>
+        <Snackbar/>
         <Grid container alignItems="center">
           <Grid item paddingY={{ xs: 2, sm: 5 }}>
             <Box marginBottom={1}>

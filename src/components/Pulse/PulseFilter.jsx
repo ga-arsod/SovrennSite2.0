@@ -30,6 +30,7 @@ import {
   pulseArticlesApi,
 } from "@/app/Redux/Slices/pulseSlice";
 import { useDispatch } from "react-redux";
+import { setSnackStatus } from "@/app/Redux/Slices/snackbarSlice";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -263,6 +264,17 @@ const PulseFilter = ({
   };
 
   const resetFilters = () => {
+    dispatch(
+             setSnackStatus({
+                 status: true,
+                 severity: "success",
+                 message: "Data has been reset successfully.",
+               })
+             );
+           
+              dispatch(pulseArticlesApi({ page: 1, pageSize: 20 }));
+          
+            dispatch(togglePulseFilter())
     setPage(1);
     setIsFilterReset(true);
    

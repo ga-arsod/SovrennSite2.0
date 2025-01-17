@@ -230,7 +230,7 @@ const MainPoster = () => {
   }, []);
   return (
     <>
-    <LoginModal isOpen={isOpen} handleClose={handleClose} />
+   
     <Box
       width="100vw"
       sx={{

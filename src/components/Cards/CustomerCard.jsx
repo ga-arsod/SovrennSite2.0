@@ -47,7 +47,7 @@ const CustomerCard = ({ element }) => {
       bgcolor={colors.green50}
       sx={{
         height:{xs:"300px",sm:"400px"},
-        width: { xs: "300px", sm: "420px", md: "420px" },
+        width: { xs: "300px", sm: "420px", md: "400px" },
         margin: "5px",
         borderRadius: "6px",
         cursor: 'pointer',
@@ -91,7 +91,7 @@ const CustomerCard = ({ element }) => {
                 >
                   <Image
                     alt="Rounded Image"
-                    src={element?.profile_pic}
+                    src={element?.profile_pic =="" ?  "/dummy_image.jpg" : element?.profile_pic }
                     layout="intrinsic" 
                     width={80}
                     height={80}

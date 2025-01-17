@@ -49,11 +49,14 @@ const PlanInfo = () => {
   const { plans } = useSelector(
     (store) => store.plan
   );
+  const { isAuth } = useSelector(
+    (store) => store.auth
+  );
  
   const dispatch=useDispatch()
   useEffect(()=>{
     dispatch(allPlansApi())
-  },[])
+  },[isAuth])
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {

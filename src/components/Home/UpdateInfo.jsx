@@ -9,7 +9,7 @@ const UpdateInfo = () => {
 
   return (
     <>
-    <Grid container spacing={{ xs: 1, sm: 3 }} width="100%"  >
+    <Grid container spacing={{ xs: 1, sm: 3 }} width="100%"  marginTop={3}>
       
   <Grid item xs={6} sm={3} >
   <Link href="/prime"  style={{textDecoration:'none'}}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { colors } from "../Constants/colors";
@@ -10,6 +10,8 @@ import {
 } from "@/app/Redux/Slices/paymentSlice";
 import { commonPricingApi } from "@/app/Redux/Slices/PlanSlice";
 import LoginModal from "../Modal/LoginModal";
+
+
 const StyledButton2 = styled(Button)`
   color: white;
   font-weight: 500;
@@ -41,20 +43,56 @@ const PaymentButton = () => {
   const { paymentData } = useSelector((store) => store.payment);
 
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const handleClose=()=>{
+    setIsOpen(false)
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const result = await dispatch(generateHashApi(paymentData));
-
     if (result.meta.requestStatus === "fulfilled") {
       document.getElementById("paymentForm").submit();
     } else {
       console.error("Error generating hash:", result.error.message);
     }
   };
+
   useEffect(() => {
     dispatch(commonPricingApi());
   }, [isAuth, dispatch]);
+
+  const handleButtonClick = async () => {
+    if (!isAuth) {
+      setIsOpen(true); // Show login modal if the user is not logged in
+    } else {
+      const data = {
+        txnid: Date.now(),
+        amount: commonPrice?.full_access,
+        productinfo: "full-access",
+        firstname: userDetails?.first_name,
+        email: userDetails?.email,
+        udf1: userDetails?._id,
+        udf2: 12,
+      };
+      dispatch(
+        setPaymentData({
+          ...data,
+          phone: userDetails?.phone_number,
+          state: userDetails?.state,
+        })
+      );
+  
+      // Generate hash and submit the form
+      const result = await dispatch(generateHashApi(data));
+      if (result.meta.requestStatus === "fulfilled") {
+        document.getElementById("paymentForm").submit(); // Explicit form submission
+      } else {
+        console.error("Error generating hash:", result.error.message);
+      }
+    }
+  };
+  
 
   return (
     <>
@@ -62,7 +100,7 @@ const PaymentButton = () => {
         id="paymentForm"
         action={payuUrl}
         method="post"
-        onSubmit={handleSubmit}
+       
       >
         <input type="hidden" name="key" value={paymentData.key} />
         <input type="hidden" name="txnid" value={paymentData.txnid} />
@@ -82,30 +120,18 @@ const PaymentButton = () => {
         <input type="hidden" name="hash" value={paymentData.hash} />
 
         <StyledButton2
-          type="submit"
+          type="button"
           variant="contained"
-          onClick={() => {
-            const data = {
-              txnid: Date.now(),
-              amount: commonPrice?.full_access,
-              productinfo: "full-access",
-              firstname: userDetails?.first_name,
-              email: userDetails?.email,
-              udf1: userDetails?._id,
-              udf2: 12,
-            };
-            dispatch(
-              setPaymentData({
-                ...data,
-                phone: userDetails?.phone_number,
-                state: userDetails?.state,
-              })
-            );
-          }}
+          onClick={handleButtonClick}
         >
-          { `Buy Full Access @ ₹${commonPrice?.full_access}/yr`}
+          {`Buy Full Access @ ₹${commonPrice?.full_access}/yr`}
         </StyledButton2>
       </form>
+
+     
+     
+        <LoginModal isOpen={isOpen} handleClose={handleClose} />
+    
     </>
   );
 };

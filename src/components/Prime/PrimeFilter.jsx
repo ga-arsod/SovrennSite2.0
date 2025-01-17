@@ -27,6 +27,7 @@ import {
   togglePrimeFilter,
 } from "@/app/Redux/Slices/primeSlice";
 import { useDispatch } from "react-redux";
+import { setSnackStatus } from "../../app/Redux/Slices/snackbarSlice";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -273,6 +274,17 @@ const PrimeFilter = ({
   };
 
   const resetFilters = () => {
+    dispatch(
+     setSnackStatus({
+         status: true,
+         severity: "success",
+         message: "Data has been reset successfully.",
+       })
+     );
+    dispatch(
+      primeCompaniesListApi({ data: {},page: 1,sort_by:"createdAt" ,sort_order:"dec"})
+    );
+    dispatch(togglePrimeFilter())
     window.scrollTo({
       top: 0,
       behavior: "smooth",
