@@ -59,10 +59,11 @@ const TutorialSection = () => {
   const dispatch = useDispatch();
   const videoData = useSelector((store) => store.education.videoBucket);
   const [isPlaying, setIsPlaying] = useState(false);
+  const { isAuth } = useSelector((store) => store.auth);
 
   useEffect(() => {
     dispatch(educationVideosApi());
-  }, []);
+  }, [isAuth]);
 
   return (
     <>

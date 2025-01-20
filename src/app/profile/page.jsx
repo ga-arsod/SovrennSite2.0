@@ -127,7 +127,7 @@ const Profile = () => {
                 value="accountSettings"
                 aria-label="account settings"
               >
-                Account Settings
+              My Subscriptions
               </StyledToggleButton>
             </StyledToggleButtonGroup>
           </Grid>

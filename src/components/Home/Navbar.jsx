@@ -188,7 +188,7 @@ const TooltipContent = ({ heading, description }) => (
   </Box>
 );
 
-const Navbar = ({ session }) => {
+const Navbar = () => {
   const theme = useTheme();
   const isGreaterThanMd = useMediaQuery(theme.breakpoints.up("md"));
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
@@ -362,7 +362,7 @@ const Navbar = ({ session }) => {
                             width: "30px",
                             height: "30px",
                             display:
-                              isAuth || session?.user ? "flex" : "none",
+                              isAuth  ? "flex" : "none",
                             justifyContent: "center",
                             alignItems: "center",
                             overflow: "hidden",
@@ -397,7 +397,7 @@ const Navbar = ({ session }) => {
                           sx={{
                             padding:0,
                             display:
-                              isAuth || session?.user ? "flex" : "none",
+                              isAuth  ? "flex" : "none",
                           }}
                         >
                           <KeyboardArrowDownOutlinedIcon />
@@ -776,7 +776,7 @@ const Navbar = ({ session }) => {
                           <StyledButton1
                             sx={{
                               marginRight: "16px",
-                              display: isAuth || session?.user ? "none" : "",
+                              display: isAuth  ? "none" : "",
                             }}
                             variant="contained"
                             onClick={() => {
@@ -793,7 +793,7 @@ const Navbar = ({ session }) => {
                               fontSize: "14px",
                               lineHeight: "17px",
                               cursor: "pointer",
-                              display: isAuth || session?.user ? "none" : "",
+                              display: isAuth  ? "none" : "",
                             }}
                             onClick={() => {
                               const currentPath =
@@ -819,7 +819,7 @@ const Navbar = ({ session }) => {
                               width: "30px",
                               height: "30px",
                               display:
-                                isAuth || session?.user ? "flex" : "none",
+                                isAuth ? "flex" : "none",
                               justifyContent: "center",
                               alignItems: "center",
                               overflow: "hidden",
@@ -854,7 +854,7 @@ const Navbar = ({ session }) => {
                             sx={{
                               padding:0,
                               display:
-                                isAuth || session?.user ? "flex" : "none",
+                                isAuth  ? "flex" : "none",
                             }}
                           >
                             <KeyboardArrowDownOutlinedIcon />

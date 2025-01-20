@@ -167,15 +167,13 @@ const Times = () => {
   } = useSelector((store) => store.times);
 
   const handleModalOpen = () => {
-    setIsopen(true);
+    setIsOpen(true);
   };
   const scrollTop = () => {
     window.scrollTo({ top: 0, behavior: "auto" });
   };
 
-  const handleClose = () => {
-    setIsOpen(false);
-  };
+ 
 
   const toggleDrawer = () => {
     if (activeTab === "one") {

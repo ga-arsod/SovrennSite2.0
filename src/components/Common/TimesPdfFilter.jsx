@@ -24,6 +24,9 @@ import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import { timesPdfListApi,togglePdfFilter } from "../../app/Redux/Slices/timesSlice";
 import { useDispatch } from "react-redux";
+import LoginModal from "../Modal/LoginModal";
+import PaymentModal from "../PayU/PaymentModal";
+import { setSnackStatus } from "@/app/Redux/Slices/snackbarSlice";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -209,22 +212,29 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen,page2,setPage2,setFilterData2 }
   const [showAllCompanies, setShowAllCompanies] = useState(false);
   const [showAllMonths, setShowAllMonths] = useState(false);
   const [selectedMonths, setSelectedMonths] = useState(false);
- 
+  const [isOpen2, setIsOpen2] = useState(false);
+    const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [findCompany, setFindCompany] = useState("");
   const [selectedCompanies, setSelectedCompanies] = useState([]);
 
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const { timesPdfFilter } = useSelector((store) => store.times);
-  const { isAuth } = useSelector((store) => store.auth);
+  const { isAuth,userDetails } = useSelector((store) => store.auth);
  
     const toggleDrawer = () => {
       dispatch(togglePdfFilter());
     };
- 
+    const handlePaymentClose = () => {
+      setIsPaymentOpen(false);
+    };
+    const handleClose = () => {
+      setIsOpen2(false);
+    };
     const optionsFilterArray=(arr,key)=>{
       const newArray=arr.map((item)=>{
         return {
           placeholder:item.placeholder.toLowerCase(),
+          name:item.placeholder,
           value:item.value
         }
       }).filter((item)=>{
@@ -286,7 +296,15 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen,page2,setPage2,setFilterData2 }
   
     const resetFilters = () => {
     
-     
+      dispatch(timesPdfListApi({ page: 1, data: {} }));
+         dispatch(togglePdfFilter());
+         dispatch(
+          setSnackStatus({
+             status: true,
+             severity: "success",
+             message: "Data has been reset successfully.",
+           })
+         );
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
@@ -305,6 +323,12 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen,page2,setPage2,setFilterData2 }
   }
 
   return (
+    <>
+    <LoginModal isOpen={isOpen2} handleClose={handleClose} />
+      <PaymentModal
+        isPaymentOpen={isPaymentOpen}
+        handlePaymentClose={handlePaymentClose}
+      />
     <Box>
       <Drawer
         anchor="left"
@@ -393,6 +417,7 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen,page2,setPage2,setFilterData2 }
                 : optionsFilterArray(timesPdfFilter[0]?.options,findCompany).slice(0, 5)
               ).map((company, index) => (
                 <Grid item key={index} xs={12}>
+                  {console.log(company,"company")}
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox
@@ -403,7 +428,7 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen,page2,setPage2,setFilterData2 }
                       }}
                       />
                     }
-                    label={company.placeholder}
+                    label={company.name}
                   />
                 </Grid>
               ))}
@@ -491,17 +516,30 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen,page2,setPage2,setFilterData2 }
                 variant="contained"
                
                 onClick={() => {
-                  if(isAuth)
+                  if (
+                    isAuth &&
+                    (userDetails?.subscriptions?.includes("full-access") ||
+                      userDetails?.subscriptions?.includes("life") ||
+                      userDetails?.subscriptions?.includes("trial"))
+                  )
                   {
                     dispatch(timesPdfListApi({page:1,data:filterBody}))
                     setPage2(1)
                   }
                     
-                  else
-                 {
-                  handleModalOpen()
-                 
-                 }
+                  else if (
+                    isAuth &&
+                    !(
+                      userDetails?.subscriptions?.includes("full-access") ||
+                      userDetails?.subscriptions?.includes("life") ||
+                      userDetails?.subscriptions?.includes("trial")
+                    )
+                  ) {
+                    setIsPaymentOpen(true);
+                  }
+                  else {
+                    setIsOpen2(true);
+                  }
                  dispatch(togglePdfFilter())
                 }}
               >
@@ -512,6 +550,7 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen,page2,setPage2,setFilterData2 }
         </Box>
       </Drawer>
     </Box>
+    </>
   );
 };
 
