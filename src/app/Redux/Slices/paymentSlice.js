@@ -22,7 +22,7 @@ const initialState = {
 export const generateHashApi = createAsyncThunk(
   'generateHashApi',
   async (paymentDetails) => {
-    const response = await fetch(`${url}/payment/payu/create-hash/test`, {
+    const response = await fetch(`${url}/payment/payu/create-hash`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json',
         Authorization: "Bearer " + localStorage.getItem("token"),
