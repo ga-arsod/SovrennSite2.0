@@ -1,4 +1,8 @@
-import React, { useEffect } from "react";
+
+
+
+
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { colors } from "../Constants/colors";
@@ -9,7 +13,7 @@ import {
   setPaymentData,
 } from "@/app/Redux/Slices/paymentSlice";
 import { commonPricingApi } from "@/app/Redux/Slices/PlanSlice";
-
+import LoginModal from "../Modal/LoginModal";
 
 
 const StyledButton = styled(Button)`
@@ -42,18 +46,52 @@ const TrialCardPaymentButton = () => {
   const { paymentData } = useSelector((store) => store.payment);
 
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const handleClose=()=>{
+    setIsOpen(false)
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const result = await dispatch(generateHashApi(paymentData));
-
     if (result.meta.requestStatus === "fulfilled") {
       document.getElementById("paymentForm").submit();
     } 
   };
+
   useEffect(() => {
     dispatch(commonPricingApi());
   }, [isAuth, dispatch]);
+
+  const handleButtonClick = async () => {
+    if (!isAuth) {
+      setIsOpen(true); 
+    } else {
+      const data = {
+        txnid: Date.now(),
+        amount: commonPrice?.full_access,
+        productinfo: "full-access",
+        firstname: userDetails?.first_name,
+        email: userDetails?.email,
+        udf1: userDetails?._id,
+        udf2: 12,
+      };
+      dispatch(
+        setPaymentData({
+          ...data,
+          phone: userDetails?.phone_number,
+          state: userDetails?.state,
+        })
+      );
+  
+     
+      const result = await dispatch(generateHashApi(data));
+      if (result.meta.requestStatus === "fulfilled") {
+        document.getElementById("paymentForm").submit(); 
+      }
+    }
+  };
+  
 
   return (
     <>
@@ -61,7 +99,7 @@ const TrialCardPaymentButton = () => {
         id="paymentForm"
         action={payuUrl}
         method="post"
-        onSubmit={handleSubmit}
+       
       >
         <input type="hidden" name="key" value={paymentData.key} />
         <input type="hidden" name="txnid" value={paymentData.txnid} />
@@ -80,32 +118,19 @@ const TrialCardPaymentButton = () => {
         <input type="hidden" name="udf2" value={paymentData.udf2} />
         <input type="hidden" name="hash" value={paymentData.hash} />
 
-       
         <StyledButton
-          type="submit"
+          type="button"
           variant="contained"
-          onClick={() => {
-            const data = {
-              txnid: Date.now(),
-              amount: commonPrice?.full_access,
-              productinfo: "full-access",
-              firstname: userDetails?.first_name,
-              email: userDetails?.email,
-              udf1: userDetails?._id,
-              udf2: 12,
-            };
-            dispatch(
-              setPaymentData({
-                ...data,
-                phone: userDetails?.phone_number,
-                state: userDetails?.state,
-              })
-            );
-          }}
+          onClick={handleButtonClick}
         >
-        Buy Full Access Now
+          Buy Full Access Now
         </StyledButton>
       </form>
+
+     
+     
+        <LoginModal isOpen={isOpen} handleClose={handleClose} />
+    
     </>
   );
 };

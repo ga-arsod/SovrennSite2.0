@@ -182,7 +182,7 @@ const CommentDrawer = ({
 
   const handleLikeToggle = (commentId) => {
     const comment = commentList.find((c) => c._id === commentId);
-    if (comment.has_liked) {
+    if (comment?.has_liked) {
       dispatch(
         commentunLikeApi({
           company_id: company_id,
@@ -384,7 +384,7 @@ const CommentDrawer = ({
                         size="small"
                         sx={{ padding: 0, color: colors.navyBlue500 }}
                       >
-                        {element.has_liked ? (
+                        {element?.has_liked ? (
                           <ThumbUpIcon fontSize="small" />
                         ) : (
                           <ThumbUpOutlinedIcon fontSize="small" />

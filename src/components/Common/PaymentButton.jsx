@@ -81,10 +81,10 @@ const PaymentButton = () => {
         })
       );
   
-      // Generate hash and submit the form
+     
       const result = await dispatch(generateHashApi(data));
       if (result.meta.requestStatus === "fulfilled") {
-        document.getElementById("paymentForm").submit(); // Explicit form submission
+        document.getElementById("paymentForm").submit(); 
       }
     }
   };

@@ -6,6 +6,7 @@ import EducationTrialCard from "../../components/Cards/EducationTrialCard";
 
 import FoundersInfo from "@/components/Home/FoundersInfo";
 import Head from "next/head";
+import TrialCard from "@/components/Cards/TrialCard";
 
 const Education = () => {
   return (
@@ -39,7 +40,7 @@ const Education = () => {
 
       <FoundersInfo />
       <AppInfo />
-      <EducationTrialCard />
+      <TrialCard/>
     </>
   );
 };

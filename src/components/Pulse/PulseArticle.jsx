@@ -241,7 +241,7 @@ const PulseArticle = () => {
       window.removeEventListener("contextmenu", handleContextMenu);
     };
   }, []);
-
+console.log(pulseArticleData,"pulse data")
   return (
     <>
       <PulseFilter
@@ -372,6 +372,7 @@ const PulseArticle = () => {
                         alignItems: { xs: "flex-start", sm: "center" },
                       }}
                     >
+                    
                       <StyledTypography2 color={colors.navyBlue900}>
                         {article.company_name}
                       </StyledTypography2>
@@ -379,15 +380,18 @@ const PulseArticle = () => {
                       {article?.file_url && (
                         <Box
                           display="flex"
+                          flexDirection={{xs:"column",sm:"row"}}
                           justifyContent="flex-end"
                           gap={2}
                           width={{ xs: "100%", sm: "auto" }}
+                          alignItems={{xs:"flex-end"}}
 
                         >
+                          <Grid container gap={2} marginTop={{xs:1,sm:0}}>
                           {
                             article?.discovery_slug && 
                             <Link
-                          href={`discovery/pulse/${article.discovery_slug}`}
+                          href={`discovery/pulse/${article?.discovery_slug}`}
                           target="_blank"
                         >
                           <StyledButton
@@ -399,12 +403,10 @@ const PulseArticle = () => {
                           </StyledButton>
                         </Link>
                           }
-                          
-                   
-                     {
-                      article.prime_slug && 
+                           {
+                      article?.prime_slug && 
                       <Link
-                      href={`prime/pulse/${article.prime_slug}`}
+                      href={`prime/${article?.prime_slug}`}
                       target="_blank"
                     >
                       <StyledButton
@@ -417,6 +419,12 @@ const PulseArticle = () => {
                     </Link>
 
                      }
+
+                          </Grid>
+                         
+                          
+                   
+                    
                        
                        {
                         article.file_url && 
@@ -437,6 +445,9 @@ const PulseArticle = () => {
                          
                         </Box>
                       )}
+
+                   
+                    
                     </Box>
 
                     <Box mb={2}>

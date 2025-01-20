@@ -3,7 +3,7 @@ const url = process.env.NEXT_PUBLIC_API_URL;
 
 const initialState = {
   paymentData: {
-    key: 'QyT13U',
+    key: process.env.NEXT_PUBLIC_PAYMENT_KEY || '',
     txnid: '',
     amount: '',
     productinfo: '',

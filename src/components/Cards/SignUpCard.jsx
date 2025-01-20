@@ -97,35 +97,35 @@ const SignUpCard = () => {
             <Stack direction="row" sx={{ position: "relative" }}>
               <Avatar
                 alt="Avatar 1"
-                src="/aditya.png"
+                src="/person3.jpg"
                 sx={{ width: 40, height: 40, zIndex: 1 }}
               />
               <Avatar
                 alt="Avatar 2"
-                src="/akriti.png"
+                src="/person2.jpg"
                 sx={{
                   width: 40,
                   height: 40,
                   position: "absolute",
-                  left: 20,
+                  left: 25,
                   zIndex: 2,
                 }}
               />
               <Avatar
                 alt="Avatar 3"
-                src="/akriti.png"
+                src="/person1.jpg"
                 sx={{
                   width: 40,
                   height: 40,
                   position: "absolute",
-                  left: 40,
+                  left: 55,
                   zIndex: 2,
                 }}
               />
               
             </Stack>
           </Grid>
-          <Grid item sx={{ pl: 6.5 }}>
+          <Grid item sx={{ pl: 8.5 }}>
             <Typography
               color="#F6F5F5"
               sx={{

@@ -72,10 +72,10 @@ const ArticleBanner = ({ filterData2, page2, setPage2 }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { timesPdfList,pagination } = useSelector((store) => store.times);
-
+   const { isAuth } = useSelector((store) => store.auth);
   useEffect(() => {
     dispatch(timesPdfListApi({page:page2,data:{}}));
-  }, []);
+  }, [isAuth]);
 
   if(!timesPdfList.length)
   {

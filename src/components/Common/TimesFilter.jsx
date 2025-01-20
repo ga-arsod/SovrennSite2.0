@@ -319,6 +319,7 @@ const TimesFilter = ({
       .map((item) => {
         return {
           placeholder: item.placeholder.toLowerCase(),
+          name:item.placeholder,
           value: item.value,
         };
       })
@@ -536,6 +537,7 @@ const TimesFilter = ({
                     )?.slice(0, 5)
                 )?.map((sector, index) => (
                   <Grid item key={index} xs={12}>
+                    
                     <CustomFormControlLabel
                       control={
                         <CustomCheckbox
@@ -554,7 +556,7 @@ const TimesFilter = ({
                           }}
                         />
                       }
-                      label={sector.placeholder}
+                      label={sector.name}
                     />
                   </Grid>
                 ))}
@@ -606,6 +608,7 @@ const TimesFilter = ({
                     findIndustry
                   )?.slice(0, 5)
               )?.map((industries, index) => (
+              
                 <CustomFormControlLabel
                   key={index}
                   control={
@@ -625,8 +628,10 @@ const TimesFilter = ({
                       }}
                     />
                   }
-                  label={industries.placeholder}
+                  label={industries.value}
+
                 />
+               
               ))}
               <Grid container justifyContent="flex-start">
                 <StyledViewAllButton
@@ -724,6 +729,7 @@ const TimesFilter = ({
                     ).slice(0, 5)
                 ).map((company, index) => (
                   <Grid item key={index} xs={12}>
+                 
                     <CustomFormControlLabel
                       control={
                         <CustomCheckbox
@@ -746,7 +752,7 @@ const TimesFilter = ({
                           }}
                         />
                       }
-                      label={company.placeholder}
+                      label={company.value}
                     />
                   </Grid>
                 ))}
