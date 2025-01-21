@@ -55,15 +55,6 @@ const StyledFilterIcon = styled(FilterAltOutlinedIcon)`
 
 const Prime = () => {
 
-  return (
-    <>
-
-      <Container>
-        Testing
-      </Container>
-    </>
-  );
-
   const dispatch = useDispatch();
   const theme = useTheme();
   const [activeTab, setActiveTab] = useState("one");
@@ -89,6 +80,9 @@ const Prime = () => {
   const handleModalOpen = () => {
     setIsOpen(true);
   };
+
+  console.log("Prime Companies List:", primeCompaniesList);
+  console.log("Promoter Companies List:", promoterCompaniesList);
 
   const handleToggle = () => {
     if (activeTab == "one") dispatch(togglePrimeFilter());
