@@ -206,6 +206,7 @@ const StyledButton = styled(Button)`
 
 const PromoterFilter = ({
   isOpen,
+  setIsOpen,
   handleModalOpen,
   page2,
   setPage2,
@@ -221,6 +222,12 @@ const PromoterFilter = ({
   const { promoterFilter } = useSelector((store) => store.prime);
   const { isAuth,userDetails } = useSelector((store) => store.auth);
 
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+  const handlePaymentClose = () => {
+    setIsPaymentOpen(false);
+  };
   const toggleFilter = () => {
     dispatch(togglePromoterFilter());
   };

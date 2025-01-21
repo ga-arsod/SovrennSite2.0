@@ -12,7 +12,7 @@ import { Grid, Button, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "@/components/Constants/colors";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-
+import Spinner from "@/components/Common/Spinner";
 import ScrollCircle from "@/components/Common/ScrollCircle";
 import { Container, Box } from "@mui/material";
 import {
@@ -27,6 +27,7 @@ import { useDispatch } from "react-redux";
 import Pagination from "@/components/Pagination/Pagination";
 
 import { setSortBy } from "../Redux/Slices/sortingSlice";
+
 const StyledButton = styled(Button)`
   font-weight: 600;
   font-size: 14px;
@@ -44,12 +45,14 @@ const StyledButton = styled(Button)`
     }
   }
 `;
+
 const StyledFilterIcon = styled(FilterAltOutlinedIcon)`
   && {
     font-size: 16px;
     color: ${colors.navyBlue500};
   }
 `;
+
 const Prime = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -61,6 +64,7 @@ const Prime = () => {
   const [filterData2, setFilterData2] = useState({});
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const {
+    isPrimeCompanyListLoading,
     primeCompaniesList,
     promoterCompaniesList,
     isPrimeFilterOpen,
@@ -106,7 +110,7 @@ const Prime = () => {
   useEffect(() => {
     const title = "Understand The Role of a Prime in Stock Market";
     const ogTitle = "Understand The Role of a Prime in Stock Market";
-    const description = "Upgrade your stock portfolio with Sovrenn prime stock. Get the latest insights and trends from Sovrenn. Invest with confidence today!";
+    const description = "Upgrade your stock portfolio with Sovrenn prime stock. Get the latest insights and trends from Sovrenn. Invest with confidence today!";
     const canonicalUrl = "https://www.sovrenn.com/prime";
 
 
@@ -155,6 +159,15 @@ const Prime = () => {
       }
     }
   }, []);
+
+  if (isPrimeCompanyListLoading) {
+    return (
+      <>
+        <Spinner margin={15} />
+      </>
+    );
+  }
+
   return (
     <>
 
@@ -209,6 +222,7 @@ const Prime = () => {
         ) : (
           <PromoterFilter
             isOpen={isPromoterFilterOpen}
+            setIsOpen={setIsOpen}
             handleModalOpen={handleModalOpen}
             page2={page2}
             setPage2={setPage2}

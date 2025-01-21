@@ -9,7 +9,7 @@ const PayUForm = () => {
 
   const fetchHash = async (paymentData) => {
     try {
-      const response = await fetch(`https://api.sovrenn.com/payment/payu/create-hash/test`, {
+      const response = await fetch(`https://api.sovrenn.com/payment/payu/create-hash`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ const PayUForm = () => {
 
   return (
     <form
-      action="https://test.payu.in/_payment"
+      action="https://secure.payu.in/_payment"
       method="POST"
     >
       <input name="key" type="hidden" placeholder='key' value={paymentData.key} />

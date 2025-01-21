@@ -106,16 +106,18 @@ const Ipo = () => {
       }
     }
   }, []);
+
   if (isIpoCompaniesListLoading) {
     return (
       <>
         <Spinner margin={15} />
       </>
     );
-  }
+  };
+
   return (
     <>
-     
+
       <IpoHeader />
       <IpoFilters
         isOpen={isIpoFilterOpen}
