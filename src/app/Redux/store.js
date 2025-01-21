@@ -22,7 +22,7 @@ import planReducer from "./Slices/PlanSlice";
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['payment'], 
+  blacklist: ['payment', "prime"],
 };
 
 
@@ -48,7 +48,7 @@ const appReducer = combineReducers({
 
 const rootReducer = (state, action) => {
   if (action.type === "auth/logout") {
-   
+
     storage.removeItem('persist:root');
     state = undefined;
   }
