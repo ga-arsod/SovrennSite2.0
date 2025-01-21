@@ -417,7 +417,6 @@ const TimesPdfFilter = ({ isOpen,handleModalOpen,page2,setPage2,setFilterData2 }
                 : optionsFilterArray(timesPdfFilter[0]?.options,findCompany).slice(0, 5)
               ).map((company, index) => (
                 <Grid item key={index} xs={12}>
-                  {console.log(company,"company")}
                   <CustomFormControlLabel
                     control={
                       <CustomCheckbox

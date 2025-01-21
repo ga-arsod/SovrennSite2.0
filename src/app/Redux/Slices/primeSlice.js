@@ -139,9 +139,10 @@ const primeSlice = createSlice({
 
     // Prime Companies List Api
     builder.addCase(primeCompaniesListApi.pending, (state, action) => {
-      state.isPrimeCompanyListLoading = true;
+      state.isPrimeCompanyListLoading = state.isPrimeCompanyListLoading ? true : false;
 
     });
+
     builder.addCase(primeCompaniesListApi.fulfilled, (state, action) => {
       state.primePagination = action.payload.pagination
       state.primeCompaniesList = action.payload.list;

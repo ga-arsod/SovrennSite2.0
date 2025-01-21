@@ -241,7 +241,6 @@ const PulseArticle = () => {
       window.removeEventListener("contextmenu", handleContextMenu);
     };
   }, []);
-console.log(pulseArticleData,"pulse data")
   return (
     <>
       <PulseFilter
