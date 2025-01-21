@@ -29,7 +29,7 @@ import { useSearchParams } from "next/navigation";
 import Spinner from "../../../components/Common/Spinner";
 import Head from "next/head";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
+import { usePathname } from "next/navigation";
 import Pagination from "@/components/Pagination/Pagination";
 import ScrollCircle from "@/components/Common/ScrollCircle";
 
@@ -104,6 +104,7 @@ const DiscoveryBucketContent = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [currentPage, setCurrentPage] = useState(1);
   const { id } = useParams();
+  const pathname = usePathname();
   const formattedId = decodeURIComponent(id)
     .replace(/&/g, "and")
     .replace(/-/g, " ")
@@ -114,7 +115,7 @@ const DiscoveryBucketContent = () => {
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
 
- 
+  const containsDiscovery = pathname.includes('discovery');
   const bucket = searchParams.get("bucket");
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const filtersData = useSelector((store) => store.discovery.filtersData);
@@ -206,17 +207,21 @@ const DiscoveryBucketContent = () => {
     dispatch(discoveryFiltersApiCall());
   }, [dispatch, isAuth]);
 
+  useEffect(() => {
+   
+    if (typeof window !== "undefined") {
+      document.title = `Stocks to Check in ${title}`;
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/discovery/${id}`;
+      }
+    }
+  }, [title, id]);
+
   if (isTableDataLoading) {
     return (
       <>
-        <Head>
-          <title>{title}</title>
-          <link
-            rel="canonical"
-            href={`https://www.sovrenn.com/discovery/${id}`}
-            key="canonical"
-          />
-        </Head>
+       
         <Spinner margin={15} />
       </>
     );
@@ -224,14 +229,7 @@ const DiscoveryBucketContent = () => {
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <link
-          rel="canonical"
-          href={`https://www.sovrenn.com/discovery/${id}`}
-          key="canonical"
-        />
-      </Head>
+     
       <Container>
         <Box sx={{ marginTop: "64px" }} marginBottom={{ xs: 3, sm: "28px" }}>
           <Grid container alignItems="center">
@@ -374,6 +372,7 @@ const DiscoveryBucketContent = () => {
             sortBy={sortBy}
             setSortBy={setSortBy}
             bucket={bucket}
+            containsDiscovery={containsDiscovery}
           />
         )}
         <ScrollCircle />

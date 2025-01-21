@@ -22,6 +22,7 @@ import planReducer from "./Slices/PlanSlice";
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['payment'], 
 };
 
 

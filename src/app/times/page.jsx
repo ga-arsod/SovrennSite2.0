@@ -222,6 +222,58 @@ const Times = () => {
     }));
   };
 
+   useEffect(() => {
+      const title = "Be equipped with Sovrenn times Daily Bulletin";
+      const description = "Stay informed with the latest news from Sovrenn times Daily Bulletin.";
+      const canonicalUrl = "https://www.sovrenn.com/times";
+  
+     
+      if (typeof document !== "undefined") {
+        document.title = title;
+  
+      
+        let metaDescription = document.querySelector("meta[name='description']");
+        if (metaDescription) {
+          metaDescription.setAttribute("content", description);
+        } else {
+          metaDescription = document.createElement("meta");
+          metaDescription.setAttribute("name", "description");
+          metaDescription.setAttribute("content", description);
+          document.head.appendChild(metaDescription);
+        }
+  
+        let metaTitle = document.querySelector("meta[property='og:title']");
+        if (metaTitle) {
+          metaTitle.setAttribute("content", title);
+        } else {
+          metaTitle = document.createElement("meta");
+          metaTitle.setAttribute("property", "og:title");
+          metaTitle.setAttribute("content", title);
+          document.head.appendChild(metaTitle);
+        }
+  
+        let metaDescriptionOg = document.querySelector("meta[property='og:description']");
+        if (metaDescriptionOg) {
+          metaDescriptionOg.setAttribute("content", description);
+        } else {
+          metaDescriptionOg = document.createElement("meta");
+          metaDescriptionOg.setAttribute("property", "og:description");
+          metaDescriptionOg.setAttribute("content", description);
+          document.head.appendChild(metaDescriptionOg);
+        }
+  
+        let canonicalLink = document.querySelector("link[rel='canonical']");
+        if (canonicalLink) {
+          canonicalLink.setAttribute("href", canonicalUrl);
+        } else {
+          canonicalLink = document.createElement("link");
+          canonicalLink.setAttribute("rel", "canonical");
+          canonicalLink.setAttribute("href", canonicalUrl);
+          document.head.appendChild(canonicalLink);
+        }
+      }
+    }, []);
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.ctrlKey && (event.key === "p" || event.key === "P")) {
@@ -244,26 +296,7 @@ const Times = () => {
 
   return (
     <>
-      <Head>
-        <title>Be equipped with Sovrenn times Daily Bulletin</title>
-        <meta
-          name="description"
-          content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
-        />
-        <meta
-          property="og:title"
-          content="Be equipped with Sovrenn times Daily Bulletin"
-        />
-        <meta
-          property="og:description"
-          content="Stay informed with the latest news from Sovrenn times Daily Bulletin."
-        />
-        <link
-          rel="canonical"
-          href="https://www.sovrenn.com/times"
-          key="canonical"
-        />
-      </Head>
+     
       
       <Grid container marginTop="64px" flexDirection="column">
         <Snackbar/>

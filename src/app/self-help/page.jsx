@@ -183,6 +183,17 @@ const SelfHelp = () => {
     router.back();
   };
 
+useEffect(() => {
+   
+  if (typeof window !== "undefined") {
+    document.title ="Sovrenn Self Help";
+    const link = document.querySelector("link[rel='canonical']");
+    if (link) {
+      link.href = `https://www.sovrenn.com/self-help`;
+    }
+  }
+}, []);
+
   if (!isAuth) {
     return <NoLogin />;
   }
@@ -196,14 +207,7 @@ const SelfHelp = () => {
   ) {
     return (
       <>
-        <Head>
-          <title>Sovrenn Self Help</title>
-          <link
-            rel="canonical"
-            href="https://www.sovrenn.com/self-help"
-            key="canonical"
-          />
-        </Head>
+        
         <Container>
           <Snackbar />
           <Grid container marginTop="60px" direction="column" marginBottom={4}>

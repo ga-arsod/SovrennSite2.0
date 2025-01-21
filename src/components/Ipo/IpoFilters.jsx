@@ -22,9 +22,14 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
-import { ipoCompaniesListApi,toggleIpoFilter } from "@/app/Redux/Slices/ipoSlice";
+import {
+  ipoCompaniesListApi,
+  toggleIpoFilter,
+} from "@/app/Redux/Slices/ipoSlice";
 import { useDispatch } from "react-redux";
 import { setSnackStatus } from "@/app/Redux/Slices/snackbarSlice";
+import PaymentModal from "../PayU/PaymentModal";
+import LoginModal from "../Modal/LoginModal";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -199,37 +204,46 @@ const StyledButton = styled(Button)`
   }
 `;
 
-
-
-const IpoFilters = ({ isOpen ,handleModalOpen,page,setPage,setFilterData}) => {
-  
+const IpoFilters = ({
+  isOpen,
+  handleModalOpen,
+  page,
+  setPage,
+  setFilterData,
+}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [showAllSectors, setShowAllSectors] = useState(false);
   const [showAllCompanies, setShowAllCompanies] = useState(false);
-
+  const [isOpen2, setIsOpen2] = useState(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const {  ipoFilter } = useSelector((store) => store.ipo);
-  const { isAuth } = useSelector((store) => store.auth);
+  const { ipoFilter } = useSelector((store) => store.ipo);
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
   const [filter, setFilter] = useState({});
   const [filterBody, setFilterBody] = useState({});
   const toggleFilter = () => {
     dispatch(toggleIpoFilter());
   };
 
+  const handlePaymentClose = () => {
+    setIsPaymentOpen(false);
+  };
+  const handleClose = () => {
+    setIsOpen2(false);
+  };
   const updateFilter = (item, key, status) => {
-   
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
 
     const filterObj = new Object(filterBody);
 
     if (status) {
-      let arr = filterObj[key].filter(ele => ele !== item.value);
+      let arr = filterObj[key].filter((ele) => ele !== item.value);
 
-      let arr2 = filter[key].filter(ele => ele !== item.placeholder);
+      let arr2 = filter[key].filter((ele) => ele !== item.placeholder);
 
       filterObj[key] = arr;
 
@@ -237,292 +251,333 @@ const IpoFilters = ({ isOpen ,handleModalOpen,page,setPage,setFilterData}) => {
 
       setFilter({
         ...filter,
-        [key]: arr2
-      })
-    }
-    else {
-
-      filterObj[key] = filterObj[key] ? [...filterObj[key], item.value] : [item.value];
+        [key]: arr2,
+      });
+    } else {
+      filterObj[key] = filterObj[key]
+        ? [...filterObj[key], item.value]
+        : [item.value];
 
       setFilterBody(filterObj);
 
       setFilter({
         ...filter,
-        [key]: filter[key] ? [...filter[key], item.placeholder] : [item.placeholder]
-      })
-    };
+        [key]: filter[key]
+          ? [...filter[key], item.placeholder]
+          : [item.placeholder],
+      });
+    }
 
     let flag = true;
 
     Object.entries(filterObj).map(([key, value]) => {
-
       if (filterObj[key].length) flag = false;
     });
 
-setFilterData(filterObj)
-  
+    setFilterData(filterObj);
 
     return;
   };
 
   const resetFilters = () => {
-  dispatch(
-         setSnackStatus({
-             status: true,
-             severity: "success",
-             message: "Data has been reset successfully.",
-           })
-         );
-        dispatch(
-          ipoCompaniesListApi({ data: {},page: 1,sort_by:"createdAt" ,sort_order:"dec"})
-        );
-        dispatch(toggleIpoFilter())
-   
+    dispatch(
+      setSnackStatus({
+        status: true,
+        severity: "success",
+        message: "Data has been reset successfully.",
+      })
+    );
+    dispatch(
+      ipoCompaniesListApi({
+        data: {},
+        page: 1,
+        sort_by: "createdAt",
+        sort_order: "dec",
+      })
+    );
+    dispatch(toggleIpoFilter());
+
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
-    
+
     setFilter({});
     setFilterBody({});
-    setFilterData({})
-    setPage(1)
-    
+    setFilterData({});
+    setPage(1);
   };
 
-
-
-
-    if(!ipoFilter?.length)
-        return <></>
+  if (!ipoFilter?.length) return <></>;
   return (
-    <Box>
-      <Drawer
-        anchor="left"
-        open={isOpen}
-        onClose={toggleFilter}
-        sx={{
-          zIndex: 1400,
-          "& .MuiDrawer-paper": {
-            width: isSmallerThanSm ? "100%" : "350px",
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-          },
-        }}
-      >
-        <ScrollableBox>
-          <Grid
-            container
-            justifyContent="space-between"
-            alignItems="center"
-            marginTop={3}
-            padding={2}
-          >
-            <Grid item>
-              <Typography
-                color={colors.navyBlue500}
-                sx={{
-                  fontWeight: "600",
-                  fontSize: "23px",
-                  lineHeight: "28px",
-                  letterSpacing: "-0.02em",
-                }}
-                component="span"
-              >
-                Filter
-              </Typography>
-            </Grid>
-            <Grid item>
-              <UnderlinedTypography
-                color={colors.navyBlue500}
-                sx={{
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  lineHeight: "17px",
-                  cursor: "pointer",
-                }}
-                component="span"
-                onClick={resetFilters}
-              >
-                Reset Filter
-              </UnderlinedTypography>
-            </Grid>
-          </Grid>
-          <CustomDivider sx={{ mt: 1, mb: 3 }} />
-          <FormControl component="fieldset" sx={{ width: "100%", padding: 2 }}>
-            <StyledTypography1>{ipoFilter[0]?.category}</StyledTypography1>
-            <Grid
-              container
-              justifyContent="space-between"
-              sx={{ width: "80%" }}
-            >
-              {ipoFilter[0]?.options.map((item, index) => {
-                return (
-                  <>
-                    <Grid item xs={12} key={index}>
-
-                    <CustomFormControlLabel
-                    control={
-                      <CustomCheckbox
-                      checked={filter[ipoFilter[0].key] ? filter[ipoFilter[0].key]?.includes(item.placeholder) : false}
-                        onChange={() => {
-                          const isChecked = filter[ipoFilter[0].key]?.includes(item.placeholder);
-                          updateFilter(item, ipoFilter[0].key, isChecked);
-                        }}
-                        
-                      />
-                    }
-                    label={item.placeholder}
-                  />
-                      
-                    </Grid>
-                  </>
-                );
-              })}
-            </Grid>
-            <CustomDivider sx={{ mt: 2, mb: 2 }} />
-            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              {ipoFilter[1]?.category}
-            </StyledTypography1>
-
-            <Grid
-              container
-              justifyContent="space-between"
-              sx={{ width: "80%" }}
-            >
-              {(showAllSectors
-                ? ipoFilter[1]?.options
-                : ipoFilter[1]?.options.slice(0, 5)
-              ).map((sector, index) => (
-                <Grid item key={index} xs={12}>
-                  <CustomFormControlLabel
-                    control={
-                      <CustomCheckbox
-                      checked={filter[ipoFilter[1].key] ? filter[ipoFilter[1].key]?.includes(sector.placeholder) : false}
-                      onChange={() => {
-                        const isChecked = filter[ipoFilter[1].key]?.includes(sector.placeholder);
-                        updateFilter(sector, ipoFilter[1].key, isChecked);
-                      }}
-                      />
-                    }
-                    label={sector.placeholder}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-
-            <Grid container justifyContent="flex-start">
-              <StyledViewAllButton
-                endIcon={
-                  showAllSectors ? (
-                    <KeyboardArrowUpOutlinedIcon />
-                  ) : (
-                    <ExpandMoreIcon />
-                  )
-                }
-                onClick={() => setShowAllSectors(!showAllSectors)}
-              >
-                {showAllSectors ? "Hide" : "View All"}
-              </StyledViewAllButton>
-            </Grid>
-            <CustomDivider sx={{ mt: 2, mb: 2 }} />
-            <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-              {ipoFilter[2]?.category}
-            </StyledTypography1>
-
-            <Grid
-              container
-              justifyContent="space-between"
-              sx={{ width: "80%" }}
-            >
-              {(showAllCompanies
-                ? ipoFilter[2]?.options
-                : ipoFilter[2]?.options.slice(0, 5)
-              ).map((company, index) => (
-                <Grid item key={index} xs={12}>
-                  <CustomFormControlLabel
-                    control={
-                      <CustomCheckbox
-                      checked={filter[ipoFilter[2].key] ? filter[ipoFilter[2].key]?.includes(company.placeholder) : false}
-                      onChange={() => {
-                        const isChecked = filter[ipoFilter[2].key]?.includes(company.placeholder);
-                        updateFilter(company, ipoFilter[2].key, isChecked);
-                      }}
-                      />
-                    }
-                    label={company.placeholder}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-
-            <Grid container justifyContent="flex-start">
-              <StyledViewAllButton
-                endIcon={
-                  showAllCompanies ? (
-                    <KeyboardArrowUpOutlinedIcon />
-                  ) : (
-                    <ExpandMoreIcon />
-                  )
-                }
-                onClick={() => setShowAllCompanies(!showAllCompanies)}
-              >
-                {showAllCompanies ? "Hide" : "View All"}
-              </StyledViewAllButton>
-            </Grid>
-            <CustomDivider sx={{ mt: 2, mb: 2 }} />
-          </FormControl>
-        </ScrollableBox>
-        <Box
+    <>
+      <LoginModal isOpen={isOpen2} handleClose={handleClose} />
+      <PaymentModal
+        isPaymentOpen={isPaymentOpen}
+        handlePaymentClose={handlePaymentClose}
+      />
+      <Box>
+        <Drawer
+          anchor="left"
+          open={isOpen}
+          onClose={toggleFilter}
           sx={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            padding: "8px 12px",
-            boxShadow: "0px -2px 12px 0px #0000001F",
-            backgroundColor: "white",
-            zIndex: 1400000000,
+            zIndex: 1400,
+            "& .MuiDrawer-paper": {
+              width: isSmallerThanSm ? "100%" : "350px",
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+            },
           }}
         >
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <StyledButton fullWidth variant="outlined" onClick={toggleFilter}>
-                Cancel
-              </StyledButton>
-            </Grid>
-            <Grid item xs={6}>
-              <StyledButton3
-                fullWidth
-                variant="contained"
-               
-               
-                  onClick={()=>{
-                    if(isAuth)
-                    {
-                      dispatch(ipoCompaniesListApi({page:1,data:filterBody}))
-                      setPage(1)
-                    }
-                   
-                  
-                  else
-                 {
-                  handleModalOpen()
-                  
-                 }
-                 dispatch(toggleIpoFilter())
+          <ScrollableBox>
+            <Grid
+              container
+              justifyContent="space-between"
+              alignItems="center"
+              marginTop={3}
+              padding={2}
+            >
+              <Grid item>
+                <Typography
+                  color={colors.navyBlue500}
+                  sx={{
+                    fontWeight: "600",
+                    fontSize: "23px",
+                    lineHeight: "28px",
+                    letterSpacing: "-0.02em",
                   }}
-
-                   
-              >
-                Apply Filter
-              </StyledButton3>
+                  component="span"
+                >
+                  Filter
+                </Typography>
+              </Grid>
+              <Grid item>
+                <UnderlinedTypography
+                  color={colors.navyBlue500}
+                  sx={{
+                    fontWeight: "600",
+                    fontSize: "14px",
+                    lineHeight: "17px",
+                    cursor: "pointer",
+                  }}
+                  component="span"
+                  onClick={resetFilters}
+                >
+                  Reset Filter
+                </UnderlinedTypography>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      </Drawer>
-    </Box>
+            <CustomDivider sx={{ mt: 1, mb: 3 }} />
+            <FormControl
+              component="fieldset"
+              sx={{ width: "100%", padding: 2 }}
+            >
+              <StyledTypography1>{ipoFilter[0]?.category}</StyledTypography1>
+              <Grid
+                container
+                justifyContent="space-between"
+                sx={{ width: "80%" }}
+              >
+                {ipoFilter[0]?.options.map((item, index) => {
+                  return (
+                    <>
+                      <Grid item xs={12} key={index}>
+                        <CustomFormControlLabel
+                          control={
+                            <CustomCheckbox
+                              checked={
+                                filter[ipoFilter[0].key]
+                                  ? filter[ipoFilter[0].key]?.includes(
+                                      item.placeholder
+                                    )
+                                  : false
+                              }
+                              onChange={() => {
+                                const isChecked = filter[
+                                  ipoFilter[0].key
+                                ]?.includes(item.placeholder);
+                                updateFilter(item, ipoFilter[0].key, isChecked);
+                              }}
+                            />
+                          }
+                          label={item.placeholder}
+                        />
+                      </Grid>
+                    </>
+                  );
+                })}
+              </Grid>
+              <CustomDivider sx={{ mt: 2, mb: 2 }} />
+              <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
+                {ipoFilter[1]?.category}
+              </StyledTypography1>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                sx={{ width: "80%" }}
+              >
+                {(showAllSectors
+                  ? ipoFilter[1]?.options
+                  : ipoFilter[1]?.options.slice(0, 5)
+                ).map((sector, index) => (
+                  <Grid item key={index} xs={12}>
+                    <CustomFormControlLabel
+                      control={
+                        <CustomCheckbox
+                          checked={
+                            filter[ipoFilter[1].key]
+                              ? filter[ipoFilter[1].key]?.includes(
+                                  sector.placeholder
+                                )
+                              : false
+                          }
+                          onChange={() => {
+                            const isChecked = filter[
+                              ipoFilter[1].key
+                            ]?.includes(sector.placeholder);
+                            updateFilter(sector, ipoFilter[1].key, isChecked);
+                          }}
+                        />
+                      }
+                      label={sector.placeholder}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+
+              <Grid container justifyContent="flex-start">
+                <StyledViewAllButton
+                  endIcon={
+                    showAllSectors ? (
+                      <KeyboardArrowUpOutlinedIcon />
+                    ) : (
+                      <ExpandMoreIcon />
+                    )
+                  }
+                  onClick={() => setShowAllSectors(!showAllSectors)}
+                >
+                  {showAllSectors ? "Hide" : "View All"}
+                </StyledViewAllButton>
+              </Grid>
+              <CustomDivider sx={{ mt: 2, mb: 2 }} />
+              <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
+                {ipoFilter[2]?.category}
+              </StyledTypography1>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                sx={{ width: "80%" }}
+              >
+                {(showAllCompanies
+                  ? ipoFilter[2]?.options
+                  : ipoFilter[2]?.options.slice(0, 5)
+                ).map((company, index) => (
+                  <Grid item key={index} xs={12}>
+                    <CustomFormControlLabel
+                      control={
+                        <CustomCheckbox
+                          checked={
+                            filter[ipoFilter[2].key]
+                              ? filter[ipoFilter[2].key]?.includes(
+                                  company.placeholder
+                                )
+                              : false
+                          }
+                          onChange={() => {
+                            const isChecked = filter[
+                              ipoFilter[2].key
+                            ]?.includes(company.placeholder);
+                            updateFilter(company, ipoFilter[2].key, isChecked);
+                          }}
+                        />
+                      }
+                      label={company.placeholder}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+
+              <Grid container justifyContent="flex-start">
+                <StyledViewAllButton
+                  endIcon={
+                    showAllCompanies ? (
+                      <KeyboardArrowUpOutlinedIcon />
+                    ) : (
+                      <ExpandMoreIcon />
+                    )
+                  }
+                  onClick={() => setShowAllCompanies(!showAllCompanies)}
+                >
+                  {showAllCompanies ? "Hide" : "View All"}
+                </StyledViewAllButton>
+              </Grid>
+              <CustomDivider sx={{ mt: 2, mb: 2 }} />
+            </FormControl>
+          </ScrollableBox>
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              padding: "8px 12px",
+              boxShadow: "0px -2px 12px 0px #0000001F",
+              backgroundColor: "white",
+              zIndex: 1400000000,
+            }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <StyledButton
+                  fullWidth
+                  variant="outlined"
+                  onClick={toggleFilter}
+                >
+                  Cancel
+                </StyledButton>
+              </Grid>
+              <Grid item xs={6}>
+                <StyledButton3
+                  fullWidth
+                  variant="contained"
+                  onClick={() => {
+                    if (
+                      isAuth &&
+                      (userDetails?.subscriptions?.includes("full-access") ||
+                        userDetails?.subscriptions?.includes("life") ||
+                        userDetails?.subscriptions?.includes("trial"))
+                    ) {
+                      dispatch(
+                        ipoCompaniesListApi({ page: 1, data: filterBody })
+                      );
+                      setPage(1);
+                    } else if (
+                      isAuth &&
+                      !(
+                        userDetails?.subscriptions?.includes("full-access") ||
+                        userDetails?.subscriptions?.includes("life") ||
+                        userDetails?.subscriptions?.includes("trial")
+                      )
+                    ) {
+                      setIsPaymentOpen(true);
+                    } else {
+                      setIsOpen2(true);
+                    }
+                    dispatch(toggleIpoFilter());
+                  }}
+                >
+                  Apply Filter
+                </StyledButton3>
+              </Grid>
+            </Grid>
+          </Box>
+        </Drawer>
+      </Box>
+    </>
   );
 };
 

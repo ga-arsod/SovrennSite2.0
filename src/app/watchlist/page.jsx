@@ -50,6 +50,17 @@ const { isAuth } = useSelector((store) => store.auth);
     dispatch(getWatchlistApi())
   },[])
 
+  useEffect(() => {
+     
+    if (typeof window !== "undefined") {
+      document.title ="My Watchlist";
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/self-help`;
+      }
+    }
+  }, []);
+
   if (!isAuth) {
     return <NoLogin />;
   }

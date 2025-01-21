@@ -36,6 +36,8 @@ const initialState = {
     sectoral_pe_range: "",
     pe_remark: "",
     company_id: "",
+    is_available_in_prime:"",
+    is_available_in_times:""
   },
 
  
@@ -573,6 +575,8 @@ const discoverySlice = createSlice({
         sectoral_pe_range: action.payload.data.discovery.sectoral_pe_range,
         pe_remark: action.payload.data.discovery.pe_remark,
         company_id: action.payload.data.discovery._id,
+        is_available_in_prime:action.payload.data.discovery.is_available_in_prime,
+        is_available_in_times:action.payload.data.discovery.is_available_in_times,
       };
     });
     builder.addCase(discoveryArticleApi.rejected, (state, action) => {

@@ -12,7 +12,7 @@ import { Grid, Button, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "@/components/Constants/colors";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-import Head from "next/head";
+
 import ScrollCircle from "@/components/Common/ScrollCircle";
 import { Container, Box } from "@mui/material";
 import {
@@ -103,30 +103,61 @@ const Prime = () => {
     );
   }, [sortBy, sortOrder, page1, page2, isAuth, dispatch]);
 
+  useEffect(() => {
+    const title = "Understand The Role of a Prime in Stock Market";
+    const ogTitle = "Understand The Role of a Prime in Stock Market";
+    const description = "Upgrade your stock portfolio with Sovrenn prime stock. Get the latest insights and trends from Sovrenn. Invest with confidence today!";
+    const canonicalUrl = "https://www.sovrenn.com/prime";
+
+
+    if (typeof document !== "undefined") {
+      document.title = title;
+
+
+      let metaDescription = document.querySelector("meta[name='description']");
+      if (metaDescription) {
+        metaDescription.setAttribute("content", description);
+      } else {
+        metaDescription = document.createElement("meta");
+        metaDescription.setAttribute("name", "description");
+        metaDescription.setAttribute("content", description);
+        document.head.appendChild(metaDescription);
+      }
+
+      let metaTitle = document.querySelector("meta[property='og:title']");
+      if (metaTitle) {
+        metaTitle.setAttribute("content", ogTitle);
+      } else {
+        metaTitle = document.createElement("meta");
+        metaTitle.setAttribute("property", "og:title");
+        metaTitle.setAttribute("content", ogTitle);
+        document.head.appendChild(metaTitle);
+      }
+
+      let metaDescriptionOg = document.querySelector("meta[property='og:description']");
+      if (metaDescriptionOg) {
+        metaDescriptionOg.setAttribute("content", description);
+      } else {
+        metaDescriptionOg = document.createElement("meta");
+        metaDescriptionOg.setAttribute("property", "og:description");
+        metaDescriptionOg.setAttribute("content", description);
+        document.head.appendChild(metaDescriptionOg);
+      }
+
+      let canonicalLink = document.querySelector("link[rel='canonical']");
+      if (canonicalLink) {
+        canonicalLink.setAttribute("href", canonicalUrl);
+      } else {
+        canonicalLink = document.createElement("link");
+        canonicalLink.setAttribute("rel", "canonical");
+        canonicalLink.setAttribute("href", canonicalUrl);
+        document.head.appendChild(canonicalLink);
+      }
+    }
+  }, []);
   return (
     <>
-      <Head>
-        <title>Understand The Role of a Prime in Stock Market</title>
-        <meta
-          name="description"
-          content="Upgrade your stock portfolio with Sovrenn prime stock. Get the latest insights and trends from Sovrenn. Invest with confidence today!"
-        />
 
-        <meta
-          property="og:title"
-          content="Understand The Role of a Prime in Stock Market"
-        />
-        <meta
-          property="og:description"
-          content="Upgrade your stock portfolio with Sovrenn prime stock. Get the latest insights and trends from Sovrenn. Invest with confidence today!"
-        />
-
-        <link
-          rel="canonical"
-          href="https://www.sovrenn.com/prime"
-          key="canonical"
-        />
-      </Head>
       <Container>
         <PrimeHeading setActiveTab={setActiveTab} />
         <Grid
@@ -185,7 +216,7 @@ const Prime = () => {
           />
         )}
         {(activeTab == "one" && primeCompaniesList?.length) ||
-        (activeTab == "two" && promoterCompaniesList?.length) ? (
+          (activeTab == "two" && promoterCompaniesList?.length) ? (
           <Box mt={2}>
             <Pagination
               currentPage={activeTab == "one" ? page1 : page2}

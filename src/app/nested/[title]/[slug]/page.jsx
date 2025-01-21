@@ -103,7 +103,7 @@ const ChildBucketCompanyContent = () => {
 
   const pathSegments = pathname ? decodeURIComponent(pathname).split("/") : [];
   const [currentPage, setCurrentPage] = useState(1);
-  const isNestedRoute = pathname.includes('/nested');
+  const isNestedRoute = pathname.includes("/nested");
   const segments = pathname.split("/");
   const lastSegment = segments.filter(Boolean).pop();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -116,14 +116,14 @@ const ChildBucketCompanyContent = () => {
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const filtersData = useSelector((store) => store.discovery.filtersData);
   const title = pathSegments[2];
- 
+
   const tableData = useSelector(
     (store) => store.discovery.nestedBucketDiscoveryTableBucket
   );
   const pagination = useSelector((store) => store.discovery.pagination);
   const { isAuth } = useSelector((store) => store.auth);
   const [sortBy, setSortBy] = useState("date");
-     const [sortOrder, setSortOrder] = useState("dec");
+  const [sortOrder, setSortOrder] = useState("dec");
   const firstSpaceIndex = tableData?.bucket?.title?.indexOf(" ");
   const part1 = tableData?.bucket?.title.substring(0, firstSpaceIndex);
   const part2 = tableData?.bucket?.title.substring(firstSpaceIndex + 1);
@@ -174,8 +174,7 @@ const ChildBucketCompanyContent = () => {
         id: lastSegment,
         body: filterObj,
         page: currentPage,
-        sort_by:
-          sortBy,
+        sort_by: sortBy,
         sort_order: sortOrder,
       })
     );
@@ -189,17 +188,24 @@ const ChildBucketCompanyContent = () => {
     dispatch(discoveryFiltersApiCall());
   }, []);
 
+  useEffect(() => {
+    if (isNestedBucketTableDataLoading) {
+      document.title = title;
+    } else {
+      document.title = title;
+    }
+    if (typeof window !== "undefined") {
+      document.title = title;
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/discovery/${lastSegment}`;
+      }
+    }
+  }, [isNestedBucketTableDataLoading, lastSegment]);
+  
   if (isNestedBucketTableDataLoading) {
     return (
       <>
-        <Head>
-          <title>{title}</title>
-          <link
-            rel="canonical"
-            href={`https://www.sovrenn.com/discovery/${lastSegment}`}
-            key="canonical"
-          />
-        </Head>
         <Spinner margin={15} />
       </>
     );
@@ -207,14 +213,6 @@ const ChildBucketCompanyContent = () => {
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <link
-          rel="canonical"
-          href={`https://www.sovrenn.com/discovery/${lastSegment}`}
-          key="canonical"
-        />
-      </Head>
       <Container>
         <Box sx={{ marginTop: "64px" }} marginBottom={{ xs: 3, sm: "28px" }}>
           <Grid container alignItems="center">
@@ -353,8 +351,10 @@ const ChildBucketCompanyContent = () => {
         ) : tableData?.length === 0 ? (
           <NoData text="No data available for this bucket currently." />
         ) : (
-          <DiscoveryTable tableData={tableData} id={lastSegment}  
-          sortOrder={sortOrder}
+          <DiscoveryTable
+            tableData={tableData}
+            id={lastSegment}
+            sortOrder={sortOrder}
             setSortOrder={setSortOrder}
             sortBy={sortBy}
             setSortBy={setSortBy}
@@ -374,7 +374,6 @@ const ChildBucketCompanyContent = () => {
         )}
         <ScrollCircle />
       </Container>
-     
     </>
   );
 };

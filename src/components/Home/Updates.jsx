@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect } from "react";
 import { Box, Grid, Typography } from "@mui/material";
@@ -8,7 +8,7 @@ import { colors } from "../Constants/colors";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { homeUpdatesApi } from "@/app/Redux/Slices/homeSlice";
-import UpdateInfo from "../../components/Home/UpdateInfo"
+import UpdateInfo from "../../components/Home/UpdateInfo";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -35,66 +35,62 @@ const StyledTypography2 = styled(Typography)`
     text-align: center;
   }
 `;
-const Updates = ({session}) => {
- 
+const Updates = () => {
   const dispatch = useDispatch();
-  const {isAuth}=useSelector((store)=>store.auth)
+  const { isAuth } = useSelector((store) => store.auth);
   useEffect(() => {
     dispatch(homeUpdatesApi());
-  }, [dispatch,isAuth]);
+  }, [dispatch, isAuth]);
 
   return (
     <>
-    {
-     (session?.user || isAuth) && 
-      <Box>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        spacing={1}
-        paddingX={{ xs: 2, sm: 3, md: 2 }}
-        paddingY={6}
-        
-      >
-        <Grid item>
-          <Typography
-            sx={{ textAlign: "center" }}
-            marginBottom={{ xs: 1, sm: "20px" }}
-          >
-            <StyledTypography1
-              component="span"
-              marginRight={1}
-              color="#0D1726"
-            >
-              This week’s latest
-            </StyledTypography1>
-            <StyledTypography1 component="span" color={colors.themeGreen}>
-              updates
-            </StyledTypography1>
-          </Typography>
-        </Grid>
-        <Grid item sx={{ textAlign: "center" }} marginBottom={5}>
-          <StyledTypography2
-            component="span"
+      {isAuth && (
+        <Box>
+          <Grid
+            container
+            direction="column"
             justifyContent="center"
-            wrap="wrap"
-            gutterBottom
-            color="#627B8F"
+            alignItems="center"
+            spacing={1}
+            paddingX={{ xs: 2, sm: 3, md: 2 }}
+            paddingY={6}
           >
-            We want to inform you with latest information added for you this
-            week
-          </StyledTypography2>
-        </Grid>
+            <Grid item>
+              <Typography
+                sx={{ textAlign: "center" }}
+                marginBottom={{ xs: 1, sm: "20px" }}
+              >
+                <StyledTypography1
+                  component="span"
+                  marginRight={1}
+                  color="#0D1726"
+                >
+                  This week’s latest
+                </StyledTypography1>
+                <StyledTypography1 component="span" color={colors.themeGreen}>
+                  updates
+                </StyledTypography1>
+              </Typography>
+            </Grid>
+            <Grid item sx={{ textAlign: "center" }} marginBottom={5}>
+              <StyledTypography2
+                component="span"
+                justifyContent="center"
+                wrap="wrap"
+                gutterBottom
+                color="#627B8F"
+              >
+                We want to inform you with latest information added for you this
+                week
+              </StyledTypography2>
+            </Grid>
 
-        <Grid item sx={12}>
-          <UpdateInfo />
-        </Grid>
-      </Grid>
-    </Box>
-    }
-     
+            <Grid item sx={12}>
+              <UpdateInfo />
+            </Grid>
+          </Grid>
+        </Box>
+      )}
     </>
   );
 };

@@ -53,7 +53,7 @@ const listArray = [
         hot: false,
       },
       {
-        name: "Education",
+        name: "Learn",
         url: "/education",
         hot: false,
       },

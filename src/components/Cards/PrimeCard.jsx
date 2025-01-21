@@ -65,8 +65,8 @@ const PrimeCard = ({ data, activeTab }) => {
       (userDetails?.subscriptions?.includes("trial") && isAuth)
     ) {
       return activeTab == "two"
-        ? `/prime/${elem.slug}?s=promoter_interview`
-        : `/prime/${elem.slug}`;
+        ? `/prime/${elem?.slug}?s=promoter_interview`
+        : `/prime/${elem?.slug}`;
     } else setIsPaymentOpen(true);
   };
 
@@ -131,18 +131,18 @@ const PrimeCard = ({ data, activeTab }) => {
               sx={{ fontWeight: "600" }}
               component="span"
             >
-            {elem.price === 0 ||
+            {elem?.price === 0 ||
                     (activeTab == "one" && elem?.is_promoter_interview_free)
                       ? "Free Sample"
-                      : `${moment(elem.createdAt).format("Do MMM YY")}`}
+                      : `${moment(elem?.createdAt).format("Do MMM YY")}`}
             </StyledTypography1>
             <StyledTypography2
               marginTop={1}
               color={colors.navyBlue500}
               component="div"
             >
-            {elem.company_Id?.company_name
-                      ? elem.company_Id?.company_name
+            {elem?.company_Id?.company_name
+                      ? elem?.company_Id?.company_name
                       : "NA"}
             </StyledTypography2>
             <Box marginTop={1}>
@@ -160,7 +160,7 @@ const PrimeCard = ({ data, activeTab }) => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                  {elem.company_Id?.sector ? elem.company_Id?.sector : "NA"}
+                  {elem?.company_Id?.sector ? elem?.company_Id?.sector : "NA"}
                   </StyledTypography3>
                 </Grid>
                 <Grid item>
@@ -176,8 +176,8 @@ const PrimeCard = ({ data, activeTab }) => {
                     sx={{ fontWeight: "600" }}
                     component="span"
                   >
-                    {elem.company_Id?.industry
-                      ? elem.company_Id?.industry
+                    {elem?.company_Id?.industry
+                      ? elem?.company_Id?.industry
                       : "NA"}
                   </StyledTypography3>
                 </Grid>
@@ -192,12 +192,12 @@ const PrimeCard = ({ data, activeTab }) => {
               marginTop={1}
             >
               
-              {elem.price === 0 ? (
+              {elem?.price === 0 ? (
                         <Link
                           href={
                             activeTab == "two"
-                              ? `/prime/${elem.slug}?s=promoter_interview`
-                              : `/prime/${elem.slug}`
+                              ? `/prime/${elem?.slug}?s=promoter_interview`
+                              : `/prime/${elem?.slug}`
                           }
                           target="blank"
                         >

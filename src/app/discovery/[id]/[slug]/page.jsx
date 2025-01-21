@@ -5,7 +5,6 @@ import { Box, Typography, Divider, Grid, Chip, Container } from "@mui/material";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import Comments from "../../../../components/Prime/Comments";
 
-import Head from "next/head";
 import Spinner from "../../../../components/Common/Spinner";
 import {
   discoveryArticleApi,
@@ -31,6 +30,7 @@ import Snackbar from "../../../../components/Snackbar/SnackBar";
 import NoLogin from "../../../../components/Auth/NoLogin";
 import NoAccess from "../../../../components/Auth/NoAccess";
 import ScrollCircle from "@/components/Common/ScrollCircle";
+import { useRouter } from "next/navigation";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -116,6 +116,7 @@ const CustomDivider2 = styled(Divider)`
 
 const DiscoveryArticle = () => {
   const dispatch = useDispatch();
+  const router=useRouter();
   const { id, slug } = useParams();
   const {
     isArticleDataLoading,
@@ -140,6 +141,8 @@ const DiscoveryArticle = () => {
     sectoral_pe_range,
     pe_remark,
     company_id,
+    is_available_in_prime,
+    is_available_in_times,
   } = articleData;
 
   const [isInWatchlist, setIsInWatchlist] = useState(false);
@@ -169,6 +172,16 @@ const DiscoveryArticle = () => {
   }, [dispatch, slug, company_id]);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      document.title = title;
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/discovery/${id}/${slug}`;
+      }
+    }
+  }, [isAuth, isArticleDataLoading]);
+
+  useEffect(() => {
     if (company_id != "") {
       dispatch(isBookmarkedApi({ company_id }));
       setIsInWatchlist(isBookmarked);
@@ -187,14 +200,6 @@ const DiscoveryArticle = () => {
   if (isAuth && isArticleDataLoading) {
     return (
       <>
-        <Head>
-          <title>{title}</title>
-          <link
-            rel="canonical"
-            href={`https://www.sovrenn.com/discovery/${id}/${slug}`}
-            key="canonical"
-          />
-        </Head>
         <Spinner margin={15} />
       </>
     );
@@ -211,14 +216,6 @@ const DiscoveryArticle = () => {
   ) {
     return (
       <>
-        <Head>
-          <title>{title}</title>
-          <link
-            rel="canonical"
-            href={`https://www.sovrenn.com/discovery/${id}/${slug}`}
-            key="canonical"
-          />
-        </Head>
         <article>
           <Box sx={{ maxWidth: 915, margin: "84px auto 0px auto", padding: 2 }}>
             <Snackbar />
@@ -436,52 +433,72 @@ const DiscoveryArticle = () => {
           </Box>
         </article>
 
-        <Box
-          width={{ maxWidth: 915 }}
-          marginX="auto"
-          paddingX={1}
-          marginBottom={3}
-        >
-          <Divider sx={{ marginY: 1 }} />
-          <Grid container justifyContent="flex-start">
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "80%",
-                gap: "12px",
-                flexDirection: { xs: "column", sm: "row" },
-              }}
-            >
-              <StyledTypography2
-                color="#8198AA"
-                sx={{ cursor: "pointer" }}
-                marginBottom={{ xs: 0.5, sm: 0 }}
-              >
-                Read More about this company
-              </StyledTypography2>
+{
+  is_available_in_prime &&  Object.keys(is_available_in_prime)?.length || is_available_in_times &&  Object.keys(is_available_in_times)?.length 
+  ?  
+   <Box
+  width={{ maxWidth: 915 }}
+  marginX="auto"
+  paddingX={1}
+  marginBottom={3}
+>
+  <Divider sx={{ marginY: 1 }} />
+  <Grid container justifyContent="flex-start">
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        width: "80%",
+        gap: "12px",
+        flexDirection: { xs: "column", sm: "row" },
+      }}
+    >
+      <StyledTypography2
+        color="#8198AA"
+        sx={{ cursor: "pointer" }}
+        marginBottom={{ xs: 0.5, sm: 0 }}
+      >
+        Read More about this company
+      </StyledTypography2>
 
-              <StyledLink href="#">
-                <StyledTypography3
-                  color={colors.themeGreen}
-                  sx={{ fontWeight: "400" }}
-                >
-                  View in Prime
-                </StyledTypography3>
-              </StyledLink>
-              <StyledLink href="#">
-                <StyledTypography3
-                  color={colors.themeGreen}
-                  sx={{ fontWeight: "400" }}
-                >
-                  View in Times
-                </StyledTypography3>
-              </StyledLink>
-            </Box>
-          </Grid>
-          <Divider sx={{ marginY: 1 }} />
-          <ScrollCircle />
-        </Box>
+      {is_available_in_prime &&
+      Object.keys(is_available_in_prime)?.length ? (
+       
+          <StyledTypography3
+            color={colors.themeGreen}
+            sx={{ fontWeight: "400" }}
+            onClick={()=>{
+              router.push(`/prime/${is_available_in_prime?.slug}`);}}
+          >
+            View in Prime
+          </StyledTypography3>
+       
+      ) : (
+        <></>
+      )}
+
+      {is_available_in_times &&
+      Object.keys(is_available_in_times)?.length ? (
+       
+          <StyledTypography3
+            color={colors.themeGreen}
+            sx={{ fontWeight: "400" }}
+            onClick={()=>{ const searchQuery = encodeURIComponent(is_available_in_times?.company_name || "");
+              router.push(`/times?search=${searchQuery}`);}}
+          >
+            View in Times
+          </StyledTypography3>
+       
+      ) : (
+        <></>
+      )}
+    </Box>
+  </Grid>
+  <Divider sx={{ marginY: 1 }} />
+  <ScrollCircle />
+</Box> : <></>
+}
+      
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Container>
             <Grid container justifyContent="center">

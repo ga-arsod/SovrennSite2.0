@@ -77,6 +77,7 @@ const CompanyInfo = () => {
     const searchQuery = encodeURIComponent(companyData.company?.company_name || "");
     router.push(`/times?search=${searchQuery}`);
   };
+  
   const [companyData, setCompanyData] = useState({
     company: {},
     news: [],
@@ -85,6 +86,7 @@ const CompanyInfo = () => {
     ipo: [],
     is_ipo_company: false,
   });
+ 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
     company_name: "",

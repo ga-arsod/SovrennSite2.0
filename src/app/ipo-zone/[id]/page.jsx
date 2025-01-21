@@ -8,7 +8,7 @@ import ScrollCircle from "../../../components/Common/ScrollCircle";
 import { ipoArticleApi } from "@/app/Redux/Slices/ipoSlice";
 import styled from "@emotion/styled";
 import { Box, Typography, Divider } from "@mui/material";
-import Head from "next/head";
+
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Disclaimer from "../../../components/Common/Disclaimer";
 import { primeArticleDisclaimer } from "@/utils/Data";
@@ -38,6 +38,16 @@ const IpoArticles = () => {
   useEffect(() => {
     dispatch(ipoArticleApi(id));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      document.title = ipoArticle?.title;
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/ipo-zone/${id}`;
+      }
+    }
+  }, [ipoArticle, id]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -83,7 +93,7 @@ const IpoArticles = () => {
       <>
         <article>
           <Box sx={{ maxWidth: 990, margin: "84px auto 0px auto", padding: 2 }}>
-            <StyledTypography1>{ipoArticle?.title}</StyledTypography1>
+            <StyledTypography1 textAlign="center">{ipoArticle?.title}</StyledTypography1>
 
             {ipoArticle ? (
               <div id={styles.MainContainer}>
