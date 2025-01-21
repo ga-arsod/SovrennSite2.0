@@ -9,7 +9,6 @@ import { pulseFilterApi } from "../Redux/Slices/pulseSlice";
 import { useDispatch } from "react-redux";
 
 import { getPortfolioCompanies } from "../Redux/Slices/pulseSlice";
-import Head from "next/head";
 
 const PulsePage = () => {
   const dispatch = useDispatch();
@@ -19,19 +18,19 @@ const PulsePage = () => {
   useEffect(() => {
     dispatch(getPortfolioCompanies());
     dispatch(pulseFilterApi());
-  }, [dispatch,isAuth]);
+  }, [dispatch, isAuth]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      document.title = "Sovrenn Pulse";
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/pulse`;
+      }
+    }
+  }, []);
   return (
     <>
-      <Head>
-        <title>Sovrenn Pulse</title>
-
-        <link
-          rel="canonical"
-          href="https://www.sovrenn.com/pulse"
-          key="canonical"
-        />
-      </Head>
       <Container>
         {!isAuth || !portfolioCompanies?.length ? (
           <PulseIntro />

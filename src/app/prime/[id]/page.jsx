@@ -1,23 +1,26 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams } from "next/navigation";
 import convertToHtml from "@/utils/convertToHtml";
 import styles from "../../../styles/PrimeArticle.module.css";
 import { colors } from "@/components/Constants/colors";
-import { primeArticleApi, promoterArticleApi } from "@/app/Redux/Slices/primeSlice";
+import {
+  primeArticleApi,
+  promoterArticleApi,
+} from "@/app/Redux/Slices/primeSlice";
 import { getCommentsApi } from "@/app/Redux/Slices/commentsSlice";
 import styled from "@emotion/styled";
 import { Box, Typography, Tab, Tabs, Divider, Fade } from "@mui/material";
-import Head from "next/head";
+
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Comments from "../../../components/Prime/Comments";
 import Snackbar from "../../../components/Snackbar/SnackBar";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import Disclaimer from "../../../components/Common/Disclaimer";
 import { primeArticleDisclaimer } from "@/utils/Data";
-import NoLogin from "../../../components/Auth/NoLogin"
-import NoAccess from "../../../components/Auth/NoAccess"
+import NoLogin from "../../../components/Auth/NoLogin";
+import NoAccess from "../../../components/Auth/NoAccess";
 import ScrollCircle from "@/components/Common/ScrollCircle";
 
 const StyledTypography1 = styled(Typography)`
@@ -94,13 +97,13 @@ const PrimeArticles = () => {
   const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false);
   const searchParams = useSearchParams();
   const search = searchParams.get("s");
-  const { isAuth,userDetails } = useSelector((store) => store.auth);
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
   const isPromoterInterviewActive = search === "promoter_interview";
   const { articleData, company_name } = useSelector((store) => store.prime);
   const { comments } = useSelector((store) => store.comments);
 
   const [value, setValue] = useState(isPromoterInterviewActive ? "two" : "one");
- 
+
   const [content, setContent] = useState(null);
   const [fadeIn, setFadeIn] = useState(true);
 
@@ -109,12 +112,11 @@ const PrimeArticles = () => {
     setTimeout(() => {
       setValue(newValue);
       setFadeIn(true);
-    }, 300); 
+    }, 300);
 
     if (articleData && value === "one") {
       dispatch(promoterArticleApi(articleData?.pi_slug));
-    }
-     else if (articleData && value === "two") {
+    } else if (articleData && value === "two") {
       dispatch(primeArticleApi(articleData?.prime_slug));
     }
   };
@@ -127,97 +129,122 @@ const PrimeArticles = () => {
     }
   }, []);
 
- 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      document.title = company_name;
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/prime/${id}`;
+      }
+    }
+  }, [articleData, id]);
 
   useEffect(() => {
     if (articleData) {
-      dispatch(getCommentsApi({ company_id: articleData._id, component: "prime" }));
+      dispatch(
+        getCommentsApi({ company_id: articleData._id, component: "prime" })
+      );
       setContent(convertToHtml(articleData?.content));
     }
   }, [articleData, dispatch]);
 
-  if(!isAuth)
-    {
-     return <NoLogin/>
-    }
-    
-  
-    if(isAuth && ( userDetails?.subscriptions?.includes("full-access") || userDetails?.subscriptions?.includes("monthly") || userDetails?.subscriptions?.includes("quarterly") || userDetails?.subscriptions?.includes("life") || userDetails?.subscriptions?.includes("trial")))
-      {
-        return (
-          <>
-            <Head>
-              <title>{company_name}</title>
-            </Head>
-            <article>
-              <Box sx={{ maxWidth: 990, margin: "84px auto 0px auto", padding: 2 }}>
-                <Snackbar />
-                <StyledTypography1>{company_name}</StyledTypography1>
-                <CustomDivider1 sx={{ marginTop: 3, marginBottom: 1 }} />
-                <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
-                  <HoverBox onClick={() => setIsCommentsModalOpen(true)}>
-                    <ChatBubbleOutlineOutlinedIcon sx={{ marginRight: 1 }} />
-                    <StyledTypography2>{`${comments?.totalComments === "0" ? "No" : comments?.totalComments} Comments`}</StyledTypography2>
-                  </HoverBox>
-                </Box>
-                <CustomDivider1 sx={{ marginTop: 1 }} />
-      
-                {(value === "one" && articleData?.has_pi_data) || (value === "two" && articleData?.has_prime_data) ? (
-                  <Box sx={{ width: "100%", marginTop: "17px" }}>
-                    <CustomTabs
-                      value={value}
-                      onChange={handleChange}
-                      aria-label="wrapped label tabs example"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        "& .MuiTabs-flexContainer": { gap: "0px" },
-                      }}
-                    >
-                      <Tab
-                        value="one"
-                        label={<TabLabel text="Prime Articles" isActive={value === "one"} />}
-                        sx={{ textTransform: "none", minWidth: "auto" }}
-                      />
-                      <Tab
-                        value="two"
-                        label={<TabLabel text="Promoter Interviews" isActive={value === "two"} />}
-                        sx={{ textTransform: "none", minWidth: "auto" }}
-                      />
-                    </CustomTabs>
-                  </Box>
-                ) : <></>}
-      
-      
-                  <Box
-                    sx={{
-                      opacity: content ? 1 : 0,
-                      transition: "visibility 0s, opacity 0.3s linear",
-                      minHeight: "400px",
-                    }}
-                  >
-                    {content && <div id={styles.MainContainer}>{content}</div>}
-                  </Box>
-                 <ScrollCircle/>
-                  <Disclaimer margin={3} text={primeArticleDisclaimer}  />
-              </Box>
-            </article>
-            {articleData && (
-              <Comments
-                isCommentsModalOpen={isCommentsModalOpen}
-                setIsCommentsModalOpen={setIsCommentsModalOpen}
-                comments={comments}
-                company_id={articleData._id}
-                component="prime"
-              />
-            )}
-          </>
-        );
-      }
+  if (!isAuth) {
+    return <NoLogin />;
+  }
 
- else
- return <NoAccess/>
+  if (
+    isAuth &&
+    (userDetails?.subscriptions?.includes("full-access") ||
+      userDetails?.subscriptions?.includes("monthly") ||
+      userDetails?.subscriptions?.includes("quarterly") ||
+      userDetails?.subscriptions?.includes("life") ||
+      userDetails?.subscriptions?.includes("trial"))
+  ) {
+    return (
+      <>
+       
+        <article>
+          <Box sx={{ maxWidth: 990, margin: "84px auto 0px auto", padding: 2 }}>
+            <Snackbar />
+            <StyledTypography1 textAlign="center">{company_name}</StyledTypography1>
+            <CustomDivider1 sx={{ marginTop: 3, marginBottom: 1 }} />
+            <Box sx={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <HoverBox onClick={() => setIsCommentsModalOpen(true)}>
+                <ChatBubbleOutlineOutlinedIcon sx={{ marginRight: 1 }} />
+                <StyledTypography2>{`${
+                  comments?.totalComments === "0"
+                    ? "No"
+                    : comments?.totalComments
+                } Comments`}</StyledTypography2>
+              </HoverBox>
+            </Box>
+            <CustomDivider1 sx={{ marginTop: 1 }} />
+
+            {(value === "one" && articleData?.has_pi_data) ||
+            (value === "two" && articleData?.has_prime_data) ? (
+              <Box sx={{ width: "100%", marginTop: "17px" }}>
+                <CustomTabs
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="wrapped label tabs example"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    "& .MuiTabs-flexContainer": { gap: "0px" },
+                  }}
+                >
+                  <Tab
+                    value="one"
+                    label={
+                      <TabLabel
+                        text="Prime Articles"
+                        isActive={value === "one"}
+                      />
+                    }
+                    sx={{ textTransform: "none", minWidth: "auto" }}
+                  />
+                  <Tab
+                    value="two"
+                    label={
+                      <TabLabel
+                        text="Promoter Interviews"
+                        isActive={value === "two"}
+                      />
+                    }
+                    sx={{ textTransform: "none", minWidth: "auto" }}
+                  />
+                </CustomTabs>
+              </Box>
+            ) : (
+              <></>
+            )}
+
+            <Box
+              sx={{
+                opacity: content ? 1 : 0,
+                transition: "visibility 0s, opacity 0.3s linear",
+                minHeight: "400px",
+              }}
+            >
+              {content && <div id={styles.MainContainer}>{content}</div>}
+            </Box>
+            <ScrollCircle />
+            <Disclaimer margin={3} text={primeArticleDisclaimer} />
+          </Box>
+        </article>
+        {articleData && (
+          <Comments
+            isCommentsModalOpen={isCommentsModalOpen}
+            setIsCommentsModalOpen={setIsCommentsModalOpen}
+            comments={comments}
+            company_id={articleData._id}
+            component="prime"
+          />
+        )}
+      </>
+    );
+  } else return <NoAccess />;
 };
 
 export default PrimeArticles;

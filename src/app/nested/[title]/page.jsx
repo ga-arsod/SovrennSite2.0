@@ -4,8 +4,8 @@ import DiscoveryHeading from "@/components/Discovery/DiscoveryHeading";
 import { Container, Grid, Typography, IconButton, Box } from "@mui/material";
 import styled from "@emotion/styled";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import Image from "next/image"; 
-import ScrollCircle from "../../../components/Common/ScrollCircle"
+import Image from "next/image";
+import ScrollCircle from "../../../components/Common/ScrollCircle";
 import { colors } from "@/components/Constants/colors";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
@@ -44,9 +44,9 @@ const StyledTypography2 = styled(Typography)`
 
 const StyledGrid = styled(Box)`
   cursor: pointer;
- background-color: #FAF9F9;
- 
-   border: 1px solid  #E6E8E9;
+  background-color: #faf9f9;
+
+  border: 1px solid #e6e8e9;
   border-radius: 3px;
   display: flex;
   flex-direction: column;
@@ -72,7 +72,7 @@ const StyledGrid = styled(Box)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%; 
+    height: 100%;
   }
 
   .bottom-section {
@@ -107,7 +107,7 @@ const DefaultImageContainer = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 140px; 
+  height: 140px;
   border-radius: 3px;
   text-align: center;
   font-weight: 600;
@@ -115,22 +115,70 @@ const DefaultImageContainer = styled(Box)`
 `;
 
 const Discovery = () => {
- 
   const { title } = useParams();
-  const { isParentsBucketLoading, parentsBucket } = useSelector((store) => store.discovery);
+  const { isParentsBucketLoading, parentsBucket } = useSelector(
+    (store) => store.discovery
+  );
   const dispatch = useDispatch();
   const router = useRouter();
- 
 
   useEffect(() => {
     dispatch(getParentsBucketApi({ title }));
   }, [dispatch, title]);
 
+  useEffect(() => {
+    if (isParentsBucketLoading) {
+      document.title = "Loading Stock Discovery...";
+
+      document
+        .querySelector('meta[name="description"]')
+        ?.setAttribute(
+          "content",
+          "Loading stock discovery data. Please wait while we fetch the latest insights."
+        );
+      document
+        .querySelector('meta[property="og:title"]')
+        ?.setAttribute("content", "Loading Stock Discovery...");
+      document
+        .querySelector('meta[property="og:description"]')
+        ?.setAttribute(
+          "content",
+          "Stock Discovery data is being loaded. Please check back in a moment."
+        );
+    } else {
+      document.title =
+        "Investors are Going Crazy Over this Groundbreaking Stock Discovery";
+
+      document
+        .querySelector('meta[name="description"]')
+        ?.setAttribute(
+          "content",
+          "Stock Discovery! Investors can't get enough of this groundbreaking opportunity. Find out why everyone is going crazy over it today!"
+        );
+      document
+        .querySelector('meta[property="og:title"]')
+        ?.setAttribute(
+          "content",
+          "Investors are Going Crazy Over this Groundbreaking Stock Discovery"
+        );
+      document
+        .querySelector('meta[property="og:description"]')
+        ?.setAttribute(
+          "content",
+          "Stock Discovery! Investors can't get enough of this groundbreaking opportunity. Find out why everyone is going crazy over it today."
+        );
+    }
+    if (typeof window !== "undefined") {
+      document.title = title;
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/discovery`;
+      }
+    }
+  }, [isParentsBucketLoading]);
+
   const handleNavigation = (item) => {
-   
-      router.push(`/nested/${title}/${item?.
-        slug}`);
-   
+    router.push(`/nested/${title}/${item?.slug}`);
   };
 
   const headingObject = {
@@ -141,10 +189,7 @@ const Discovery = () => {
   if (isParentsBucketLoading) {
     return (
       <>
-        <Head>
-          <title>Explore Thematic Buckets</title>
-          <link rel="canonical" href={`https://www.sovrenn.com/discovery`} key="canonical" />
-        </Head>
+       
         <Container>
           <DiscoveryHeading />
           <Spinner margin={2} />
@@ -155,57 +200,68 @@ const Discovery = () => {
 
   return (
     <>
-      <Head>
-        <title>Investors are Going Crazy Over this Groundbreaking Stock Discovery</title>
-        <meta
-          name="description"
-          content="Stock Discovery! Investors can't get enough of this groundbreaking opportunity. Find out why everyone is going crazy over it today.!"
-        />
-        <meta property="og:title" content="Investors are Going Crazy Over this Groundbreaking Stock Discovery" />
-        <meta property="og:description" content="Stock Discovery! Investors can't get enough of this groundbreaking opportunity. Find out why everyone is going crazy over it today." />
-        <link rel="canonical" href={`https://www.sovrenn.com/discovery`} key="canonical" />
-      </Head>
+    
       <Container>
         <DiscoveryHeading headingObject={headingObject} />
         <Box marginBottom={6}>
           <GridContainer>
             {parentsBucket?.child_buckets?.map((item, index) => (
-              
               <StyledGrid key={index} onClick={() => handleNavigation(item)}>
-               
                 <Box className="content">
                   <Grid container>
                     <Grid item paddingY={2} paddingX="20px" width="100%">
                       <Box sx={{ borderRadius: "3px", overflow: "hidden" }}>
                         {item?.thumb_url ? (
-                          <Image src={item.thumb_url} width={274} height={140} alt="poster" layout="responsive" />
+                          <Image
+                            src={item.thumb_url}
+                            width={274}
+                            height={140}
+                            alt="poster"
+                            layout="responsive"
+                          />
                         ) : (
                           <DefaultImageContainer>
-                            <Typography variant="h6">{item?.bucket_name}</Typography>
+                            <Typography variant="h6">
+                              {item?.bucket_name}
+                            </Typography>
                           </DefaultImageContainer>
                         )}
                       </Box>
                     </Grid>
                     <Grid item paddingX="20px">
-                      <StyledTypography1 gutterBottom>{item?.bucket_name}</StyledTypography1>
-                      <StyledTypography2 color={colors.navyBlue400} sx={{ fontWeight: 500 }} marginBottom={1}>
+                      <StyledTypography1 gutterBottom>
+                        {item?.bucket_name}
+                      </StyledTypography1>
+                      <StyledTypography2
+                        color={colors.navyBlue400}
+                        sx={{ fontWeight: 500 }}
+                        marginBottom={1}
+                      >
                         {item?.about}
                       </StyledTypography2>
                     </Grid>
                   </Grid>
                   <Box className="bottom-section">
-                    <StyledTypography2 component="span" color={colors.themeGreen} sx={{ fontWeight: 600 }}>
+                    <StyledTypography2
+                      component="span"
+                      color={colors.themeGreen}
+                      sx={{ fontWeight: 600 }}
+                    >
                       {`${item?.companies.length} companies are in this bucket`}
                     </StyledTypography2>
                     <CustomIconButton className="icon-button">
-                      <ArrowForwardIcon fontSize="small" className="arrow-icon" sx={{ color: "#3C464F" }} />
+                      <ArrowForwardIcon
+                        fontSize="small"
+                        className="arrow-icon"
+                        sx={{ color: "#3C464F" }}
+                      />
                     </CustomIconButton>
                   </Box>
                 </Box>
               </StyledGrid>
             ))}
           </GridContainer>
-          <ScrollCircle/>
+          <ScrollCircle />
         </Box>
       </Container>
     </>

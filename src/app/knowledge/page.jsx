@@ -1,9 +1,6 @@
-import React from "react";
 import KnowledgeHeader from "../../components/Knowledge/KnowledgeHeader";
 import KnowledgeCard from "../../components/Cards/KnowledgeCard";
 import KnowledgeSearchFilter from "../../components/Knowledge/KnowledgeSearchFilter";
-import Head from "next/head";
-
 
 async function fetchPosts(page = 1) {
   const url = `https://cms.sovrenn.com/api/posts?sort=createdAt:desc&filters[category][slug][$ne]=chronicles&pagination[pageSize]=20&pagination[page]=${page}&populate=category`;
@@ -19,30 +16,45 @@ async function fetchCategories() {
   return data;
 }
 
+export async function generateMetadata({ searchParams }) {
+  const categorySlug = searchParams?.category || null;
+
+ 
+  const postsData = await fetchPosts();
+  const categoriesData = await fetchCategories();
+
+  const metadata = {
+    title: "Sovrenn Knowledge",
+    description:
+      "Explore a wide range of knowledge resources, articles, and posts related to the market, investments, and more.",
+    canonical: "https://www.sovrenn.com/knowledge",
+  };
+
+  return metadata;
+}
+
 export default async function Knowledge({ searchParams }) {
   const categorySlug = searchParams?.category || null;
-  const allCat = {
-    "id": 0,
-    "attributes": {
-    "name": "All",
-    "slug": null
-    }
-    }
-    
-  // Fetch data based on current search params
+
+ 
   const postsData = await fetchPosts();
   const categoriesData = await fetchCategories();
 
   const posts = postsData.data || [];
-  const categories = [allCat,...categoriesData.data] || [];
+  const categories = [
+    {
+      id: 0,
+      attributes: {
+        name: "All",
+        slug: null,
+      },
+    },
+    ...categoriesData.data,
+  ];
   const pagination = postsData.meta.pagination;
- 
+
   return (
     <>
-      <Head>
-        <title>Sovrenn Knowledge</title>
-        <link rel="canonical" href="https://www.sovrenn.com/knowledge" />
-      </Head>
       <KnowledgeHeader />
       <KnowledgeSearchFilter categories={categories} />
       <KnowledgeCard
@@ -50,7 +62,6 @@ export default async function Knowledge({ searchParams }) {
         categories={categories}
         initialPagination={pagination}
       />
-     
     </>
   );
 }

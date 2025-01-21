@@ -1,5 +1,5 @@
 import React ,{useState} from "react";
-import { Grid, Typography, Box, Button, Divider } from "@mui/material";
+import { Grid, Typography, Box, Button, Divider,Container } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import Link from "next/link";
@@ -77,7 +77,8 @@ const IpoCard = ({ data }) => {
     <LoginModal isOpen={isOpen} handleClose={handleClose}/>
     <PaymentModal isPaymentOpen={isPaymentOpen} handlePaymentClose={handlePaymentClose}/>
       {data?.length == 0 ? (
-        <NoData text="No data available" />
+        <Container>
+        <NoData text="No data available" /></Container>
       ) : (
         <Box sx={{ flexGrow: 1, padding: 2 }}>
           <Grid

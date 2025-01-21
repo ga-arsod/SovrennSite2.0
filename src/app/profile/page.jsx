@@ -78,6 +78,17 @@ const Profile = () => {
     dispatch(subscriptionDetailsApi());
   }, []);
 
+  useEffect(() => {
+       
+      if (typeof window !== "undefined") {
+        document.title ="My Profile";
+        const link = document.querySelector("link[rel='canonical']");
+        if (link) {
+          link.href = `https://www.sovrenn.com/self-help`;
+        }
+      }
+    }, []);
+
   if (!isAuth) {
     return <NoLogin />;
   }

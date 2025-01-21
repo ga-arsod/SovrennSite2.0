@@ -518,25 +518,26 @@ const Navbar = () => {
                       }}
                     >
                       {filteredNavItems.map((item) => (
-                        <LightTooltip
-                          key={item.name}
-                          sx={{
-                            "& .MuiTooltip-tooltip": {
-                              backgroundColor: "white",
-                              color: "black",
-                            },
-                          }}
-                          title={
-                            <TooltipContent
-                              heading={item.name}
-                              description={item.description}
-                            />
-                          }
-                          placement="bottom"
-                          arrow
-                          disablePortal={false}
-                        >
+                        // <LightTooltip
+                        //   key={item.name}
+                        //   sx={{
+                        //     "& .MuiTooltip-tooltip": {
+                        //       backgroundColor: "white",
+                        //       color: "black",
+                        //     },
+                        //   }}
+                        //   title={
+                        //     <TooltipContent
+                        //       heading={item.name}
+                        //       description={item.description}
+                        //     />
+                        //   }
+                        //   placement="bottom"
+                        //   arrow
+                        //   disablePortal={false}
+                        // >
                           <ListItem
+                          key={item.name}
                             component={Link}
                             href={item.link}
                             onClick={toggleDrawer}
@@ -559,7 +560,7 @@ const Navbar = () => {
                               />
                             </div>
                           </ListItem>
-                        </LightTooltip>
+                        // </LightTooltip>
                       ))}
                       <ListItem
                         onMouseLeave={handleMouseLeave}
@@ -999,29 +1000,30 @@ const Navbar = () => {
         >
           <List>
             {filteredNavItems.map((item, index) => (
-              <LightTooltip
-                key={item.name}
-                title={
-                  <TooltipContent
-                    heading={item.name}
-                    description={item.description}
-                  />
-                }
-                placement="bottom"
-                arrow
-                disablePortal={false}
-                componentsProps={{
-                  tooltip: {
-                    sx: {
-                      backgroundColor: "white",
-                      color: "black",
-                      borderRadius: "4px",
-                      padding: "8px",
-                    },
-                  },
-                }}
-              >
+              // <LightTooltip
+              //   key={item.name}
+              //   title={
+              //     <TooltipContent
+              //       heading={item.name}
+              //       description={item.description}
+              //     />
+              //   }
+              //   placement="bottom"
+              //   arrow
+              //   disablePortal={false}
+              //   componentsProps={{
+              //     tooltip: {
+              //       sx: {
+              //         backgroundColor: "white",
+              //         color: "black",
+              //         borderRadius: "4px",
+              //         padding: "8px",
+              //       },
+              //     },
+              //   }}
+              // >
                 <ListItem
+                key={item.name}
                   component={Link}
                   href={item.link}
                   onClick={toggleDrawer}
@@ -1037,7 +1039,7 @@ const Navbar = () => {
                     isFirst={index === 0}
                   />
                 </ListItem>
-              </LightTooltip>
+              // </LightTooltip>
             ))}
           </List>
         </Box>
@@ -1059,15 +1061,16 @@ const Navbar = () => {
             }}
           >
             <BottomNavigationAction
-              label="Education"
+              label="Learn"
               icon={<MenuBookIcon />}
-              onClick={() => handleNavigation("/education")}
+              
               sx={{ minWidth: "0px" }}
             />
             <BottomNavigationAction
               sx={{ minWidth: "0px" }}
               label="Times"
               icon={<FeedIcon />}
+             
             />
             <BottomNavigationAction
               sx={{ minWidth: "0px" }}

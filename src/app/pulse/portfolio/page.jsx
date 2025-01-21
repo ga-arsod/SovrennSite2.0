@@ -20,7 +20,7 @@ import styled from "@emotion/styled";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { debounce, throttle } from "lodash";
-import Head from "next/head";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -148,6 +148,16 @@ const PulseSearch = () => {
     }
   }, [searchText, debouncedSearch]);
 
+  useEffect(() => {
+   
+    if (typeof window !== "undefined") {
+      document.title = "Sovrenn Pulse - Portfolio";
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/pulse/portfolio`;
+      }
+    }
+  }, []);
   const removeCompanyFromPortfolio = (value, index) => {
     const updatedCompanies = [...companies];
     const updatedCompanyIds = [...companyIds];
@@ -206,17 +216,10 @@ const PulseSearch = () => {
     return <NoLogin />;
   }
 
+ 
   return (
     <>
-      <Head>
-        <title>Sovrenn Pulse - Portfolio</title>
-
-        <link
-          rel="canonical"
-          href="https://www.sovrenn.com/pulse/portfolio"
-          key="canonical"
-        />
-      </Head>
+     
     
       <Container sx={{ paddingBottom: "80px" }}>
       <Snackbar/>

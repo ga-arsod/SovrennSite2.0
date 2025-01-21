@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { allPlansApi } from "../Redux/Slices/PlanSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import Head from "next/head";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -39,42 +38,90 @@ const StyledTypography2 = styled(Typography)`
 
 const PricingPage = () => {
   const { plans } = useSelector((store) => store.plan);
-  const {isAuth} = useSelector((store) => store.auth);
+  const { isAuth } = useSelector((store) => store.auth);
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const handleBackClick = () => {
     router.back();
   };
-  const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(allPlansApi());
+    
+    const title = "Sovrenn Pricing Plans";
+    const description =
+      "Discover the pricing plans of Sovrenn Financial Technologies! Unlock access to India's premier platform for potential small and micro-cap stocks.";
+    
+    const url = "https://www.sovrenn.com/discovery";
+
+ 
+    if (typeof document !== "undefined") {
+     
+      document.title = title;
+
+    
+      let metaDescription = document.querySelector("meta[name='description']");
+      if (metaDescription) {
+        metaDescription.setAttribute("content", description);
+      } else {
+        metaDescription = document.createElement("meta");
+        metaDescription.setAttribute("name", "description");
+        metaDescription.setAttribute("content", description);
+        document.head.appendChild(metaDescription);
+      }
+
+   
+      let metaTitle = document.querySelector("meta[property='og:title']");
+      if (metaTitle) {
+        metaTitle.setAttribute("content", title);
+      } else {
+        metaTitle = document.createElement("meta");
+        metaTitle.setAttribute("property", "og:title");
+        metaTitle.setAttribute("content", title);
+        document.head.appendChild(metaTitle);
+      }
+
+      
+      let metaDescriptionOg = document.querySelector("meta[property='og:description']");
+      if (metaDescriptionOg) {
+        metaDescriptionOg.setAttribute("content", description);
+      } else {
+        metaDescriptionOg = document.createElement("meta");
+        metaDescriptionOg.setAttribute("property", "og:description");
+        metaDescriptionOg.setAttribute("content", description);
+        document.head.appendChild(metaDescriptionOg);
+      }
+
+     
+    
+
+     
+      let metaUrl = document.querySelector("meta[property='og:url']");
+      if (metaUrl) {
+        metaUrl.setAttribute("content", url);
+      } else {
+        metaUrl = document.createElement("meta");
+        metaUrl.setAttribute("property", "og:url");
+        metaUrl.setAttribute("content", url);
+        document.head.appendChild(metaUrl);
+      }
+
+      
+      let canonicalLink = document.querySelector("link[rel='canonical']");
+      if (canonicalLink) {
+        canonicalLink.setAttribute("href", url);
+      } else {
+        canonicalLink = document.createElement("link");
+        canonicalLink.setAttribute("rel", "canonical");
+        canonicalLink.setAttribute("href", url);
+        document.head.appendChild(canonicalLink);
+      }
+    }
   }, [isAuth]);
+
   return (
     <>
-      <Head>
-        <title>
-         Sovrenn Pricing Plans
-        </title>
-        <meta
-          name="description"
-          content="Discover the pricing plans of Sovrenn Financial Technologies! Unlock access to India's premier platform for potential small and micro-cap stocks.
-"
-        />
-
-        <meta
-          property="og:title"
-          content="Discover the pricing plans of Sovrenn Financial Technologies and unlock exclusive insights into InIndia'shriving small and micro-cap stock market!
-"
-        />
-        <meta
-          property="og:description"
-          content="Discover the pricing plans of Sovrenn Financial Technologies! Unlock affordable access to India's leading platform for small and micro-cap stock investments."
-        />
-        <link
-          rel="canonical"
-          href={`https://www.sovrenn.com/discovery`}
-          key="canonical"
-        />
-      </Head>
       <Box sx={{ width: "100%", padding: "60px 0 0px 0" }}>
         <Grid
           container
