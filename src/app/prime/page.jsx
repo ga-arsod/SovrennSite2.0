@@ -54,6 +54,16 @@ const StyledFilterIcon = styled(FilterAltOutlinedIcon)`
 `;
 
 const Prime = () => {
+
+  return (
+    <>
+
+      <Container>
+        Testing
+      </Container>
+    </>
+  );
+
   const dispatch = useDispatch();
   const theme = useTheme();
   const [activeTab, setActiveTab] = useState("one");
