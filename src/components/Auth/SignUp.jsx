@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Grid,
   Typography,
@@ -174,6 +174,17 @@ const SignUp = ({ form, setForm }) => {
    
   };
  
+   useEffect(() => {
+     
+      if (typeof window !== "undefined") {
+        document.title = "Sign Up";
+        const link = document.querySelector("link[rel='canonical']");
+        if (link) {
+          link.href = `https://www.sovrenn.com/signup`;
+        }
+      }
+    }, []);
+
   return (
     <>
       {basicInfo ? (
