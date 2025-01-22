@@ -155,6 +155,17 @@ const Login = ({ component, handleClose }) => {
     setValidate(false);
   };
 
+  useEffect(() => {
+   
+    if (typeof window !== "undefined") {
+      document.title = "Login";
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/login`;
+      }
+    }
+  }, []);
+  
   return (
     <Grid
       container
