@@ -113,7 +113,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
       return;
     }
 
-    const data = await fetch(`${URL}/register`, {
+    const data = await fetch(`${URL}/register?platform=website`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",

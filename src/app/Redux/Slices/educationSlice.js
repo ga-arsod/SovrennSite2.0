@@ -7,7 +7,7 @@ const initialState = {
   };
 
   export const educationVideosApi=createAsyncThunk("videosApi",async ()=>{
-    const response=await fetch(`${url}/course/videos`,{
+    const response=await fetch(`${url}/course/videos?platform=website`,{
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -19,7 +19,7 @@ const initialState = {
   })
 
   export const educationSlotsApi = createAsyncThunk("slotsApi", async () => {
-    const response = await fetch(`${url}/course`, {
+    const response = await fetch(`${url}/course?platform=website`, {
       method: "GET",
     
     });

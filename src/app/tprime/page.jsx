@@ -81,9 +81,7 @@ const Prime = () => {
     setIsOpen(true);
   };
 
-  console.log("Prime Companies List:", primeCompaniesList);
-  console.log("Promoter Companies List:", promoterCompaniesList);
-
+  
   const handleToggle = () => {
     if (activeTab == "one") dispatch(togglePrimeFilter());
     else dispatch(togglePromoterFilter());

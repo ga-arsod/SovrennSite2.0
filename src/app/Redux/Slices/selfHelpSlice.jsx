@@ -15,7 +15,7 @@ const initialState = {
 export const selfHelpCalculationApi = createAsyncThunk(
   "selfHelpCalculationApi",
   async (calculation_data) => {
-    const response = await fetch(`${url}/common/self-help`, {
+    const response = await fetch(`${url}/common/self-help?platform=website`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),

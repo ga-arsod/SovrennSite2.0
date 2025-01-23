@@ -9,7 +9,7 @@ const initialState = {
 };
 
 export const allPlansApi = createAsyncThunk("allPlansApi", async () => {
-  const response = await fetch(`${url}/common/all-plans`, {
+  const response = await fetch(`${url}/common/all-plans?platform=website`, {
     method: "GET",
   });
   return response.json();
@@ -18,7 +18,7 @@ export const allPlansApi = createAsyncThunk("allPlansApi", async () => {
 export const commonPricingApi = createAsyncThunk(
   "commonPricingApi",
   async () => {
-    const response = await fetch(`${url}/common/pricing`, {
+    const response = await fetch(`${url}/common/pricing?platform=website`, {
       method: "GET",
     });
     return response.json();

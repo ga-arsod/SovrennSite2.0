@@ -1,5 +1,5 @@
 "use client";
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   Paper,
   Table,
@@ -233,12 +233,21 @@ const wordsStr = [
   "CZ",
 ];
 
-export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,sortBy,setSortBy,bucket,isNestedRoute,containsDiscovery}) {
+export default function DiscoveryTable({
+  tableData,
+  id,
+  sortOrder,
+  setSortOrder,
+  sortBy,
+  setSortBy,
+  bucket,
+  isNestedRoute,
+  containsDiscovery,
+}) {
   const dispatch = useDispatch();
   const [hoveredRow, setHoveredRow] = useState(null);
-  
+
   const [isOpen, setIsOpen] = useState(false);
- 
 
   const handleMouseEnter = (index) => {
     setHoveredRow(index);
@@ -288,7 +297,6 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
     }
   };
 
-  
   const headerRowArray = [
     {
       name: "Company Name",
@@ -298,17 +306,19 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
       name: "Market Cap (In Crore)",
       id: "market_cap",
     },
+
     {
       name: "TTM PE",
       id: "ttm_pe",
     },
+
     {
       name: "Date of Info",
       id: "date",
     },
   ];
   const headerRowArray2 = headerRowArray.slice(0, -1);
- 
+
   return (
     <>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />
@@ -334,10 +344,12 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
           <Table sx={{ borderCollapse: "separate" }}>
             <TableHead>
               <TableRow>
-                {(tableData?.bucket?.show_date ? headerRowArray : headerRowArray2)?.map((item, index) => {
+                {(tableData?.bucket?.show_date
+                  ? headerRowArray
+                  : headerRowArray2
+                )?.map((item, index) => {
                   return (
                     <>
-                   
                       <StyledTableCell
                         key={index}
                         onClick={() => handleSortChange(item?.id)}
@@ -358,12 +370,33 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
                     </>
                   );
                 })}
-               {
-            !tableData?.bucket?.show_remark ? <></>:  <StyledTableCell>
-                <HeaderTextWrapper>Remarks</HeaderTextWrapper>
-              </StyledTableCell>
-               }
-               
+                {tableData?.bucket?.show_revenue_guidance ? (
+                  <StyledTableCell
+                    onClick={() => handleSortChange("revenue_guidance")}
+                  >
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <HeaderTextWrapper>Revenue Guidance</HeaderTextWrapper>
+                      {sortBy === "revenue_guidance" ? (
+                        sortOrder === "inc" ? (
+                          <StyledArrowUpwardIcon className="arrow-icon" />
+                        ) : (
+                          <StyledArrowDownwardIcon className="arrow-icon" />
+                        )
+                      ) : (
+                        <StyledArrowUpwardIcon className="arrow-icon" />
+                      )}
+                    </div>
+                  </StyledTableCell>
+                ) : (
+                  <></>
+                )}
+                {tableData?.bucket?.show_remark ? (
+                  <StyledTableCell>
+                    <HeaderTextWrapper>Remarks</HeaderTextWrapper>
+                  </StyledTableCell>
+                ) : (
+                  <></>
+                )}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -374,13 +407,14 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
                   onMouseLeave={handleMouseLeave}
                   onClick={() => handleRowClick(index, item)}
                 >
-                  {isAuth && ((index % 2 === 0 && tableData?.basket?.avail_free) ||
-                  userDetails?.subscriptions?.includes("full-access") ||
-                  userDetails?.subscriptions?.includes("monthly") ||
-                  userDetails?.subscriptions?.includes("quarterly") ||
-                  userDetails?.subscriptions?.includes("life") ||
-                  userDetails?.subscriptions?.includes("trial") ||
-                  userDetails?.subscriptions?.includes("basket")) ? (
+                  {isAuth &&
+                  ((index % 2 === 0 && tableData?.basket?.avail_free) ||
+                    userDetails?.subscriptions?.includes("full-access") ||
+                    userDetails?.subscriptions?.includes("monthly") ||
+                    userDetails?.subscriptions?.includes("quarterly") ||
+                    userDetails?.subscriptions?.includes("life") ||
+                    userDetails?.subscriptions?.includes("trial") ||
+                    userDetails?.subscriptions?.includes("basket")) ? (
                     <StyledBodyTableCell
                       sx={{ color: colors.navyBlue500, fontWeight: "600" }}
                       align="left"
@@ -405,92 +439,99 @@ export default function DiscoveryTable({ tableData, id ,sortOrder,setSortOrder,s
                     sx={{ color: colors.neutral900, fontWeight: "400" }}
                   >
                     {item?.ttm_pe ? `${item?.ttm_pe}x` : "NA"}
-                    {
-                     (!tableData?.bucket?.show_date && !tableData?.bucket?.show_remark ) && 
-                      <SlideBox hovered={hoveredRow === index}>
-                      <Typography
-                        sx={{
-                          fontWeight: 600,
-                          fontSize: "14px",
-                          marginRight: "8px",
-                        }}
-                      >
-                        Read More
-                      </Typography>
-                      <CustomIconButton>
-                        <ArrowForwardIosIcon
-                          fontSize="small"
-                          sx={{
-                            color: colors.themeGreen,
-                            fontSize: "12px",
-                          }}
-                        />
-                      </CustomIconButton>
-                    </SlideBox>
-                    }
+                    {!tableData?.bucket?.show_date &&
+                      !tableData?.bucket?.show_remark && (
+                        <SlideBox hovered={hoveredRow === index}>
+                          <Typography
+                            sx={{
+                              fontWeight: 600,
+                              fontSize: "14px",
+                              marginRight: "8px",
+                            }}
+                          >
+                            Read More
+                          </Typography>
+                          <CustomIconButton>
+                            <ArrowForwardIosIcon
+                              fontSize="small"
+                              sx={{
+                                color: colors.themeGreen,
+                                fontSize: "12px",
+                              }}
+                            />
+                          </CustomIconButton>
+                        </SlideBox>
+                      )}
                   </StyledBodyTableCell>
-                  {
-                    item?.date && 
+                  {tableData?.bucket?.show_date && (
                     <StyledBodyTableCell
-                    sx={{ color: colors.neutral900, fontWeight: "400" }}
-                  >
-                    {item?.date ? moment(item.date).format("Do MMM YY") : "NA"}
-                    {
-                     (tableData?.bucket?.show_date && !tableData?.bucket?.show_remark ) && 
-                      <SlideBox hovered={hoveredRow === index}>
-                      <Typography
-                        sx={{
-                          fontWeight: 600,
-                          fontSize: "14px",
-                          marginRight: "8px",
-                        }}
-                      >
-                        Read More
-                      </Typography>
-                      <CustomIconButton>
-                        <ArrowForwardIosIcon
-                          fontSize="small"
-                          sx={{
-                            color: colors.themeGreen,
-                            fontSize: "12px",
-                          }}
-                        />
-                      </CustomIconButton>
-                    </SlideBox>
-                    }
-                  </StyledBodyTableCell>
-                  }
-                 
-                  
-                  {
-                  tableData?.bucket?.show_remark &&
+                      sx={{ color: colors.neutral900, fontWeight: "400" }}
+                    >
+                      {item?.date
+                        ? moment(item.date).format("Do MMM YY")
+                        : "NA"}
+                      {tableData?.bucket?.show_date &&
+                        !tableData?.bucket?.show_remark && (
+                          <SlideBox hovered={hoveredRow === index}>
+                            <Typography
+                              sx={{
+                                fontWeight: 600,
+                                fontSize: "14px",
+                                marginRight: "8px",
+                              }}
+                            >
+                              Read More
+                            </Typography>
+                            <CustomIconButton>
+                              <ArrowForwardIosIcon
+                                fontSize="small"
+                                sx={{
+                                  color: colors.themeGreen,
+                                  fontSize: "12px",
+                                }}
+                              />
+                            </CustomIconButton>
+                          </SlideBox>
+                        )}
+                    </StyledBodyTableCell>
+                  )}
+                  {tableData?.bucket?.show_revenue_guidance && (
                     <StyledBodyTableCell
-                    sx={{ color: colors.neutral900, position: "relative" }}
-                  >
-                    {item?.remark }
-                    <SlideBox hovered={hoveredRow === index}>
-                      <Typography
-                        sx={{
-                          fontWeight: 600,
-                          fontSize: "14px",
-                          marginRight: "8px",
-                        }}
-                      >
-                        Read More
-                      </Typography>
-                      <CustomIconButton>
-                        <ArrowForwardIosIcon
-                          fontSize="small"
+                      sx={{ color: colors.neutral900, position: "relative" }}
+                    >
+                      {item?.revenue_guidance
+                        ? `${item?.revenue_guidance}%`
+                        : "NA"}
+                    </StyledBodyTableCell>
+                  )}
+
+                  {tableData?.bucket?.show_remark && (
+                    <StyledBodyTableCell
+                      sx={{ color: colors.neutral900, position: "relative" }}
+                    >
+                      {item?.remark}
+                      <SlideBox hovered={hoveredRow === index}>
+                        <Typography
                           sx={{
-                            color: colors.themeGreen,
-                            fontSize: "12px",
+                            fontWeight: 600,
+                            fontSize: "14px",
+                            marginRight: "8px",
                           }}
-                        />
-                      </CustomIconButton>
-                    </SlideBox>
-                  </StyledBodyTableCell>
-                  }
-                  
+                        >
+                          Read More
+                        </Typography>
+                        <CustomIconButton>
+                          <ArrowForwardIosIcon
+                            fontSize="small"
+                            sx={{
+                              color: colors.themeGreen,
+                              fontSize: "12px",
+                            }}
+                          />
+                        </CustomIconButton>
+                      </SlideBox>
+                    </StyledBodyTableCell>
+                  )}
                 </StyledTableRow>
               ))}
             </TableBody>

@@ -11,7 +11,7 @@ const initialState = {
 
 // Fetch Article Updates
 export const homeUpdatesApi = createAsyncThunk("apidata", async () => {
-  const response = await fetch(`${url}/user/new-updates`, {
+  const response = await fetch(`${url}/user/new-updates?platform=website`, {
     method: "GET",
     headers: {
       "Authorization": "Bearer " + localStorage.getItem('token'),
@@ -22,7 +22,7 @@ export const homeUpdatesApi = createAsyncThunk("apidata", async () => {
 
 // Fetch Customer Reviews
 export const customerReviewsApi = createAsyncThunk("customerReviewsApidata", async () => {
-  const response = await fetch(`${url}/common/user-reviews`, {
+  const response = await fetch(`${url}/common/user-reviews?platform=website`, {
     method: "GET",
   });
   return response.json();
@@ -30,7 +30,7 @@ export const customerReviewsApi = createAsyncThunk("customerReviewsApidata", asy
 
 // Fetch FAQs
 export const faqApi = createAsyncThunk("faqApi", async () => {
-  const response = await fetch(`${url}/common/faqs`, {
+  const response = await fetch(`${url}/common/faqs?platform=website`, {
     method: "GET",
   });
   return response.json();
