@@ -116,7 +116,7 @@ const CustomDivider2 = styled(Divider)`
 
 const DiscoveryArticle = () => {
   const dispatch = useDispatch();
-  const router=useRouter();
+  const router = useRouter();
   const { id, slug } = useParams();
   const {
     isArticleDataLoading,
@@ -149,18 +149,7 @@ const DiscoveryArticle = () => {
   const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false);
 
   useEffect(() => {
-    if (
-      slug &&
-      isAuth &&
-      (userDetails?.subscriptions?.includes("full-access") ||
-        userDetails?.subscriptions?.includes("monthly") ||
-        userDetails?.subscriptions?.includes("quarterly") ||
-        userDetails?.subscriptions?.includes("life") ||
-        userDetails?.subscriptions?.includes("trial") ||
-        userDetails?.subscriptions?.includes("basket"))
-    ) {
-      dispatch(discoveryArticleApi(slug));
-    }
+   
     if (company_id != "") {
       dispatch(
         otherBucketsCompanyPresentApi({
@@ -169,7 +158,12 @@ const DiscoveryArticle = () => {
         })
       );
     }
-  }, [dispatch, slug, company_id]);
+  }, [company_id]);
+
+  useEffect(()=>{
+  if(slug && isAuth)
+    dispatch(discoveryArticleApi(slug)); 
+  },[slug])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -433,72 +427,76 @@ const DiscoveryArticle = () => {
           </Box>
         </article>
 
-{
-  is_available_in_prime &&  Object.keys(is_available_in_prime)?.length || is_available_in_times &&  Object.keys(is_available_in_times)?.length 
-  ?  
-   <Box
-  width={{ maxWidth: 915 }}
-  marginX="auto"
-  paddingX={1}
-  marginBottom={3}
->
-  <Divider sx={{ marginY: 1 }} />
-  <Grid container justifyContent="flex-start">
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        width: "80%",
-        gap: "12px",
-        flexDirection: { xs: "column", sm: "row" },
-      }}
-    >
-      <StyledTypography2
-        color="#8198AA"
-        sx={{ cursor: "pointer" }}
-        marginBottom={{ xs: 0.5, sm: 0 }}
-      >
-        Read More about this company
-      </StyledTypography2>
-
-      {is_available_in_prime &&
-      Object.keys(is_available_in_prime)?.length ? (
-       
-          <StyledTypography3
-            color={colors.themeGreen}
-            sx={{ fontWeight: "400" }}
-            onClick={()=>{
-              router.push(`/prime/${is_available_in_prime?.slug}`);}}
+        {(is_available_in_prime &&
+          Object.keys(is_available_in_prime)?.length) ||
+        (is_available_in_times &&
+          Object.keys(is_available_in_times)?.length) ? (
+          <Box
+            width={{ maxWidth: 915 }}
+            marginX="auto"
+            paddingX={1}
+            marginBottom={3}
           >
-            View in Prime
-          </StyledTypography3>
-       
-      ) : (
-        <></>
-      )}
+            <Divider sx={{ marginY: 1 }} />
+            <Grid container justifyContent="flex-start">
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "80%",
+                  gap: "12px",
+                  flexDirection: { xs: "column", sm: "row" },
+                }}
+              >
+                <StyledTypography2
+                  color="#8198AA"
+                  sx={{ cursor: "pointer" }}
+                  marginBottom={{ xs: 0.5, sm: 0 }}
+                >
+                  Read More about this company
+                </StyledTypography2>
 
-      {is_available_in_times &&
-      Object.keys(is_available_in_times)?.length ? (
-       
-          <StyledTypography3
-            color={colors.themeGreen}
-            sx={{ fontWeight: "400" }}
-            onClick={()=>{ const searchQuery = encodeURIComponent(is_available_in_times?.company_name || "");
-              router.push(`/times?search=${searchQuery}`);}}
-          >
-            View in Times
-          </StyledTypography3>
-       
-      ) : (
-        <></>
-      )}
-    </Box>
-  </Grid>
-  <Divider sx={{ marginY: 1 }} />
-  <ScrollCircle />
-</Box> : <></>
-}
-      
+                {is_available_in_prime &&
+                Object.keys(is_available_in_prime)?.length ? (
+                  <StyledTypography3
+                    color={colors.themeGreen}
+                    sx={{ fontWeight: "400" }}
+                    onClick={() => {
+                      router.push(`/prime/${is_available_in_prime?.slug}`);
+                    }}
+                  >
+                    View in Prime
+                  </StyledTypography3>
+                ) : (
+                  <></>
+                )}
+
+                {is_available_in_times &&
+                Object.keys(is_available_in_times)?.length ? (
+                  <StyledTypography3
+                    color={colors.themeGreen}
+                    sx={{ fontWeight: "400" }}
+                    onClick={() => {
+                      const searchQuery = encodeURIComponent(
+                        is_available_in_times?.company_name || ""
+                      );
+                      router.push(`/times?search=${searchQuery}`);
+                    }}
+                  >
+                    View in Times
+                  </StyledTypography3>
+                ) : (
+                  <></>
+                )}
+              </Box>
+            </Grid>
+            <Divider sx={{ marginY: 1 }} />
+            <ScrollCircle />
+          </Box>
+        ) : (
+          <></>
+        )}
+
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Container>
             <Grid container justifyContent="center">
