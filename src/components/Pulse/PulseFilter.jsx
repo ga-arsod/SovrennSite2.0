@@ -406,29 +406,26 @@ const PulseFilter = ({
                 : pulseFilter[1]?.options.slice(0, 5)
               ).map((company, index) => (
                 <Grid item key={index} xs={12}>
-                  <CustomFormControlLabel
-                    control={
-                      <CustomCheckbox
-                        checked={
-                          (filter[pulseFilter[1]?.key] &&
-                            filter[pulseFilter[1]?.key]?.includes(company)) ||
-                          false
-                        }
-                        onChange={() => {
-                          updateFilter(
-                            company,
-                            pulseFilter[0].key,
-                            filter[company.key]
-                              ? filter[company.key]?.includes(
+                   <CustomFormControlLabel
+                      control={
+                        <CustomCheckbox
+                          checked={
+                            filter[pulseFilter[1].key]
+                              ? filter[pulseFilter[1].key]?.includes(
                                   company.placeholder
                                 )
                               : false
-                          );
-                        }}
-                      />
-                    }
-                    label={company.placeholder}
-                  />
+                          }
+                          onChange={() => {
+                            const isChecked = filter[
+                              pulseFilter[1].key
+                            ]?.includes(company.placeholder);
+                            updateFilter(company, pulseFilter[1].key, isChecked);
+                          }}
+                        />
+                      }
+                      label={company.placeholder}
+                    />
                 </Grid>
               ))}
             </Grid>

@@ -45,7 +45,7 @@
 
 #MainContainer p {
     margin-top:10px;
-    text-align: left;
+    text-align: justify;
     margin-bottom: 20px;
 }
 
@@ -58,7 +58,7 @@
 #MainContainer th,
 #MainContainer td {
     padding: 10px 15px;
-    text-align: left;
+    text-align: justify;
     border-bottom: 1px solid #627b8e;
 }
 
@@ -131,6 +131,7 @@
     #MainContainer {
         width: 70%;
         margin: 70px auto 50px;
+        font-family: 'Inter', sans-serif;
     }
 
     #MainContainer table {
@@ -151,6 +152,7 @@
         width: 90%;
         padding: 10px 0;
         margin: 10px auto 0px;
+        font-family: 'Inter', sans-serif;
     }
 
     #MainContainer>h1 {
