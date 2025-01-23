@@ -24,7 +24,7 @@ const initialState = {
 export const getPortfolioCompanies = createAsyncThunk(
     "getPortfolioCompanies",
     async () => {
-      const response = await fetch(`${url}/user/my-portfolio`, {
+      const response = await fetch(`${url}/user/my-portfolio?platform=website`, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -41,7 +41,7 @@ export const getPortfolioCompanies = createAsyncThunk(
   export const searchAllCompanies = createAsyncThunk(
     "searchAllCompanies",
     async (q) => {
-      const response = await fetch(`${url}/all-companies/search?q=${q}`, {
+      const response = await fetch(`${url}/all-companies/search?q=${q}?platform=website`, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -58,7 +58,7 @@ export const getPortfolioCompanies = createAsyncThunk(
   export const updatePortfolioApi = createAsyncThunk(
     "updatePortfolioApi",
     async ({data,router},{dispatch}) => {
-      const response = await fetch(`${url}/user/update-portfolio`, {
+      const response = await fetch(`${url}/user/update-portfolio?platform=website`, {
         method: "PATCH",
         headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -81,7 +81,7 @@ export const getPortfolioCompanies = createAsyncThunk(
     }
   );
   export const pulseFilterApi = createAsyncThunk("pulseFilterApi", async () => {
-    const response = await fetch(`${url}/corporate-updates/filters`, {
+    const response = await fetch(`${url}/corporate-updates/filters?platform=website`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),

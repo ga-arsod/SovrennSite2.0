@@ -306,6 +306,27 @@ const DiscoveryTableCard = ({ tableData, id }) => {
                     </StyledTypography3>
                   </Grid>
                 </Grid>
+                {
+                  tableData?.bucket.show_revenue_guidance ? <Grid container marginTop={1}>
+                  <Grid item>
+                      <StyledTypography3
+                        color={colors.greyBlue900}
+                        sx={{ fontWeight: "400" }}
+                        component="span"
+                      >
+                        {`Revenue Guidance : `}
+                      </StyledTypography3>
+                      <StyledTypography3
+                        color={colors.navyBlue500}
+                        sx={{ fontWeight: "600" }}
+                        component="span"
+                      >
+                        {item?.revenue_guidance ? `${item?.revenue_guidance}%` : "NA"}
+                      </StyledTypography3>
+                    </Grid>
+                  </Grid> : <></>
+                }
+                
               </Box>
               <Divider sx={{ paddingBottom: "8px", borderColor: "#E6E6E6" }} />
               <StyledTypography4 textAlign="left" marginTop={1}>

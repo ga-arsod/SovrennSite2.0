@@ -17,7 +17,7 @@ const initialState = {
 };
 
 export const userDetailsApi = createAsyncThunk("userDetailsApi", async () => {
-  const response = await fetch(`${url}/user`, {
+  const response = await fetch(`${url}/user?platform=website`, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -29,7 +29,7 @@ export const userDetailsApi = createAsyncThunk("userDetailsApi", async () => {
 export const subscriptionDetailsApi = createAsyncThunk(
   "subscriptionDetailsApi",
   async () => {
-    const response = await fetch(`${url}/subscription/`, {
+    const response = await fetch(`${url}/subscription/?platform=website`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -51,7 +51,7 @@ export const editUserDetailsApi = createAsyncThunk(
     formdata.append("state", formData.state);
     formdata.append("profile_pic", formData.profile_pic);
 
-    const response = await fetch(`${url}/user/edit-profile`, {
+    const response = await fetch(`${url}/user/edit-profile?platform=website`, {
       method: "PATCH",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -76,7 +76,7 @@ export const editUserDetailsApi = createAsyncThunk(
 export const sendPasswordLinkApi = createAsyncThunk(
   "sendPasswordLinkApi",
   async (email, { dispatch }) => {
-    const response = await fetch(`${url}/reset-link`, {
+    const response = await fetch(`${url}/reset-link?platform=website`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +102,7 @@ export const sendPasswordLinkApi = createAsyncThunk(
 export const changePasswordApi = createAsyncThunk(
   "changePasswordApi",
   async ({ password, token }, { dispatch }) => {
-    const response = await fetch(`${url}/reset-password`, {
+    const response = await fetch(`${url}/reset-password?platform=website`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -130,7 +130,7 @@ export const changePasswordApi = createAsyncThunk(
 export const resetPasswordApi = createAsyncThunk(
   "resetPasswordApi",
   async ({ currentPassword, newPassword }, { dispatch }) => {
-    const response = await fetch(`${url}/user/reset-password`, {
+    const response = await fetch(`${url}/user/reset-password?platform=website`, {
       method: "PATCH",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),

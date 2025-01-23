@@ -40,7 +40,7 @@ export const postCommentApi = createAsyncThunk(
     } else if (component === "discovery") {
       body.company_id = company_id;
     }
-    const response = await fetch(`${url}/comments`, {
+    const response = await fetch(`${url}/comments?platform=website`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -69,7 +69,7 @@ export const postCommentApi = createAsyncThunk(
 export const commentLikeApi = createAsyncThunk(
   "commentLikeApi",
   async ({ company_id, comment_id,component }, { dispatch }) => {
-    const response = await fetch(`${url}/comments/${comment_id}/like`, {
+    const response = await fetch(`${url}/comments/${comment_id}/like?platform=website`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -90,7 +90,7 @@ export const commentLikeApi = createAsyncThunk(
 export const commentunLikeApi = createAsyncThunk(
   "commentunLikeApi",
   async ({ company_id, comment_id,component }, { dispatch }) => {
-    const response = await fetch(`${url}/comments/${comment_id}/like`, {
+    const response = await fetch(`${url}/comments/${comment_id}/like?platform=website`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -108,7 +108,7 @@ export const commentunLikeApi = createAsyncThunk(
 export const commentDeleteApi = createAsyncThunk(
   "commentDeleteApi",
   async ({ company_id, comment_id,component }, { dispatch }) => {
-    const response = await fetch(`${url}/comments/${comment_id}`, {
+    const response = await fetch(`${url}/comments/${comment_id}?platform=website`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),

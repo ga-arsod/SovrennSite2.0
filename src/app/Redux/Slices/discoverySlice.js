@@ -46,7 +46,7 @@ const initialState = {
 export const bucketsApiCall = createAsyncThunk(
   "bucketsApiCallData",
   async () => {
-    const response = await fetch(`${url}/buckets/list`, {
+    const response = await fetch(`${url}/buckets/list?platform=website`, {
       method: "GET",
     });
     return response.json();
@@ -56,7 +56,7 @@ export const bucketsApiCall = createAsyncThunk(
 export const myBucketsApiCall = createAsyncThunk(
   "myBucketsApiCallData",
   async () => {
-    const response = await fetch(`${url}/my-buckets/`, {
+    const response = await fetch(`${url}/my-buckets/?platform=website`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -69,7 +69,7 @@ export const myBucketsApiCall = createAsyncThunk(
 export const discoveryFiltersApiCall = createAsyncThunk(
   "discoveryFiltersApiCall",
   async () => {
-    const response = await fetch(`${url}/buckets/filters`, {
+    const response = await fetch(`${url}/buckets/filters?platform=website`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -82,7 +82,7 @@ export const discoveryFiltersApiCall = createAsyncThunk(
 export const commonCompanyListApi = createAsyncThunk(
   "commonCompanyListApi",
   async (companyArray) => {
-    const response = await fetch(`${url}/buckets/buckets-names`, {
+    const response = await fetch(`${url}/buckets/buckets-names?platform=website`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -101,7 +101,7 @@ export const commonCompanyListApi = createAsyncThunk(
 export const deleteCustomBucketApi = createAsyncThunk(
   "deleteCustomBucketApi",
   async (id, { dispatch }) => {
-    const response = await fetch(`${url}/my-buckets/${id}`, {
+    const response = await fetch(`${url}/my-buckets/${id}?platform=website`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -127,7 +127,7 @@ export const deleteCustomBucketApi = createAsyncThunk(
 export const createCustomBucketApi = createAsyncThunk(
   "createCustomBucketApi",
   async (data, { dispatch }) => {
-    const response = await fetch(`${url}/my-buckets/`, {
+    const response = await fetch(`${url}/my-buckets/?platform=website`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -220,7 +220,7 @@ export const myBucketDiscoveryTableApi = createAsyncThunk(
 export const otherBucketsCompanyPresentApi = createAsyncThunk(
   "otherBucketsCompanyPresentApi",
   async ({ company_id }) => {
-    const response = await fetch(`${url}/buckets/present/${company_id}`, {
+    const response = await fetch(`${url}/buckets/present/${company_id}?platform=website`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -235,7 +235,7 @@ export const otherBucketsCompanyPresentApi = createAsyncThunk(
 export const discoveryArticleApi = createAsyncThunk(
   "discoveryArticleApi",
   async (slug, { dispatch }) => {
-    const response = await fetch(`${url}/company/discovery-data/${slug}`, {
+    const response = await fetch(`${url}/company/discovery-data/${slug}?platform=website`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -251,7 +251,7 @@ export const isBookmarkedApi = createAsyncThunk(
   "isBookmarkedApi",
   async ({ company_id }) => {
     const response = await fetch(
-      `${url}/user/available-in-watchlist/${company_id}`,
+      `${url}/user/available-in-watchlist/${company_id}?platform=website`,
       {
         method: "GET",
         headers: {
@@ -268,7 +268,7 @@ export const isBookmarkedApi = createAsyncThunk(
 export const addToWatchlistApi = createAsyncThunk(
   "addToWatchlistApi",
   async ({company_id,uptrend_potential,expected_price_after_1year}, { dispatch }) => {
-    const response = await fetch(`${url}/user/add-to-watchlist`, {
+    const response = await fetch(`${url}/user/add-to-watchlist?platform=website`, {
       method: "PATCH",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -309,7 +309,7 @@ export const removeFromWatchlistApi = createAsyncThunk(
   "removeFromWatchlistApi",
   async (company_id, { dispatch }) => {
     const response = await fetch(
-      `${url}/user/remove-from-watchlist/${company_id}`,
+      `${url}/user/remove-from-watchlist/${company_id}?platform=website`,
       {
         method: "PATCH",
         headers: {
@@ -343,7 +343,7 @@ export const removeFromWatchlistApi = createAsyncThunk(
       "getParentsBucketApi",
       async ({title}) => {
         const response = await fetch(
-          `${url}/parent-buckets/${title}`,
+          `${url}/parent-buckets/${title}?platform=website`,
           {
             method: "GET",
             headers: {

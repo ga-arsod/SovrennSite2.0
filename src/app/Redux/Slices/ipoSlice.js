@@ -17,7 +17,7 @@ const initialState = {
 };
 
 export const ipoFilterApi = createAsyncThunk("ipoFilterApi", async () => {
-  const response = await fetch(`${url}/ipo/filters`, {
+  const response = await fetch(`${url}/ipo/filters?platform=website`, {
     method: "GET",
   });
   return response.json();
@@ -42,7 +42,7 @@ export const ipoCompaniesListApi = createAsyncThunk(
 export const ipoArticleApi = createAsyncThunk(
   "ipoArticleApi",
   async (slug, { dispatch }) => {
-    const response = await fetch(`${url}/ipo/blocks/${slug}`, {
+    const response = await fetch(`${url}/ipo/blocks/${slug}?platform=website`, {
       method: "GET",
     });
 

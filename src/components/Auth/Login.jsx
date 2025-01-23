@@ -118,7 +118,7 @@ const Login = ({ component, handleClose }) => {
   const handleSubmitForm = async (event) => {
     event.preventDefault();
 
-    const data = await fetch(`${URL}/login`, {
+    const data = await fetch(`${URL}/login?platform=website`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(form),

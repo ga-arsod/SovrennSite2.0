@@ -23,7 +23,7 @@ const initialState = {
 };
 
 export const primeFilterApi = createAsyncThunk("primeFilterApi", async () => {
-  const response = await fetch(`${url}/prime-research/filters`, {
+  const response = await fetch(`${url}/prime-research/filters?platform=website`, {
     method: "GET",
   });
   return response.json();
@@ -57,7 +57,7 @@ export const promoterCompaniesListApi = createAsyncThunk("promoterCompaniesListA
 });
 
 export const promoterFilterApi = createAsyncThunk("promoterFilterApi", async () => {
-  const response = await fetch(`${url}/promoter-interviews/filters`, {
+  const response = await fetch(`${url}/promoter-interviews/filters?platform=website`, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -71,7 +71,7 @@ export const promoterFilterApi = createAsyncThunk("promoterFilterApi", async () 
 export const primeArticleApi = createAsyncThunk(
   "primeArticleApi",
   async (slug, { dispatch }) => {
-    const response = await fetch(`${url}/prime-research/data/${slug}`, {
+    const response = await fetch(`${url}/prime-research/data/${slug}?platform=website`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -86,7 +86,7 @@ export const primeArticleApi = createAsyncThunk(
 export const promoterArticleApi = createAsyncThunk(
   "promoterArticleApi",
   async (slug, { dispatch }) => {
-    const response = await fetch(`${url}/promoter-interviews/${slug}`, {
+    const response = await fetch(`${url}/promoter-interviews/${slug}?platform=website`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),

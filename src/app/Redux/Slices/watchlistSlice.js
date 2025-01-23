@@ -12,7 +12,7 @@ const initialState = {
 export const getWatchlistApi = createAsyncThunk(
   "getWatchlistApi",
   async () => {
-    const response = await fetch(`${url}/user/my-watchlist`, {
+    const response = await fetch(`${url}/user/my-watchlist?platform=website`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -25,7 +25,7 @@ export const getWatchlistApi = createAsyncThunk(
 export const editWatchlistApi = createAsyncThunk(
     "editWatchlistApi",
     async ({id,editedValues},{dispatch}) => {
-      const response = await fetch(`${url}/user/update-watchlist/${id}`, {
+      const response = await fetch(`${url}/user/update-watchlist/${id}?platform=website`, {
         method: "PATCH",
         headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),

@@ -138,7 +138,7 @@ const IpoTableData = ({data}) => {
      <Container>
      
       {
-         data.length== 0 ?  <NoData text="No data available" />
+         data?.length== 0 ?  <NoData text="No data available" />
          :
          <Box
          sx={{
@@ -176,7 +176,7 @@ const IpoTableData = ({data}) => {
                </TableRow>
              </TableHead>
              <TableBody>
-               {data.map((row, index) => (
+               {data?.map((row, index) => (
                  <TableRow
                    key={index}
                    sx={{
@@ -189,25 +189,25 @@ const IpoTableData = ({data}) => {
                  >
                   
                    <StyledBodyTableCell  sx={{ color: colors.navyBlue500, width: "200px" }}>
-                   {row.company_Id?.company_name}
+                   {row?.company_Id?.company_name}
                    </StyledBodyTableCell>
                    <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                   {row.company_Id?.industry}
+                   {row?.company_Id?.industry}
                    </StyledBodyTableCell>
                    <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                   {moment(row.opening_date).format("Do MMM YY")}
+                   {moment(row?.opening_date).format("Do MMM YY")}
                    </StyledBodyTableCell>
                    <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                   {moment(row.closing_date).format("Do MMM YY")}
+                   {moment(row?.closing_date).format("Do MMM YY")}
                    </StyledBodyTableCell>
                    <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                   {moment(row.listing_date).format("Do MMM YY")}
+                   {moment(row?.listing_date).format("Do MMM YY")}
                    </StyledBodyTableCell>
                    <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                   {row.company_Id?.offer_price_ttm_pe ? `${row.company_Id?.offer_price_ttm_pe}x` : "NA"}
+                   {row?.company_Id?.offer_price_ttm_pe ? `${row?.company_Id?.offer_price_ttm_pe}x` : "NA"}
                    </StyledBodyTableCell>
                    <StyledBodyTableCell sx={{ color: colors.neutral900 }}>
-                   {row.company_Id?.revenue_growth ? `${row.company_Id?.revenue_growth}%` : "NA"}
+                   {row?.company_Id?.revenue_growth ? `${row?.company_Id?.revenue_growth}%` : "NA"}
                    </StyledBodyTableCell>
                    <StyledBodyTableCell>
                     

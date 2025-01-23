@@ -15,7 +15,7 @@ import Head from "next/head";
 import Spinner from "@/components/Common/Spinner";
 import NoData from "../../components/NoData/NoData";
 import Link from "next/link";
-
+import { useSelector } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -69,7 +69,7 @@ const CompanyInfo = () => {
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const [isLoading, setIsLoading] = useState(true);
-
+  const { isAuth } = useSelector((store) => store.auth);
   const router = useRouter();
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
@@ -105,7 +105,13 @@ const CompanyInfo = () => {
 
   const getCompanyData = async (q) => {
     const res = await fetch(
-      `https://api.sovrenn.com/company/search/company-data/${q}`
+      `https://api.sovrenn.com/company/search/company-data/${q}`,
+      {
+        method: 'GET', 
+        headers: {
+          Authorization: isAuth ?  "Bearer " + localStorage.getItem("token") : null,
+        },
+      }
     );
 
     const data = await res.json();
@@ -127,7 +133,7 @@ const CompanyInfo = () => {
     return (
       <>
         <Head>
-          <title>{companyData.company.slug}</title>
+          <title>{companyData?.company?.slug}</title>
 
           <link
             rel="canonical"
@@ -143,7 +149,7 @@ const CompanyInfo = () => {
   return (
     <>
       <Head>
-        <title>{companyData.company.company_name}</title>
+        <title>{companyData?.company?.company_name}</title>
 
         <link
           rel="canonical"
@@ -159,7 +165,7 @@ const CompanyInfo = () => {
         >
           <Grid item>
             <StyledTypography1 color={colors.navyBlue500}>
-              {companyData.company.company_name}
+              {companyData?.company?.company_name}
             </StyledTypography1>
           </Grid>
           <Grid item marginTop={3}>
@@ -181,7 +187,7 @@ const CompanyInfo = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                  {companyData.company.share_price}
+                  {companyData?.company?.share_price}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -197,7 +203,7 @@ const CompanyInfo = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                  {companyData.company.sector}
+                  {companyData?.company?.sector}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -213,7 +219,7 @@ const CompanyInfo = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                  {companyData.company.industry}
+                  {companyData?.company?.industry}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -229,7 +235,7 @@ const CompanyInfo = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                  {companyData.company.market_cap}
+                  {companyData?.company?.market_cap}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -245,7 +251,7 @@ const CompanyInfo = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-                  {companyData.company.ttm_pe}
+                  {companyData?.company?.ttm_pe}
                 </StyledTypography3>
               </Grid>
             </Grid>
@@ -253,7 +259,7 @@ const CompanyInfo = () => {
 
           <Grid item marginTop={4} width="100%">
             <StyledTypography2>Prime Articles</StyledTypography2>
-            {!companyData?.prime.length ? (
+            {!companyData?.prime?.length ? (
               <NoData text="No Prime article available." />
             ) : isSmallerThanMd ? (
               <SearchPrimeCard data={companyData?.prime} />
@@ -264,7 +270,7 @@ const CompanyInfo = () => {
 
           <Grid item width="100%" marginTop={2}>
             <StyledTypography2>Discovery</StyledTypography2>
-            {!companyData?.discovery.length ? (
+            {!companyData?.discovery?.length ? (
               <NoData text="No bucket available currently." />
             ) : (
               <CompanyCard
@@ -276,7 +282,7 @@ const CompanyInfo = () => {
 
           <Grid item marginTop={4} width="100%">
             <StyledTypography2>Times</StyledTypography2>
-            {!companyData?.news.length ? (
+            {!companyData?.news?.length ? (
               <NoData text="No Times article available." />
             ) : (
               <Box
@@ -297,7 +303,7 @@ const CompanyInfo = () => {
                     <StyledTypography3
                       sx={{ color: colors.navyBlue500, fontWeight: "600" }}
                     >
-                      {`Read the ${companyData.news.length} latest news related to ${companyData.company?.company_name}.`}
+                      {`Read the ${companyData?.news?.length} latest news related to ${companyData?.company?.company_name}.`}
                     </StyledTypography3>
                   </Grid>
                   <Grid
@@ -310,6 +316,52 @@ const CompanyInfo = () => {
                         endIcon={<StyledArrowForwardIosIcon />}
                         size="small"
                         onClick={handleNavigation}
+                      >
+                        Read
+                      </StyledButton>
+                    
+                  </Grid>
+                </Grid>
+              </Box>
+            )}
+          </Grid>
+
+          <Grid item marginTop={4} width="100%">
+            <StyledTypography2>Ipo</StyledTypography2>
+            {!companyData?.ipo?.length ? (
+              <NoData text="No IPO data available." />
+            ) : (
+              <Box
+                sx={{
+                  paddingX: 2,
+                  marginY: 3,
+                  border: `1px solid ${colors.neutral600}`,
+                  borderRadius: 1,
+                }}
+              >
+                <Grid
+                  container
+                  spacing={2}
+                  direction={isSmallerThanSm ? "column" : "row"}
+                  paddingY={2}
+                >
+                  <Grid item xs>
+                    <StyledTypography3
+                      sx={{ color: colors.navyBlue500, fontWeight: "600" }}
+                    >
+                      {`Read the IPO Article of ${companyData?.company?.company_name}.`}
+                    </StyledTypography3>
+                  </Grid>
+                  <Grid
+                    item
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
+                  >
+                   
+                      <StyledButton
+                        variant="outlined"
+                        endIcon={<StyledArrowForwardIosIcon />}
+                        size="small"
+                        onClick={()=>{router.push(`/ipo-zone/${companyData?.ipo[0]?.slug}`)}}
                       >
                         Read
                       </StyledButton>
