@@ -19,7 +19,7 @@ import { doSocialLogin } from "@/app/actions";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
+import Link from "next/link";
 
 const StyledInputLabel = styled(InputLabel)`
   font-weight: 400;
@@ -249,7 +249,7 @@ const Login = ({ component, handleClose }) => {
                   ),
                 }}
               />
-
+              <Link href="/forgot-password">
               <Typography textAlign="right">
                 <Button
                   disableElevation
@@ -264,6 +264,7 @@ const Login = ({ component, handleClose }) => {
                   Forgot Password
                 </Button>
               </Typography>
+              </Link>
             </Grid>
             {!validate ? (
               <Typography
