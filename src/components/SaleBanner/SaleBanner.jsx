@@ -45,7 +45,7 @@ export default function SaleBanner() {
               <Image
                 src="/sovrenn-sale-banner.png" 
                 alt="Sovrenn Financial Freedom Sale"
-                width={800} 
+                width={500} 
                 height={300}
                 style={{
                   width: "100%",
