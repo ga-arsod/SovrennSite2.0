@@ -43,7 +43,7 @@ export default function SaleBanner() {
               onClick={handleBannerClick} 
             >
               <Image
-                src="/sovrenn-sale-banner.png" 
+                src={"https://dwht5p5xdhql3.cloudfront.net/BANNERS/RepublicDaySaleBanner.png"} 
                 alt="Sovrenn Financial Freedom Sale"
                 width={500} 
                 height={300}
