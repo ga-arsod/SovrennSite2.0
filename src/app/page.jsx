@@ -12,6 +12,7 @@ import AppInfo from "@/components/Home/AppInfo";
 import TrialCard from "@/components/Cards/TrialCard";
 import Updates from "@/components/Home/Updates";
 import { auth } from "@/auth";
+import SaleBanner from "../components/SaleBanner/SaleBanner";
 
 const Home =  () => {
  
@@ -99,6 +100,7 @@ const Home =  () => {
 
   return (
     <>
+    <SaleBanner/>
       <MainPoster />
       <Updates  />
       <UserCount />
