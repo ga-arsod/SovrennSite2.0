@@ -49,7 +49,7 @@ export default function SaleBanner() {
                 height={300}
                 style={{
                   width: "100%",
-                  height: "100%",
+                  height: "auto",
                 }}
               />
             </Box>
