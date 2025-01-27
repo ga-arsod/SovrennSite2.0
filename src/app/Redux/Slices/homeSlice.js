@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 const url = process.env.NEXT_PUBLIC_API_URL;
+import { setSnackStatus } from './snackbarSlice';
 
 const initialState = {
   articleUpdates: null,
@@ -18,7 +19,44 @@ export const homeUpdatesApi = createAsyncThunk("apidata", async () => {
     }
   });
   return response.json();
+  
 });
+
+// Contact Us Api
+export const contactUsApi = createAsyncThunk(
+  "contactUsApi",
+  async ({payload}, { dispatch }) => {
+    const response = await fetch(`${url}/common/mail-help?platform=website`, {
+      method: "POST",
+      headers: {
+      
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+     
+   
+      dispatch(
+        setSnackStatus({
+          status: true,
+          severity: "success",
+          message: "Message has been sent successfully!",
+        })
+      );
+    }
+   
+
+   
+
+    return result;
+  }
+);
+
+
 
 // Fetch Customer Reviews
 export const customerReviewsApi = createAsyncThunk("customerReviewsApidata", async () => {
