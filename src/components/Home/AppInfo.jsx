@@ -7,6 +7,7 @@ import Image from "next/image";
 import { colors } from "../Constants/colors";
 import { Fade } from "@mui/material";
 import Link from "next/link";
+import ContactModal from "../Modal/ContactModal";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -48,7 +49,7 @@ const FadeInBox = styled(Box)(({ theme }) => ({
 const AppInfo = () => {
   const [inView, setInView] = useState(false);
   const ref = useRef(null);
-
+  const [openContactModal, setOpenContactModal] = useState(false);
   
 
   const handleMailClick = () => {
@@ -97,6 +98,8 @@ const AppInfo = () => {
   }, []);
 
   return (
+    <>
+    <ContactModal openContactModal={openContactModal} setOpenContactModal={setOpenContactModal}/>
     <Box backgroundColor="#F3FAFB" width="100%">
       <Grid
         container
@@ -143,7 +146,7 @@ const AppInfo = () => {
                 <StyledButton
                   variant="contained"
                   startIcon={<MailOutlineIcon />}
-                  onClick={handleMailClick}
+                  onClick={()=>{setOpenContactModal(true)}}
                   sx={{
                     color: "white",
                     fontWeight: "600",
@@ -242,6 +245,7 @@ const AppInfo = () => {
         </Grid>
       </Grid>
     </Box>
+    </>
   );
 };
 

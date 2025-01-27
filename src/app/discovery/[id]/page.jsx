@@ -136,6 +136,7 @@ const DiscoveryBucketContent = () => {
   });
 
   const handleFilterChange = (ele) => {
+    console.log(ele,"ele")
     const { value, name } = ele.target;
     setFilter({
       ...filter,
@@ -149,6 +150,7 @@ const DiscoveryBucketContent = () => {
 
   useEffect(() => {
     const filterObj = {};
+    
     if (filter.company_type === "all") {
       filterObj["company_type"] = "";
     } else {
@@ -201,12 +203,13 @@ const DiscoveryBucketContent = () => {
         );
       }
     }
+    console.log(filterObj,"filter obj")
   }, [filter, sortBy, sortOrder, dispatch, isAuth, currentPage]);
 
   useEffect(() => {
     dispatch(discoveryFiltersApiCall());
   }, [dispatch, isAuth]);
-
+console.log(filtersData,"filters data")
   useEffect(() => {
    
     if (typeof window !== "undefined") {
@@ -342,7 +345,8 @@ const DiscoveryBucketContent = () => {
                         {filtersData[2]?.options?.map((element, index) => (
                           <StyledMenuItem
                             key={index}
-                            value={index === 0 ? "all" : element?.id}
+                            value={index === 0 ? "all" : element?.value}
+                           
                           >
                             {element?.placeholder}
                           </StyledMenuItem>

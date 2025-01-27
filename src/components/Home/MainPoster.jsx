@@ -15,6 +15,7 @@ import { subscriptionDetailsApi } from "@/app/Redux/Slices/authSlice";
 import moment from "moment";
 import PaymentButton from "../Common/PaymentButton";
 import LoginModal from "../Modal/LoginModal";
+import Snackbar from "../Snackbar/SnackBar";
 
 const headingsArray = [
   {
@@ -240,6 +241,7 @@ const MainPoster = () => {
       }}
       marginTop={6}
     >
+     <Snackbar/>
       <Grid
         container
         paddingX={2}
