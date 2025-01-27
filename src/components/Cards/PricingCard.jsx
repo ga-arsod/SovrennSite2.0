@@ -198,7 +198,7 @@ const PricingCard = ({ planDetails }) => {
                   border: "1px solid #E4E7EC",
                   borderRadius: "16px",
                   boxShadow: "0px 12px 16px -4px #1018281A",
-                  height: plan.type == "full-access" ? {xs:"570px",sm:"720px"} : {xs:"560px",sm:"650px"},
+                  height: plan.type == "full-access" ? {xs:"570px",sm:"720px"} : {xs:"590px",sm:"680px"},
                   marginBottom: "20px",
                   position: "relative",
                 }}
