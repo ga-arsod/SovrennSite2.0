@@ -1,12 +1,18 @@
-import React ,{useState} from "react";
-import { Grid, Typography, Box, Button, Divider,Container } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Grid,
+  Typography,
+  Box,
+  Button,
+  Divider,
+  Container,
+} from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import Link from "next/link";
 import NoData from "../NoData/NoData";
 import moment from "moment";
-import LoginModal from "../Modal/LoginModal";
-import PaymentModal from "../PayU/PaymentModal";
+
 import { useSelector } from "react-redux";
 
 const StyledTypography3 = styled(Typography)`
@@ -37,48 +43,22 @@ const StyledButton2 = styled(Button)`
 `;
 
 const IpoCard = ({ data }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isPaymentOpen,setIsPaymentOpen]=useState(false)
-  const { isAuth ,userDetails} = useSelector((store) => store.auth);
-  const handleClose=()=>{
-    setIsOpen(false)
-  }
-  const handlePaymentClose=()=>{
-    setIsPaymentOpen(false)
-  }
-
   const articleRedirect = (ind, row) => {
-    if (
-     
-      userDetails?.subscriptions?.includes("full-access") ||
-      userDetails?.subscriptions?.includes("monthly") ||
-      userDetails?.subscriptions?.includes("quarterly") ||
-      userDetails?.subscriptions?.includes("life") ||
-      userDetails?.subscriptions?.includes("trial") 
-       && isAuth
-    ) {
-      return decodeURIComponent(`/ipo-zone/${(row.slug)}`);
-    } else 
-    setIsPaymentOpen(true);
+    return decodeURIComponent(`/ipo-zone/${row.slug}`);
   };
 
-  const handleRowClick = (index,row) => {
-    if (isAuth) {
-      const redirectUrl = articleRedirect(index,row);
-      if (redirectUrl) {
-        window.open(redirectUrl, "_blank");
-      }
-    } else {
-      setIsOpen(true);
+  const handleRowClick = (index, row) => {
+    const redirectUrl = articleRedirect(index, row);
+    if (redirectUrl) {
+      window.open(redirectUrl, "_blank");
     }
   };
   return (
     <>
-    <LoginModal isOpen={isOpen} handleClose={handleClose}/>
-    <PaymentModal isPaymentOpen={isPaymentOpen} handlePaymentClose={handlePaymentClose}/>
       {data?.length == 0 ? (
         <Container>
-        <NoData text="No data available" /></Container>
+          <NoData text="No data available" />
+        </Container>
       ) : (
         <Box sx={{ flexGrow: 1, padding: 2 }}>
           <Grid
@@ -92,7 +72,6 @@ const IpoCard = ({ data }) => {
                 sm: "repeat(2, minmax(0, 1fr))",
               },
               gap: 2,
-            
             }}
           >
             {data?.map((row, index) => {
@@ -105,7 +84,7 @@ const IpoCard = ({ data }) => {
                     flexDirection: "column",
                     maxWidth: "400px",
                     position: "relative",
-                    border:"1px solid  #E6E8E9",
+                    border: "1px solid  #E6E8E9",
                     backgroundColor: "#FAF9F9",
                     borderRadius: "4px",
                     maxWidth: "474px",
@@ -130,7 +109,8 @@ const IpoCard = ({ data }) => {
                           ? "#FB8E8E"
                           : row?.status?.text == "Listing Today"
                           ? "#011627"
-                           : row?.status?.text == "Listed" ? "#627B8F" 
+                          : row?.status?.text == "Listed"
+                          ? "#627B8F"
                           : "",
                       color:
                         row?.status?.text == "Open"
@@ -142,7 +122,9 @@ const IpoCard = ({ data }) => {
                           : row?.status?.text == "Closed"
                           ? "black"
                           : row?.status?.text == "Listing Today"
-                          ? "white" : row?.status?.text == "Listed" ? "white" 
+                          ? "white"
+                          : row?.status?.text == "Listed"
+                          ? "white"
                           : "",
                       borderRadius: "0px 4px 0px 4px",
                       padding: "8px 22px",
@@ -156,7 +138,6 @@ const IpoCard = ({ data }) => {
                       }}
                     >
                       {row?.status?.text}
-                       
                     </Typography>
                   </Box>
 
@@ -280,10 +261,15 @@ const IpoCard = ({ data }) => {
                   <Box
                     sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}
                   >
-                   <StyledButton2 variant="contained" color="primary" onClick={()=>{handleRowClick(index,row)}}>
-                        Read
-                      </StyledButton2>
-                    
+                    <StyledButton2
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        handleRowClick(index, row);
+                      }}
+                    >
+                      Read
+                    </StyledButton2>
                   </Box>
                 </Box>
               );
