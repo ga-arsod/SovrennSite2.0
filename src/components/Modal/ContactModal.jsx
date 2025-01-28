@@ -11,9 +11,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { contactUsApi } from "@/app/Redux/Slices/homeSlice";
-import { useDispatch } from "react-redux";
 
 const StyledInputLabel = styled(Typography)`
   font-weight: 400;
@@ -72,6 +71,7 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
+
 const StyledBox = styled(Box)`
   position: absolute;
   top: 50%;
@@ -93,7 +93,6 @@ const StyledTypography2 = styled(Typography)`
   text-align: center;
   @media (max-width: 639px) {
     font-size: 26px;
-
     line-height: 17px;
   }
 `;
@@ -126,23 +125,32 @@ const StyledButton2 = styled(Button)`
 `;
 
 const ContactModal = ({ openContactModal, setOpenContactModal }) => {
-  const { userDetails } = useSelector((store) => store.auth);
-  const handleClose = () => setOpenContactModal(false);
-  const [message, setMessage] = useState("");
+  const { userDetails,isAuth } = useSelector((store) => store.auth);
+  const [formData, setFormData] = useState({
+    name:isAuth ? `${userDetails?.first_name || ""} ${userDetails?.last_name || ""}`.trim() : "",
+    email:isAuth ? userDetails?.email : "",
+    phoneNumber:isAuth &&  userDetails?.phone_number ? userDetails?.phone_number : "",
+    message: "",
+  });
+
   const dispatch = useDispatch();
-  const handleSubmit =  () => {
-   
-console.log("hello submit")
+
+  const handleClose = () => setOpenContactModal(false);
+
+  const handleChange = (field) => (e) => {
+    setFormData({ ...formData, [field]: e.target.value });
+  };
+
+  const handleSubmit = () => {
     const payload = {
-      name: `${userDetails?.first_name} ${userDetails?.last_name}`,
-      email: userDetails?.email,
-      phone_number: userDetails?.phone_number,
-      message,
+      name: formData.name,
+      email: formData.email,
+      phone_number: formData.phoneNumber,
+      message: formData.message,
     };
 
-     dispatch(contactUsApi({payload:payload}));
-
-    setMessage("");
+    dispatch(contactUsApi({ payload }));
+    setFormData({ name: "", email: "", phoneNumber: "", message: "" });
     handleClose();
   };
 
@@ -173,7 +181,6 @@ console.log("hello submit")
             border: "none",
             outline: "none",
           }}
-         
         >
           <IconButton
             sx={{ position: "absolute", top: "6px", right: "4px" }}
@@ -204,8 +211,9 @@ console.log("hello submit")
                   id="full_name"
                   name="full_name"
                   type="text"
+                  value={formData.name}
+                  onChange={handleChange("name")}
                   sx={{ marginBottom: 2 }}
-                  value={`${userDetails?.first_name} ${userDetails?.last_name} `}
                 />
                 <StyledInputLabel htmlFor="email">
                   Enter Your Email
@@ -215,9 +223,10 @@ console.log("hello submit")
                   required
                   id="email"
                   name="email"
-                  type="text"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange("email")}
                   sx={{ marginBottom: 2 }}
-                  value={`${userDetails?.email}`}
                 />
                 <StyledInputLabel htmlFor="phone_number">
                   Enter Your Phone No.
@@ -228,7 +237,8 @@ console.log("hello submit")
                   name="phone_number"
                   required
                   type="tel"
-                  value={`${userDetails?.phone_number || ""}`}
+                  value={formData.phoneNumber}
+                  onChange={handleChange("phoneNumber")}
                   inputProps={{
                     pattern: "[0-9]*",
                     maxLength: 10,
@@ -247,15 +257,14 @@ console.log("hello submit")
                   type="text"
                   multiline
                   rows={3}
+                  value={formData.message}
+                  onChange={handleChange("message")}
                   sx={{ marginBottom: 2 }}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
                 />
                 <Grid container spacing={2} paddingX="20px">
                   <Grid item xs={12}>
                     <StyledButton2
-                      disabled={message == ""}
-                    
+                      disabled={formData.message === ""}
                       variant="contained"
                       onClick={handleSubmit}
                     >
