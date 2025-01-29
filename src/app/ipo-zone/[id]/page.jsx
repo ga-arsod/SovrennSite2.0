@@ -14,8 +14,7 @@ import Disclaimer from "../../../components/Common/Disclaimer";
 import { primeArticleDisclaimer } from "@/utils/Data";
 import Spinner from "@/components/Common/Spinner";
 
-import NoLogin from "../../../components/Auth/NoLogin";
-import NoAccess from "../../../components/Auth/NoAccess";
+
 
 const StyledTypography1 = styled(Typography)`
   font-size: 36px;
@@ -69,11 +68,7 @@ const IpoArticles = () => {
     };
   }, []);
 
-  if (!isAuth) {
-    return <NoLogin />;
-  }
-
-  if (isAuth && isIpoArticleLoading) {
+  if (isIpoArticleLoading) {
     return (
       <>
         <Spinner margin={15} />
@@ -81,35 +76,28 @@ const IpoArticles = () => {
     );
   }
 
-  if (
-    isAuth &&
-    (userDetails?.subscriptions?.includes("full-access") ||
-      userDetails?.subscriptions?.includes("monthly") ||
-      userDetails?.subscriptions?.includes("quarterly") ||
-      userDetails?.subscriptions?.includes("life") ||
-      userDetails?.subscriptions?.includes("trial"))
-  ) {
-    return (
-      <>
-        <article>
-          <Box sx={{ maxWidth: 990, margin: "84px auto 0px auto", padding: 2 }}>
-            <StyledTypography1 textAlign="center">{ipoArticle?.title}</StyledTypography1>
+  return (
+    <>
+      <article>
+        <Box sx={{ maxWidth: 990, margin: "84px auto 0px auto", padding: 2 }}>
+          <StyledTypography1 textAlign="center">
+            {ipoArticle?.title}
+          </StyledTypography1>
 
-            {ipoArticle ? (
-              <div id={styles.MainContainer}>
-                {convertToHtml(ipoArticle?.content)}
-              </div>
-            ) : (
-              <></>
-            )}
+          {ipoArticle ? (
+            <div id={styles.MainContainer}>
+              {convertToHtml(ipoArticle?.content)}
+            </div>
+          ) : (
+            <></>
+          )}
 
-            <ScrollCircle />
-            <Disclaimer margin={3} text={primeArticleDisclaimer} />
-          </Box>
-        </article>
-      </>
-    );
-  } else return <NoAccess />;
+          <ScrollCircle />
+          <Disclaimer margin={3} text={primeArticleDisclaimer} />
+        </Box>
+      </article>
+    </>
+  );
 };
 
 export default IpoArticles;
