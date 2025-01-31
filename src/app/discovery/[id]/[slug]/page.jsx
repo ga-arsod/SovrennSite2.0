@@ -1,7 +1,16 @@
 "use client";
 import styled from "@emotion/styled";
-import { Box, Typography, Divider, Grid, Chip, Container } from "@mui/material";
-
+import {
+  Box,
+  Typography,
+  Divider,
+  Grid,
+  Chip,
+  Container,
+  IconButton,
+} from "@mui/material";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import Comments from "../../../../components/Prime/Comments";
 
@@ -31,6 +40,8 @@ import NoLogin from "../../../../components/Auth/NoLogin";
 import NoAccess from "../../../../components/Auth/NoAccess";
 import ScrollCircle from "@/components/Common/ScrollCircle";
 import { useRouter } from "next/navigation";
+import ArticleNavigation from "../../../../components/Common/ArticleNavigation";
+import { ArrowForward, ArrowBack } from "@mui/icons-material";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -117,7 +128,26 @@ const CustomDivider2 = styled(Divider)`
 const DiscoveryArticle = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const theme=useTheme();
+  const isGreaterThanSm = useMediaQuery(theme.breakpoints.up("md"));
   const { id, slug } = useParams();
+  const companyData = JSON.parse(localStorage.getItem("discoveryTableData"));
+  const [slug2, setSlug2] = useState(decodeURIComponent(slug));
+  const [currentIndex, setCurrentIndex] = useState(
+    companyData?.findIndex((article) => article.slug == decodeURIComponent(slug))
+  );
+console.log(decodeURIComponent(slug),companyData)
+  const handleNavigation = (direction) => {
+    const currentIndex = companyData?.findIndex(
+      (article) => article.slug === slug2
+    );
+
+    if (direction === "next" && currentIndex < companyData.length - 1) {
+      setSlug2(companyData[currentIndex + 1].slug);
+    } else if (direction === "prev" && currentIndex > 0) {
+      setSlug2(companyData[currentIndex - 1].slug);
+    }
+  };
   const {
     isArticleDataLoading,
     articleData,
@@ -149,7 +179,6 @@ const DiscoveryArticle = () => {
   const [isCommentsModalOpen, setIsCommentsModalOpen] = useState(false);
 
   useEffect(() => {
-   
     if (company_id != "") {
       dispatch(
         otherBucketsCompanyPresentApi({
@@ -160,10 +189,9 @@ const DiscoveryArticle = () => {
     }
   }, [company_id]);
 
-  useEffect(()=>{
-  if(slug && isAuth)
-    dispatch(discoveryArticleApi(slug)); 
-  },[slug])
+  useEffect(() => {
+    if (slug2 && isAuth) dispatch(discoveryArticleApi(slug2));
+  }, [slug2]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -176,12 +204,25 @@ const DiscoveryArticle = () => {
   }, [isAuth, isArticleDataLoading]);
 
   useEffect(() => {
-    if (company_id != "") {
-      dispatch(isBookmarkedApi({ company_id }));
-      setIsInWatchlist(isBookmarked);
-      dispatch(getCommentsApi({ company_id, component: "discovery" }));
-    }
-  }, [dispatch, company_id]);
+    const fetchData = async () => {
+      if (company_id !== "") {
+        await dispatch(isBookmarkedApi({ company_id }));
+
+        if (isBookmarked !== undefined) {
+          setIsInWatchlist(isBookmarked);
+        }
+
+        dispatch(getCommentsApi({ company_id, component: "discovery" }));
+      }
+    };
+
+    fetchData();
+  }, [dispatch, company_id, isBookmarked]);
+
+  useEffect(() => {
+    const index = companyData?.findIndex((article) => article.slug === slug2);
+    setCurrentIndex(index);
+  }, [slug2, companyData]);
 
   const toggleWatchlist = () => {
     setIsInWatchlist((prev) => !prev);
@@ -190,14 +231,8 @@ const DiscoveryArticle = () => {
   if (!isAuth) {
     return <NoLogin />;
   }
-
-  if (isAuth && isArticleDataLoading) {
-    return (
-      <>
-        <Spinner margin={15} />
-      </>
-    );
-  }
+  console.log(currentIndex, "current index");
+  
 
   if (
     isAuth &&
@@ -491,12 +526,86 @@ const DiscoveryArticle = () => {
               </Box>
             </Grid>
             <Divider sx={{ marginY: 1 }} />
-            <ScrollCircle />
+           
           </Box>
         ) : (
           <></>
         )}
+       {
+        isGreaterThanSm ?  <div
+        style={{
+          position: "fixed",
+          right: "10px",
+          bottom: "10%",
+          transform: "translateY(-50%)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+          alignItems: "center",
+        }}
+      >
+      
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <IconButton
+            sx={{
+              border:`1px solid ${currentIndex === companyData?.length - 1 ? "#DEDDDD" : colors.themeGreen}`,
+              backgroundColor: "white",
+              color:`${currentIndex === companyData?.length - 1 ? "#DEDDDD" : colors.themeGreen}`,
+              width: 42,
+              height: 42,
+              boxShadow:"0px 12px 24px 0px #0000001A",
 
+              "&:hover": { backgroundColor: "#f0f0f0" },
+            }}
+            onClick={() => handleNavigation("next")}
+            disabled={currentIndex === companyData?.length - 1}
+          >
+            <ArrowForward />
+          </IconButton>
+          <Typography
+            sx={{ color:`${currentIndex === companyData?.length - 1 ? "#DEDDDD" : "#ADADAD"}`, fontSize: 14, marginTop: "5px" }}
+          >
+            Next Article
+          </Typography>
+        </div>
+
+      
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <IconButton
+            sx={{
+              border: `1px solid ${currentIndex === 0 ? "#DEDDDD" : colors.themeGreen}`,
+              backgroundColor:"white",
+              color:`${currentIndex === 0 ? "#DEDDDD" : colors.themeGreen}`,
+              width: 42,
+              height: 42,
+              boxShadow:"0px 12px 24px 0px #0000001A",
+            }}
+            onClick={() => handleNavigation("prev")}
+            disabled={currentIndex === 0}
+          >
+            <ArrowBack />
+          </IconButton>
+          <Typography
+            sx={{ color:`${currentIndex == 0 ? "#DEDDDD" : "#ADADAD"}`, fontSize: 14, marginTop: "5px" }}
+          >
+            Previous Article
+          </Typography>
+        </div>
+      </div> : <></>
+       }
+            <ScrollCircle />
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Container>
             <Grid container justifyContent="center">

@@ -41,7 +41,7 @@ export const getPortfolioCompanies = createAsyncThunk(
   export const searchAllCompanies = createAsyncThunk(
     "searchAllCompanies",
     async (q) => {
-      const response = await fetch(`${url}/all-companies/search?q=${q}?platform=website`, {
+      const response = await fetch(`${url}/all-companies/search?q=${q}&platform=website`, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),

@@ -355,7 +355,7 @@ const PulseSearch = () => {
                 ""
               )}
 
-              {recentlyAdded.length ? (
+              {recentlyAdded?.length ? (
                 <div>
                   <Grid
                     container
@@ -379,7 +379,7 @@ const PulseSearch = () => {
                           padding: 0,
                         }}
                       >
-                        {recentlyAdded.map((value, index) => (
+                        {recentlyAdded?.map((value, index) => (
                           <CustomListItem
                             key={value._id}
                             disableGutters

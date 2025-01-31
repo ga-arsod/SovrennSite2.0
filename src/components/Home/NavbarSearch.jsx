@@ -20,11 +20,11 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
       padding: '2px 10px',
     },
     "& .MuiInputBase-input": {
-      padding: '10px 8px',
-      fontSize: '16px', 
+      padding: '7px 8px',
+      fontSize: '14px', 
       color: 'black',
       "&::placeholder": {
-        fontSize: '12px', 
+        fontSize: '11.5px', 
       },
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
