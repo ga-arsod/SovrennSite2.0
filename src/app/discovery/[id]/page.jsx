@@ -136,7 +136,7 @@ const DiscoveryBucketContent = () => {
   });
 
   const handleFilterChange = (ele) => {
-    console.log(ele,"ele")
+    
     const { value, name } = ele.target;
     setFilter({
       ...filter,
@@ -209,7 +209,7 @@ const DiscoveryBucketContent = () => {
   useEffect(() => {
     dispatch(discoveryFiltersApiCall());
   }, [dispatch, isAuth]);
-console.log(filtersData,"filters data")
+
   useEffect(() => {
    
     if (typeof window !== "undefined") {

@@ -45,7 +45,7 @@ const knowledgeSlice = createSlice({
     });
     builder.addCase(userDetailsApi.fulfilled, (state, action) => {
       state.userDetailsLoading = false;
-      state.userDetails = action.payload.user;
+      state.userDetails = action.payload?.user;
     });
     builder.addCase(userDetailsApi.rejected, (state, action) => {
      

@@ -17,14 +17,29 @@ const initialState = {
 };
 
 export const userDetailsApi = createAsyncThunk("userDetailsApi", async () => {
+ 
+  const storedUserDetails = localStorage.getItem("subscriptions");
+ 
+
+ 
   const response = await fetch(`${url}/user?platform=website`, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
     },
   });
-  return response.json();
+
+  if (response.ok) {
+    const data = await response.json();
+    if(!storedUserDetails)
+    {
+      localStorage.setItem("subscriptions", JSON.stringify(data.user.subscriptions)); 
+    
+    }
+    return data;
+  } 
 });
+
 
 export const subscriptionDetailsApi = createAsyncThunk(
   "subscriptionDetailsApi",
@@ -172,6 +187,8 @@ const authSlice = createSlice({
     logout: (state) => {
       state.isAuth = false;
       localStorage.removeItem("token");
+      localStorage.removeItem("subscriptions");
+      localStorage.removeItem("discoveryTableData");
     },
     togglePasswordModal: (state) => {
       state.isPasswordModalOpen = !state.isPasswordModalOpen;
@@ -187,7 +204,7 @@ const authSlice = createSlice({
     });
     builder.addCase(userDetailsApi.fulfilled, (state, action) => {
       state.userDetailsLoading = false;
-      state.userDetails = action.payload.user;
+      state.userDetails = action.payload?.user;
     });
     builder.addCase(userDetailsApi.rejected, (state, action) => {
       state.userDetailsLoading = false;

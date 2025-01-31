@@ -29,7 +29,7 @@ const ScrollCircle = () => {
         sx={{
           position: "fixed",
           bottom: 70,
-          right: 16,
+          right: 32,
           width: 48,
           height: 48,
           borderRadius: "50%",
