@@ -16,7 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setSnackStatus } from "@/app/Redux/Slices/snackbarSlice";
-
+import { logout } from "@/app/Redux/Slices/authSlice";
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 33px;
@@ -116,7 +116,7 @@ const FinalAccountDelete = ({ isOpen, setIsOpen }) => {
     if (response.ok) {
       handleClose();
       router.push("/signup");
-
+      dispatch(logout())
       dispatch(
         setSnackStatus({
           status: true,
