@@ -203,7 +203,7 @@ const DiscoveryBucketContent = () => {
         );
       }
     }
-    console.log(filterObj,"filter obj")
+   
   }, [filter, sortBy, sortOrder, dispatch, isAuth, currentPage]);
 
   useEffect(() => {

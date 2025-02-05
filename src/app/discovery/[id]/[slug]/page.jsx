@@ -136,7 +136,7 @@ const DiscoveryArticle = () => {
   const [currentIndex, setCurrentIndex] = useState(
     companyData?.findIndex((article) => article.slug == decodeURIComponent(slug))
   );
-console.log(decodeURIComponent(slug),companyData)
+
   const handleNavigation = (direction) => {
     const currentIndex = companyData?.findIndex(
       (article) => article.slug === slug2
@@ -231,7 +231,7 @@ console.log(decodeURIComponent(slug),companyData)
   if (!isAuth) {
     return <NoLogin />;
   }
-  console.log(currentIndex, "current index");
+  
   
 
   if (

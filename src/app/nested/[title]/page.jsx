@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect ,useState} from "react";
 import DiscoveryHeading from "@/components/Discovery/DiscoveryHeading";
 import { Container, Grid, Typography, IconButton, Box } from "@mui/material";
 import styled from "@emotion/styled";
@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Spinner from "@/components/Common/Spinner";
 import Head from "next/head";
 import { getParentsBucketApi } from "../../Redux/Slices/discoverySlice";
+import Pagination from "../../../components/Pagination/Pagination";
 
 const GridContainer = styled(Box)`
   display: grid;
@@ -116,15 +117,18 @@ const DefaultImageContainer = styled(Box)`
 
 const Discovery = () => {
   const { title } = useParams();
-  const { isParentsBucketLoading, parentsBucket } = useSelector(
+  const [currentPage, setCurrentPage] = useState(1);
+  const { isParentsBucketLoading, parentsBucket ,pagination} = useSelector(
     (store) => store.discovery
+
   );
+ 
   const dispatch = useDispatch();
   const router = useRouter();
 
   useEffect(() => {
-    dispatch(getParentsBucketApi({ title }));
-  }, [dispatch, title]);
+    dispatch(getParentsBucketApi({ title,currentPage }));
+  }, [dispatch, title,currentPage]);
 
   useEffect(() => {
     if (isParentsBucketLoading) {
@@ -182,8 +186,8 @@ const Discovery = () => {
   };
 
   const headingObject = {
-    heading: parentsBucket?.bucket_name,
-    description: parentsBucket?.about,
+    heading: parentsBucket?.bucket?.bucket_name,
+    description: parentsBucket?.bucket?.about,
   };
 
   if (isParentsBucketLoading) {
@@ -207,13 +211,14 @@ const Discovery = () => {
           <GridContainer>
             {parentsBucket?.child_buckets?.map((item, index) => (
               <StyledGrid key={index} onClick={() => handleNavigation(item)}>
+             
                 <Box className="content">
                   <Grid container>
                     <Grid item paddingY={2} paddingX="20px" width="100%">
                       <Box sx={{ borderRadius: "3px", overflow: "hidden" }}>
                         {item?.thumb_url ? (
                           <Image
-                            src={item.thumb_url}
+                            src={item?.thumb_url}
                             width={274}
                             height={140}
                             alt="poster"
@@ -247,7 +252,8 @@ const Discovery = () => {
                       color={colors.themeGreen}
                       sx={{ fontWeight: 600 }}
                     >
-                      {`${item?.companies.length} companies are in this bucket`}
+                      {`${item?.
+total_companies} companies are in this bucket`}
                     </StyledTypography2>
                     <CustomIconButton className="icon-button">
                       <ArrowForwardIcon
@@ -263,6 +269,18 @@ const Discovery = () => {
           </GridContainer>
           <ScrollCircle />
         </Box>
+        <ScrollCircle />
+        {parentsBucket?.child_buckets?.length ? (
+          <Box mt={2}>
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              pagination={pagination}
+            />
+          </Box>
+        ) : (
+          <></>
+        )}
       </Container>
     </>
   );

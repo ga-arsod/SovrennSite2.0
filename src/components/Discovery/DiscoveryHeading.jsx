@@ -51,7 +51,7 @@ const DiscoveryHeading = ({headingObject}) => {
       <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "14px" }}>
       <Snackbar />
         <Grid container alignItems="center">
-          <Grid item paddingY={{ xs: 2, sm: 5 }}>
+          <Grid item paddingY={{ xs: 4, sm: 5 }}>
             <Box marginBottom={1} display="flex" alignItems="center">
               {isSmallScreen && (
                 <ArrowBackIcon
