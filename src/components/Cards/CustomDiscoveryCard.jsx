@@ -273,7 +273,15 @@ const CustomDiscoveryCard = ({ title, data }) => {
                   <Grid item paddingY={2} paddingX="20px" width="100%">
                       <Box sx={{ borderRadius: "3px", overflow: "hidden" }}>
                         {item?.thumb_url ? (
-                          <Image src={item.thumb_url} width={274} height={140} alt="poster" layout="responsive" />
+                        <Box sx={{ width: "100%", height: "100px", overflow: "hidden", borderRadius: "3px" }}>
+                        <Image 
+                          src={item?.thumb_url} 
+                          width={274} 
+                          height={140} 
+                          alt="poster" 
+                          style={{ objectFit: "cover", width: "100%", height: "100%" }} 
+                        />
+                      </Box>
                         ) : (
                           <DefaultImageContainer>
                             <Typography variant="h6">{item?.title}</Typography>

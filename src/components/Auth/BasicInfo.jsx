@@ -32,7 +32,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     padding: "12px 8px",
     color: colors.navyBlue900,
     fontWeight: 400,
-    fontSize: "14px",
+    fontSize: "12px",
     lineHeight: "17px",
   },
   "& .MuiInputLabel-root": {

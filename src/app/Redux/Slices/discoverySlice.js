@@ -388,9 +388,9 @@ export const removeFromWatchlistApi = createAsyncThunk(
 
 export const getParentsBucketApi = createAsyncThunk(
   "getParentsBucketApi",
-  async ({ title }) => {
+  async ({ title,page }) => {
     const response = await fetch(
-      `${url}/parent-buckets/${title}?platform=website`,
+      `${url}/parent-buckets/list/${title}?page_size=200&page=${page}`,
       {
         method: "GET",
         headers: {
@@ -537,7 +537,8 @@ const discoverySlice = createSlice({
     });
     builder.addCase(getParentsBucketApi.fulfilled, (state, action) => {
       state.isParentsBucketLoading = false;
-      state.parentsBucket = action.payload.buckets;
+      state.parentsBucket = action.payload.data;
+      state.pagination = action.payload.pagination;
     });
     builder.addCase(getParentsBucketApi.rejected, (state, action) => {
       state.isError = true;

@@ -39,7 +39,7 @@ async function insertBannerImage(content) {
   const pTagCount = (content.match(/<p/g) || []).length;
   const bannerImageHTML = `
     <div style="text-align: center; margin: 20px 0;">
-      // <a href="/freetrial?utm_platform=SEO&utm_source=knowledge_ad" target="_blank">
+     
         <a href="/discovery" target="_blank">
         <img src="https://dwht5p5xdhql3.cloudfront.net/BANNERS/SovrennWebAdKnowledge.png" alt="Banner Image" style="max-width: 100%; height: auto;">
       </a>

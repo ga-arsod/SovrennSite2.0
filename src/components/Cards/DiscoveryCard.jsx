@@ -175,7 +175,7 @@ const DiscoveryCard = ({ title, data }) => {
 
   const handleNavigation = (item) => {
     if (item?.is_nested_bucket) {
-      router.push(`/nested/${item?.title}`);
+      router.push(`/nested/${item?.slug}`);
     } else {
       router.push(`/discovery/${item.slug}`);
     }
@@ -217,7 +217,7 @@ const DiscoveryCard = ({ title, data }) => {
                 <Grid item paddingY={2} paddingX="20px" width="100%">
                       <Box sx={{ borderRadius: "3px", overflow: "hidden" }}>
                         {item?.thumb_url ? (
-                          <Image src={item.thumb_url} width={274} height={140} alt="poster" layout="responsive" />
+                          <Image src={item?.thumb_url} width={274} height={140} alt="poster" layout="responsive" />
                         ) : (
                           <DefaultImageContainer>
                             <Typography variant="h6">{item?.title}</Typography>
