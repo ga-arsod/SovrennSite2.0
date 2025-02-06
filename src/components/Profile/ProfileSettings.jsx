@@ -18,7 +18,7 @@ import { togglePasswordModal } from "@/app/Redux/Slices/authSlice";
 import moment from "moment";
 import PaymentButton from "../Common/PaymentButton"
 import Link from "next/link";
-import DeleteAccountModal from "../Modal/DeleteAccountModal";
+
 
 const StyledInputLabel = styled(Typography)`
   font-weight: 500;
@@ -28,14 +28,7 @@ const StyledInputLabel = styled(Typography)`
   
 `;
 
-const StyledTypography1 = styled(Typography)`
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 19px;
-  color:#F95A5A;
-  text-decoration:underline;
-  cursor:pointer;
-`;
+
 
 const StyledTextField = styled(TextField)`
   width: 100%;
@@ -123,7 +116,7 @@ const ProfileSettings = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(true);
   
-  const [open,setOpen]=useState(false)
+ 
   const { isPasswordModalOpen } = useSelector((store) => store.auth);
   const subscriptionDetails = useSelector(
     (store) => store.auth.subscriptionDetails[0]
@@ -133,7 +126,7 @@ const ProfileSettings = () => {
     <>
      
       <ProfileModal isOpen={isPasswordModalOpen} />
-      <DeleteAccountModal open={open} setOpen={setOpen}/>
+     
       <StyledBox
         sx={{
           width: "100%",
@@ -259,7 +252,7 @@ const ProfileSettings = () => {
      
          
         </Box>
-        <StyledTypography1 marginY={4} onClick={()=>{setOpen(true)}}>Delete Account</StyledTypography1>
+       
       </StyledBox>
     </>
   );
