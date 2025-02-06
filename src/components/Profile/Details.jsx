@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { editUserDetailsApi } from "@/app/Redux/Slices/authSlice";
 import { useDispatch } from "react-redux";
 import { states } from "@/utils/States";
+import DeleteAccountModal from "../Modal/DeleteAccountModal";
 
 const Container = styled(Box)`
   display: flex;
@@ -170,9 +171,18 @@ const StyledTypography = styled(Typography)`
     line-height: 24px;
   }
 `;
+const StyledTypography1 = styled(Typography)`
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color:#F95A5A;
+  text-decoration:underline;
+  cursor:pointer;
+`;
 
 const Details = () => {
   const { userDetails } = useSelector((store) => store.auth);
+   const [open,setOpen]=useState(false)
   const dispatch = useDispatch();
   const [avatar, setAvatar] = useState(
     userDetails?.profile_pic ? userDetails?.profile_pic : "/dummy_image.jpg"
@@ -240,6 +250,8 @@ const Details = () => {
     );
   }, [formData, userDetails]);
   return (
+    <>
+    <DeleteAccountModal open={open} setOpen={setOpen}/>
     <Container
       sx={{ width: { xs: "100%", md: "1000px" }, justifyContent: "center" }}
     >
@@ -352,8 +364,9 @@ const Details = () => {
           <Divider sx={{ marginBottom: "16px" }} />
           <Box
             paddingX="24px"
-            sx={{ display: "flex", justifyContent: "flex-end" }}
+            sx={{ display: "flex", justifyContent: "space-between" ,alignItems:"center"}}
           >
+             <StyledTypography1 onClick={()=>{setOpen(true)}}>Delete Account</StyledTypography1>
             <StyledButton
               variant="contained"
               disabled={!isEdited}
@@ -366,6 +379,7 @@ const Details = () => {
         </Box>
       </StyledGrid>
     </Container>
+    </>
   );
 };
 
