@@ -100,7 +100,7 @@ const Home =  () => {
 
   return (
     <>
-    <SaleBanner/>
+    {/* <SaleBanner/> */}
       <MainPoster />
       <Updates  />
       <UserCount />
