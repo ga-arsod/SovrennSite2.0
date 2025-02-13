@@ -8,7 +8,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  form,
+  form,MenuItem,Select,FormControl
 } from "@mui/material";
 import styled from "@emotion/styled";
 import Link from "next/link";
@@ -18,6 +18,7 @@ import {
   VisibilityOff,
 } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import countryCodes from "../../utils/Countries.json";
 import { colors } from "../Constants/colors";
 import Image from "next/image";
 import { validEmail, validPassword, validPhoneNumber } from "./Regex";
@@ -30,6 +31,13 @@ const StyledInputLabel = styled(InputLabel)`
   font-size: 17px;
   line-height: 21px;
   color: #010c15;
+`;
+const StyledInputLabel2 = styled(Typography)`
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 21px;
+  color: ${colors.navyBlue800};
+  
 `;
 const StyledTypography = styled(Typography)`
   font-weight: 600;
@@ -52,7 +60,20 @@ const StyledButton1 = styled(Button)`
     background-color: ${colors.themeButtonHover};
   }
 `;
+const StyledSelect = styled(Select)`
+  & .MuiInputBase-root {
+    padding: 10px 12px;
+    font-size: 18px;
+    color: ${colors.navyBlue800};
+    border-radius: 8px;
+  }
 
+  & .MuiSelect-select {
+    padding: 12px 12px;
+    display: flex;
+    align-items: center;
+  }
+`;
 const StyledButton2 = styled(Button)`
   color: #20365b;
   font-weight: 600;
@@ -255,6 +276,66 @@ const SignUp = ({ form, setForm }) => {
                     onChange={formInputChange}
                     fullWidth
                   />
+                  <Grid container spacing={2}>
+                  <Grid item xs={4}>
+              <FormControl sx={{ width: "100%" }}>
+                <StyledInputLabel2 htmlFor="country_code">
+                  Country code
+                </StyledInputLabel2>
+                <StyledSelect
+               
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  fullWidth
+                  required
+                  name="country_code"
+                  value={form.country_code}
+                  displayEmpty
+                 
+                  MenuProps={{
+                    disableScrollLock: true,
+                    PaperProps: {
+                      elevation: 0,
+                      sx: {
+                        zIndex: 1400,
+                      },
+                    },
+                  }}
+                  onChange={formInputChange}
+                >
+                  {countryCodes.countries.map((ele, index) => {
+                    return (
+                      <MenuItem value={ele.code} key={index}>
+                        {ele.code}
+                      </MenuItem>
+                    );
+                  })}
+                </StyledSelect>
+              </FormControl>
+            </Grid>
+            <Grid item xs={8}>
+              <StyledInputLabel htmlFor="phone_number">
+                Enter phone No.
+              </StyledInputLabel>
+              <CustomTextField
+                fullWidth
+                required
+                sx={{ marginBottom: "16px" }}
+                inputProps={{ maxLength: 10 }}
+                type="tel"
+                id="fullWidth"
+                name="phone_number"
+                placeholder="Your phone number"
+                value={form.phone_number}
+                onKeyPress={(event) => {
+                  if (event.target.value.length >= 10) {
+                    event.preventDefault();
+                  }
+                }}
+                onChange={formInputChange}
+              />
+            </Grid>
+            </Grid>
                   <StyledInputLabel htmlFor="password">
                     Create Password
                   </StyledInputLabel>
@@ -389,7 +470,7 @@ const SignUp = ({ form, setForm }) => {
             </StyledButton2>
             </form>
           </Grid> */}
-              <Grid item width="100%" marginTop={3}>
+              <Grid item width="100%" marginTop={3} marginBottom={6}>
                 <Typography textAlign="center" sx={{ cursor: "pointer" }}>
                   <StyledTypography component="span" color="#121E32">
                     Already have an account?

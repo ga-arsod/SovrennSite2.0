@@ -75,21 +75,18 @@ const StyledButton = styled(Button)`
   padding: 6px 16px;
   text-transform: none;
   border-color: ${colors.themeGreen};
- 
 `;
 const StyledButton3 = styled(Button)`
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
-  color: #1C1C1C;
+  color: #1c1c1c;
   padding: 6px 16px;
   text-transform: none;
-  border-color:#1C1C1C;
+  border-color: #1c1c1c;
   &:hover {
-   border-color:#1C1C1C;
-   
+    border-color: #1c1c1c;
   }
- 
 `;
 
 const StyledTypographyFileLink = styled(Typography)`
@@ -169,12 +166,12 @@ const PulseArticle = () => {
   const [windowSize, setWindowSize] = useState(undefined);
 
   const handleBackClick = () => {
-    router.back();  
+    router.back();
   };
 
   useEffect(() => {
     dispatch(pulseArticlesApi({ page: 1, pageSize: 20 }));
-  }, [dispatch,isAuth]);
+  }, [dispatch, isAuth]);
 
   useEffect(() => {
     const initialExpandedState = pulseArticleData?.reduce((acc, article) => {
@@ -183,7 +180,7 @@ const PulseArticle = () => {
       return acc;
     }, {});
     setExpanded(initialExpandedState || {});
-  }, [pulseArticleData,isAuth]);
+  }, [pulseArticleData, isAuth]);
 
   const handleToggle = (date) => {
     setExpanded((prev) => ({ ...prev, [date]: !prev[date] }));
@@ -252,7 +249,7 @@ const PulseArticle = () => {
         setFilterData={setFilterData}
       />
       <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "28px" }}>
-        <Snackbar/>
+        <Snackbar />
         <Grid container alignItems="center">
           <Grid item paddingY={{ xs: 2, sm: 5 }}>
             <Box marginBottom={1}>
@@ -262,9 +259,7 @@ const PulseArticle = () => {
                   marginRight={1}
                   onClick={handleBackClick}
                 >
-                  <ArrowBackIcon
-                    sx={{ fontSize: 28, }}
-                  />
+                  <ArrowBackIcon sx={{ fontSize: 28 }} />
                 </Box>
                 <StyledTypography1
                   color={colors.navyBlue500}
@@ -312,7 +307,6 @@ const PulseArticle = () => {
                   />
                 }
                 size="small"
-                
               >
                 Edit Portfolio
               </StyledButton3>
@@ -321,9 +315,9 @@ const PulseArticle = () => {
         </Grid>
       </Box>
 
-      {!pulseArticleData?.length ? 
-      <NoData text="No data available" /> 
-      :
+      {!pulseArticleData?.length ? (
+        <NoData text="No data available" />
+      ) : (
         Object.entries(groupedByDate).map(([date, articles]) => (
           <React.Fragment key={date}>
             <HeaderBox onClick={() => handleToggle(date)}>
@@ -360,7 +354,17 @@ const PulseArticle = () => {
                   sx={{ width: "100%", marginBottom: 2, padding: 1 }}
                 >
                   <CardContent>
-                    <Typography color="#8A949C" sx={{fontWeight:'600',fontSize:'12px',lineHeight:'14px'}}>{moment(article.news_date).format("Do MMM YYYY")} | {moment(article.news_date).format('LT')}</Typography>
+                    <Typography
+                      color="#8A949C"
+                      sx={{
+                        fontWeight: "600",
+                        fontSize: "12px",
+                        lineHeight: "14px",
+                      }}
+                    >
+                      {moment(article.news_date).format("Do MMM YYYY")} |{" "}
+                      {moment(article.news_date).format("LT")}
+                    </Typography>
                     <Box
                       display="flex"
                       justifyContent={{ xs: "flex-start", sm: "space-between" }}
@@ -371,7 +375,6 @@ const PulseArticle = () => {
                         alignItems: { xs: "flex-start", sm: "center" },
                       }}
                     >
-                    
                       <StyledTypography2 color={colors.navyBlue900}>
                         {article.company_name}
                       </StyledTypography2>
@@ -379,74 +382,60 @@ const PulseArticle = () => {
                       {article?.file_url && (
                         <Box
                           display="flex"
-                          flexDirection={{xs:"column",sm:"row"}}
+                          flexDirection={{ xs: "column", sm: "row" }}
                           justifyContent="flex-end"
                           gap={2}
                           width={{ xs: "100%", sm: "auto" }}
-                          alignItems={{xs:"flex-end"}}
-
+                          alignItems={{ xs: "flex-end" }}
                         >
-                          <Grid container gap={2} marginTop={{xs:1,sm:0}}>
-                          {
-                            article?.discovery_slug && 
-                            <Link
-                          href={`discovery/pulse/${article?.discovery_slug}`}
-                          target="_blank"
-                        >
-                          <StyledButton
-                            variant="outlined"
-                            color="primary"
-                            sx={{ textTransform: "none" }}
-                          >
-                           Read Discovery
-                          </StyledButton>
-                        </Link>
-                          }
-                           {
-                      article?.prime_slug && 
-                      <Link
-                      href={`prime/${article?.prime_slug}`}
-                      target="_blank"
-                    >
-                      <StyledButton
-                        variant="outlined"
-                        color="primary"
-                        sx={{ textTransform: "none" }}
-                      >
-                        Read Prime
-                      </StyledButton>
-                    </Link>
-
-                     }
-
+                          <Grid container gap={2} marginTop={{ xs: 1, sm: 0 }}>
+                            {article?.discovery_slug && (
+                              <Link
+                                href={`discovery/pulse/${article?.discovery_slug}`}
+                                target="_blank"
+                              >
+                                <StyledButton
+                                  variant="outlined"
+                                  color="primary"
+                                  sx={{ textTransform: "none" }}
+                                >
+                                  Read Discovery
+                                </StyledButton>
+                              </Link>
+                            )}
+                            {article?.prime_slug && (
+                              <Link
+                                href={`prime/${article?.prime_slug}`}
+                                target="_blank"
+                              >
+                                <StyledButton
+                                  variant="outlined"
+                                  color="primary"
+                                  sx={{ textTransform: "none" }}
+                                >
+                                  Read Prime
+                                </StyledButton>
+                              </Link>
+                            )}
                           </Grid>
-                         
-                          
-                   
-                    
-                       
-                       {
-                        article.file_url && 
-                        <Link
-                        href={article.file_url}
-                        target="_blank"
-                        style={{ textDecoration: "none" }}
-                      >
-                        <FileLinkButton
-                          startIcon={<AttachFileTwoToneIcon />}
-                        >
-                          <StyledTypographyFileLink>
-                            File Link
-                          </StyledTypographyFileLink>
-                        </FileLinkButton>
-                      </Link>
-                       }
-                         
+
+                          {article.file_url && (
+                            <Link
+                              href={article.file_url}
+                              target="_blank"
+                              style={{ textDecoration: "none" }}
+                            >
+                              <FileLinkButton
+                                startIcon={<AttachFileTwoToneIcon />}
+                              >
+                                <StyledTypographyFileLink>
+                                  File Link
+                                </StyledTypographyFileLink>
+                              </FileLinkButton>
+                            </Link>
+                          )}
                         </Box>
                       )}
-
-                   
-                    
                     </Box>
 
                     <Box mb={2}>
@@ -455,25 +444,19 @@ const PulseArticle = () => {
                       </StyledTypography3>
                     </Box>
 
-                    <Stack direction="row" spacing={2}>
-                     
-                        
-                     
-                    </Stack>
+                    <Stack direction="row" spacing={2}></Stack>
                   </CardContent>
                 </Card>
               ))}
             </Collapse>
           </React.Fragment>
         ))
-        
-        }
+      )}
 
       {pagination?.total_pages === pagination?.page ||
       !pulseArticleData.length ? (
         ""
       ) : (
-        
         <Box
           sx={{ display: "flex", justifyContent: "center" }}
           marginBottom={6}
