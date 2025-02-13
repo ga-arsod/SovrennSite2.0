@@ -25,7 +25,6 @@ const StyledInputLabel = styled(Typography)`
   font-size: 18px;
   line-height: 21.5px;
   color: ${colors.navyBlue800};
-  white-space: nowrap;
 `;
 const StyledTextField = styled(TextField)(({ theme }) => ({
   "& .MuiOutlinedInput-input": {
@@ -47,6 +46,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     caretColor: colors.navyBlue900,
   },
 }));
+
 const StyledSelect = styled(Select)`
   & .MuiInputBase-root {
     padding: 10px 12px;
@@ -61,7 +61,6 @@ const StyledSelect = styled(Select)`
     align-items: center;
   }
 `;
-
 const StyledButton1 = styled(Button)`
   border-color: ${colors.themeGreen};
   color: white;
@@ -99,11 +98,11 @@ const utm_sources = [
 ];
 const URL = "https://api.sovrenn.com";
 const BasicInfo = ({ form, setForm, formInputChange }) => {
-  const dispatch=useDispatch();
-  const router=useRouter();
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [stateInputDisabled, setStateInputDisabled] = useState(false);
   const [validate, setValidate] = useState(false);
-    const [validateValue, setValidateValue] = useState("");
+  const [validateValue, setValidateValue] = useState("");
   const handleSubmitForm = async (event) => {
     event.preventDefault();
 
@@ -118,7 +117,10 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(form),
+      body: JSON.stringify({
+        ...form,
+        know_pref_eqt_allotment:form. know_pref_eqt_allotment == "Yes" ? true : false
+      }),
     }).then((d) => d.json());
 
     if (data.success) {
@@ -134,6 +136,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
     setValidateValue(data.message);
     return;
   };
+  console.log(form, "form");
   return (
     <Grid
       container
@@ -156,59 +159,6 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
         </Typography>
         <form onSubmit={handleSubmitForm}>
           <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <FormControl sx={{ width: "100%" }}>
-                <StyledInputLabel htmlFor="country_code">
-                  Country code
-                </StyledInputLabel>
-                <StyledSelect
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  fullWidth
-                  required
-                  name="country_code"
-                  value={form.country_code}
-                  MenuProps={{
-                    PaperProps: {
-                      elevation: 0,
-                      sx: {
-                        zIndex: 1400,
-                      },
-                    },
-                  }}
-                  onChange={formInputChange}
-                >
-                  {countryCodes.countries.map((ele, index) => {
-                    return (
-                      <MenuItem value={ele.code} key={index}>
-                        {ele.code}
-                      </MenuItem>
-                    );
-                  })}
-                </StyledSelect>
-              </FormControl>
-            </Grid>
-            <Grid item xs={8}>
-              <StyledInputLabel htmlFor="phone_number">
-                Enter phone No.
-              </StyledInputLabel>
-              <StyledTextField
-                fullWidth
-                required
-                inputProps={{ maxLength: 10 }}
-                type="tel"
-                id="fullWidth"
-                name="phone_number"
-                placeholder="Your phone number"
-                value={form.phone_number}
-                onKeyPress={(event) => {
-                  if (event.target.value.length >= 10) {
-                    event.preventDefault();
-                  }
-                }}
-                onChange={formInputChange}
-              />
-            </Grid>
             {stateInputDisabled ? (
               ""
             ) : (
@@ -228,6 +178,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                     required
                     disabled={stateInputDisabled}
                     MenuProps={{
+                      disableScrollLock: true,
                       PaperProps: {
                         elevation: 0,
                         sx: {
@@ -262,6 +213,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                   value={form.where_did_hear_about_sovrenn}
                   disabled={stateInputDisabled}
                   MenuProps={{
+                    disableScrollLock: true,
                     PaperProps: {
                       elevation: 0,
                       sx: {
@@ -277,6 +229,53 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                       </MenuItem>
                     );
                   })}
+                </StyledSelect>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <StyledInputLabel htmlFor="know_pref_eqt_allotment">
+                  Do you understand the concept of equity allotment in
+                  investing?
+                </StyledInputLabel>
+                <StyledSelect
+                  labelId="demo-simple-select-label"
+                  id="know_pref_eqt_allotment"
+                  name="know_pref_eqt_allotment"
+                  value={form.know_pref_eqt_allotment || ""}
+                  onChange={formInputChange}
+                  displayEmpty
+                  required
+                  renderValue={(selected) => {
+                    if (!selected) {
+                      return (
+                        <Typography
+                          data-placeholder="true"
+                          sx={{
+                            fontWeight: 400,
+                            fontSize: "16px",
+                            lineHeight: "21px",
+                            color: "#96A7B4",
+                          }}
+                        >
+                          Yes/No
+                        </Typography>
+                      );
+                    }
+                    return selected;
+                  }}
+                  
+                  disabled={stateInputDisabled}
+                  MenuProps={{
+                    disableScrollLock: true,
+                    PaperProps: {
+                      elevation: 0,
+                      sx: { zIndex: 1400 },
+                    },
+                  }}
+                >
+                  <MenuItem value="Yes">Yes</MenuItem>
+                  <MenuItem value="False">No</MenuItem>
                 </StyledSelect>
               </FormControl>
             </Grid>
@@ -297,7 +296,6 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
             <Grid item xs={12}>
               {validate ? (
                 <Typography
-                 
                   textAlign="center"
                   sx={{
                     fontWeight: 400,
@@ -312,10 +310,14 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                 ""
               )}
             </Grid>
-            <Grid item width="100%" >
+            <Grid item width="100%">
               <Grid container width="100%" rowSpacing={2}>
                 <Grid item width="100%">
-                  <StyledButton1 variant="contained" type="submit">
+                  <StyledButton1
+                    variant="contained"
+                    type="submit"
+                    disabled={!form.know_pref_eqt_allotment}
+                  >
                     Create Profile
                   </StyledButton1>
                 </Grid>
@@ -323,22 +325,22 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
             </Grid>
           </Grid>
         </form>
-         <Grid item width="100%" >
-                        <Typography textAlign="center" sx={{ cursor: "pointer" }}>
-                          <StyledTypography component="span" color="#121E32">
-                            Already have an account?
-                          </StyledTypography>
-                          <StyledTypography
-                            component="span"
-                            color={colors.themeGreen}
-                            onClick={() => {
-                              router.replace("/login");
-                            }}
-                          >
-                            {` Sign In`}
-                          </StyledTypography>
-                        </Typography>
-                      </Grid>
+        <Grid item width="100%">
+          <Typography textAlign="center" sx={{ cursor: "pointer" }}>
+            <StyledTypography component="span" color="#121E32">
+              Already have an account?
+            </StyledTypography>
+            <StyledTypography
+              component="span"
+              color={colors.themeGreen}
+              onClick={() => {
+                router.replace("/login");
+              }}
+            >
+              {` Sign In`}
+            </StyledTypography>
+          </Typography>
+        </Grid>
       </Grid>
     </Grid>
   );
