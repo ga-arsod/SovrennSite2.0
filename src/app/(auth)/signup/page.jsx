@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import {
   Box,
   Grid,
-  
+
   useMediaQuery,
 } from "@mui/material";
 import styled from "@emotion/styled";
@@ -33,24 +33,24 @@ const StyledGrid2 = styled(Grid)`
 `;
 const Auth = () => {
   const [form, setForm] = useState({
-      first_name: "",
-      last_name: "",
-      email: "",
-      password: "",
-      phone_number: "",
-      state: "Abroad",
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    phone_number: "",
+    state: "",
     country_code: "+91",
-    know_pref_eqt_allotment:"",
-    where_did_hear_about_sovrenn: "Twitter",
+    know_pref_eqt_allotment: "",
+    where_did_hear_about_sovrenn: "",
     referral_code: ""
-  
-    })
+
+  })
   const [showPassword, setShowPassword] = useState({
     password: false,
     createPassword: false,
     confirmPassword: false,
   });
-  
+
   const handleClickShowPassword = (id) => {
     setShowPassword({ ...showPassword, [id]: !showPassword[id] });
   };
@@ -85,18 +85,18 @@ const Auth = () => {
       });
     }
   };
-  
+
   return (
     <Box>
       <Grid
         container
         height={{ md: "100vh" }}
         direction={{ xs: "column", sm: "row" }}
-        marginTop={{xs:0,md:8}}
-        
+        marginTop={{ xs: 0, md: 8 }}
+
       >
-        <StyledGrid item xs={12} lg={6} order={{ xs: 2, lg: 1 }} sx={{flexGrow:1}}>
-          { <SignUpCard />}
+        <StyledGrid item xs={12} lg={6} order={{ xs: 2, lg: 1 }} sx={{ flexGrow: 1 }}>
+          {<SignUpCard />}
         </StyledGrid>
         <Grid
           item
@@ -111,7 +111,7 @@ const Auth = () => {
             paddingY: "14vh",
           }}
         >
-        {<SignUp form={form} setForm={setForm} formInputChange={formInputChange}/>}
+          {<SignUp form={form} setForm={setForm} formInputChange={formInputChange} />}
         </Grid>
       </Grid>
     </Box>
