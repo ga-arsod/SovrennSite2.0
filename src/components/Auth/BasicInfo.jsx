@@ -235,8 +235,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <StyledInputLabel htmlFor="know_pref_eqt_allotment">
-                  Do you understand the concept of equity allotment in
-                  investing?
+                  Do you understand the concept of preferential equity allotment in investing?
                 </StyledInputLabel>
                 <StyledSelect
                   labelId="demo-simple-select-label"
