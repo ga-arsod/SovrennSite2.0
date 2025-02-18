@@ -16,6 +16,8 @@ import { useMediaQuery } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Spinner from "../Common/Spinner";
 
+const url = process.env.NEXT_PUBLIC_API_URL;
+
 const StyledTypography1 = styled(Typography)`
   font-size: 23px;
   font-weight: 600;
@@ -67,7 +69,13 @@ const Search = () => {
 
   const getCompanies = async (query) => {
     const res = await fetch(
-      `https://api.sovrenn.com/company/text-search?q=${query}`
+      `${url}/company/text-search?q=${query}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: isAuth ? "Bearer " + localStorage.getItem("token") : null,
+        },
+      }
     );
 
     const data = await res.json();

@@ -17,6 +17,8 @@ import NoData from "../../components/NoData/NoData";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
+const url = process.env.NEXT_PUBLIC_API_URL;
+
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 48px;
@@ -105,7 +107,7 @@ const CompanyInfo = () => {
 
   const getCompanyData = async (q) => {
     const res = await fetch(
-      `https://api.sovrenn.com/company/search/company-data/${q}`,
+      `${url}/company/search/company-data/${q}`,
       {
         method: 'GET', 
         headers: {
