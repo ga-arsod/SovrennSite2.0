@@ -15,6 +15,7 @@ import ArrowBack from "@mui/icons-material/ArrowBack";
 import { useMediaQuery } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Spinner from "../Common/Spinner";
+import { useSelector } from "react-redux";
 
 const url = process.env.NEXT_PUBLIC_API_URL;
 
@@ -56,6 +57,7 @@ const Search = () => {
   const [isLoading,setIsLoading]=useState(true)
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
+  const { isAuth } = useSelector((store) => store.auth);
   
  
   const isXsOrSm = useMediaQuery((theme) => theme.breakpoints.down("md"));
