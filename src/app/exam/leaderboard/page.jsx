@@ -16,7 +16,16 @@ export default function ExamLeaderboard() {
   useEffect(()=>{
   dispatch(pastWinnersApi())
   },[])
-  console.log(pastWinners,"past winners")
+  useEffect(() => {
+   
+    if (typeof window !== "undefined") {
+      document.title = `Check people's score`;
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/exam/leaderboard`;
+      }
+    }
+  }, []);
   return (
    <>
    {

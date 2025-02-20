@@ -704,6 +704,42 @@ const Navbar = () => {
                               </Typography>
                             </MenuItem>
                           </Link>
+                          <Link
+                            href="/exam"
+                            style={{ textDecoration: "none" }}
+                          >
+                            <MenuItem
+                              disableRipple
+                              sx={{
+                                padding: "12px 16px",
+                                "&:hover .menu-text": {
+                                  color: colors.themeGreen,
+                                },
+                                backgroundColor: "transparent !important",
+                                "&:hover": {
+                                  backgroundColor: "transparent !important",
+                                },
+                                "&.Mui-focusVisible": {
+                                  backgroundColor: "transparent",
+                                },
+                                "&.Mui-selected": {
+                                  backgroundColor: "transparent",
+                                },
+                              }}
+                            >
+                              <Typography
+                                className="menu-text"
+                                color={colors.navyBlue900}
+                                sx={{
+                                  fontWeight: "600",
+                                  fontSize: "14px",
+                                  lineHeight: "17px",
+                                }}
+                              >
+                                Exam
+                              </Typography>
+                            </MenuItem>
+                          </Link>
                         </Menu>
                       </ListItem>
                     </List>

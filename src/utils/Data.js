@@ -251,6 +251,11 @@ export const navItems = [
     link: "/pricing",
     description:""
   },
+  {
+    name: "Exam",
+    link: "/exam",
+    description:""
+  },
 ];
 
 export const landingPageArray = [

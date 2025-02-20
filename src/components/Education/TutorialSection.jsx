@@ -8,17 +8,9 @@ import LanguageModal from "../Modal/LanguageModal";
 import { educationVideosApi } from "@/app/Redux/Slices/educationSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { usePathname } from "next/navigation";
 
-const tutorialArray = [
-  {
-    image: "/green.svg",
-    description: "Identifying Potential Multibaggers",
-  },
-  {
-    image: "/green.svg",
-    description: "Price Targets, Valuation and Float Analysis",
-  },
-];
+
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -60,7 +52,9 @@ const TutorialSection = () => {
   const videoData = useSelector((store) => store.education.videoBucket);
   const [isPlaying, setIsPlaying] = useState(false);
   const { isAuth } = useSelector((store) => store.auth);
+  const pathname = usePathname();
 
+  
   useEffect(() => {
     dispatch(educationVideosApi());
   }, [isAuth]);
@@ -95,10 +89,10 @@ const TutorialSection = () => {
                 marginRight={1}
                 color={colors.headingColor}
               >
-                Videos to help you kickstart your investing
+                {pathname==="exam" ? "Watch these videos to learn fundamental investing":"Videos to help you kickstart your investing"}
               </StyledTypography1>
               <StyledTypography1 component="span" color={colors.themeGreen}>
-                journey
+              {pathname==="exam" ? "skills":"journey"}
               </StyledTypography1>
             </Typography>
           </Grid>

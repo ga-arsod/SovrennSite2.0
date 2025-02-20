@@ -10,20 +10,14 @@ import {
   Container,
   Grid,
 } from "@mui/material";
+import { useState } from "react";
 import { colors } from "@/components/Constants/colors";
 import styled from "@emotion/styled";
 import { leaderboardApi } from "@/app/Redux/Slices/examSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-
-const leaderboardData1 = [
-  { name: "Iman", time: "10min 5s", score: 52, img: "/iman.jpg" },
-  { name: "Vatani", time: "10min 5s", score: 52, img: "/vatani.jpg" },
-  { name: "Jonathan", time: "10min 5s", score: 52, img: "/jonathan.jpg" },
-  { name: "Neuman", time: "10min 5s", score: 52, img: "/neuman.jpg" },
-  { name: "Nick", time: "10min 5s", score: 52, img: "/nick.jpg" },
-];
+import EmptyExam from "../../components/Exam/EmptyExam";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -66,6 +60,7 @@ const StyledButton2 = styled(Button)`
 export default function Leaderboard({ pastWinners, setIsPastWinners }) {
   const dispatch = useDispatch();
   const { leaderboardData } = useSelector((store) => store.exam);
+  const [winners, setWinners] = useState([]);
   const getFirstLetters = (str) =>
     str
       .split(" ")
@@ -86,14 +81,16 @@ export default function Leaderboard({ pastWinners, setIsPastWinners }) {
       rank: index + 1,
     }));
 
-    if (topThree.length === 3) return [topThree[1], topThree[0], topThree[2]];
-    if (topThree.length === 2) return [topThree[1], topThree[0]];
-    return topThree;
+    if (topThree.length === 3)
+      setWinners([topThree[1], topThree[0], topThree[2]]);
+    if (topThree.length === 2) setWinners([topThree[1], topThree[0]]);
+    if (topThree.length === 1) setWinners([topThree[0]]);
   };
   useEffect(() => {
     dispatch(leaderboardApi());
+    getTopThreeWinners(leaderboardData?.data?.leaderboard);
   }, []);
-  console.log(leaderboardData,"leaderboard data")
+  console.log(leaderboardData, "leaderboard data");
   return (
     <Box
       sx={{
@@ -109,44 +106,48 @@ export default function Leaderboard({ pastWinners, setIsPastWinners }) {
       <Grid container justifyContent="center">
         <Grid item width="700px">
           <Container>
-          <Grid container>
-            <Grid item paddingTop={5}>
-              <StyledTypography1 color={colors.navyBlue500} textAlign="left">
-                {leaderboardData?.date}
-              </StyledTypography1>
-              <StyledTypography2>
-                Exam{" "}
-                <span style={{ color: colors.themeGreen }} textAlign="left">
-                  Leaderboard
-                </span>
-              </StyledTypography2>
-              <StyledTypography3
-                textAlign="left"
-                color={colors.themeGreen}
-                sx={{ cursor: "pointer", textDecoration: "underline", mt: 0.5 }}
-                onClick={() => {
-                  setIsPastWinners(true);
-                }}
-              >
-                View Past Winners &gt;
-              </StyledTypography3>
+            <Grid container>
+              <Grid item paddingTop={5}>
+                <StyledTypography1 color={colors.navyBlue500} textAlign="left">
+                  {leaderboardData?.data?.date}
+                </StyledTypography1>
+                <StyledTypography2>
+                  Exam{" "}
+                  <span style={{ color: colors.themeGreen }} textAlign="left">
+                    Leaderboard
+                  </span>
+                </StyledTypography2>
+                <StyledTypography3
+                  textAlign="left"
+                  color={colors.themeGreen}
+                  sx={{
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                    mt: 0.5,
+                  }}
+                  onClick={() => {
+                    setIsPastWinners(true);
+                  }}
+                >
+                  View Past Winners &gt;
+                </StyledTypography3>
+              </Grid>
             </Grid>
-          </Grid>
           </Container>
 
-          <Grid container>
-            <Grid item>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "flex-end",
-                  mt: 4,
-                  gap: 3,
-                }}
-              >
-                {getTopThreeWinners(leaderboardData?.leaderboard)?.map(
-                  (user, index) => (
+          <Grid container width="100%">
+            {leaderboardData?.data?.leaderboard?.length ? (
+              <Grid item width="100%">
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "flex-end",
+                    mt: 4,
+                    gap: 3,
+                  }}
+                >
+                  {winners?.map((user, index) => (
                     <Stack
                       key={index}
                       alignItems="center"
@@ -254,135 +255,253 @@ export default function Leaderboard({ pastWinners, setIsPastWinners }) {
                         {`${user.first_name} ${user.last_name}`}
                       </Typography>
                     </Stack>
-                  )
-                )}
-              </Box>
+                  ))}
+                </Box>
 
-              <Card
-                sx={{
-                  mt: 4,
-                  p: 2,
-                  maxWidth: 700,
-                  mx: "auto",
-                  backgroundColor: "transparent",
-                  boxShadow: "none",
-                }}
-              >
-                <Grid container gap={2}>
-                  {" "}
-                  {/* Adds spacing between items */}
-                  {leaderboardData?.leaderboard?.map((user, index) => (
-                    <Grid
-                      item
-                      xs={12}
-                      key={index}
-                      sx={{
-                        py: 1.5,
-                        px: 2,
-                        borderRadius: "8px",
-                        marginBottom: "0px",
-                        backgroundColor: "white",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
+                <Card
+                  sx={{
+                    mt: 4,
+                    p: 2,
+                    maxWidth: 700,
+                    mx: "auto",
+                    backgroundColor: "transparent",
+                    boxShadow: "none",
+                  }}
+                >
+                  <Grid
+                    container
+                    gap={2}
+                    sx={{
+                      maxHeight: "400px",
+                      overflowY: "auto",
+                      scrollbarWidth: "thin",
+                      "&::-webkit-scrollbar": {
+                        width: "6px",
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        backgroundColor: "#ccc",
+                        borderRadius: "4px",
+                      },
+                    }}
+                  >
+                    {leaderboardData?.data?.leaderboard?.map((user, index) => (
                       <Grid
                         item
+                        xs={12}
+                        key={index}
                         sx={{
+                          py: 1.5,
+                          px: 2,
+                          borderRadius: "8px",
+                          marginBottom: "0px",
+                          backgroundColor: "white",
                           display: "flex",
+                          justifyContent: "space-between",
                           alignItems: "center",
-                          gap: 1,
-                          flex: 1,
                         }}
                       >
-                        <Typography
-                          color={colors.navyBlue500}
-                          fontWeight={600}
-                          sx={{ fontSize: "12px", lineHeight: "14px" }}
-                        >
-                          {`#${index + 1}`}
-                        </Typography>
-                        {user?.profile_pic ? (
-                          <Avatar
-                            src={user?.profile_pic}
-                            sx={{
-                              width: 48,
-                              height: 48,
-                              border: "2px solid #ccc",
-                              bgcolor: "#36444F",
-                            }}
-                          />
-                        ) : (
-                          <Avatar
-                            sx={{
-                              width: 48,
-                              height: 48,
-                              border: "2px solid #ccc",
-                              bgcolor: "#36444F",
-                            }}
-                          >
-                            {getFirstLetters(user?.first_name).toUpperCase() +
-                              getFirstLetters(user?.last_name).toUpperCase()}
-                          </Avatar>
-                        )}
-
-                        <Typography
-                          color={colors.navyBlue300}
-                          fontWeight={600}
+                        <Grid
+                          item
                           sx={{
-                            fontSize: "16px",
-                            lineHeight: "19px",
-                            whiteSpace: "nowrap",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            flex: 1,
                           }}
                         >
-                          {`${user.first_name} ${user.last_name} `}
-                        </Typography>
-                      </Grid>
-                      <Grid
-                        item
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "flex-end",
-                          gap: 2,
-                          flex: 1,
-                        }}
-                      >
-                        <Typography
-                          color={colors.navyBlue300}
-                          fontWeight={600}
-                          sx={{ fontSize: "14px", lineHeight: "17px" }}
+                          <Typography
+                            color={colors.navyBlue500}
+                            fontWeight={600}
+                            sx={{ fontSize: "12px", lineHeight: "14px" }}
+                          >
+                            {`#${index + 1}`}
+                          </Typography>
+                          {user?.profile_pic ? (
+                            <Avatar
+                              src={user?.profile_pic}
+                              sx={{
+                                width: 48,
+                                height: 48,
+                                border: "2px solid #ccc",
+                                bgcolor: "#36444F",
+                              }}
+                            />
+                          ) : (
+                            <Avatar
+                              sx={{
+                                width: 48,
+                                height: 48,
+                                border: "2px solid #ccc",
+                                bgcolor: "#36444F",
+                              }}
+                            >
+                              {getFirstLetters(user?.first_name).toUpperCase() +
+                                getFirstLetters(user?.last_name).toUpperCase()}
+                            </Avatar>
+                          )}
+
+                          <Typography
+                            color={colors.navyBlue300}
+                            fontWeight={600}
+                            sx={{
+                              fontSize: "16px",
+                              lineHeight: "19px",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {`${user.first_name} ${user.last_name} `}
+                          </Typography>
+                        </Grid>
+                        <Grid
+                          item
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            gap: 2,
+                            flex: 1,
+                          }}
                         >
-                          {convertSecondsToTime(user?.time_taken)}
-                        </Typography>
-                        <Typography
-                          color={colors.navyBlue300}
-                          fontWeight={600}
-                          sx={{ fontSize: "14px", lineHeight: "17px" }}
-                        >
-                          {user?.score}
-                        </Typography>
+                          <Typography
+                            color={colors.navyBlue300}
+                            fontWeight={600}
+                            sx={{ fontSize: "14px", lineHeight: "17px" }}
+                          >
+                            {convertSecondsToTime(user?.time_taken)}
+                          </Typography>
+                          <Typography
+                            color={colors.navyBlue300}
+                            fontWeight={600}
+                            sx={{ fontSize: "14px", lineHeight: "17px" }}
+                          >
+                            {user?.score}
+                          </Typography>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  ))}
-                </Grid>
-              </Card>
-            </Grid>
+                    ))}
+                  </Grid>
+                </Card>
+              </Grid>
+            ) : (
+              <Grid item width="100%">
+                <EmptyExam />
+              </Grid>
+            )}
           </Grid>
         </Grid>
         <Box
           sx={{
-            width: "100%", 
+            width: "100%",
             backgroundColor: "white",
             boxShadow: "0px 1px 15px 5px #0000001A",
 
-            p: 2,
+            p: 1,
             display: "flex",
-            justifyContent: "center", 
+            justifyContent: "center",
           }}
         >
-          <StyledButton2>Start the exam, claim your rank!</StyledButton2>
+          {!leaderboardData?.data?.user_rank ? (
+            <StyledButton2>Start the exam, claim your rank!</StyledButton2>
+          ) : (
+            <Grid
+              container
+              sx={{
+                py: 1.5,
+                px: 2,
+                borderRadius: "8px",
+                marginBottom: "0px",
+                backgroundColor: "#E6F6F2",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                maxWidth: "680px",
+              }}
+            >
+              <Grid
+                item
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  flex: 1,
+                }}
+              >
+                <Typography
+                  color={colors.navyBlue500}
+                  fontWeight={600}
+                  sx={{ fontSize: "12px", lineHeight: "14px" }}
+                >
+                  {`#${leaderboardData?.data?.user_rank?.rank}`}
+                </Typography>
+                {leaderboardData?.data?.user_rank?.profile_pic ? (
+                  <Avatar
+                    src={leaderboardData?.data?.user_rank?.profile_pic}
+                    sx={{
+                      width: 48,
+                      height: 48,
+                      border: "2px solid #ccc",
+                      bgcolor: "#36444F",
+                    }}
+                  />
+                ) : (
+                  <Avatar
+                    sx={{
+                      width: 48,
+                      height: 48,
+                      border: "2px solid #ccc",
+                      bgcolor: "#36444F",
+                    }}
+                  >
+                    {getFirstLetters(
+                      leaderboardData?.data?.user_rank?.first_name
+                    ).toUpperCase() +
+                      getFirstLetters(
+                        leaderboardData?.data?.user_rank?.last_name
+                      ).toUpperCase()}
+                  </Avatar>
+                )}
+
+                <Typography
+                  color={colors.navyBlue300}
+                  fontWeight={600}
+                  sx={{
+                    fontSize: "16px",
+                    lineHeight: "19px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {`${leaderboardData?.data?.user_rank?.first_name} ${leaderboardData?.data?.user_rank?.last_name} `}
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  gap: 2,
+                  flex: 1,
+                }}
+              >
+                <Typography
+                  color={colors.navyBlue300}
+                  fontWeight={600}
+                  sx={{ fontSize: "14px", lineHeight: "17px" }}
+                >
+                  {convertSecondsToTime(
+                    leaderboardData?.data?.user_rank?.time_taken
+                  )}
+                </Typography>
+                <Typography
+                  color={colors.navyBlue300}
+                  fontWeight={600}
+                  sx={{ fontSize: "14px", lineHeight: "17px" }}
+                >
+                  {leaderboardData?.data?.user_rank?.score}
+                </Typography>
+              </Grid>
+            </Grid>
+          )}
         </Box>
       </Grid>
     </Box>
