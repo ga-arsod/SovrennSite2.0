@@ -90,7 +90,7 @@ export default function Leaderboard({ pastWinners, setIsPastWinners }) {
     dispatch(leaderboardApi());
     getTopThreeWinners(leaderboardData?.data?.leaderboard);
   }, []);
-  console.log(leaderboardData, "leaderboard data");
+  
   return (
     <Box
       sx={{

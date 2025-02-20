@@ -175,7 +175,7 @@ const ViewScore = ({setViewAnswers}) => {
         const secs = seconds % 60;
         return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
-console.log(examAnswers?.time_taken,"exam anseers")
+.log(examAnswers?.time_taken,"exam anseers")
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Grid

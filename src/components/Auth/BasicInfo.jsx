@@ -136,7 +136,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
     setValidateValue(data.message);
     return;
   };
-  console.log(form, "form");
+  
   return (
     <Grid
       container

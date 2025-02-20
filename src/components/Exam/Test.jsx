@@ -154,7 +154,7 @@ const Test = ({ examQuestions, setIsExamStart }) => {
   };
 
   const handleChange = (questionId, optionId) => {
-    console.log(questionId, optionId);
+   
     setAnswers((prevAnswers) => {
       const updatedAnswers = prevAnswers.map((ans) =>
         ans.question_id === questionId

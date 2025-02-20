@@ -32,6 +32,7 @@ import ExamModal from "../Modal/ExamModal";
 import { useSelector } from "react-redux";
 
 import Link from "next/link";
+import LoginModal from "../Modal/LoginModal";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 48px;
@@ -82,7 +83,11 @@ export default function ExamHomePage({ setIsExamStart }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { exam, examCertificate } = useSelector((store) => store.exam);
+const [isOpen, setIsOpen] = useState(false);
   const [isExamModalOpen, setIsExamModalOpen] = useState(false);
+  const handleClose = () => {
+    setIsOpen(false);
+  };
   const getFirstLetters = (str) =>
     str
       .split(" ")
@@ -114,9 +119,10 @@ export default function ExamHomePage({ setIsExamStart }) {
     dispatch(getExamCertificate());
     dispatch(examApi());
   }, []);
-  console.log(examCertificate, "exam certificate");
+ 
   return (
     <>
+    <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <ExamModal
         setIsExamStart={setIsExamStart}
         isExamModalOpen={isExamModalOpen}
