@@ -16,7 +16,7 @@ import { colors } from "../Constants/colors";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { submitExamApi } from "@/app/Redux/Slices/examSlice";
 import { useDispatch } from "react-redux";
-import SubmitExamModal from "../Modal/SubmitExamModal"
+import SubmitExamModal from "../Modal/SubmitExamModal";
 
 import CheckQuestionsAttemptModal from "../Modal/CheckQuestionAttempModal";
 
@@ -94,22 +94,21 @@ const StyledButton2 = styled(Button)`
   font-weight: 500;
   font-size: 18px;
   line-height: 21px;
-  padding:12px 20px;
+  padding: 12px 20px;
   background-color: ${colors.themeGreen};
   text-transform: none;
- width:80%;
- margin-bottom:20px;
+  width: 80%;
+  margin-bottom: 20px;
   :hover {
     background-color: ${colors.themeButtonHover};
   }
   @media (max-width: 700px) {
-  width:100%;
-   padding-top:12px;
-   padding-bottom:12px;
+    width: 100%;
+    padding-top: 12px;
+    padding-bottom: 12px;
     font-size: 16px;
     font-weight: 500;
     line-height: 22px;
-   
   }
 `;
 
@@ -127,19 +126,19 @@ const CustomFormControlLabel = (props) => (
         }}
       >
         <StyledLabelTypography>{props.label}</StyledLabelTypography>
-        {props.checked && <DoneIcon sx={{ color: "#43CB43" }} />}
+        {/* {props.checked && <DoneIcon sx={{ color: "#43CB43" }} />} */}
       </Box>
     }
     checked={props.checked}
   />
 );
 
-const Test = ({ examQuestions,setIsExamStart }) => {
+const Test = ({ examQuestions, setIsExamStart }) => {
   const [value, setValue] = React.useState("");
   const [time, setTime] = useState(0);
   const [answers, setAnswers] = useState([]);
-  const [submitExamModal,setSubmitExamModal]=useState(false)
-  const [checkQuestionsAttempt,setCheckQuestionsAttempt]=useState(false)
+  const [submitExamModal, setSubmitExamModal] = useState(false);
+  const [checkQuestionsAttempt, setCheckQuestionsAttempt] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     const interval = setInterval(() => {
@@ -155,41 +154,43 @@ const Test = ({ examQuestions,setIsExamStart }) => {
   };
 
   const handleChange = (questionId, optionId) => {
-    console.log(questionId,optionId)
+    console.log(questionId, optionId);
     setAnswers((prevAnswers) => {
       const updatedAnswers = prevAnswers.map((ans) =>
         ans.question_id === questionId
-          ? { ...ans, selected_option: optionId } 
+          ? { ...ans, selected_option: optionId }
           : ans
       );
-  
+
       const questionExists = updatedAnswers.some(
         (ans) => ans.question_id === questionId
       );
-  
+
       return questionExists
         ? updatedAnswers
-        : [...updatedAnswers, { question_id: questionId, selected_option: optionId }];
+        : [
+            ...updatedAnswers,
+            { question_id: questionId, selected_option: optionId },
+          ];
     });
   };
-  
-  
+
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       event.preventDefault();
       event.returnValue = "";
-      setSubmitExamModal(true); 
+      setSubmitExamModal(true);
       return "";
     };
 
     const handleBackButton = () => {
       setSubmitExamModal(true);
-      window.history.pushState(null, "", window.location.href); 
+      window.history.pushState(null, "", window.location.href);
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     window.addEventListener("popstate", handleBackButton);
-    window.history.pushState(null, "", window.location.href); 
+    window.history.pushState(null, "", window.location.href);
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
@@ -197,160 +198,160 @@ const Test = ({ examQuestions,setIsExamStart }) => {
     };
   }, []);
 
- 
-  
- 
-  
-  
-  
- 
-
   const handleSubmit = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     const finalAnswers = examQuestions?.questions.map((q) => ({
       question_id: q.question_id,
       selected_option:
-        answers.find((ans) => ans.question_id === q.question_id)?.selected_option ||
-        null,
+        answers.find((ans) => ans.question_id === q.question_id)
+          ?.selected_option || null,
     }));
 
-    const unansweredQuestions = finalAnswers.some(ans => ans.selected_option === null);
+    const unansweredQuestions = finalAnswers.some(
+      (ans) => ans.selected_option === null
+    );
 
-  if (unansweredQuestions) {
-    setCheckQuestionsAttempt(true); 
-  } else {
-    const payload = {
-      time_taken: time,
-      attempted_questions: finalAnswers,
-    };
-   
-    dispatch(submitExamApi(payload));
-    setIsExamStart(false)
-  }
-    
+    if (unansweredQuestions) {
+      setCheckQuestionsAttempt(true);
+    } else {
+      const payload = {
+        time_taken: time,
+        attempted_questions: finalAnswers,
+      };
+
+      dispatch(submitExamApi(payload));
+      setIsExamStart(false);
+    }
   };
-  
+
   const handleSubmit2 = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     const finalAnswers = examQuestions?.questions.map((q) => ({
       question_id: q.question_id,
       selected_option:
-        answers.find((ans) => ans.question_id === q.question_id)?.selected_option ||
-        null,
+        answers.find((ans) => ans.question_id === q.question_id)
+          ?.selected_option || null,
     }));
 
-   
-
-   
     const payload = {
       time_taken: time,
       attempted_questions: finalAnswers,
     };
-    
+
     dispatch(submitExamApi(payload));
-    setIsExamStart(false)
- 
-    
+    setIsExamStart(false);
   };
-  
+
   return (
     <>
-    <SubmitExamModal submitExamModal={submitExamModal} setSubmitExamModal={setSubmitExamModal} handleSubmit={handleSubmit2}/>
-    <CheckQuestionsAttemptModal checkQuestionsAttempt={checkQuestionsAttempt} setCheckQuestionsAttempt={setCheckQuestionsAttempt} handleSubmit={handleSubmit2}/>
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
-      <Grid
-        container
-        paddingTop={{ xs: "90px", md: "100px", lg: "100px" }}
-        width="100%"
-        flexDirection="column"
-        alignItems="center"
-        marginX={3}
-      >
+      <SubmitExamModal
+        submitExamModal={submitExamModal}
+        setSubmitExamModal={setSubmitExamModal}
+        handleSubmit={handleSubmit2}
+      />
+      <CheckQuestionsAttemptModal
+        checkQuestionsAttempt={checkQuestionsAttempt}
+        setCheckQuestionsAttempt={setCheckQuestionsAttempt}
+        handleSubmit={handleSubmit2}
+      />
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Grid
-          item
+          container
+          paddingTop={{ xs: "90px", md: "100px", lg: "100px" }}
           width="100%"
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
+          flexDirection="column"
+          alignItems="center"
+          marginX={3}
         >
-          <Box display="flex" alignItems="center" gap={0.5}>
-            <MenuBookIcon fontSize="small" />
-            <StyledTypography1 sx={{ ml: 1 }}>
-              {`${examQuestions?.total_time / 60} Questions`}
-            </StyledTypography1>
-          </Box>
-          <Dot sx={{ marginX: 3 }} />
-          <Box
+          <Grid
+            item
+            width="100%"
             sx={{
               display: "flex",
+              flexDirection: "row",
               alignItems: "center",
-              gap: 1,
-              padding: "8px 12px",
-              borderRadius: "4px",
-              background: "linear-gradient(45deg, #0C4340 0%, #06A77D 100%)",
-
-              width: "fit-content",
+              justifyContent: "center",
+              gap: 2,
             }}
           >
-            <TimerIcon sx={{ color: "white" }} />
-            <StyledTypography1 color="white" fontWeight={600}>
-              {formatTime(time)}
-            </StyledTypography1>
-          </Box>
-        </Grid>
-        <Grid item marginTop={1} width={{ xs: "100%", md: "868px" }}>
-          {examQuestions?.questions?.map((element, index) => {
-            return (
-              <Box marginTop={6} key={element._id}>
-                <StyledTypography2 color="#1C1C1C">
-                  {` ${index + 1}. ${element?.question_text[0]?.data?.text}`}
-                </StyledTypography2>
-                <StyledFormControl component="fieldset">
-                  <RadioGroup
-                   value={
-                    answers.find((ans) => ans.question_id === element.question_id)
-                      ?.selected_option || ""
-                  }
-                  onChange={(event) => handleChange(element.question_id, event.target.value)}
-                  >
-                    {element.options?.map((option) => (
-                      <CustomFormControlLabel
-                        key={option._id}
-                        value={option._id}
-                        label={option.text}
-                        checked={
-                            answers.find((ans) => ans.question_id === element.question_id)
-                              ?.selected_option === option._id
-                          }
-                      />
-                    ))}
-                  </RadioGroup>
-                </StyledFormControl>
-              </Box>
-            );
-          })}
-        </Grid>
+            <Box display="flex" alignItems="center" gap={0.5}>
+              <MenuBookIcon fontSize="small" />
+              <StyledTypography1 sx={{ ml: 1 }}>
+                {`${examQuestions?.total_time / 60} Questions`}
+              </StyledTypography1>
+            </Box>
+            <Dot sx={{ marginX: 3 }} />
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                padding: "8px 12px",
+                borderRadius: "4px",
+                background: "linear-gradient(45deg, #0C4340 0%, #06A77D 100%)",
 
-        <Grid
-          item
-          marginTop={5}
-          width={{ xs: "100%", md: "868px" }}
-          sx={{ display: "flex", justifyContent: "center" }}
-        >
-          <StyledButton2
-            variant="contained"
-            type="submit"
-            onClick={handleSubmit}
+                width: "fit-content",
+              }}
+            >
+              <TimerIcon sx={{ color: "white" }} />
+              <StyledTypography1 color="white" fontWeight={600}>
+                {formatTime(time)}
+              </StyledTypography1>
+            </Box>
+          </Grid>
+          <Grid item marginTop={1} width={{ xs: "100%", md: "868px" }}>
+            {examQuestions?.questions?.map((element, index) => {
+              return (
+                <Box marginTop={6} key={element._id}>
+                  <StyledTypography2 color="#1C1C1C">
+                    {` ${index + 1}. ${element?.question_text[0]?.data?.text}`}
+                  </StyledTypography2>
+                  <StyledFormControl component="fieldset">
+                    <RadioGroup
+                      value={
+                        answers.find(
+                          (ans) => ans.question_id === element.question_id
+                        )?.selected_option || ""
+                      }
+                      onChange={(event) =>
+                        handleChange(element.question_id, event.target.value)
+                      }
+                    >
+                      {element.options?.map((option) => (
+                        <CustomFormControlLabel
+                          key={option._id}
+                          value={option._id}
+                          label={option.text}
+                          checked={
+                            answers.find(
+                              (ans) => ans.question_id === element.question_id
+                            )?.selected_option === option._id
+                          }
+                        />
+                      ))}
+                    </RadioGroup>
+                  </StyledFormControl>
+                </Box>
+              );
+            })}
+          </Grid>
+
+          <Grid
+            item
+            marginTop={5}
+            width={{ xs: "100%", md: "868px" }}
+            sx={{ display: "flex", justifyContent: "center" }}
           >
-            Submit
-          </StyledButton2>
+            <StyledButton2
+              variant="contained"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Submit
+            </StyledButton2>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
     </>
   );
 };
