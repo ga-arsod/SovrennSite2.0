@@ -29,11 +29,7 @@ const StyledTypography2 = styled(Typography)`
   line-height: 34px;
   letter-spacing: -0.02em;
 `;
-const StyledTypography3 = styled(Typography)`
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 14px;
-`;
+
 
 export default function PastWinners({ pastWinners }) {
   const getFirstLetters = (str) =>

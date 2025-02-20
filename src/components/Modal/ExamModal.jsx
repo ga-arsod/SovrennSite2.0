@@ -86,12 +86,15 @@ const StyledButton2 = styled(Button)`
     outline: ${colors.themeButtonHover};
   }
 `;
-const ExamModal = () => {
-    const { examRules } = useSelector((store) => store.exam);
+const ExamModal = ({setIsExamStart,isExamModalOpen,setIsExamModalOpen}) => {
+    const { examRules,allow_exam } = useSelector((store) => store.exam);
+    const handleClose=()=>{
+      setIsExamModalOpen(false)
+    }
   return (
     <Modal
-      open={true}
-      //   onClose={handleClose}
+      open={isExamModalOpen}
+        onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{ zIndex: 12000, border: "none", outline: "none" }}
@@ -118,7 +121,7 @@ const ExamModal = () => {
         >
           <IconButton
             sx={{ position: "absolute", top: "6px", right: "4px" }}
-            // onClick={handleClose}
+            onClick={handleClose}
           >
             <CloseIcon sx={{ color: colors.black }} />
           </IconButton>
@@ -139,7 +142,7 @@ const ExamModal = () => {
                   <Grid item xs={6}>
                     <StyledButton1
                       variant="outlined"
-                    
+                      onClick={handleClose}
                     >
                       Cancel
                     </StyledButton1>
@@ -147,9 +150,9 @@ const ExamModal = () => {
                   <Grid item xs={6}>
                     <StyledButton2
                       variant="contained"
-                    
+                    onClick={()=>{allow_exam ? setIsExamStart(true) : handleClose()}}
                     >
-                     Start Exam
+                     {allow_exam ? "Start Exam" : "Close"}
                     </StyledButton2>
                   </Grid>
                 </Grid>
