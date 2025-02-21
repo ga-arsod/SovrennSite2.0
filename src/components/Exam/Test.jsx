@@ -63,7 +63,7 @@ const StyledFormControlLabel = styled(FormControlLabel)(({ checked }) => ({
   justifyContent: "space-between",
   border: "2px solid",
   borderColor: checked ? colors.themeGreen : "#E9EBEF",
-  backgroundColor: checked ? "#ECFAEC" : "#FFFFFF",
+  // backgroundColor: checked ? "#ECFAEC" : "#FFFFFF",
   borderRadius: "8px",
   margin: "8px 0",
   color: "red",

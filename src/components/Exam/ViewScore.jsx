@@ -19,7 +19,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 
-
 const Container = styled(Box)({
   display: "flex",
   alignItems: "center",
@@ -57,13 +56,22 @@ const StyledFormControl = styled(FormControl)({
   marginTop: "16px",
 });
 
-const StyledFormControlLabel = styled(FormControlLabel)(({ isSelected, isCorrect }) => ({
+const StyledFormControlLabel = styled(FormControlLabel)(
+  ({ isSelected, isCorrect }) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     border: "2px solid",
-    borderColor: isCorrect ? colors.themeGreen : isSelected && !isCorrect ? colors.themeGreen : "#E9EBEF",
-    backgroundColor: isCorrect ? "#ECFAEC" : isSelected && !isCorrect  ? "#FEE6E6" : "#FFFFFF",
+    borderColor: isCorrect
+      ? colors.themeGreen
+      : isSelected && !isCorrect
+      ? colors.themeGreen
+      : "#E9EBEF",
+    backgroundColor: isCorrect
+      ? "#ECFAEC"
+      : isSelected && !isCorrect
+      ? "#FEE6E6"
+      : "#FFFFFF",
     borderRadius: "8px",
     margin: "8px 0",
     color: "red",
@@ -79,8 +87,8 @@ const StyledFormControlLabel = styled(FormControlLabel)(({ isSelected, isCorrect
         color: colors.themeGreen,
       },
     },
-  }));
-  
+  })
+);
 
 const StyledLabelTypography = styled(Typography)`
   font-weight: 400;
@@ -124,58 +132,63 @@ const Span1 = styled.span`
   }
 `;
 const CustomFormControlLabel = ({ option, question }) => {
-    const selectedOption = question.selected_option;
-    const correctAnswer = question.correct_answer;
-    const isSelected = selectedOption === option._id;
-    const isCorrect = correctAnswer === option._id;
-    const showCorrection = isSelected && !isCorrect; // User selected wrong option
-  
-    return (
-      <StyledFormControlLabel
-        control={<Radio checked={isSelected} />}
-        label={
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <StyledLabelTypography>{option.text}</StyledLabelTypography>
-  
-          
-            {isSelected && (isCorrect ? (
-              <DoneIcon sx={{ color: "#43CB43" }} /> 
-            ) : (
-              <CloseIcon sx={{ color: "red" }} /> 
-            ))}
-  
-          
-            {isCorrect && !isSelected && <DoneIcon sx={{ color: "#43CB43" }} />}
-          </Box>
-        }
-        isSelected={isSelected}
-      isCorrect={isCorrect}
-        sx={{
-          borderColor: isCorrect ? colors.themeGreen : showCorrection ? colors.themeGreen : "#E9EBEF",
-          backgroundColor: isCorrect ? "#ECFAEC" : showCorrection ? "#FEE6E6" : "#FFFFFF",
-        }}
-      />
-    );
-  };
-  
+  const selectedOption = question.selected_option;
+  const correctAnswer = question.correct_answer;
+  const isSelected = selectedOption === option._id;
+  const isCorrect = correctAnswer === option._id;
+  const showCorrection = isSelected && !isCorrect; // User selected wrong option
 
-const ViewScore = ({setViewAnswers}) => {
+  return (
+    <StyledFormControlLabel
+      control={<Radio checked={isSelected} />}
+      label={
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <StyledLabelTypography>{option.text}</StyledLabelTypography>
+
+          {isSelected &&
+            (isCorrect ? (
+              <DoneIcon sx={{ color: "#43CB43" }} />
+            ) : (
+              <CloseIcon sx={{ color: "red" }} />
+            ))}
+
+          {isCorrect && !isSelected && <DoneIcon sx={{ color: "#43CB43" }} />}
+        </Box>
+      }
+      isSelected={isSelected}
+      isCorrect={isCorrect}
+      sx={{
+        borderColor: isCorrect
+          ? colors.themeGreen
+          : showCorrection
+          ? colors.themeGreen
+          : "#E9EBEF",
+        backgroundColor: isCorrect
+          ? "#ECFAEC"
+          : showCorrection
+          ? "#FEE6E6"
+          : "#FFFFFF",
+      }}
+    />
+  );
+};
+
+const ViewScore = ({ setViewAnswers }) => {
   const { examAnswers, examQuestions } = useSelector((store) => store.exam);
 
   const formatTime = (seconds) => {
-    
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
-.log(examAnswers?.time_taken,"exam anseers")
+
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Grid
@@ -211,13 +224,12 @@ const ViewScore = ({setViewAnswers}) => {
               gap: 1,
               padding: "8px 12px",
               borderRadius: "4px",
-             
 
               width: "fit-content",
             }}
           >
-            <TimerIcon  />
-            <StyledTypography1  fontWeight={600}>
+            <TimerIcon />
+            <StyledTypography1 fontWeight={600}>
               {formatTime(examAnswers?.time_taken)}
             </StyledTypography1>
           </Box>
@@ -230,36 +242,37 @@ const ViewScore = ({setViewAnswers}) => {
                   {` ${index + 1}. ${element?.question_text[0]?.data?.text}`}
                 </StyledTypography2>
                 <StyledFormControl component="fieldset">
-                <RadioGroup>
-  {element.options?.map((option) => (
-    <CustomFormControlLabel
-      key={option._id}
-      option={option}
-      question={element}
-    />
-  ))}
-</RadioGroup>
+                  <RadioGroup>
+                    {element.options?.map((option) => (
+                      <CustomFormControlLabel
+                        key={option._id}
+                        option={option}
+                        question={element}
+                      />
+                    ))}
+                  </RadioGroup>
                 </StyledFormControl>
               </Box>
             );
           })}
         </Grid>
         <Grid
-                  item
-                  marginTop={5}
-                  width={{ xs: "100%", md: "868px" }}
-                  sx={{ display: "flex", justifyContent: "center" }}
-                >
-                  <StyledButton2
-                    variant="contained"
-                    type="submit"
-                    onClick={()=>{
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                      setViewAnswers(false)}}
-                  >
-                   Done
-                  </StyledButton2>
-                </Grid>
+          item
+          marginTop={5}
+          width={{ xs: "100%", md: "868px" }}
+          sx={{ display: "flex", justifyContent: "center" }}
+        >
+          <StyledButton2
+            variant="contained"
+            type="submit"
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              setViewAnswers(false);
+            }}
+          >
+            Done
+          </StyledButton2>
+        </Grid>
       </Grid>
     </Box>
   );

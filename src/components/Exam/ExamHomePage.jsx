@@ -83,6 +83,7 @@ export default function ExamHomePage({ setIsExamStart }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { exam, examCertificate } = useSelector((store) => store.exam);
+  const {isAuth } = useSelector((store) => store.auth);
 const [isOpen, setIsOpen] = useState(false);
   const [isExamModalOpen, setIsExamModalOpen] = useState(false);
   const handleClose = () => {
@@ -115,11 +116,16 @@ const [isOpen, setIsOpen] = useState(false);
     
   };
   useEffect(() => {
-    dispatch(examRulesApi());
+  if(isAuth)
+  {
     dispatch(getExamCertificate());
+    dispatch(examRulesApi)
+  }
+   
     dispatch(examApi());
+   
   }, []);
- 
+
   return (
     <>
     <LoginModal isOpen={isOpen} handleClose={handleClose} />
@@ -206,7 +212,7 @@ const [isOpen, setIsOpen] = useState(false);
                         </Box>
                       </Stack>
                       {elem?.attempted_users?.length &&
-                      elem?.total_participants ? (
+                      elem?.total_participants  ? (
                         <Box
                           sx={{ display: "flex", alignItems: "center", gap: 1 }}
                           mt={2}
@@ -335,7 +341,7 @@ const [isOpen, setIsOpen] = useState(false);
               );
             })}
           </Grid>
-          {examCertificate?.length ? (
+          {examCertificate?.length && isAuth ? (
             <Typography
               sx={{
                 fontWeight: "400",
@@ -354,7 +360,7 @@ const [isOpen, setIsOpen] = useState(false);
           )}
 
           <Grid container spacing={2}>
-            {examCertificate?.map((cert, index) => (
+            { isAuth ? examCertificate?.map((cert, index) => (
               <Grid item xs={12} sm={6} key={index}>
                 <Card
                   sx={{
@@ -396,7 +402,7 @@ const [isOpen, setIsOpen] = useState(false);
                   </Button>
                 </Card>
               </Grid>
-            ))}
+            )) : <></>}
           </Grid>
         </Box>
       </Container>

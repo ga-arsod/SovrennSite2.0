@@ -20,7 +20,9 @@ export const examRulesApi = createAsyncThunk("examRulesApi", async () => {
     method: "GET",
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
+     
     },
+    
   });
   return response.json();
 });
@@ -39,9 +41,7 @@ export const getExamQuestionsApi = createAsyncThunk("getExamQuestionsApi", async
 export const examApi = createAsyncThunk("examApi", async () => {
   const response = await fetch(`${url}/exams`, {
     method: "GET",
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
+   
   });
   return response.json();
 });
@@ -50,7 +50,7 @@ export const leaderboardApi = createAsyncThunk("leaderboardApi", async () => {
   const response = await fetch(`${url}/exam-results/leaderboard/beginner`, {
     method: "GET",
     headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
+    
       "Content-Type": "application/json",
     },
   });
@@ -61,7 +61,7 @@ export const pastWinnersApi = createAsyncThunk("pastWinnersApi", async () => {
   const response = await fetch(`${url}/exam-results/past-winners?page=1&page_size=200`, {
     method: "GET",
     headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
+     
       "Content-Type": "application/json",
     },
   });

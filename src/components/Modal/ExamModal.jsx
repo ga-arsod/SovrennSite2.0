@@ -91,6 +91,7 @@ const ExamModal = ({setIsExamStart,isExamModalOpen,setIsExamModalOpen}) => {
     const handleClose=()=>{
       setIsExamModalOpen(false)
     }
+   
   return (
     <Modal
       open={isExamModalOpen}
