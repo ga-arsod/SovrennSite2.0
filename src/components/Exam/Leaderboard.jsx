@@ -90,8 +90,9 @@ export default function Leaderboard({ pastWinners, setIsPastWinners }) {
     if(leaderboardData)
     getTopThreeWinners(leaderboardData?.data?.leaderboard);
   }, [leaderboardData]);
- console.log(leaderboardData)
+ 
   return (
+    <>
     <Box
       sx={{
         textAlign: "center",
@@ -99,7 +100,7 @@ export default function Leaderboard({ pastWinners, setIsPastWinners }) {
         backgroundSize: "cover",
         backgroundPosition: "center top 0px",
         backgroundRepeat: "no-repeat",
-        minHeight: "120vh",
+        minHeight: "94vh",
       }}
       marginTop="55px"
     >
@@ -272,7 +273,7 @@ export default function Leaderboard({ pastWinners, setIsPastWinners }) {
                     container
                     gap={2}
                     sx={{
-                      maxHeight: "400px",
+                      maxHeight: "600px",
                       overflowY: "auto",
                       scrollbarWidth: "thin",
                       "&::-webkit-scrollbar": {
@@ -389,121 +390,123 @@ export default function Leaderboard({ pastWinners, setIsPastWinners }) {
             )}
           </Grid>
         </Grid>
-        <Box
-          sx={{
-            width: "100%",
-            backgroundColor: "white",
-            boxShadow: "0px 1px 15px 5px #0000001A",
-
-            p: 1,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          {!leaderboardData?.data?.user_rank ? (
-            <StyledButton2>Start the exam, claim your rank!</StyledButton2>
-          ) : (
-            <Grid
-              container
-              sx={{
-                py: 1.5,
-                px: 2,
-                borderRadius: "8px",
-                marginBottom: "0px",
-                backgroundColor: "#E6F6F2",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                maxWidth: "680px",
-              }}
-            >
-              <Grid
-                item
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  flex: 1,
-                }}
-              >
-                <Typography
-                  color={colors.navyBlue500}
-                  fontWeight={600}
-                  sx={{ fontSize: "12px", lineHeight: "14px" }}
-                >
-                  {`#${leaderboardData?.data?.user_rank?.rank}`}
-                </Typography>
-                {leaderboardData?.data?.user_rank?.profile_pic ? (
-                  <Avatar
-                    src={leaderboardData?.data?.user_rank?.profile_pic}
-                    sx={{
-                      width: 48,
-                      height: 48,
-                      border: "2px solid #ccc",
-                      bgcolor: "#36444F",
-                    }}
-                  />
-                ) : (
-                  <Avatar
-                    sx={{
-                      width: 48,
-                      height: 48,
-                      border: "2px solid #ccc",
-                      bgcolor: "#36444F",
-                    }}
-                  >
-                    {getFirstLetters(
-                      leaderboardData?.data?.user_rank?.first_name
-                    ).toUpperCase() +
-                      getFirstLetters(
-                        leaderboardData?.data?.user_rank?.last_name
-                      ).toUpperCase()}
-                  </Avatar>
-                )}
-
-                <Typography
-                  color={colors.navyBlue300}
-                  fontWeight={600}
-                  sx={{
-                    fontSize: "16px",
-                    lineHeight: "19px",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {`${leaderboardData?.data?.user_rank?.first_name} ${leaderboardData?.data?.user_rank?.last_name} `}
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "flex-end",
-                  gap: 2,
-                  flex: 1,
-                }}
-              >
-                <Typography
-                  color={colors.navyBlue300}
-                  fontWeight={600}
-                  sx={{ fontSize: "14px", lineHeight: "17px" }}
-                >
-                  {convertSecondsToTime(
-                    leaderboardData?.data?.user_rank?.time_taken
-                  )}
-                </Typography>
-                <Typography
-                  color={colors.navyBlue300}
-                  fontWeight={600}
-                  sx={{ fontSize: "14px", lineHeight: "17px" }}
-                >
-                  {leaderboardData?.data?.user_rank?.score}
-                </Typography>
-              </Grid>
-            </Grid>
-          )}
-        </Box>
+       
       </Grid>
     </Box>
+     <Box
+     sx={{
+       width: "100%",
+       backgroundColor: "white",
+       boxShadow: "0px 1px 15px 5px #0000001A",
+
+       p: 1,
+       display: "flex",
+       justifyContent: "center",
+     }}
+   >
+     {!leaderboardData?.data?.user_rank ? (
+       <StyledButton2>Start the exam, claim your rank!</StyledButton2>
+     ) : (
+       <Grid
+         container
+         sx={{
+           py: 1.5,
+           px: 2,
+           borderRadius: "8px",
+           marginBottom: "0px",
+           backgroundColor: "#E6F6F2",
+           display: "flex",
+           justifyContent: "space-between",
+           alignItems: "center",
+           maxWidth: "680px",
+         }}
+       >
+         <Grid
+           item
+           sx={{
+             display: "flex",
+             alignItems: "center",
+             gap: 1,
+             flex: 1,
+           }}
+         >
+           <Typography
+             color={colors.navyBlue500}
+             fontWeight={600}
+             sx={{ fontSize: "12px", lineHeight: "14px" }}
+           >
+             {`#${leaderboardData?.data?.user_rank?.rank}`}
+           </Typography>
+           {leaderboardData?.data?.user_rank?.profile_pic ? (
+             <Avatar
+               src={leaderboardData?.data?.user_rank?.profile_pic}
+               sx={{
+                 width: 48,
+                 height: 48,
+                 border: "2px solid #ccc",
+                 bgcolor: "#36444F",
+               }}
+             />
+           ) : (
+             <Avatar
+               sx={{
+                 width: 48,
+                 height: 48,
+                 border: "2px solid #ccc",
+                 bgcolor: "#36444F",
+               }}
+             >
+               {getFirstLetters(
+                 leaderboardData?.data?.user_rank?.first_name
+               ).toUpperCase() +
+                 getFirstLetters(
+                   leaderboardData?.data?.user_rank?.last_name
+                 ).toUpperCase()}
+             </Avatar>
+           )}
+
+           <Typography
+             color={colors.navyBlue300}
+             fontWeight={600}
+             sx={{
+               fontSize: "16px",
+               lineHeight: "19px",
+               whiteSpace: "nowrap",
+             }}
+           >
+             {`${leaderboardData?.data?.user_rank?.first_name} ${leaderboardData?.data?.user_rank?.last_name} `}
+           </Typography>
+         </Grid>
+         <Grid
+           item
+           sx={{
+             display: "flex",
+             alignItems: "center",
+             justifyContent: "flex-end",
+             gap: 2,
+             flex: 1,
+           }}
+         >
+           <Typography
+             color={colors.navyBlue300}
+             fontWeight={600}
+             sx={{ fontSize: "14px", lineHeight: "17px" }}
+           >
+             {convertSecondsToTime(
+               leaderboardData?.data?.user_rank?.time_taken
+             )}
+           </Typography>
+           <Typography
+             color={colors.navyBlue300}
+             fontWeight={600}
+             sx={{ fontSize: "14px", lineHeight: "17px" }}
+           >
+             {leaderboardData?.data?.user_rank?.score}
+           </Typography>
+         </Grid>
+       </Grid>
+     )}
+   </Box>
+   </>
   );
 }

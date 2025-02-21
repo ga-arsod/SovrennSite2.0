@@ -70,7 +70,7 @@ const StyledButton2 = styled(Button)`
   :hover {
     background-color: ${colors.themeButtonHover};
   }
-  @media (max-width: 700px) {
+  @media (max-width: 639px) {
     width: 100%;
     padding-top: 12px;
     padding-bottom: 12px;
