@@ -7,13 +7,16 @@ import Leaderboard from "../../../components/Exam/Leaderboard";
 import { useEffect } from "react";
 import { pastWinnersApi } from "@/app/Redux/Slices/examSlice";
 import { useSelector } from "react-redux";
+import NoLogin from "../../../components/Auth/NoLogin";
 
 
 export default function ExamLeaderboard() {
   const dispatch=useDispatch()
   const {pastWinners } = useSelector((store) => store.exam);
+  const {isAuth } = useSelector((store) => store.auth);
   const [isPastWinners,setIsPastWinners]=useState(false)
   useEffect(()=>{
+    if(isAuth)
   dispatch(pastWinnersApi())
   },[])
   useEffect(() => {
@@ -26,6 +29,10 @@ export default function ExamLeaderboard() {
       }
     }
   }, []);
+
+  if (!isAuth) {
+    return <NoLogin/>;
+  }
   return (
    <>
    {

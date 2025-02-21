@@ -50,7 +50,7 @@ export const leaderboardApi = createAsyncThunk("leaderboardApi", async () => {
   const response = await fetch(`${url}/exam-results/leaderboard/beginner`, {
     method: "GET",
     headers: {
-    
+      Authorization: "Bearer " + localStorage.getItem("token"),
       "Content-Type": "application/json",
     },
   });

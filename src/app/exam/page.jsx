@@ -1,7 +1,7 @@
 "use client";
 import { useDispatch } from "react-redux";
 import Test from "../../components/Exam/Test";
-import { getExamQuestionsApi ,examRulesApi} from "../Redux/Slices/examSlice";
+import { getExamQuestionsApi, examRulesApi } from "../Redux/Slices/examSlice";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import ExamHomePage from "../../components/Exam/ExamHomePage";
@@ -12,28 +12,21 @@ import Spinner from "../../components/Common/Spinner";
 
 export default function InvestingKnowledge() {
   const dispatch = useDispatch();
-  const { examQuestions, isExamScoreReturned, examAnswers, isSubmitLoading} =
+  const { examQuestions, isExamScoreReturned, examAnswers, isSubmitLoading } =
     useSelector((store) => store.exam);
-    const {isAuth } = useSelector((store) => store.auth);
+  const { isAuth } = useSelector((store) => store.auth);
   const [isExamStart, setIsExamStart] = useState(false);
   const [viewAnswers, setViewAnswers] = useState(false);
   useEffect(() => {
-    if(isAuth)
-    {
+    if (isAuth) {
       dispatch(getExamQuestionsApi());
     }
-    
-    
-   
   }, [isExamScoreReturned, viewAnswers, isExamStart]);
-  useEffect(()=>{
-    dispatch(changeExamState())
-   
-    
-  },[])
+  useEffect(() => {
+    dispatch(changeExamState());
+  }, []);
 
   useEffect(() => {
-   
     if (typeof window !== "undefined") {
       document.title = `Test your investing knowedge`;
       const link = document.querySelector("link[rel='canonical']");
