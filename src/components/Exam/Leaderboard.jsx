@@ -13,7 +13,7 @@ import {
 import { useState } from "react";
 import { colors } from "@/components/Constants/colors";
 import styled from "@emotion/styled";
-import { leaderboardApi } from "@/app/Redux/Slices/examSlice";
+
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -87,10 +87,10 @@ export default function Leaderboard({ pastWinners, setIsPastWinners }) {
     if (topThree.length === 1) setWinners([topThree[0]]);
   };
   useEffect(() => {
-    dispatch(leaderboardApi());
+    if(leaderboardData)
     getTopThreeWinners(leaderboardData?.data?.leaderboard);
-  }, []);
-  
+  }, [leaderboardData]);
+ console.log(leaderboardData)
   return (
     <Box
       sx={{

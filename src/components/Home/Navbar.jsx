@@ -264,7 +264,9 @@ const Navbar = () => {
           elem.name !== "Sign Up" &&
           elem.name !== "Login" &&
           elem.name !== "Knowledge" &&
-          elem.name !== "Self Help"
+          elem.name !== "Self Help" &&
+          elem.name!== "Exam"
+         
       )
     : navItems;
 

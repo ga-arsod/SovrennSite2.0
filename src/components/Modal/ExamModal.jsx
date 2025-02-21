@@ -137,7 +137,10 @@ const ExamModal = ({setIsExamStart,isExamModalOpen,setIsExamModalOpen}) => {
             <Grid item paddingX={{ xs: 1, sm: 4 }}>
               <StyledTypography2>Instructions</StyledTypography2>
             </Grid>
-            <div id={styles.MainContainer}>{convertToHtml(examRules)}</div>
+            {
+              examRules ?   <div id={styles.MainContainer}>{convertToHtml(examRules)}</div> : <></>
+            }
+          
           </Grid>
           <Grid container spacing={2} paddingX="20px" paddingBottom="20px">
                   <Grid item xs={6}>

@@ -119,21 +119,24 @@ const [isOpen, setIsOpen] = useState(false);
   if(isAuth)
   {
     dispatch(getExamCertificate());
-    dispatch(examRulesApi)
+    dispatch(examRulesApi())
   }
    
     dispatch(examApi());
    
-  }, []);
+  }, [isAuth]);
 
   return (
     <>
     <LoginModal isOpen={isOpen} handleClose={handleClose} />
-      <ExamModal
-        setIsExamStart={setIsExamStart}
-        isExamModalOpen={isExamModalOpen}
-        setIsExamModalOpen={setIsExamModalOpen}
-      />
+    {
+      isAuth ?   <ExamModal
+      setIsExamStart={setIsExamStart}
+      isExamModalOpen={isExamModalOpen}
+      setIsExamModalOpen={setIsExamModalOpen}
+    /> : <></>
+    }
+     
       <Container>
         <Box marginY="90px">
           <Box marginBottom={1} display="flex" alignItems="center">
@@ -289,7 +292,15 @@ const [isOpen, setIsOpen] = useState(false);
                         variant="contained"
                         fullWidth
                         onClick={() => {
-                          setIsExamModalOpen(true);
+                          if(!isAuth)
+                          {
+                            setIsOpen(true)
+                          }
+                          else
+                          {
+                            setIsExamModalOpen(true);
+                          }
+                         
                         }}
                       >
                         Start Now
