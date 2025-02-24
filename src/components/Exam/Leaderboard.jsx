@@ -13,11 +13,12 @@ import {
 import { useState } from "react";
 import { colors } from "@/components/Constants/colors";
 import styled from "@emotion/styled";
-
+import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import EmptyExam from "../../components/Exam/EmptyExam";
+import ExamModal from "../Modal/ExamModal";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 10px;
@@ -60,7 +61,9 @@ const StyledButton2 = styled(Button)`
 export default function Leaderboard({ pastWinners, setIsPastWinners }) {
   const dispatch = useDispatch();
   const { leaderboardData } = useSelector((store) => store.exam);
+  const {isAuth } = useSelector((store) => store.auth);
   const [winners, setWinners] = useState([]);
+  const [isExamModalOpen, setIsExamModalOpen] = useState(false);
   const getFirstLetters = (str) =>
     str
       .split(" ")
@@ -93,6 +96,13 @@ export default function Leaderboard({ pastWinners, setIsPastWinners }) {
  
   return (
     <>
+    {
+      isAuth ?   <ExamModal
+    
+      isExamModalOpen={isExamModalOpen}
+      setIsExamModalOpen={setIsExamModalOpen}
+    /> : <></>
+    }
     <Box
       sx={{
         textAlign: "center",
@@ -405,7 +415,9 @@ export default function Leaderboard({ pastWinners, setIsPastWinners }) {
      }}
    >
      {!leaderboardData?.data?.user_rank ? (
-       <StyledButton2>Start the exam, claim your rank!</StyledButton2>
+     
+       <StyledButton2 onClick={()=>{setIsExamModalOpen(true)}}>Start the exam, claim your rank!</StyledButton2>
+      
      ) : (
        <Grid
          container

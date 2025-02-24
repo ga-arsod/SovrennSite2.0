@@ -12,6 +12,7 @@ const initialState = {
   isSubmitLoading:false,
   allow_exam:true,
   examCertificate:[],
+  isExamStart:false,
  
 };
 
@@ -102,6 +103,12 @@ const examSlice = createSlice({
     changeExamState: (state) => {
       state.isExamScoreReturned = false;
     },
+    startExamState: (state) => {
+      state.isExamStart = true;
+    },
+    finishExamState: (state) => {
+      state.isExamStart = false;
+    },
    
   },
   extraReducers: (builder) => {
@@ -144,5 +151,5 @@ const examSlice = createSlice({
     });
   },
 });
-export const { changeExamState } = examSlice.actions;
+export const { changeExamState ,startExamState,finishExamState} = examSlice.actions;
 export default examSlice.reducer;

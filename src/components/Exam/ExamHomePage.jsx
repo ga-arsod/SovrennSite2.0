@@ -79,7 +79,7 @@ const StyledButton2 = styled(Button)`
     line-height: 22px;
   }
 `;
-export default function ExamHomePage({ setIsExamStart }) {
+export default function ExamHomePage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { exam, examCertificate } = useSelector((store) => store.exam);
@@ -131,7 +131,7 @@ const [isOpen, setIsOpen] = useState(false);
     <LoginModal isOpen={isOpen} handleClose={handleClose} />
     {
       isAuth ?   <ExamModal
-      setIsExamStart={setIsExamStart}
+    
       isExamModalOpen={isExamModalOpen}
       setIsExamModalOpen={setIsExamModalOpen}
     /> : <></>

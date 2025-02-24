@@ -23,7 +23,7 @@ import examReducer from "./Slices/examSlice"
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['payment'],
+  blacklist: ['payment','exam'],
 };
 
 

@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import TutorialSection from "../Education/TutorialSection";
 import Link from "next/link";
 
+
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 34px;

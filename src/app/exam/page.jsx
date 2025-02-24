@@ -6,16 +6,16 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import ExamHomePage from "../../components/Exam/ExamHomePage";
 import Score from "../../components/Exam/Score";
-import { changeExamState } from "../Redux/Slices/examSlice";
+import { changeExamState ,finishExamState} from "../Redux/Slices/examSlice";
 import ViewScore from "../../components/Exam/ViewScore";
 import Spinner from "../../components/Common/Spinner";
 
 export default function InvestingKnowledge() {
   const dispatch = useDispatch();
-  const { examQuestions, isExamScoreReturned, examAnswers, isSubmitLoading } =
+  const { examQuestions, isExamScoreReturned, examAnswers, isSubmitLoading , isExamStart} =
     useSelector((store) => store.exam);
   const { isAuth } = useSelector((store) => store.auth);
-  const [isExamStart, setIsExamStart] = useState(false);
+  
   const [viewAnswers, setViewAnswers] = useState(false);
   useEffect(() => {
     if (isAuth) {
@@ -24,7 +24,8 @@ export default function InvestingKnowledge() {
   }, [isExamScoreReturned, viewAnswers, isExamStart]);
   useEffect(() => {
     dispatch(changeExamState());
-  }, []);
+    
+  }, [isExamStart]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -42,16 +43,17 @@ export default function InvestingKnowledge() {
       </>
     );
   }
+  console.log(isExamStart, "isExam")
   return (
     <>
       {isExamScoreReturned ? (
         <Score setViewAnswers={setViewAnswers} />
       ) : isExamStart ? (
-        <Test examQuestions={examQuestions} setIsExamStart={setIsExamStart} />
+        <Test examQuestions={examQuestions}  />
       ) : viewAnswers ? (
         <ViewScore setViewAnswers={setViewAnswers} />
       ) : (
-        <ExamHomePage setIsExamStart={setIsExamStart} />
+        <ExamHomePage  />
       )}
     </>
   );

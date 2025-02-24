@@ -17,7 +17,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { submitExamApi } from "@/app/Redux/Slices/examSlice";
 import { useDispatch } from "react-redux";
 import SubmitExamModal from "../Modal/SubmitExamModal";
-
+import { finishExamState } from "@/app/Redux/Slices/examSlice";
 import CheckQuestionsAttemptModal from "../Modal/CheckQuestionAttempModal";
 
 const Container = styled(Box)({
@@ -133,7 +133,7 @@ const CustomFormControlLabel = (props) => (
   />
 );
 
-const Test = ({ examQuestions, setIsExamStart }) => {
+const Test = ({ examQuestions }) => {
   const [value, setValue] = React.useState("");
   const [time, setTime] = useState(0);
   const [answers, setAnswers] = useState([]);
@@ -220,7 +220,7 @@ const Test = ({ examQuestions, setIsExamStart }) => {
       };
 
       dispatch(submitExamApi(payload));
-      setIsExamStart(false);
+     dispatch(finishExamState())
     }
   };
 
@@ -239,7 +239,7 @@ const Test = ({ examQuestions, setIsExamStart }) => {
     };
 
     dispatch(submitExamApi(payload));
-    setIsExamStart(false);
+    dispatch(finishExamState())
   };
 
   return (
