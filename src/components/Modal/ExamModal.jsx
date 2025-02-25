@@ -13,6 +13,9 @@ import { colors } from "../Constants/colors";
 import styles from "../../styles/exam.module.css";
 import { useSelector } from "react-redux";
 import convertToHtml from "../../utils/convertToHtml"
+import { useDispatch } from "react-redux";
+import Link from "next/link";
+import { startExamState,finishExamState } from "@/app/Redux/Slices/examSlice";
 const StyledBox = styled(Box)`
   position: absolute;
   top: 50%;
@@ -86,12 +89,16 @@ const StyledButton2 = styled(Button)`
     outline: ${colors.themeButtonHover};
   }
 `;
-const ExamModal = () => {
-    const { examRules } = useSelector((store) => store.exam);
+const ExamModal = ({isExamModalOpen,setIsExamModalOpen}) => {
+    const { examRules,allow_exam } = useSelector((store) => store.exam);
+    const handleClose=()=>{
+      setIsExamModalOpen(false)
+    }
+   const dispatch=useDispatch()
   return (
     <Modal
-      open={true}
-      //   onClose={handleClose}
+      open={isExamModalOpen}
+        onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{ zIndex: 12000, border: "none", outline: "none" }}
@@ -118,7 +125,7 @@ const ExamModal = () => {
         >
           <IconButton
             sx={{ position: "absolute", top: "6px", right: "4px" }}
-            // onClick={handleClose}
+            onClick={handleClose}
           >
             <CloseIcon sx={{ color: colors.black }} />
           </IconButton>
@@ -133,24 +140,29 @@ const ExamModal = () => {
             <Grid item paddingX={{ xs: 1, sm: 4 }}>
               <StyledTypography2>Instructions</StyledTypography2>
             </Grid>
-            <div id={styles.MainContainer}>{convertToHtml(examRules)}</div>
+            {
+              examRules ? <div id={styles.MainContainer}>{convertToHtml(examRules)}</div> : <></>
+            }
+          
           </Grid>
           <Grid container spacing={2} paddingX="20px" paddingBottom="20px">
                   <Grid item xs={6}>
                     <StyledButton1
                       variant="outlined"
-                    
+                      onClick={handleClose}
                     >
                       Cancel
                     </StyledButton1>
                   </Grid>
                   <Grid item xs={6}>
+                    <Link href="/exam">
                     <StyledButton2
                       variant="contained"
-                    
+                    onClick={()=>{allow_exam ? dispatch(startExamState()) : handleClose()}}
                     >
-                     Start Exam
+                     {allow_exam ? "Start Exam" : "Close"}
                     </StyledButton2>
+                    </Link>
                   </Grid>
                 </Grid>
         </Box>
