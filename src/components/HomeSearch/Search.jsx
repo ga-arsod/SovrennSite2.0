@@ -15,6 +15,9 @@ import ArrowBack from "@mui/icons-material/ArrowBack";
 import { useMediaQuery } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Spinner from "../Common/Spinner";
+import { useSelector } from "react-redux";
+
+const url = process.env.NEXT_PUBLIC_API_URL;
 
 const StyledTypography1 = styled(Typography)`
   font-size: 23px;
@@ -54,6 +57,7 @@ const Search = () => {
   const [isLoading,setIsLoading]=useState(true)
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
+  const { isAuth } = useSelector((store) => store.auth);
   
  
   const isXsOrSm = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -67,7 +71,13 @@ const Search = () => {
 
   const getCompanies = async (query) => {
     const res = await fetch(
-      `https://api.sovrenn.com/company/text-search?q=${query}`
+      `${url}/company/text-search?q=${query}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: isAuth ? "Bearer " + localStorage.getItem("token") : null,
+        },
+      }
     );
 
     const data = await res.json();

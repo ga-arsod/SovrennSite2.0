@@ -119,7 +119,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
       },
       body: JSON.stringify({
         ...form,
-        know_pref_eqt_allotment:form. know_pref_eqt_allotment == "Yes" ? true : false
+        know_pref_eqt_allotment: form.know_pref_eqt_allotment
       }),
     }).then((d) => d.json());
 
@@ -171,12 +171,31 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     name="state"
-                    defaultValue="Select State"
+                    // defaultValue="Select State"
                     fullWidth
                     onChange={formInputChange}
                     value={form.state}
                     required
                     disabled={stateInputDisabled}
+                    displayEmpty
+                    renderValue={(selected) => {
+                      if (!selected) {
+                        return (
+                          <Typography
+                            data-placeholder="true"
+                            sx={{
+                              fontWeight: 400,
+                              fontSize: "16px",
+                              lineHeight: "21px",
+                              color: "#96A7B4",
+                            }}
+                          >
+                            Select State
+                          </Typography>
+                        );
+                      }
+                      return selected;
+                    }}
                     MenuProps={{
                       disableScrollLock: true,
                       PaperProps: {
@@ -212,6 +231,26 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                   onChange={formInputChange}
                   value={form.where_did_hear_about_sovrenn}
                   disabled={stateInputDisabled}
+                  displayEmpty
+                  required
+                  renderValue={(selected) => {
+                    if (!selected) {
+                      return (
+                        <Typography
+                          data-placeholder="true"
+                          sx={{
+                            fontWeight: 400,
+                            fontSize: "16px",
+                            lineHeight: "21px",
+                            color: "#96A7B4",
+                          }}
+                        >
+                          Select an Option
+                        </Typography>
+                      );
+                    }
+                    return selected;
+                  }}
                   MenuProps={{
                     disableScrollLock: true,
                     PaperProps: {
@@ -235,19 +274,18 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <StyledInputLabel htmlFor="know_pref_eqt_allotment">
-                  Do you understand the concept of equity allotment in
-                  investing?
+                  Do you understand the concept of preferential equity allotment in investing?
                 </StyledInputLabel>
                 <StyledSelect
                   labelId="demo-simple-select-label"
                   id="know_pref_eqt_allotment"
                   name="know_pref_eqt_allotment"
-                  value={form.know_pref_eqt_allotment || ""}
+                  value={form?.know_pref_eqt_allotment}
                   onChange={formInputChange}
                   displayEmpty
                   required
                   renderValue={(selected) => {
-                    if (!selected) {
+                    if (!selected && typeof selected !== "boolean") {
                       return (
                         <Typography
                           data-placeholder="true"
@@ -262,9 +300,9 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                         </Typography>
                       );
                     }
-                    return selected;
+                    return selected ? "Yes" : "No";
                   }}
-                  
+
                   disabled={stateInputDisabled}
                   MenuProps={{
                     disableScrollLock: true,
@@ -274,8 +312,8 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                     },
                   }}
                 >
-                  <MenuItem value="Yes">Yes</MenuItem>
-                  <MenuItem value="False">No</MenuItem>
+                  <MenuItem value={true}>Yes</MenuItem>
+                  <MenuItem value={false}>No</MenuItem>
                 </StyledSelect>
               </FormControl>
             </Grid>
@@ -316,7 +354,6 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                   <StyledButton1
                     variant="contained"
                     type="submit"
-                    disabled={!form.know_pref_eqt_allotment}
                   >
                     Create Profile
                   </StyledButton1>

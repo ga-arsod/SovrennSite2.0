@@ -107,7 +107,6 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const URL = "https://api.sovrenn.com";
 const SignUp = ({ form, setForm }) => {
   const [basicInfo, setBasicInfo] = useState(false);
   const router = useRouter();
