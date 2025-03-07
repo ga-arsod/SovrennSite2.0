@@ -43,8 +43,8 @@ export default function SaleBanner() {
               onClick={handleBannerClick} 
             >
               <Image
-                src={"https://dwht5p5xdhql3.cloudfront.net/BANNERS/RepublicDaySaleBanner.png"} 
-                alt="Sovrenn Financial Freedom Sale"
+                src={"https://dwht5p5xdhql3.cloudfront.net/BANNERS/HoliSaleBanner25.png"} 
+                alt="Sovrenn Holi Sale"
                 width={500} 
                 height={300}
                 style={{
