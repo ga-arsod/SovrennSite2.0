@@ -31,7 +31,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     padding: "12px 8px",
     color: colors.navyBlue900,
     fontWeight: 400,
-    fontSize: "12px",
+    fontSize: "14px",
     lineHeight: "17px",
   },
   "& .MuiInputLabel-root": {
@@ -119,7 +119,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
       },
       body: JSON.stringify({
         ...form,
-        know_pref_eqt_allotment:form. know_pref_eqt_allotment == "Yes" ? true : false
+       
       }),
     }).then((d) => d.json());
 
@@ -136,7 +136,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
     setValidateValue(data.message);
     return;
   };
-  
+  console.log(form,"form")
   return (
     <Grid
       container
@@ -159,7 +159,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
         </Typography>
         <form onSubmit={handleSubmitForm}>
           <Grid container spacing={2}>
-            {stateInputDisabled ? (
+            {stateInputDisabled || form.country_code != "+91" ? (
               ""
             ) : (
               <Grid item xs={12}>
@@ -234,15 +234,14 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
             </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <StyledInputLabel htmlFor="know_pref_eqt_allotment">
-                  Do you understand the concept of equity allotment in
-                  investing?
+                <StyledInputLabel htmlFor="experience_in_the_market">
+                How long have you been investing?
                 </StyledInputLabel>
                 <StyledSelect
                   labelId="demo-simple-select-label"
-                  id="know_pref_eqt_allotment"
-                  name="know_pref_eqt_allotment"
-                  value={form.know_pref_eqt_allotment || ""}
+                  id="experience_in_the_market"
+                  name="experience_in_the_market"
+                  value={form.experience_in_the_market || ""}
                   onChange={formInputChange}
                   displayEmpty
                   required
@@ -258,7 +257,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                             color: "#96A7B4",
                           }}
                         >
-                          Yes/No
+                         Select experience
                         </Typography>
                       );
                     }
@@ -274,8 +273,11 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                     },
                   }}
                 >
-                  <MenuItem value="Yes">Yes</MenuItem>
-                  <MenuItem value="False">No</MenuItem>
+                <MenuItem value="< 3 Months">{"<"} 3 Months</MenuItem>
+                  <MenuItem value="3 Months - 1 Year">3 Months - 1 Year</MenuItem>
+                  <MenuItem value="1 Year - 3 Years">1 Year - 3 Years</MenuItem>
+                  <MenuItem value="3 Years - 5 Years">3 Years - 5 Years</MenuItem>
+                  <MenuItem value="> 5 Years">{">"} 5 Years</MenuItem>
                 </StyledSelect>
               </FormControl>
             </Grid>

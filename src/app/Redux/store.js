@@ -18,7 +18,8 @@ import pulseReducer from "./Slices/pulseSlice";
 import knowledgeReducer from "./Slices/knowledgeSlice";
 import paymentReducer from "./Slices/paymentSlice";
 import planReducer from "./Slices/PlanSlice";
-import examReducer from "./Slices/examSlice"
+import examReducer from "./Slices/examSlice";
+import filingReducer from "./Slices/filingSlice";
 
 const persistConfig = {
   key: 'root',
@@ -45,6 +46,7 @@ const appReducer = combineReducers({
   payment: paymentReducer,
   plan: planReducer,
   exam:examReducer,
+  filing:filingReducer
 });
 
 

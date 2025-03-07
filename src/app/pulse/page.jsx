@@ -12,7 +12,7 @@ import { getPortfolioCompanies } from "../Redux/Slices/pulseSlice";
 
 const PulsePage = () => {
   const dispatch = useDispatch();
-  const { isAuth, userDetails } = useSelector((store) => store.auth);
+  const { isAuth} = useSelector((store) => store.auth);
   const { portfolioCompanies } = useSelector((store) => store.pulse);
 
   useEffect(() => {

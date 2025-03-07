@@ -40,7 +40,7 @@ const Auth = () => {
       phone_number: "",
       state: "Abroad",
     country_code: "+91",
-    know_pref_eqt_allotment:"",
+    experience_in_the_market:"",
     where_did_hear_about_sovrenn: "Twitter",
     referral_code: ""
   

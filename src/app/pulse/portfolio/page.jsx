@@ -23,7 +23,7 @@ import { debounce, throttle } from "lodash";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
   getPortfolioCompanies,
   searchAllCompanies,
@@ -46,14 +46,14 @@ const StyledTypography1 = styled(Typography)`
   line-height: 56px;
   letter-spacing: -0.04em;
 
-   @media (max-width: 639px) {
+  @media (max-width: 639px) {
     font-size: 23px;
     line-height: 28px;
   }
 `;
 
 const StyledTypography2 = styled(Typography)`
- font-weight: 600;
+  font-weight: 600;
   font-size: 17px;
   line-height: 23px;
   letter-spacing: 0.02em;
@@ -96,22 +96,19 @@ const DEBOUNCE_DELAY = 300;
 
 const PulseSearch = () => {
   const dispatch = useDispatch();
-  const router=useRouter();
+  const router = useRouter();
   const { portfolioCompanies, isCompaniesLoading, allCompanies } = useSelector(
     (store) => store.pulse
   );
-  
-  const { isAuth } = useSelector(
-    (store) => store.auth
-  );
+
+  const { isAuth } = useSelector((store) => store.auth);
   const [companies, setCompanies] = useState([]);
   const [companyIds, setCompanyIds] = useState([]);
   const [recentlyAdded, setRecentlyAdded] = useState([]);
   const [searchText, setSearchText] = useState("");
 
-
   const handleBackClick = () => {
-    router.back();  
+    router.back();
   };
 
   useEffect(() => {
@@ -149,7 +146,6 @@ const PulseSearch = () => {
   }, [searchText, debouncedSearch]);
 
   useEffect(() => {
-   
     if (typeof window !== "undefined") {
       document.title = "Sovrenn Pulse - Portfolio";
       const link = document.querySelector("link[rel='canonical']");
@@ -188,14 +184,15 @@ const PulseSearch = () => {
       );
       return;
     }
-  
+
     // Add the company to the recently added list
     setRecentlyAdded([...recentlyAdded, value]);
   };
-  
 
   const updatePortfolio = () => {
-    dispatch(updatePortfolioApi({data:[...recentlyAdded, ...companies],router}));
+    dispatch(
+      updatePortfolioApi({ data: [...recentlyAdded, ...companies], router })
+    );
 
     dispatch(
       setSnackStatus({
@@ -216,23 +213,30 @@ const PulseSearch = () => {
     return <NoLogin />;
   }
 
- 
   return (
     <>
-     
-    
       <Container sx={{ paddingBottom: "80px" }}>
-      <Snackbar/>
+        <Snackbar />
         <Grid container marginTop="90px">
           <Grid item>
-          <Box display="flex" alignItems="center">
-         
-            <ArrowBackIcon onClick={handleBackClick} sx={{ display: { xs: 'block', sm: 'block', md: 'none', fontSize: 28, }, mr: 1 }} />
-            <StyledTypography1 color={colors.navyBlue500}>
-              My <span style={{ color: colors.themeGreen }}>Portfolio</span>
-            </StyledTypography1>
-          </Box>
-           
+            <Box display="flex" alignItems="center">
+              <ArrowBackIcon
+                onClick={handleBackClick}
+                sx={{
+                  display: {
+                    xs: "block",
+                    sm: "block",
+                    md: "none",
+                    fontSize: 28,
+                  },
+                  mr: 1,
+                }}
+              />
+              <StyledTypography1 color={colors.navyBlue500}>
+                My <span style={{ color: colors.themeGreen }}>Portfolio</span>
+              </StyledTypography1>
+            </Box>
+
             <StyledTypography2 color={colors.navyBlue300} mt={1}>
               Receive refined updates for the stocks in your portfolio
             </StyledTypography2>
@@ -470,20 +474,16 @@ const PulseSearch = () => {
                     </List>
                   </Grid>
                   <Grid item marginTop={3}>
-                  <StyledButton
-                  onClick={updatePortfolio}
-                fullWidth
-                  variant="contained"
-                >
-                  {portfolioCompanies?.length ? "Save" : "Create Now"}
-                </StyledButton>
+                    <StyledButton
+                      onClick={updatePortfolio}
+                      fullWidth
+                      variant="contained"
+                    >
+                      {portfolioCompanies?.length ? "Save" : "Create Now"}
+                    </StyledButton>
                   </Grid>
                 </Grid>
               </div>
-
-            
-                
-             
             </div>
           </Box>
         </Grid>
