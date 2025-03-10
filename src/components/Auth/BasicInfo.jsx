@@ -25,6 +25,7 @@ const StyledInputLabel = styled(Typography)`
   font-size: 18px;
   line-height: 21.5px;
   color: ${colors.navyBlue800};
+  margin-bottom: 5px;
 `;
 const StyledTextField = styled(TextField)(({ theme }) => ({
   "& .MuiOutlinedInput-input": {
@@ -54,7 +55,7 @@ const StyledSelect = styled(Select)`
     color: ${colors.navyBlue800};
     border-radius: 8px;
   }
-
+  
   & .MuiSelect-select {
     padding: 10px 12px;
     display: flex;
@@ -68,7 +69,6 @@ const StyledButton1 = styled(Button)`
   font-size: 17px;
   line-height: 30px;
   text-transform: none;
-  paddingy: 14px;
   width: 100%;
   background-color: ${colors.themeGreen};
   :hover {
@@ -136,7 +136,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
     setValidateValue(data.message);
     return;
   };
-  console.log(form,"form")
+
   return (
     <Grid
       container
@@ -285,7 +285,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                   displayEmpty
                   required
                   renderValue={(selected) => {
-                    if (!selected && typeof selected !== "boolean") {
+                    if (!selected) {
                       return (
                         <Typography
                           data-placeholder="true"
@@ -300,7 +300,7 @@ const BasicInfo = ({ form, setForm, formInputChange }) => {
                         </Typography>
                       );
                     }
-                    return selected ? "Yes" : "No";
+                    return selected;
                   }}
 
                   disabled={stateInputDisabled}

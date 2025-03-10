@@ -38,10 +38,10 @@ const Auth = () => {
     email: "",
     password: "",
     phone_number: "",
-    state: "Abroad",
+    state: "",
     country_code: "+91",
     experience_in_the_market:"",
-    where_did_hear_about_sovrenn: "Twitter",
+    where_did_hear_about_sovrenn: "",
     referral_code: ""
 
   })

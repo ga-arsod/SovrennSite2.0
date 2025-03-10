@@ -14,8 +14,7 @@ import Updates from "@/components/Home/Updates";
 import { auth } from "@/auth";
 import SaleBanner from "../components/SaleBanner/SaleBanner";
 
-const Home =  () => {
- 
+const Home = () => {
 
   useEffect(() => {
     const title = "Information platform to discover the best MicroCap stocks to buy in India";
