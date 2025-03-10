@@ -125,7 +125,7 @@ const [isOpen, setIsOpen] = useState(false);
     dispatch(examApi());
    
   }, [isAuth]);
-
+console.log(examCertificate,"examCertificate")
   return (
     <>
     <LoginModal isOpen={isOpen} handleClose={handleClose} />
@@ -399,6 +399,10 @@ const [isOpen, setIsOpen] = useState(false);
                   >
                     {cert?.file_title}
                   </Typography>
+                  {/* <Link
+                                  href={`exam/view-certificate?path=${cert?.certificate_url}`}
+                                  target="_blank"
+                                > */}
                   <Button
                     sx={{
                       fontWeight: "600",
@@ -411,6 +415,7 @@ const [isOpen, setIsOpen] = useState(false);
                   >
                     View
                   </Button>
+                  {/* </Link> */}
                 </Card>
               </Grid>
             )) : <></>}
