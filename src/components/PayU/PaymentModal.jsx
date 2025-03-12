@@ -103,7 +103,7 @@ const PaymentModal = ({ isPaymentOpen, handlePaymentClose }) => {
 
   const { isAuth, userDetails } = useSelector((store) => store.auth);
   const { paymentData } = useSelector((store) => store.payment);
-
+const { commonPrice } = useSelector((store) => store.plan);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -113,6 +113,7 @@ const PaymentModal = ({ isPaymentOpen, handlePaymentClose }) => {
       document.getElementById("paymentForm").submit();
     } 
   };
+  console.log(commonPrice,"price")
   return (
     <Modal
       open={isPaymentOpen}
@@ -238,7 +239,8 @@ const PaymentModal = ({ isPaymentOpen, handlePaymentClose }) => {
                       onClick={() => {
                         const data = {
                           txnid: Date.now(),
-                          amount: isAuth ? userDetails?.to_pay_for_fa : 4500,
+                          amount: isAuth ? userDetails?.to_pay_for_fa : commonPrice?.
+                          full_access,
                           productinfo: "full-access",
                           firstname: userDetails.first_name,
                           email: userDetails.email,
@@ -254,7 +256,8 @@ const PaymentModal = ({ isPaymentOpen, handlePaymentClose }) => {
                         );
                       }}
                     >
-                      Buy Full Access@ ₹4500/yr
+                      {`Buy Full Access @ ₹${isAuth ? userDetails?.to_pay_for_fa : commonPrice?.
+                          full_access}/yr`}
                     </StyledButton2>
                   </form>
                 </Grid>

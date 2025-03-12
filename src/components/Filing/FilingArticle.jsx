@@ -13,18 +13,22 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { filingFilterApi, allFilingApi } from "@/app/Redux/Slices/filingSlice";
+import {
+  filingFilterApi,
+  myFilingFilterApi,
+  allFilingApi,
+  myFilingApi,
+} from "@/app/Redux/Slices/filingSlice";
 import Link from "next/link";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import AttachFileTwoToneIcon from "@mui/icons-material/AttachFileTwoTone";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FilingFilter from "../Filing/FilingFilter";
+import MyFilingFilter from "../../components/Filing/MyFilingFilter";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import moment from "moment";
-
-
 
 const StyledTypography2 = styled(Typography)`
   font-weight: 600;
@@ -60,7 +64,6 @@ const StyledButton = styled(Button)`
   border-color: ${colors.themeGreen};
 `;
 
-
 const StyledTypographyFileLink = styled(Typography)`
   font-size: 14px;
   font-weight: 600;
@@ -84,7 +87,6 @@ const FileLinkButton = styled(Button)`
   }
 `;
 
-
 const StyledButton2 = styled(Button)`
   color: white;
   font-weight: 400;
@@ -107,48 +109,126 @@ const StyledButton2 = styled(Button)`
   }
 `;
 
-const FilingArticle = () => {
+const FilingArticle = ({
+  filterData,
+  setFilterData,
+  page,
+  setPage,
+  searchTerm,
+  tabValue,
+}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const { allFiling, pagination, isFilingFilterOpen } = useSelector(
-    (store) => store.filing
-  );
+  const {
+    allFiling,
+    alertKeywords,
+    myFiling,
+    pagination,
+    isFilingFilterOpen,
+    isMyFilingFilterOpen,
+  } = useSelector((store) => store.filing);
   const { isAuth } = useSelector((store) => store.auth);
-  const [filterData, setFilterData] = useState({});
-  const [page, setPage] = useState(1);
+
   const handleModalOpen = () => {
     setIsOpen(false);
   };
 
-  const setPaginate = () => {
-    setPage(page + 1);
+  const highlightText = (text, keyword) => {
+    if (!keyword) return text;
 
-    
+    const parts = text.split(new RegExp(`(${keyword})`, "gi"));
+
+    return parts.map((part, index) =>
+      part.toLowerCase() === keyword.toLowerCase() ? (
+        <span key={index} style={{ color: "red" }}>
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
+
+  const setPaginate = () => {
+   
+    if (tabValue == 0) {
       dispatch(
-        allFilingApi({ text: "", page: page+1, pageSize: 20,data: filterData })
+        allFilingApi({
+          text: searchTerm,
+          page: page + 1,
+          pageSize: 20,
+          data: filterData,
+        })
       );
-    
+    } else if (tabValue == 1) {
+      dispatch(
+        myFilingApi({
+          text: searchTerm,
+          page: page + 1,
+          pageSize: 20,
+          data: filterData,
+        })
+      );
+    }
   };
   useEffect(() => {
-    dispatch(allFilingApi({ text: "", page: 1, pageSize: 20,data: filterData }));
-  
+    if (searchTerm == "") {
+      if (tabValue == 0) {
+        dispatch(
+          allFilingApi({
+            text: searchTerm,
+            page: 1,
+            pageSize: 20,
+            data: filterData,
+          })
+        );
+      } else if (tabValue == 1) {
+        dispatch(
+          myFilingApi({
+            text: searchTerm,
+            page: 1,
+            pageSize: 20,
+            data: filterData,
+          })
+        );
+      }
+    }
+  }, [dispatch, isAuth, tabValue]);
+
+  useEffect(() => {
     dispatch(filingFilterApi());
-  }, [dispatch, isAuth]);
- 
+    if (alertKeywords?.length) {
+      dispatch(myFilingFilterApi());
+    }
+  }, []);
  
   return (
     <>
-      <FilingFilter
-        isOpen={isFilingFilterOpen}
-        handleModalOpen={handleModalOpen}
-        page={page}
-        setPage={setPage}
-        filterData={filterData}
-        setFilterData={setFilterData}
-      />
-      <Grid container direction="column" alignItems="center">
-        {allFiling?.map((article, index) => {
+      {tabValue == 0 ? (
+        <FilingFilter
+          isOpen={isFilingFilterOpen}
+          handleModalOpen={handleModalOpen}
+          page={page}
+          setPage={setPage}
+          filterData={filterData}
+          setFilterData={setFilterData}
+        />
+      ) : tabValue == 1 ? (
+        <MyFilingFilter
+          isOpen={isMyFilingFilterOpen}
+          handleModalOpen={handleModalOpen}
+          page={page}
+          setPage={setPage}
+          filterData={filterData}
+          setFilterData={setFilterData}
+        />
+      ) : (
+        <></>
+      )}
+
+      <Grid container direction="column" alignItems="center" marginBottom={5}>
+        {(tabValue == 0 ? allFiling : myFiling)?.map((article, index) => {
           return (
             <Card
               variant="outlined"
@@ -246,8 +326,17 @@ const FilingArticle = () => {
                 </Box>
 
                 <Box mb={2}>
-                  <StyledTypography3 sx={{ mt: 0.5 }}>
-                    {article.ai_summary}
+                  <StyledTypography3
+                    sx={{
+                      mt: 0.5,
+                    }}
+                  >
+                    {highlightText(
+                      article.ai_summary,
+                      article?.matched_keyword && searchTerm == ""
+                        ? article?.matched_keyword
+                        : searchTerm
+                    )}
                   </StyledTypography3>
                 </Box>
 
@@ -311,19 +400,28 @@ const FilingArticle = () => {
           );
         })}
 
-        <Box
-          sx={{ display: "flex", justifyContent: "center" }}
-          marginBottom={6}
-          marginTop={2}
-        >
-          <StyledButton2
-            variant="contained"
-            endIcon={<ExpandMoreIcon style={{ fontSize: "24px" }} />}
-            onClick={setPaginate}
+        {
+         
+        
+        
+        (tabValue == 0 && allFiling?.length && pagination?.total_pages !== pagination?.page) ||
+        (tabValue == 1 && myFiling?.length && pagination?.total_pages !== pagination?.page) ? (
+          <Box
+            sx={{ display: "flex", justifyContent: "center" }}
+           
+            marginTop={2}
           >
-            Load More
-          </StyledButton2>
-        </Box>
+            <StyledButton2
+              variant="contained"
+              endIcon={<ExpandMoreIcon style={{ fontSize: "24px" }} />}
+              onClick={setPaginate}
+            >
+              Load More
+            </StyledButton2>
+          </Box>
+        ) : (
+          <></>
+        )}
       </Grid>
     </>
   );

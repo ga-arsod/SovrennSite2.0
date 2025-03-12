@@ -37,7 +37,7 @@ export const timesPdfFilterApi = createAsyncThunk("timesPdfFilterApi", async () 
 });
 
 export const timesPdfListApi = createAsyncThunk("timesPdfListApi", async ({page,data}) => {
-  const response = await fetch(`${url}/news/pdf-data?page=${page}&page_size=10`, {
+  const response = await fetch(`${url}/news/pdf-data?page=${page}&page_size=10&platform=website`, {
     method: "POST",
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -69,7 +69,7 @@ export const timesPdfDataApi = createAsyncThunk("timesPdfDataApi", async (pdfId)
 export const timesArticleApi = createAsyncThunk(
   "timesArticleApi",
   async ({page,data},{dispatch}) => {
-    const response = await fetch(`${url}/news/data?page=${page}&page_size=10`, {
+    const response = await fetch(`${url}/news/data?page=${page}&page_size=10&platform=website`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),

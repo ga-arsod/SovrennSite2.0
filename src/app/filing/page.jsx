@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Search, FilterList, Notifications } from "@mui/icons-material";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-import React from "react";
+import React ,{useEffect} from "react";
 import { useTheme } from "@mui/material/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { colors } from "../../components/Constants/colors";
@@ -21,8 +21,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import FilingArticle from "../../components/Filing/FilingArticle";
 import FilingIntro from "../../components/Filing/FilingIntro";
-import { toggleFilingFilter } from "../Redux/Slices/filingSlice";
+import { toggleFilingFilter,toggleMyFilingFilter, allFilingApi ,myFilingApi,getAlertKeywordsApi} from "../Redux/Slices/filingSlice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import Snackbar from "../../components/Snackbar/SnackBar"
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -111,9 +113,51 @@ const Filing = () => {
   const theme = useTheme();
   const router = useRouter();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const dispatch=useDispatch()
+  const { alertkeywords } = useSelector((store) => store.filing);
+  const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
   const [tabValue, setTabValue] = useState(0);
+  const [filterData1, setFilterData1] = useState({});
+  const [filterData2, setFilterData2] = useState({});
+  const [page, setPage] = useState(1);
 
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      if(tabValue==0)
+      {
+        dispatch(
+          allFilingApi({
+            text: searchTerm,
+            page: 1,
+            pageSize: 20,
+            data: filterData1,
+          })
+        );
+      }
+      else if(tabValue==1)
+      {
+        dispatch(
+          myFilingApi({
+            text: searchTerm,
+            page: 1,
+            pageSize: 20,
+            data: filterData2,
+          })
+        );
+      }
+     
+     
+    }
+  };
+useEffect(()=>{
+  dispatch(getAlertKeywordsApi())
+},[])
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
   const handleBackClick = () => {
     router.back();
   };
@@ -122,6 +166,7 @@ const Filing = () => {
     <>
       <Container>
         <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 2, sm: "14px" }}>
+          <Snackbar/>
           <Grid container alignItems="center">
             <Grid item paddingY={3}>
               <Box marginBottom={1} display="flex" alignItems="center">
@@ -184,7 +229,9 @@ const Filing = () => {
               />
             </Tabs>
           </Grid>
-          <Grid
+          {
+            tabValue==1 && alertkeywords.length == 0 ? <></> : 
+            <Grid
             item
             sx={{
               display: "flex",
@@ -202,7 +249,11 @@ const Filing = () => {
                 height: "auto !important",
                 minHeight: "unset !important",
               }}
-               onClick={() => dispatch(toggleFilingFilter())}
+              onClick={()=>{
+                tabValue== 0 ? dispatch(toggleFilingFilter()) : dispatch(toggleMyFilingFilter())
+              setPage(1)
+             
+              }}
             >
               Filter
             </StyledButton>
@@ -210,6 +261,8 @@ const Filing = () => {
               <StyledTextField
                 variant="outlined"
                 placeholder="Search by words"
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
                 size="small"
                 InputProps={{
                   startAdornment: (
@@ -232,9 +285,21 @@ const Filing = () => {
               </StyledButton2>
             </Box>
           </Grid>
+          }
+         
         </Grid>
-        <FilingArticle />
-        {/* <FilingIntro/> */}
+        {
+         tabValue==1 && alertkeywords.length == 0 ? <FilingIntro/> : <FilingArticle
+          filterData={tabValue ==0 ? filterData1 : filterData2}
+          setFilterData={tabValue == 0 ? setFilterData1 : setFilterData2}
+          page={page}
+          setPage={setPage}
+          searchTerm={searchTerm}
+          tabValue={tabValue}
+        />
+        }
+        
+       
       </Container>
     </>
   );

@@ -131,10 +131,7 @@ const FilingAlert = () => {
 const handleUpdateKeyword=()=>{
   dispatch(updateAlertKeywordApi({keywords:keywords}))
 }
-  useEffect(() => {
-    dispatch(getAlertKeywordsApi());
-  }, [dispatch]);
-
+ 
 
   useEffect(() => {
     if(isAuth)
