@@ -26,6 +26,7 @@ const StyledInputLabel = styled(InputLabel)`
   font-size: 18px;
   line-height: 21.5px;
   color: ${colors.navyBlue800};
+  margin-bottom: 5px;
 `;
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
@@ -85,7 +86,7 @@ const Login = ({ component, handleClose }) => {
   const [message, setMessage] = useState("");
   const [validate, setValidate] = useState(true);
 
- 
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const currentPath = window.location.pathname + window.location.search;
@@ -93,8 +94,8 @@ const Login = ({ component, handleClose }) => {
     }
   }, []);
 
- 
-  
+
+
 
   const handleChange = (prop) => (event) => {
     formInputChange(event);
@@ -126,29 +127,29 @@ const Login = ({ component, handleClose }) => {
 
     if (data.success) {
       if (typeof window !== "undefined") {
-      
+
         localStorage.setItem("token", data.token);
       }
       dispatch(loginSuccess(data));
-      if (handleClose){
+      if (handleClose) {
         handleClose();
         const currentPath = window.location.pathname + window.location.search;
-      localStorage.setItem("redirectUrl", currentPath);
-      } 
-      
+        localStorage.setItem("redirectUrl", currentPath);
+      }
+
       const redirectUrl = localStorage.getItem("redirectUrl") || "/";
-        
-       
+
+
       if (redirectUrl === "/login") {
         router.replace("/");
       } else {
         router.push(redirectUrl);
       }
 
-      localStorage.removeItem("redirectUrl"); 
+      localStorage.removeItem("redirectUrl");
 
       // router.push(redirectUrl === '/login' ? '/' : redirectUrl);
-     
+
     } else {
       setMessage(data.message);
     }
@@ -156,7 +157,7 @@ const Login = ({ component, handleClose }) => {
   };
 
   useEffect(() => {
-   
+
     if (typeof window !== "undefined") {
       document.title = "Login";
       const link = document.querySelector("link[rel='canonical']");
@@ -165,7 +166,7 @@ const Login = ({ component, handleClose }) => {
       }
     }
   }, []);
-  
+
   return (
     <Grid
       container
@@ -186,7 +187,7 @@ const Login = ({ component, handleClose }) => {
         marginBottom={3}
       >
         <IconButton sx={{ padding: 0, visibility: { xs: "", sm: "hidden" } }}>
-          <ArrowBackIcon sx={{ color: "#011627",fontSize: 28, }} />
+          <ArrowBackIcon sx={{ color: "#011627", fontSize: 28, }} />
         </IconButton>
 
         <Typography
@@ -250,20 +251,20 @@ const Login = ({ component, handleClose }) => {
                 }}
               />
               <Link href="/forgot-password">
-              <Typography textAlign="right">
-                <Button
-                  disableElevation
-                  sx={{
-                    color: "#1DA098",
-                    fontWeight: "400",
-                    fontSize: "13px",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                  }}
-                >
-                  Forgot Password
-                </Button>
-              </Typography>
+                <Typography textAlign="right">
+                  <Button
+                    disableElevation
+                    sx={{
+                      color: "#1DA098",
+                      fontWeight: "400",
+                      fontSize: "13px",
+                      lineHeight: "17px",
+                      textTransform: "none",
+                    }}
+                  >
+                    Forgot Password
+                  </Button>
+                </Typography>
               </Link>
             </Grid>
             {!validate ? (
@@ -330,10 +331,10 @@ const Login = ({ component, handleClose }) => {
                 component="span"
                 color={colors.themeGreen}
                 onClick={() => {
-                 router.replace("/signup")
+                  router.replace("/signup")
                 }}
               >
-               {` Sign Up`}
+                {` Sign Up`}
               </StyledTypography>
             </Typography>
           </Grid>
