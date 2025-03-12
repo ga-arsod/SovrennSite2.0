@@ -1,5 +1,5 @@
 "use client";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Typography,
@@ -8,7 +8,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  form,MenuItem,Select,FormControl
+  form, MenuItem, Select, FormControl
 } from "@mui/material";
 import styled from "@emotion/styled";
 import Link from "next/link";
@@ -31,13 +31,14 @@ const StyledInputLabel = styled(InputLabel)`
   font-size: 17px;
   line-height: 21px;
   color: #010c15;
-`;
+  margin-bottom:5px;
+  `;
 const StyledInputLabel2 = styled(Typography)`
   font-weight: 400;
   font-size: 17px;
   line-height: 21px;
   color: ${colors.navyBlue800};
-  
+  margin-bottom:5px;
 `;
 const StyledTypography = styled(Typography)`
   font-weight: 600;
@@ -141,7 +142,7 @@ const SignUp = ({ form, setForm }) => {
         first_name: firstName,
         last_name: lastName,
       }));
-    }  else {
+    } else {
       setForm((prevForm) => ({
         ...prevForm,
         [name]: value,
@@ -159,13 +160,13 @@ const SignUp = ({ form, setForm }) => {
   const handleClickShowPassword = (box) => () => {
     box == "password"
       ? setValues({
-          ...values,
-          showPassword: !values.showPassword,
-        })
+        ...values,
+        showPassword: !values.showPassword,
+      })
       : setConfirmValues({
-          ...confirmValues,
-          showPassword: !confirmValues.showPassword,
-        });
+        ...confirmValues,
+        showPassword: !confirmValues.showPassword,
+      });
   };
 
   const handleMouseDownPassword = (event) => {
@@ -191,19 +192,19 @@ const SignUp = ({ form, setForm }) => {
 
     setBasicInfo(true)
     return;
-   
+
   };
- 
-   useEffect(() => {
-     
-      if (typeof window !== "undefined") {
-        document.title = "Sign Up";
-        const link = document.querySelector("link[rel='canonical']");
-        if (link) {
-          link.href = `https://www.sovrenn.com/signup`;
-        }
+
+  useEffect(() => {
+
+    if (typeof window !== "undefined") {
+      document.title = "Sign Up";
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/signup`;
       }
-    }, []);
+    }
+  }, []);
 
   return (
     <>
@@ -276,65 +277,65 @@ const SignUp = ({ form, setForm }) => {
                     fullWidth
                   />
                   <Grid container spacing={2}>
-                  <Grid item xs={4}>
-              <FormControl sx={{ width: "100%" }}>
-                <StyledInputLabel2 htmlFor="country_code">
-                  Country code
-                </StyledInputLabel2>
-                <StyledSelect
-               
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  fullWidth
-                  required
-                  name="country_code"
-                  value={form.country_code}
-                  displayEmpty
-                 
-                  MenuProps={{
-                    disableScrollLock: true,
-                    PaperProps: {
-                      elevation: 0,
-                      sx: {
-                        zIndex: 1400,
-                      },
-                    },
-                  }}
-                  onChange={formInputChange}
-                >
-                  {countryCodes.countries.map((ele, index) => {
-                    return (
-                      <MenuItem value={ele.code} key={index}>
-                        {ele.code}
-                      </MenuItem>
-                    );
-                  })}
-                </StyledSelect>
-              </FormControl>
-            </Grid>
-            <Grid item xs={8}>
-              <StyledInputLabel htmlFor="phone_number">
-                Enter phone No.
-              </StyledInputLabel>
-              <CustomTextField
-                fullWidth
-                required
-                sx={{ marginBottom: "16px" }}
-                inputProps={{ maxLength: 10 }}
-                type="tel"
-                id="fullWidth"
-                name="phone_number"
-                placeholder="Your phone number"
-                value={form.phone_number}
-                onKeyPress={(event) => {
-                  if (event.target.value.length >= 10) {
-                    event.preventDefault();
-                  }
-                }}
-                onChange={formInputChange}
-              />
-            </Grid>
-            </Grid>
+                    <Grid item xs={4}>
+                      <FormControl sx={{ width: "100%" }}>
+                        <StyledInputLabel2 htmlFor="country_code">
+                          Country code
+                        </StyledInputLabel2>
+                        <StyledSelect
+
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          fullWidth
+                          required
+                          name="country_code"
+                          value={form.country_code}
+                          displayEmpty
+
+                          MenuProps={{
+                            disableScrollLock: true,
+                            PaperProps: {
+                              elevation: 0,
+                              sx: {
+                                zIndex: 1400,
+                              },
+                            },
+                          }}
+                          onChange={formInputChange}
+                        >
+                          {countryCodes.countries.map((ele, index) => {
+                            return (
+                              <MenuItem value={ele.code} key={index}>
+                                {ele.code}
+                              </MenuItem>
+                            );
+                          })}
+                        </StyledSelect>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <StyledInputLabel htmlFor="phone_number">
+                        Enter phone No.
+                      </StyledInputLabel>
+                      <CustomTextField
+                        fullWidth
+                        required
+                        sx={{ marginBottom: "16px" }}
+                        inputProps={{ maxLength: 10 }}
+                        type="tel"
+                        id="fullWidth"
+                        name="phone_number"
+                        placeholder="Your phone number"
+                        value={form.phone_number}
+                        onKeyPress={(event) => {
+                          if (event.target.value.length >= 10) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onChange={formInputChange}
+                      />
+                    </Grid>
+                  </Grid>
                   <StyledInputLabel htmlFor="password">
                     Create Password
                   </StyledInputLabel>
@@ -403,7 +404,7 @@ const SignUp = ({ form, setForm }) => {
                 }}
               /> */}
                 </Grid>
-               
+
                 <Grid item xs={12}>
                   {validate ? (
                     <Typography
@@ -426,7 +427,7 @@ const SignUp = ({ form, setForm }) => {
                   <StyledButton1
                     type="submit"
                     variant="contained"
-                   
+
                   >
                     Create Account
                   </StyledButton1>
