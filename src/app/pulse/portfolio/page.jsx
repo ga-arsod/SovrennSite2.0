@@ -340,7 +340,7 @@ const PulseSearch = () => {
                           onClick={() => addToRecentlyAdded(value)}
                         >
                           <ListItemText
-                            primary={value.name}
+                            primary={value.company_name}
                             primaryTypographyProps={{
                               style: { color: "black" },
                             }}
