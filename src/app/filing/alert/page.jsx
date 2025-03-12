@@ -175,12 +175,12 @@ const FilingAlert = () => {
 
   return (
     <>
-      <ClearAlertKeyword
+      {/* <ClearAlertKeyword
         open={open}
         setOpen={setOpen}
         setKeywords={setKeywords}
       />
-      <KeywordAlertModal isKeywordModalOpen={isKeywordModalOpen} setIsKeywordModalOpen={setIsKeywordModalOpen} keywords={keywords}/>
+      <KeywordAlertModal isKeywordModalOpen={isKeywordModalOpen} setIsKeywordModalOpen={setIsKeywordModalOpen} keywords={keywords}/> */}
       <Container sx={{ paddingBottom: "20px" }}>
         <Grid container marginTop="90px">
           <Snackbar />
