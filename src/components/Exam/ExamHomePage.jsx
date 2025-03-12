@@ -125,7 +125,7 @@ const [isOpen, setIsOpen] = useState(false);
     dispatch(examApi());
    
   }, [isAuth]);
-console.log(examCertificate,"examCertificate")
+
   return (
     <>
     <LoginModal isOpen={isOpen} handleClose={handleClose} />

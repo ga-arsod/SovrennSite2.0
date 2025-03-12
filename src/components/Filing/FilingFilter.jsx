@@ -307,7 +307,7 @@ const FilingFilter = ({
   };
 
   if (!filingFilter?.length) return <></>;
-  console.log("inside recent filing")
+  
   return (
     <>
       <LoginModal isOpen={isOpen2} handleClose={handleClose} />

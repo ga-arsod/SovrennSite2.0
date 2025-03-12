@@ -28,8 +28,8 @@ const StyledTypography1 = styled(Typography)`
 `;
 
 const StyledButton1 = styled(Button)`
-  border-color: ${colors.navyBlue500};
-  color: ${colors.navyBlue500};
+  border-color: ${colors.red500};
+  color: ${colors.red500};
   font-weight: 600;
   font-size: 18px;
   line-height: 21px;
@@ -40,10 +40,10 @@ const StyledButton1 = styled(Button)`
   background-color: ${colors.white};
 
   :hover {
-    background-color: #f4f3f3;
-    color: ${colors.navyBlue500};
-    border-color: ${colors.navyBlue500};
-    outline: ${colors.navyBlue500};
+   background-color: ${colors.white};
+    color: ${colors.red500};
+    border-color: ${colors.red500};
+    outline: ${colors.red500};
   }
   @media (max-width: 639px) {
     font-size: 16px;
@@ -55,8 +55,8 @@ const StyledButton1 = styled(Button)`
 `;
 
 const StyledButton2 = styled(Button)`
-  border-color: ${colors.red300};
-  color: ${colors.white};
+  border-color: ${colors.themeGreen};
+  color: white;
   font-weight: 600;
   font-size: 18px;
   line-height: 21px;
@@ -64,10 +64,10 @@ const StyledButton2 = styled(Button)`
   padding-bottom: 14px;
   width: 100%;
   text-transform: none;
-  background-color: ${colors.red300};
+  background-color: ${colors.themeGreen};
 
   :hover {
-    background-color: #f60909;
+    background-color:${colors.themeButtonHover};
     color: ${colors.white};
     border-color: ${colors.themeButtonHover};
     outline: ${colors.themeButtonHover};
@@ -171,6 +171,7 @@ const KeywordAlertModal = ({isKeywordModalOpen,setIsKeywordModalOpen, keywords})
                     onClick={() => {
                     
                       dispatch(updateAlertKeywordApi({ keywords: keywords }));
+                      handleClose()
                     }}
                   >
                   Set Alert

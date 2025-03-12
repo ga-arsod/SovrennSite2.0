@@ -265,7 +265,7 @@ const Navbar = () => {
           elem.name !== "Login" &&
           elem.name !== "Knowledge" &&
           elem.name !== "Self Help" &&
-          elem.name!== "Exam"
+          elem.name!== "Exam" && elem.name!== "Recent Filing"
          
       )
     : navItems;
@@ -739,6 +739,42 @@ const Navbar = () => {
                                 }}
                               >
                                 Exam
+                              </Typography>
+                            </MenuItem>
+                          </Link>
+                          <Link
+                            href="/filing"
+                            style={{ textDecoration: "none" }}
+                          >
+                            <MenuItem
+                              disableRipple
+                              sx={{
+                                padding: "12px 16px",
+                                "&:hover .menu-text": {
+                                  color: colors.themeGreen,
+                                },
+                                backgroundColor: "transparent !important",
+                                "&:hover": {
+                                  backgroundColor: "transparent !important",
+                                },
+                                "&.Mui-focusVisible": {
+                                  backgroundColor: "transparent",
+                                },
+                                "&.Mui-selected": {
+                                  backgroundColor: "transparent",
+                                },
+                              }}
+                            >
+                              <Typography
+                                className="menu-text"
+                                color={colors.navyBlue900}
+                                sx={{
+                                  fontWeight: "600",
+                                  fontSize: "14px",
+                                  lineHeight: "17px",
+                                }}
+                              >
+                              Recent Filing
                               </Typography>
                             </MenuItem>
                           </Link>

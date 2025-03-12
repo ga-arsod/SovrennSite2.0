@@ -402,7 +402,7 @@ const PulseSearch = () => {
                             }}
                           >
                             <ListItemText
-                              primary={value.name}
+                              primary={value.company_name}
                               primaryTypographyProps={{
                                 style: { color: "black" },
                               }}

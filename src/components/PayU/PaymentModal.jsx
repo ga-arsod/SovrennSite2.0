@@ -113,7 +113,7 @@ const { commonPrice } = useSelector((store) => store.plan);
       document.getElementById("paymentForm").submit();
     } 
   };
-  console.log(commonPrice,"price")
+  
   return (
     <Modal
       open={isPaymentOpen}

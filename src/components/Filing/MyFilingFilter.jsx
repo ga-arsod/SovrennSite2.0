@@ -219,7 +219,7 @@ const MyFilingFilter = ({
   const [isOpen2, setIsOpen2] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const { myFilingFilter } = useSelector((store) => store.filing);
+  const {myFilingFilter} = useSelector((store) => store.filing);
   const { isAuth, userDetails } = useSelector((store) => store.auth);
   const [filter, setFilter] = useState({});
   const [filterBody, setFilterBody] = useState({});
@@ -305,7 +305,7 @@ const MyFilingFilter = ({
     setFilterData({});
     setPage(1);
   };
-  console.log(myFilingFilter,"my filing filter")
+  
   if (!myFilingFilter?.length) return <></>;
  
   return (

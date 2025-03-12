@@ -170,6 +170,7 @@ const ClearAlertKeyword = ({ open, setOpen, setKeywords }) => {
                     onClick={() => {
                       setKeywords([]);
                       dispatch(updateAlertKeywordApi({ keywords: [] }));
+                      handleClose()
                     }}
                   >
                     Yes, Clear
