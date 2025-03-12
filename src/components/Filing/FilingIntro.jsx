@@ -49,15 +49,17 @@ const listItemTextStyles = {
 
 export default function FilingIntro() {
     const { isAuth } = useSelector((store) => store.auth);
-   
+    const [isOpen,setIsOpen]=useState(false)
     const router=useRouter();
+    const handleClose=()=>{ setIsOpen(false) }
+ 
    
     useEffect(()=>{},[isAuth]);
 
   return (
     <>
-   
-    <Box sx={{marginBottom:"160px"}}>
+   <LoginModal isOpen={isOpen} handleClose={handleClose}/>
+    <Box sx={{marginBottom:"160px",marginTop:6}}>
     
       <Box display="flex" flexDirection={{xs:"column",md:"row"}} sx={{ maxWidth: { xs: '100%',sm:"80%", md: '960px' }, margin: '0 auto' }}>
       <Box 
@@ -116,7 +118,7 @@ export default function FilingIntro() {
           <Box mt={4} display="flex"  width="100%">
             {
                 isAuth ? 
-                <Link href="/pulse/portfolio" style={{width:"100%"}}>
+                <Link href="/filing/alert" style={{width:"100%"}}>
                   <StyledButton variant="contained" fullWidth >
                     Set Up Now
                   </StyledButton>

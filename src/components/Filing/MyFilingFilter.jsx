@@ -23,7 +23,7 @@ import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import {
- filingFilterApi,toggleFilingFilter,allFilingApi
+ toggleMyFilingFilter,myFilingApi
 } from "@/app/Redux/Slices/filingSlice";
 import { useDispatch } from "react-redux";
 import { setSnackStatus } from "@/app/Redux/Slices/snackbarSlice";
@@ -204,7 +204,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const FilingFilter = ({
+const MyFilingFilter = ({
   isOpen,
   handleModalOpen,
   page,
@@ -219,12 +219,12 @@ const FilingFilter = ({
   const [isOpen2, setIsOpen2] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const { filingFilter } = useSelector((store) => store.filing);
+  const { myFilingFilter } = useSelector((store) => store.filing);
   const { isAuth, userDetails } = useSelector((store) => store.auth);
   const [filter, setFilter] = useState({});
   const [filterBody, setFilterBody] = useState({});
   const toggleFilter = () => {
-    dispatch(toggleFilingFilter());
+    dispatch(toggleMyFilingFilter());
   };
 
   const handlePaymentClose = () => {
@@ -289,11 +289,11 @@ const FilingFilter = ({
       })
     );
     dispatch(
-     allFilingApi(
+     myFilingApi(
         { text: "", page: 1, pageSize: 20,filterData:filter }
       )
     );
-    dispatch(toggleFilingFilter());
+    dispatch(toggleMyFilingFilter());
 
     window.scrollTo({
       top: 0,
@@ -305,9 +305,9 @@ const FilingFilter = ({
     setFilterData({});
     setPage(1);
   };
-
-  if (!filingFilter?.length) return <></>;
-  console.log("inside recent filing")
+  console.log(myFilingFilter,"my filing filter")
+  if (!myFilingFilter?.length) return <></>;
+ 
   return (
     <>
       <LoginModal isOpen={isOpen2} handleClose={handleClose} />
@@ -375,29 +375,29 @@ const FilingFilter = ({
             >
              
              <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-                            {filingFilter[0]?.category}
+                            {myFilingFilter[0]?.category}
                           </StyledTypography1>
             
                           {(showAllMonths
-                            ? filingFilter[0]?.options
-                            : filingFilter[0]?.options.slice(0, 5)
+                            ? myFilingFilter[0]?.options
+                            : myFilingFilter[0]?.options.slice(0, 5)
                           ).map((month, index) => (
                             <CustomFormControlLabel
                               key={index}
                               control={
                                 <CustomCheckbox
                                   checked={
-                                    filter[filingFilter[0].key]
-                                      ? filter[filingFilter[0].key]?.includes(
+                                    filter[myFilingFilter[0].key]
+                                      ? filter[myFilingFilter[0].key]?.includes(
                                           month.placeholder
                                         )
                                       : false
                                   }
                                   onChange={() => {
-                                    const isChecked = filter[filingFilter[0].key]?.includes(
+                                    const isChecked = filter[myFilingFilter[0].key]?.includes(
                                       month.placeholder
                                     );
-                                    updateFilter(month, filingFilter[0].key, isChecked);
+                                    updateFilter(month, myFilingFilter[0].key, isChecked);
                                   }}
                                 />
                               }
@@ -420,7 +420,7 @@ const FilingFilter = ({
                           </Grid>
               <CustomDivider sx={{ mt: 2, mb: 2 }} />
               <StyledTypography1 variant="subtitle1" sx={{ mb: 1 }}>
-                {filingFilter[1]?.category}
+                {myFilingFilter[1]?.category}
               </StyledTypography1>
 
               <Grid
@@ -429,25 +429,25 @@ const FilingFilter = ({
                 sx={{ width: "80%" }}
               >
                 {(showAllCompanies
-                  ? filingFilter[1]?.options
-                  : filingFilter[1]?.options.slice(0, 5)
+                  ? myFilingFilter[1]?.options
+                  : myFilingFilter[1]?.options.slice(0, 5)
                 ).map((company, index) => (
                   <Grid item key={index} xs={12}>
                     <CustomFormControlLabel
                       control={
                         <CustomCheckbox
                           checked={
-                            filter[filingFilter[1].key]
-                              ? filter[filingFilter[1].key]?.includes(
+                            filter[myFilingFilter[1].key]
+                              ? filter[myFilingFilter[1].key]?.includes(
                                   company.placeholder
                                 )
                               : false
                           }
                           onChange={() => {
                             const isChecked = filter[
-                              filingFilter[1].key
+                              myFilingFilter[1].key
                             ]?.includes(company.placeholder);
-                            updateFilter(company, filingFilter[1].key, isChecked);
+                            updateFilter(company, myFilingFilter[1].key, isChecked);
                           }}
                         />
                       }
@@ -508,7 +508,7 @@ const FilingFilter = ({
                         userDetails?.subscriptions?.includes("trial"))
                     ) {
                       dispatch(
-                        allFilingApi( { text: "", page: 1, pageSize: 20,data: filterBody })
+                        myFilingApi( { text: "", page: 1, pageSize: 20,data: filterBody })
                       );
                       setPage(1);
                     } else if (
@@ -523,7 +523,7 @@ const FilingFilter = ({
                     } else {
                       setIsOpen2(true);
                     }
-                    dispatch(toggleFilingFilter());
+                    dispatch(toggleMyFilingFilter());
                   }}
                 >
                   Apply Filter
@@ -537,4 +537,4 @@ const FilingFilter = ({
   );
 };
 
-export default FilingFilter;
+export default MyFilingFilter;
