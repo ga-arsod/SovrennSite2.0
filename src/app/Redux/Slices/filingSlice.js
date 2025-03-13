@@ -1,24 +1,27 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setSnackStatus } from "./snackbarSlice";
+import Router from "next/router";
+
 const url = process.env.NEXT_PUBLIC_API_URL;
 
 const initialState = {
-  alertKeywords: [],
+  alertkeywords: [],
   filingFilter: [],
   isFilingFilterOpen: false,
   allFiling: [],
-  myFiling:[],
+  myFiling: [],
   isFilingLoading: false,
-  isMyFilingLoading:false,
-  isMyFilingFilterOpen:false,
-  myFilingFilter:[],
-  pagination:{},
+ 
+  isMyFilingFilterOpen: false,
+  myFilingFilter: [],
+  pagination: {},
+  isKeywordUpdate:false,
+  
 };
 
 export const getAlertKeywordsApi = createAsyncThunk(
   "getAlertKeywordsApi",
   async () => {
-   
     const response = await fetch(`${url}/user/filling-keywords`, {
       method: "GET",
       headers: {
@@ -41,16 +44,22 @@ export const filingFilterApi = createAsyncThunk("filingFilterApi", async () => {
   return response.json();
 });
 
-export const myFilingFilterApi = createAsyncThunk("myFilingFilterApi", async () => {
-  const response = await fetch(`${url}/corporate-updates/by-keywords-filters`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
-  });
-  return response.json();
-});
+export const myFilingFilterApi = createAsyncThunk(
+  "myFilingFilterApi",
+  async () => {
+    const response = await fetch(
+      `${url}/corporate-updates/by-keywords-filters`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.json();
+  }
+);
 
 export const allFilingApi = createAsyncThunk(
   "allFilingApi",
@@ -102,7 +111,8 @@ export const updateAlertKeywordApi = createAsyncThunk(
       }),
     });
     if (response.ok) {
-      dispatch(getAlertKeywordsApi());
+    
+     
       dispatch(
         setSnackStatus({
           status: true,
@@ -110,6 +120,7 @@ export const updateAlertKeywordApi = createAsyncThunk(
           message: "Keywords updated successfully.",
         })
       );
+     
     }
     return response.json();
   }
@@ -128,7 +139,16 @@ const filingSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getAlertKeywordsApi.fulfilled, (state, action) => {
-      state.alertKeywords = action.payload.data;
+      state.alertkeywords = action.payload.data;
+    });
+    builder.addCase(updateAlertKeywordApi.pending, (state, action) => {
+      state.isKeywordUpdate = false;
+    });
+    builder.addCase(updateAlertKeywordApi.fulfilled, (state, action) => {
+      state.isKeywordUpdate = true;
+    });
+    builder.addCase(updateAlertKeywordApi.rejected, (state, action) => {
+      state.isKeywordUpdate = false;
     });
     builder.addCase(filingFilterApi.fulfilled, (state, action) => {
       state.filingFilter = action.payload.data;
@@ -137,7 +157,16 @@ const filingSlice = createSlice({
       state.myFilingFilter = action.payload.data;
     });
     builder.addCase(allFilingApi.pending, (state, action) => {
-      state.isFilingLoading = true;
+      const { page } = action.meta.arg;
+      if(page>1)
+      {
+        state.isFilingLoading = false;
+      }
+      else
+      {
+        state.isFilingLoading = true;
+      }
+     
     });
     builder.addCase(allFilingApi.fulfilled, (state, action) => {
       const { page } = action.meta.arg;
@@ -151,10 +180,18 @@ const filingSlice = createSlice({
       state.isFilingLoading = false;
     });
     builder.addCase(allFilingApi.rejected, (state) => {
-      state.isError = true;
+      state.isFilingLoading = false;
     });
     builder.addCase(myFilingApi.pending, (state, action) => {
-      state.isMyFilingLoading = true;
+      const { page } = action.meta.arg;
+      if(page>1)
+      {
+        state.isFilingLoading = false;
+      }
+      else
+      {
+        state.isFilingLoading = true;
+      }
     });
     builder.addCase(myFilingApi.fulfilled, (state, action) => {
       const { page } = action.meta.arg;
@@ -165,13 +202,13 @@ const filingSlice = createSlice({
         state.myFiling = [...state.myFiling, ...newArticles];
       }
       state.pagination = action.payload.pagination;
-      state.isMyFilingLoading = false;
+      state.isFilingLoading = false;
     });
     builder.addCase(myFilingApi.rejected, (state) => {
-      state.isError = true;
+      state.isFilingLoading = false;
     });
   },
 });
 
-export const { toggleFilingFilter,toggleMyFilingFilter } = filingSlice.actions;
+export const { toggleFilingFilter, toggleMyFilingFilter } = filingSlice.actions;
 export default filingSlice.reducer;

@@ -43,7 +43,7 @@ export default function InvestingKnowledge() {
       </>
     );
   }
-  console.log(isExamStart, "isExam")
+ 
   return (
     <>
       {isExamScoreReturned ? (

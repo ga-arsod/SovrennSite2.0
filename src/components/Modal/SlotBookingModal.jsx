@@ -98,9 +98,9 @@ const CustomRadioGroup = styled(RadioGroup)`
 `;
 const StyledRadio = styled(Radio)`
 &.Mui-checked {
-    color: ${colors.themeGreen}; /* Color of the checked radio button */
+    color: ${colors.themeGreen}; 
     & .MuiSvgIcon-root {
-      color: ${colors.themeGreen}; /* Color of the radio button circle when checked */
+      color: ${colors.themeGreen}; 
     }
   }
 

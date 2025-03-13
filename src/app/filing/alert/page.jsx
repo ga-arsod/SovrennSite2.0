@@ -15,19 +15,19 @@ import {
   InputAdornment,
   Chip,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
-import CloseIcon from "@mui/icons-material/Close";
+import Link from "next/link";
 import styled from "@emotion/styled";
 import AddIcon from "@mui/icons-material/Add";
-import { getAlertKeywordsApi ,updateAlertKeywordApi} from "@/app/Redux/Slices/filingSlice";
+import { updateAlertKeywordApi } from "@/app/Redux/Slices/filingSlice";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
 import { useDispatch, useSelector } from "react-redux";
-import Snackbar from "../../../components/Snackbar/SnackBar"
+import Snackbar from "../../../components/Snackbar/SnackBar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
+import ClearAlertKeyword from "../../../components/Modal/ClearAlertKeyword";
 import { colors } from "../../../components/Constants/colors";
 import NoLogin from "../../../components/Auth/NoLogin";
-
+import KeywordAlertModal from "../../../components/Modal/KeywordAlertModal";
+import { useRouter } from "next/navigation";
 
 const StyledTypography = styled(Typography)`
   font-weight: 400;
@@ -74,7 +74,7 @@ const StyledButton = styled(Button)`
   padding-top: 14px;
   padding-bottom: 14px;
   text-transform: none;
-  width:100%;
+  width: 100%;
   background-color: ${colors.themeGreen};
 
   :hover {
@@ -104,9 +104,12 @@ const FilingAlert = () => {
 
   const { alertkeywords } = useSelector((store) => store.filing);
   const { isAuth } = useSelector((store) => store.auth);
-
+  const {isKeywordUpdate } = useSelector((store) => store.filing);
+  
   const [keywords, setKeywords] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [open, setOpen] = useState(false);
+  const [isKeywordModalOpen, setIsKeywordModalOpen] = useState(false);
 
   const handleAddKeyword = () => {
     if (inputValue.trim() && keywords.length < 30) {
@@ -115,39 +118,104 @@ const FilingAlert = () => {
     }
   };
 
-  
-
   const handleClearAll = () => {
-    setKeywords([]);
+    setOpen(true);
   };
   const handleDeleteKeyword = (index) => {
-    console.log(index,"index")
     setKeywords((prevKeywords) => prevKeywords.filter((_, i) => i !== index));
   };
 
-  const handleBackClick = () => {
-    router.back();
+  const handleUpdateKeyword = () => {
+    dispatch(updateAlertKeywordApi({ keywords: keywords }));
+   
   };
-const handleUpdateKeyword=()=>{
-  dispatch(updateAlertKeywordApi({keywords:keywords}))
-}
- 
 
   useEffect(() => {
-    if(isAuth)
-    setKeywords([...alertkeywords]);
+    if (isAuth) setKeywords([...alertkeywords]);
   }, [alertkeywords]);
 
+  
+
+  const checkAndHandleBack = () => {
+    if (JSON.stringify(alertkeywords) !== JSON.stringify(keywords)) {
+      setIsKeywordModalOpen(true);
+    } else {
+      router.back();
+    }
+  };
+
+  const handleBackClick = () => {
+    checkAndHandleBack();
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+      checkAndHandleBack();
+    };
+
+    const handleBackButton = () => {
+      checkAndHandleBack();
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("popstate", handleBackButton);
+
+   
+    window.history.pushState(null, "", window.location.href);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, [keywords]);
+
+  useEffect(() => {
+    const storedKeyword = sessionStorage.getItem("alertKeyword");
+    if (storedKeyword) {
+      setInputValue(storedKeyword);
+    }
+  }, []);
+
+  useEffect(() => {
+      if (typeof window !== "undefined") {
+        document.title = `Set Filing Keyword`;
+        const link = document.querySelector("link[rel='canonical']");
+        if (link) {
+          link.href = `https://www.sovrenn.com/filing/alert`;
+        }
+      }
+    }, []);
+
+  useEffect(() => {
+    if (isKeywordUpdate) {
+      router.push("/filing");
+    }
+  }, [isKeywordUpdate, router]);
 
   if (!isAuth) {
     return <NoLogin />;
   }
- console.log(keywords,"keywords")
+
+  
+
   return (
     <>
+      <ClearAlertKeyword
+        open={open}
+        setOpen={setOpen}
+        setKeywords={setKeywords}
+      />
+      <KeywordAlertModal
+        isKeywordModalOpen={isKeywordModalOpen}
+        setIsKeywordModalOpen={setIsKeywordModalOpen}
+        keywords={keywords}
+      />
       <Container sx={{ paddingBottom: "20px" }}>
         <Grid container marginTop="90px">
-         <Snackbar/>
+          <Snackbar />
           <Grid item>
             <Box display="flex" alignItems="center">
               <ArrowBackIcon
@@ -194,7 +262,7 @@ const handleUpdateKeyword=()=>{
                 >
                   <TextField
                     fullWidth
-                    value={inputValue}
+                    value={ inputValue }
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="E.g. Preferential, expanding etc."
                     sx={{
@@ -213,7 +281,7 @@ const handleUpdateKeyword=()=>{
                         },
                       },
                       "& .MuiOutlinedInput-root": {
-                        borderRadius: "4px", // Rounded only on the left side
+                        borderRadius: "4px",
                         "& fieldset": {
                           borderColor: "#98A3B4",
                         },
@@ -247,7 +315,7 @@ const handleUpdateKeyword=()=>{
                   <StyledTypography color="#98A3B4">
                     Added Keywords: {keywords.length}/30
                   </StyledTypography>
-                  {keywords.length > 0 && (
+                  {keywords?.length > 0 && (
                     <StyledTypography
                       color="#F60909"
                       sx={{ cursor: "pointer" }}
@@ -259,11 +327,10 @@ const handleUpdateKeyword=()=>{
                 </Box>
 
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 2 }}>
-                  {keywords.map((keyword, index) => (
+                  {keywords?.map((keyword, index) => (
                     <StyledChip
                       key={index}
                       label={keyword}
-                     
                       icon={
                         <IconButton>
                           <HighlightOffSharpIcon
@@ -286,15 +353,18 @@ const handleUpdateKeyword=()=>{
                 </Box>
               </Grid>
             </Grid>
-                              <Grid item marginTop={30} width="100%">
-                                <StyledButton
-                                  onClick={handleUpdateKeyword}
-                                  fullWidth
-                                  variant="contained"
-                                >
-                                 Set Alert
-                                </StyledButton>
-                              </Grid>
+            <Grid item marginTop={30} width="100%">
+              <Link href="/filing">
+              <StyledButton
+                onClick={handleUpdateKeyword}
+                fullWidth
+                variant="contained"
+                disabled={JSON.stringify(alertkeywords) == JSON.stringify(keywords)}
+              >
+                Set Alert
+              </StyledButton>
+              </Link>
+            </Grid>
           </Grid>
         </Box>
       </Container>

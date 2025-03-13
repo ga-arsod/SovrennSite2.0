@@ -29,6 +29,8 @@ import MyFilingFilter from "../../components/Filing/MyFilingFilter";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import moment from "moment";
+import NoFiling from "../../components/Filing/NoFiling";
+import Spinner from "../Common/Spinner";
 
 const StyledTypography2 = styled(Typography)`
   font-weight: 600;
@@ -122,11 +124,11 @@ const FilingArticle = ({
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const {
     allFiling,
-    alertKeywords,
+    alertkeywords,
     myFiling,
     pagination,
     isFilingFilterOpen,
-    isMyFilingFilterOpen,
+    isMyFilingFilterOpen,isFilingLoading
   } = useSelector((store) => store.filing);
   const { isAuth } = useSelector((store) => store.auth);
 
@@ -198,7 +200,7 @@ const FilingArticle = ({
 
   useEffect(() => {
     dispatch(filingFilterApi());
-    if (alertKeywords?.length) {
+    if (alertkeywords?.length) {
       dispatch(myFilingFilterApi());
     }
   }, []);
@@ -227,7 +229,9 @@ const FilingArticle = ({
         <></>
       )}
 
-      <Grid container direction="column" alignItems="center" marginBottom={5}>
+{
+ isFilingLoading ? <Spinner margin={4} /> : tabValue ==0 && allFiling?.length==0 ||  tabValue ==1 && myFiling?.length==0 ?  <NoFiling/> :
+  <Grid container direction="column" alignItems="center" marginBottom={5}>
         {(tabValue == 0 ? allFiling : myFiling)?.map((article, index) => {
           return (
             <Card
@@ -341,57 +345,55 @@ const FilingArticle = ({
                 </Box>
 
                 {isSmallScreen && article?.file_url ? (
-                  <Box
-                    display="flex"
-                    flexDirection={{ xs: "column", sm: "row" }}
-                    justifyContent="flex-start"
-                    gap={2}
-                    width="100%"
-                  >
-                    {article?.discovery_slug && (
-                      <Link
-                        href={`discovery/pulse/${article?.discovery_slug}`}
-                        target="_blank"
-                      >
-                        <StyledButton
-                          variant="outlined"
-                          color="primary"
-                          sx={{ textTransform: "none" }}
-                        >
-                          Read Discovery
-                        </StyledButton>
-                      </Link>
-                    )}
-
-                    {article?.prime_slug && (
-                      <Link
-                        href={`prime/${article?.prime_slug}`}
-                        target="_blank"
-                      >
-                        <StyledButton
-                          variant="outlined"
-                          color="primary"
-                          sx={{ textTransform: "none" }}
-                        >
-                          Read Prime
-                        </StyledButton>
-                      </Link>
-                    )}
-
-                    {article.file_url && (
-                      <Link
-                        href={article.file_url}
-                        target="_blank"
-                        style={{ textDecoration: "none" }}
-                      >
-                        <FileLinkButton startIcon={<AttachFileTwoToneIcon />}>
-                          <StyledTypographyFileLink>
-                            File Link
-                          </StyledTypographyFileLink>
-                        </FileLinkButton>
-                      </Link>
-                    )}
-                  </Box>
+                 <Box
+                 display="flex"
+                 flexDirection={{ xs: "column", sm: "row" }}
+                 justifyContent="flex-start"
+                 gap={2}
+                 width="100%"
+               >
+                 {article?.discovery_slug && (
+                   <Link href={`discovery/pulse/${article?.discovery_slug}`} target="_blank">
+                     <StyledButton
+                       variant="outlined"
+                       color="primary"
+                       sx={{
+                         textTransform: "none",
+                         width: { xs: "100%", sm: "auto" }, 
+                       }}
+                     >
+                       Read Discovery
+                     </StyledButton>
+                   </Link>
+                 )}
+               
+                 {article?.prime_slug && (
+                   <Link href={`prime/${article?.prime_slug}`} target="_blank">
+                     <StyledButton
+                       variant="outlined"
+                       color="primary"
+                       sx={{
+                         textTransform: "none",
+                         width: { xs: "100%", sm: "auto" }, 
+                       }}
+                     >
+                       Read Prime
+                     </StyledButton>
+                   </Link>
+                 )}
+               
+                 {article.file_url && (
+                   <Link href={article.file_url} target="_blank" style={{ textDecoration: "none" }}>
+                     <FileLinkButton
+                       startIcon={<AttachFileTwoToneIcon />}
+                       sx={{ width: { xs: "100%", sm: "auto" } }} 
+                     >
+                       <StyledTypographyFileLink>File Link</StyledTypographyFileLink>
+                     </FileLinkButton>
+                   </Link>
+                 )}
+               </Box>
+               
                 ) : (
                   <></>
                 )}
@@ -423,6 +425,10 @@ const FilingArticle = ({
           <></>
         )}
       </Grid>
+  
+}
+
+     
     </>
   );
 };

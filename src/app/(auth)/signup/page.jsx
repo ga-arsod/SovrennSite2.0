@@ -26,13 +26,12 @@ const Auth = () => {
     email: "",
     password: "",
     phone_number: "",
-    state: "",
+    state: "Abroad",
     country_code: "+91",
-    experience_in_the_market:"",
-    where_did_hear_about_sovrenn: "",
-    referral_code: ""
+    experience_in_the_market: "",
+    where_did_hear_about_sovrenn: "Twitter",
+    referral_code: "",
   });
-  
   const [showPassword, setShowPassword] = useState({
     password: false,
     createPassword: false,

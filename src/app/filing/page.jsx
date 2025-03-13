@@ -25,7 +25,9 @@ import { toggleFilingFilter,toggleMyFilingFilter, allFilingApi ,myFilingApi,getA
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Snackbar from "../../components/Snackbar/SnackBar"
-
+import Link from "next/link";
+import NoLogin from "@/components/Auth/NoLogin";
+import Spinner from "../../components/Common/Spinner";
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   font-size: 48px;
@@ -75,7 +77,7 @@ const StyledButton2 = styled(Button)`
   font-size: 16px;
   line-height: 19px;
   color: "white";
-  padding: 8px 16px;
+  padding: 8.5px 16px;
   text-transform: none;
   background-color: ${colors.themeGreen};
   border-radius: 4px;
@@ -88,17 +90,19 @@ const StyledFilterIcon = styled(FilterAltOutlinedIcon)`
   }
 `;
 const StyledTextField = styled(TextField)`
-  min-width: 220px;
-
+  min-width: 250px;
+ @media (max-width: 639px) {
+   min-width: 200px;
+  }
   .MuiOutlinedInput-root {
     padding: 0px;
   }
 
   .MuiOutlinedInput-input {
-    padding: 12px 14px 12px 6px;
+    padding: 8px 14px 8px 6px;
     font-size: 10px;
     line-height: 12px;
-    color: #64748b;
+    color:black;
   }
 
   .MuiInputAdornment-root {
@@ -114,6 +118,7 @@ const Filing = () => {
   const router = useRouter();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { alertkeywords } = useSelector((store) => store.filing);
+  const { isAuth } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [tabValue, setTabValue] = useState(0);
@@ -153,6 +158,21 @@ useEffect(()=>{
   dispatch(getAlertKeywordsApi())
 },[])
 
+useEffect(() => {
+    if (typeof window !== "undefined") {
+      document.title = `Recent Filing`;
+      const link = document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = `https://www.sovrenn.com/filing`;
+      }
+    }
+  }, []);
+
+
+const handleSetAlert = () => {
+  sessionStorage.setItem("alertKeyword", searchTerm);
+  router.push("/filing/alert");
+};
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSearch();
@@ -161,6 +181,10 @@ useEffect(()=>{
   const handleBackClick = () => {
     router.back();
   };
+
+  if (!isAuth) {
+      return <NoLogin/>;
+    }
 
   return (
     <>
@@ -272,6 +296,7 @@ useEffect(()=>{
                   ),
                 }}
               />
+              
               <StyledButton2
                 variant="contained"
                 startIcon={<Notifications />}
@@ -280,16 +305,18 @@ useEffect(()=>{
                   textTransform: "none",
                   borderRadius: 1,
                 }}
+                onClick={handleSetAlert}
               >
                 Set Alert
               </StyledButton2>
+           
             </Box>
           </Grid>
           }
          
         </Grid>
         {
-         tabValue==1 && alertkeywords.length == 0 ? <FilingIntro/> : <FilingArticle
+         tabValue==1 && alertkeywords.length == 0 ? <FilingIntro/> :  <FilingArticle
           filterData={tabValue ==0 ? filterData1 : filterData2}
           setFilterData={tabValue == 0 ? setFilterData1 : setFilterData2}
           page={page}
