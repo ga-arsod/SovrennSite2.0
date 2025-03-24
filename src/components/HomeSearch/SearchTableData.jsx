@@ -85,32 +85,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const data = [
-  {
-    date: '7th Oct 23',
-    companyName: 'Kaka Industries Ltd.',
-    sector: 'Plastics',
-    industry: 'Plastic Products',
-  },
-  {
-    date: '7th Oct 23',
-    companyName: 'Network People Services Tech',
-    sector: 'Entertainment',
-    industry: 'Software',
-  },
-  {
-    date: '7th Oct 23',
-    companyName: 'NewJaisa Technologies Ltd.',
-    sector: 'Technology',
-    industry: 'Electronics',
-  },
-  {
-    date: '7th Oct 23',
-    companyName: 'Nirman Agri Genetics Ltd.',
-    sector: 'Chemicals',
-    industry: 'Fertilisers and Agrochem.',
-  },
-];
+
 
 const SearchTableData = ({data}) => {
   const router=useRouter();
