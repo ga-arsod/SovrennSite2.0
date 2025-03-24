@@ -79,8 +79,8 @@ const CustomTab = styled(Tab)`
     color: ${colors.themeGreen};
   }
 `;
-const page = () => {
-    const [selectedTab, setSelectedTab] = useState(0);
+const SearchHome = () => {
+   const [selectedTab,setSelectedTab] = useState(0)
 
     const handleTabChange = (_, newValue) => {
       setSelectedTab(newValue);
@@ -236,4 +236,4 @@ const page = () => {
   )
 }
 
-export default page
+export default SearchHome;
