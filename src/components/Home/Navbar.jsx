@@ -270,6 +270,15 @@ const Navbar = () => {
       )
     : navItems;
 
+   const filteredNavItems2 = filteredNavItems.filter((elem,index)=>{
+    return (
+      elem.name !== "Sign Up" &&
+          elem.name !== "Login"
+    )
+   })
+    
+    
+
   return (
     <>
       <AppBar
@@ -1073,7 +1082,7 @@ const Navbar = () => {
           }}
         >
           <List>
-            {filteredNavItems.map((item, index) => (
+            {(isAuth && isSmallerThanMd ? filteredNavItems2 : filteredNavItems).map((item, index) => (
               // <LightTooltip
               //   key={item.name}
               //   title={

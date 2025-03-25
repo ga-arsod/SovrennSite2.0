@@ -76,7 +76,7 @@ const TextSearch = () => {
     );
   }
 
-  if (!companies.length) {
+  if (!companies?.length) {
     return (
       <>
         <Head>
