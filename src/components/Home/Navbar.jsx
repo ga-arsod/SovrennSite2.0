@@ -51,6 +51,7 @@ import { doLogout } from "../../app/actions/index";
 import { logout } from "@/app/Redux/Slices/authSlice";
 import { userDetailsApi } from "@/app/Redux/Slices/authSlice";
 import NavbarSearch from "../Home/NavbarSearch";
+import NavbarSearch2 from "../Home/NavbarSearch2";
 
 const StyledListItemText = styled(ListItemText)`
   && .MuiTypography-root {
@@ -247,7 +248,11 @@ const Navbar = () => {
 
   useEffect(() => {
     setIsLoaded(true);
-    dispatch(userDetailsApi());
+    if(isAuth)
+    {
+      dispatch(userDetailsApi());
+    }
+   
   }, [dispatch, isAuth, pathname]);
 
   if (!isLoaded) return null;
@@ -814,6 +819,7 @@ const Navbar = () => {
                   <StyledGrid1>
                     <Grid item width="100%">
                       <NavbarSearch handleSearchClick={handleSearchClick} />
+                      {/* <NavbarSearch2 handleSearchClick={handleSearchClick} /> */}
                     </Grid>
 
                     {!searchOpen && (

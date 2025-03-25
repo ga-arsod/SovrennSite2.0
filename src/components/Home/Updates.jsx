@@ -39,6 +39,7 @@ const Updates = () => {
   const dispatch = useDispatch();
   const { isAuth } = useSelector((store) => store.auth);
   useEffect(() => {
+    if(isAuth)
     dispatch(homeUpdatesApi());
   }, [dispatch, isAuth]);
 

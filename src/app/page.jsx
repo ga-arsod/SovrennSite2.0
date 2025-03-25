@@ -13,9 +13,13 @@ import TrialCard from "@/components/Cards/TrialCard";
 import Updates from "@/components/Home/Updates";
 import { auth } from "@/auth";
 import SaleBanner from "../components/SaleBanner/SaleBanner";
+import { useSelector } from "react-redux";
+import { commonPricingApi } from "./Redux/Slices/PlanSlice";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
-
+  const { isAuth } = useSelector((store) => store.auth);
+  const dispatch=useDispatch()
   useEffect(() => {
     const title = "Information platform to discover the best MicroCap stocks to buy in India";
     const description =
@@ -96,6 +100,10 @@ const Home = () => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(commonPricingApi());
+  }, [isAuth, dispatch]);
 
   return (
     <>
