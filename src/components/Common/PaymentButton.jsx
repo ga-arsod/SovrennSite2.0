@@ -56,9 +56,7 @@ const PaymentButton = () => {
     } 
   };
 
-  useEffect(() => {
-    dispatch(commonPricingApi());
-  }, [isAuth, dispatch]);
+  
 
   const handleButtonClick = async () => {
     if (!isAuth) {

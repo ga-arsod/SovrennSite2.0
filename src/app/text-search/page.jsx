@@ -57,9 +57,12 @@ const TextSearch = () => {
 
     const data = await res.json();
 
-    if (res.ok) {
+    if (res.ok ) {
       setIsLoading(false)
-      setCompanies(data.companies);
+      setCompanies(Array.isArray(data.companies) ? data.companies : []);
+    }
+    else {
+      setCompanies([]); 
     }
     return;
   };

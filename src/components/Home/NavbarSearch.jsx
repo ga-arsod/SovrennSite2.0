@@ -78,7 +78,7 @@ const NavbarSearch = ({ handleSearchClick }) => {
   }, [searchText]);
 
   const handleOptionChange = (event, option) => {
-    if (option.company_name.includes('Search for:')) {
+    if (option?.company_name.includes('Search for:')) {
       router.push(`/text-search?q=${option._id}`);
     } else if (option?.is_company_covered) {
       router.push(`/company?q=${option._id}`);

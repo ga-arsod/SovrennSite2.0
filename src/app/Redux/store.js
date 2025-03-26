@@ -20,6 +20,7 @@ import paymentReducer from "./Slices/paymentSlice";
 import planReducer from "./Slices/PlanSlice";
 import examReducer from "./Slices/examSlice";
 import filingReducer from "./Slices/filingSlice";
+import searchReducer from "./Slices/searchSlice"
 
 const persistConfig = {
   key: 'root',
@@ -46,7 +47,8 @@ const appReducer = combineReducers({
   payment: paymentReducer,
   plan: planReducer,
   exam:examReducer,
-  filing:filingReducer
+  filing:filingReducer,
+  search:searchReducer
 });
 
 
