@@ -25,7 +25,7 @@ import searchReducer from "./Slices/searchSlice"
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['payment','exam'],
+  blacklist: ['payment','exam','search'],
 };
 
 

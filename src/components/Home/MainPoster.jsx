@@ -239,7 +239,7 @@ const MainPoster = () => {
         backgroundSize: "cover",
         overflow: "hidden",
       }}
-      marginTop={6}
+      marginTop={10}
     >
      <Snackbar/>
       <Grid

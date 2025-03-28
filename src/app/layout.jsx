@@ -5,6 +5,7 @@ import "../styles/globals.css";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "@/theme/theme";
 import Navbar from "@/components/Home/Navbar";
+import NavbarStrip from "@/components/Home/NavbarStrip";
 import { Providers } from "./Redux/provider";
 import { auth } from "@/auth";
 import Footer from "../components/Home/Footer";
@@ -51,10 +52,14 @@ export default function RootLayout({ children }) {
       ></Script>
       <ThemeProvider theme={theme}>
         <Providers>
-          <html lang="en">
-            <Navbar  />
-            <body className={inter.className}>{children}</body>
-            <Footer />
+        <html lang="en">
+            <body className={inter.className}>
+             
+              <NavbarStrip /> 
+              <Navbar />
+              {children}
+              <Footer />
+            </body>
           </html>
         </Providers>
       </ThemeProvider>

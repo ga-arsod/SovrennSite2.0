@@ -16,6 +16,7 @@ import SaleBanner from "../components/SaleBanner/SaleBanner";
 import { useSelector } from "react-redux";
 import { commonPricingApi } from "./Redux/Slices/PlanSlice";
 import { useDispatch } from "react-redux";
+import { userDetailsApi } from "./Redux/Slices/authSlice";
 
 const Home = () => {
   const { isAuth } = useSelector((store) => store.auth);
@@ -103,7 +104,12 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(commonPricingApi());
-  }, [isAuth, dispatch]);
+  }, []);
+ 
+  useEffect(()=>{
+    if(isAuth)
+    dispatch(userDetailsApi())
+  },[isAuth])
 
   return (
     <>
