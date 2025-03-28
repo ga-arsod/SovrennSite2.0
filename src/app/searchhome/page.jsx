@@ -1,5 +1,5 @@
 "use client"
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { Container,Grid,Typography,Button,Box,Tab,Tabs,Card,CardContent} from '@mui/material'
 import styled from "@emotion/styled";
 import { colors } from '@/components/Constants/colors';
@@ -10,6 +10,11 @@ import PrimeArticle from "../../components/Search/PrimeArticle"
 import Times from "../../components/Search/Times";
 import Ipo from "../../components/Search/Ipo";
 import Pulse from "../../components/Search/Pulse";
+import { getCompanyDataApi } from '../Redux/Slices/searchSlice';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -36,7 +41,7 @@ const StyledButton = styled(Button)`
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
-  color: ${colors.themeGreen};
+ 
   padding: 8px 16px;
   text-transform: none;
   border-color: ${colors.themeGreen};
@@ -81,11 +86,19 @@ const CustomTab = styled(Tab)`
 `;
 const SearchHome = () => {
    const [selectedTab,setSelectedTab] = useState(0)
+    const company_summary= useSelector((store) => store.search.companySummary);
+    
+   const dispatch= useDispatch();
+   const searchParams = useSearchParams();
+     const q = searchParams.get("q");
 
     const handleTabChange = (_, newValue) => {
       setSelectedTab(newValue);
     };
-    console.log(selectedTab,"selected tab")
+   useEffect(()=>{
+    dispatch(getCompanyDataApi(q))
+   },[q])
+
   return (
     <>
           <Container>
@@ -96,7 +109,7 @@ const SearchHome = () => {
         >
           <Grid item>
             <StyledTypography1 color={colors.navyBlue500}>
-            KPI Green Energy Limited
+           {company_summary?.company_name}
             </StyledTypography1>
           </Grid>
           <Grid item marginTop={3}>
@@ -118,7 +131,7 @@ const SearchHome = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-               ₹506.65
+             {company_summary?.share_price}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -134,7 +147,7 @@ const SearchHome = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-             Capital Goods - Electrical Equipment
+            {company_summary?.sector}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -150,7 +163,7 @@ const SearchHome = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-              Diversified
+             {company_summary?.industry}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -166,7 +179,7 @@ const SearchHome = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-               ₹2533 Cr
+              {company_summary?.market_cap}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -182,7 +195,7 @@ const SearchHome = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-               71.2x
+              {company_summary?.ttm_pe}
                 </StyledTypography3>
               </Grid>
             </Grid>
@@ -197,11 +210,11 @@ const SearchHome = () => {
         padding: 2, 
       }}
     >
-      <StyledButton variant="outlined" startIcon={<AddIcon />}>
-      Add to Pulse
+      <StyledButton variant="outlined" startIcon={<AddIcon />} color={company_summary?.is_added_in_pulse ? colors.red500 : colors.themeGreen }>
+      {company_summary?.is_added_in_pulse ? "Remove from Pulse" : "Add to Pulse"}
       </StyledButton>
-      <StyledButton variant="outlined" startIcon={<BookmarkBorderIcon />}>
-      Add to Watchlist
+      <StyledButton variant="outlined" color={company_summary?.is_added_in_pulse ? colors.red500 : colors.themeGreen } startIcon={<BookmarkBorderIcon />}>
+      {company_summary?.is_added_in_watchlist ? "Remove from Watchlist" : "Add to Watchlist"}
       </StyledButton>
     </Box>
         </Grid>
@@ -212,11 +225,22 @@ const SearchHome = () => {
       {/* Tabs */}
       <CustomTabs value={selectedTab} onChange={handleTabChange} >
       <CustomTab label="All" />
-        <CustomTab label="Discovery" sx={{ fontWeight: "bold" }} />
-        <CustomTab label="Prime" />
-        <CustomTab label="Times" />
-        <CustomTab label="IPO" />
-        <CustomTab label="Pulse" />
+      {
+        company_summary?.is_in_discovery ?  <CustomTab label="Discovery" sx={{ fontWeight: "bold" }} /> : <></>
+      }
+       {
+        company_summary?.is_in_prime ?   <CustomTab label="Prime" /> : <></>
+      }
+        {
+        company_summary?.is_in_times ?   <CustomTab label="Times" /> : <></>
+      }
+        {
+        company_summary?.is_in_ipo ?   <CustomTab label="IPO" /> : <></>
+      }
+      {
+        company_summary?.is_in_pulse ?   <CustomTab label="Pulse" /> : <></>
+      }
+        
       </CustomTabs>
 
      

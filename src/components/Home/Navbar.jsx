@@ -248,10 +248,7 @@ const Navbar = () => {
 
   useEffect(() => {
     setIsLoaded(true);
-    if(isAuth)
-    {
-      dispatch(userDetailsApi());
-    }
+   
    
   }, [dispatch, isAuth, pathname]);
 
@@ -286,11 +283,14 @@ const Navbar = () => {
 
   return (
     <>
+   
+  
       <AppBar
         sx={{
           backgroundColor: "#F4F6F8",
           boxShadow: "none",
           position: "fixed",
+          top: pathname=="/" ? "30px": "0px",
           zIndex: 1300,
         }}
       >
@@ -1054,6 +1054,7 @@ const Navbar = () => {
           </Toolbar>
         </Box>
       </AppBar>
+   
 
       <Drawer
         ModalProps={{
