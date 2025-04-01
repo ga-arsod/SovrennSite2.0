@@ -38,8 +38,8 @@ const TextSearch = () => {
   const [companies, setCompanies] = useState([]);
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
-  const [isLoading,setIsLoading]=useState(true)
-  
+  const [isLoading, setIsLoading] = useState(true)
+
   const isXsOrSm = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   useEffect(() => {
@@ -57,22 +57,22 @@ const TextSearch = () => {
 
     const data = await res.json();
 
-    if (res.ok ) {
+    if (res.ok) {
       setIsLoading(false)
-      setCompanies(Array.isArray(data.companies) ? data.companies : []);
+      setCompanies(Array.isArray(data.data) ? data.data : []);
     }
     else {
-      setCompanies([]); 
+      setCompanies([]);
     }
     return;
   };
 
-  if (isLoading ) {
+  if (isLoading) {
     return (
       <>
         <Head>
           <title>Search for companies</title>
-         
+
         </Head>
         <Spinner margin={15} />
       </>
@@ -87,13 +87,13 @@ const TextSearch = () => {
         </Head>
         <Container>
           <Box marginTop="90px">
-           
+
             <StyledTypography1
               color={colors.navyBlue500}
               marginRight={1}
               component="span"
             >
-              {"Search Result for"+" "+":"}
+              {"Search Result for" + " " + ":"}
             </StyledTypography1>
             <StyledTypography1 color={colors.themeGreen} component="span">
               {q}
@@ -125,7 +125,7 @@ const TextSearch = () => {
         <Box marginY="90px" >
           {isXsOrSm && (
             <IconButton onClick={() => router.back()} aria-label="go back">
-              <ArrowBack sx={{fontSize: 28,}}/>
+              <ArrowBack sx={{ fontSize: 28, }} />
             </IconButton>
           )}
           <StyledTypography1
