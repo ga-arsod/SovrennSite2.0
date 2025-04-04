@@ -37,6 +37,11 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
     fontSize: "12px",
     lineHeight: "17px",
   },
+  "&::placeholder": {
+    
+    fontSize: "12px",
+    
+  },
   "& .MuiInputLabel-root": {
     fontSize: "0.60rem",
   },

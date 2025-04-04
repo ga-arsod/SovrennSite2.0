@@ -180,20 +180,14 @@ const Times = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(timesPdfFilterApi());
-    dispatch(timesFilterApi());
-    if (searchQuery)
-      dispatch(
-        timesArticleApi({ page: 1, data: { company_name: [searchQuery] } })
-      );
-    else dispatch(timesArticleApi({ page: page1, data: {} }));
-  }, [isAuth, dispatch]);
+  
+  
   const isSmallerThanMd = useMediaQuery(theme.breakpoints.down("md"));
 
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search");
-
+  const date = searchParams.get("date") || "";
+  const [year, month, day] = date.split("-");
   const groupArticlesByDate = (articles) => {
     const grouped = articles.reduce((acc, item) => {
       const formattedDate = moment(item.createdAt).format("Do MMMM YYYY");
@@ -205,7 +199,15 @@ const Times = () => {
     }, {});
     return grouped;
   };
-
+  useEffect(() => {
+    dispatch(timesPdfFilterApi());
+    dispatch(timesFilterApi());
+    if (searchQuery)
+      dispatch(
+        timesArticleApi({ page: 1, data: {byMonths: [{month: month, year: year}], company_name: [searchQuery] } })
+      );
+    else dispatch(timesArticleApi({ page: page1, data: {} }));
+  }, [isAuth, dispatch]);
   useEffect(() => {
     if (!isTimesArticleLoading) {
       setGroupedArticles(groupArticlesByDate(timesArticle));

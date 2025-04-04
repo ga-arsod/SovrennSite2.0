@@ -87,6 +87,9 @@ const PaymentButton = () => {
     }
   };
   
+  useEffect(() => {
+      dispatch(commonPricingApi());
+    }, [isAuth]);
 
   return (
     <>
