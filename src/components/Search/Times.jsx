@@ -10,6 +10,11 @@ import {
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
+import moment from "moment";
+import styles from "../../styles/searchnews.module.css";
+import convertToHtml from "@/utils/convertToHtml";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -50,48 +55,57 @@ const CustomDivider = styled(Divider)`
   height: 2px;
 `;
 
-const Times = () => {
+const Times = ({ data }) => {
+  const router = useRouter();
+  const { timesPagination } = useSelector((store) => store.search);
+  const company_summary = useSelector((store) => store.search.companySummary);
+  
+  const handleNavigation = (date) => {
+    const searchQuery1 = encodeURIComponent(company_summary?.company_name || ""); 
+  
+    router.push(`/times?search=${searchQuery1}&date=${date.split("T")[0]}`);
+  };
   return (
     <Box mt={2} mb={5}>
       <StyledTypography1 color={colors.navyBlue500}>Times</StyledTypography1>
       <StyledTypography2 color={colors.navyBlue300} mt={1}>
-        Read the 56 latest news related to KPI Green Energy Ltd.
+        {`Read the ${timesPagination?.total_documents} latest news related to KPI Green Energy Ltd.`}
       </StyledTypography2>
 
-      <Card variant="outlined" sx={{ mt: 2, borderRadius: 2, p: 2 }}>
-        <CardContent>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <StyledTypography3 color={colors.navyBlue500}>
-              23rd Dec 24
-            </StyledTypography3>
-            <StyledButton2
-              variant="outlined"
-              size="small"
-              endIcon={
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <ArrowForwardIosIcon sx={{ fontSize: "14px" }} />
-                </Box>
-              }
-            >
-              Read Full Article
-            </StyledButton2>
-          </Box>
-          <CustomDivider sx={{ mt: 2, mb: 2 }} />
+      {data?.map((elem, index) => {
+        return (
+          <Card variant="outlined" sx={{ mt: 2, borderRadius: 2, p: 1.5 }} key={index}>
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <StyledTypography3 color={colors.navyBlue500}>
+                  {moment(elem?.createdAt).format("Do MMM YYYY")}
+                </StyledTypography3>
+                <StyledButton2
+                  variant="outlined"
+                  size="small"
+                  endIcon={
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <ArrowForwardIosIcon sx={{ fontSize: "14px" }} />
+                    </Box>
+                  }
+                  onClick={()=>{handleNavigation(elem?.createdAt)}}
+                >
+                  Read Full Article
+                </StyledButton2>
+              </Box>
+              <CustomDivider sx={{ mt: 2, mb: 2 }} />
 
-          <Typography variant="body2" sx={{ mt: 1 }}>
-            <strong>Recent Filing</strong> (MoU) KPI Green Energy has signed a
-            Memorandum of Understanding (MoU) with the Government of Rajasthan
-            for the development of Hybrid, Solar & Wind Power Projects at
-            Jaisalmer (Ramgarh), Rajasthan.
-          </Typography>
-        </CardContent>
-      </Card>
+              <div id={styles.MainContainer}>{convertToHtml(elem?.blocks)}</div>
+            </CardContent>
+          </Card>
+        );
+      })}
     </Box>
   );
 };

@@ -10,6 +10,10 @@ import {
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
+import moment from 'moment';
+import styles from "../../styles/searchipo.module.css";
+import convertToHtml from "@/utils/convertToHtml";
+import Link from "next/link";
 
 const StyledButton2 = styled(Button)`
   color: ${colors.themeGreen};
@@ -37,12 +41,13 @@ const StyledTypography2 = styled(Typography)`
   line-height: 28px;
 `;
 
-const IpoCard = () => {
+const IpoCard = ({data}) => {
+ 
   return (
     <Box>
       <StyledTypography2 color={colors.navyBlue500} my={2}>IPO</StyledTypography2>
 
-      <Card variant="outlined" sx={{ borderRadius: 2, px: 1, py: 1.5 }}>
+      <Card variant="outlined" sx={{ borderRadius: 2, px: 1, py: 1.5 ,mb:4}}>
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12} display="flex" gap={5}>
@@ -68,10 +73,10 @@ const IpoCard = () => {
                 maxWidth="200px"
               >
                 <StyledTypography1 color={colors.themeGreen}>
-                  Listing Date:
+                  Listing Date
                 </StyledTypography1>
                 <StyledTypography1 color={colors.neutral900}>
-                  7th Oct 23{" "}
+                {moment(data?.closing_date).format("Do MMM YYYY")}{" "}
                 </StyledTypography1>
               </Box>
             </Grid>
@@ -88,7 +93,7 @@ const IpoCard = () => {
                   Open Date
                 </StyledTypography1>
                 <StyledTypography1 color={colors.neutral900}>
-                  7th Oct 23
+                  {moment(data?.opening_date).format("Do MMM YYYY")}
                 </StyledTypography1>
               </Box>
               <Box
@@ -102,7 +107,8 @@ const IpoCard = () => {
                   Offer Price PE
                 </StyledTypography1>
                 <StyledTypography1 color={colors.neutral900}>
-                  45.5x{" "}
+                  {data?.offer_price_ttm_pe
+                  }{" "}
                 </StyledTypography1>
               </Box>
             </Grid>
@@ -133,48 +139,22 @@ const IpoCard = () => {
                   LY Sales Growth
                 </StyledTypography1>
                 <StyledTypography1 color={colors.neutral900}>
-                  154%{" "}
+                  {data?.revenue_growth}{" "}
                 </StyledTypography1>
               </Box>
             </Grid>
           </Grid>
 
           <Box mt={2}>
-            <Typography variant="body1" fontWeight={600} color="#0D1B2A">
-              Question 1: What are the products/services offered by the company?
-            </Typography>
-            <Typography variant="body2" color="#4A4A4A" mt={1}>
-              With 28 years of experience in renewable energy, KPI Green is a
-              reputable solar energy firm in Gujarat. They are recognized as
-              Independent Power Producers (IPPs) and Captive Power Producers
-              (CPPs) and operate under the "Solarism" brand. They provide a
-              consistent and long-lasting supply of solar power to their
-              customers thanks to their substantial land bank and excellent 312
-              MW capacity. Their committed group of specialists and scientists
-              work to improve the efficiency of their solar plants, making them
-              a dependable and creative participant in the market.
-            </Typography>
+           <div id={styles.MainContainer}>
+                         {convertToHtml(data?.content)}
+                       </div>
           </Box>
 
-          {/* Question 2 */}
-          <Box mt={2}>
-            <Typography variant="body1" fontWeight={600} color="#0D1B2A">
-              Question 2: What are the products/services offered by the company?
-            </Typography>
-            <Typography variant="body2" color="#4A4A4A" mt={1}>
-              With 28 years of experience in renewable energy, KPI Green is a
-              reputable solar energy firm in Gujarat. They are recognized as
-              Independent Power Producers (IPPs) and Captive Power Producers
-              (CPPs) and operate under the "Solarism" brand. They provide a
-              consistent and long-lasting supply of solar power to their
-              customers thanks to their substantial land bank and excellent 312
-              MW capacity. Their committed group of specialists and scientists
-              work to improve the efficiency of their solar plants, making them
-              a dependable and creative participant in the market.
-            </Typography>
-          </Box>
+         
 
           <Box mt={3} display="flex" justifyContent="flex-end">
+            <Link href={`/ipo-zone/${data?.slug}`}></Link>
             <StyledButton2
               variant="outlined"
               size="small"
@@ -183,6 +163,7 @@ const IpoCard = () => {
                   <ArrowForwardIosIcon sx={{ fontSize: "14px" }} />
                 </Box>
               }
+             
             >
               Read Full Article
             </StyledButton2>

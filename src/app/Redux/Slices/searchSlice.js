@@ -6,6 +6,13 @@ const initialState = {
   weeklyTopSearches: [],
   suggestedCompanies:[],
   companySummary:null,
+  discoveryData:null,
+  timesData:null,
+  ipoData:null,
+  pulseData:null,
+  primeData:null,
+  timesPagination:null,
+
 };
 
 export const getWeeklyTopSearchesApi = createAsyncThunk(
@@ -13,6 +20,10 @@ export const getWeeklyTopSearchesApi = createAsyncThunk(
   async () => {
     const response = await fetch(`${url}/search-history`, {
       method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+  
+      },
       
     });
 
@@ -45,6 +56,65 @@ export const getCompanyDataApi = createAsyncThunk(
 );
 
 
+export const getDiscoveryDataApi = createAsyncThunk(
+  "getDiscoveryDataApi",
+  async (company_id) => {
+    const response = await fetch(`${url}/company/discovery-search/data/${company_id}`, {
+      method: "GET",
+      
+    });
+
+    return response.json();
+  }
+);
+
+export const getPrimeDataApi = createAsyncThunk(
+  "getPrimeDataApi",
+  async (company_id) => {
+    const response = await fetch(`${url}/prime-research/search/data/${company_id}`, {
+      method: "GET",
+      
+    });
+
+    return response.json();
+  }
+);
+
+export const getTimesDataApi = createAsyncThunk(
+  "getTimesDataApi",
+  async (company_id) => {
+    const response = await fetch(`${url}/news/search/data/${company_id}`, {
+      method: "GET",
+      
+    });
+
+    return response.json();
+  }
+);
+
+export const getIpoDataApi = createAsyncThunk(
+  "getIpoDataApi",
+  async (company_id) => {
+    const response = await fetch(`${url}/ipo/search/data/${company_id}`, {
+      method: "GET",
+      
+    });
+
+    return response.json();
+  }
+);
+
+export const getPulseDataApi = createAsyncThunk(
+  "getPulseDataApi",
+  async (company_id) => {
+    const response = await fetch(`${url}/corporate-updates/search/data/${company_id}`, {
+      method: "GET",
+      
+    });
+
+    return response.json();
+  }
+);
 
 
 const searchSlice = createSlice({
@@ -65,6 +135,28 @@ const searchSlice = createSlice({
       
       state.companySummary = action.payload?.data;
     });
+    builder.addCase(getDiscoveryDataApi.fulfilled, (state, action) => {
+      
+      state.discoveryData = action.payload?.data;
+    });
+    builder.addCase(getPrimeDataApi.fulfilled, (state, action) => {
+      
+      state.primeData = action.payload?.data;
+    });
+    builder.addCase(getTimesDataApi.fulfilled, (state, action) => {
+      
+      state.timesData = action.payload?.data;
+      state.timesPagination= action?.payload?.pagination
+    });
+    builder.addCase(getIpoDataApi.fulfilled, (state, action) => {
+      
+      state.ipoData = action.payload?.data;
+    });
+    builder.addCase(getPulseDataApi.fulfilled, (state, action) => {
+      
+      state.pulseData = action.payload?.data;
+    });
+   
    
   },
 });

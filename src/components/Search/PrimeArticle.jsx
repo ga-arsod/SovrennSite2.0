@@ -3,6 +3,9 @@ import { Card, CardContent, Typography, Button, Box } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import convertToHtml from "@/utils/convertToHtml";
+import styles from "../../styles/searchPrime.module.css"
+import Link from "next/link";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -62,30 +65,36 @@ const StyledButton2 = styled(Button)`
   }
 `;
 
-const PrimeArticle = () => {
+const PrimeArticle = ({data}) => {
+ 
   return (
     <Box mt={2} mb={10}>
       <StyledTypography1 color={colors.navyBlue500}>
        Prime Article
       </StyledTypography1>
+    
+    {
+      data?.has_pi_data ?  <Banner my={2}>
+      <StyledTypography2>
+        Exclusive Promoter Interview Available!
+      </StyledTypography2>
+      <Link href={`/prime/${data?.pi_slug}`}>
+      <StyledButton2
+        variant="outlined"
+        endIcon={
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <ArrowForwardIosIcon sx={{ fontSize: "14px" }} />
+          </Box>
+        }
+      >
+        Read Now
+      </StyledButton2>
+      </Link>
+    </Banner> : <></>
+    }
+      
 
-      <Banner my={2}>
-        <StyledTypography2>
-          Exclusive Promoter Interview Available!
-        </StyledTypography2>
-        <StyledButton2
-          variant="outlined"
-          endIcon={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <ArrowForwardIosIcon sx={{ fontSize: "14px" }} />
-            </Box>
-          }
-        >
-          Read Now
-        </StyledButton2>
-      </Banner>
-
-      <Card elevation={0} sx={{ border: "1px solid #E0E0E0", borderRadius: 2 }}>
+      <Card elevation={0} sx={{ border: "1px solid #E0E0E0", borderRadius: 2,mt:2 }}>
         <CardContent>
           <Box
             display="flex"
@@ -96,49 +105,18 @@ const PrimeArticle = () => {
               color={colors.navyBlue500}
               sx={{ fontWeight: "700" }}
             >
-              KPI Green Energy Limited
+             {data?.company_name}
             </StyledTypography1>
+            <Link href={`/prime/${data?.slug}`}>
             <StyledButton variant="contained">Read More</StyledButton>
+            </Link>
           </Box>
 
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            mt={2}
-            fontWeight={600}
-          >
-            About The Company
-          </Typography>
-          <Typography variant="body2" color="textSecondary" mt={1}>
-            With 28 years of experience in renewable energy, KPI Green is a
-            reputable solar energy firm in Gujarat...
-          </Typography>
-
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            mt={2}
-            fontWeight={600}
-          >
-            Customers
-          </Typography>
-          <Typography variant="body2" color="textSecondary" mt={1}>
-            KPI Green serves a wide range of esteemed clients, including Cadila
-            Healthcare, Colourtex, Meghmani Organics...
-          </Typography>
-
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            mt={2}
-            fontWeight={600}
-          >
-            Growth Prospects
-          </Typography>
-          <Typography variant="body2" color="textSecondary" mt={1}>
-            The global renewable electricity capacity is projected to surpass
-            4,800 GW by FY26...
-          </Typography>
+          <Box mt={2}>
+                     <div id={styles.MainContainer}>
+                                   {convertToHtml(data?.content)}
+                                 </div>
+                    </Box>
         </CardContent>
       </Card>
     </Box>

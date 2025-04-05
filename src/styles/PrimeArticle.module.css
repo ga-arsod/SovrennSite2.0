@@ -1,7 +1,7 @@
 #MainContainer {
-    width: 990px;
    
-    padding: 10px 0;
+   
+   
     font-family: 'Inter', sans-serif;
     /* -webkit-user-select: none;
     -webkit-touch-callout: none;
@@ -12,7 +12,7 @@
 
 #MainContainer>h1 {
     text-align: center;
-    margin: 20px 30px 30px;
+   
     font-size: 1.8rem;
     font-family: 'Inter', sans-serif;
   

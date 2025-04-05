@@ -252,6 +252,13 @@ const Navbar = () => {
    
   }, [dispatch, isAuth, pathname]);
 
+  useEffect(()=>{
+    if(isAuth)
+    {
+      dispatch(userDetailsApi())
+    }
+   },[isAuth])
+    
   if (!isLoaded) return null;
 
   const toggleDrawer = () => {
@@ -279,7 +286,7 @@ const Navbar = () => {
     )
    })
     
-    
+   
 
   return (
     <>

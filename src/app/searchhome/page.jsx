@@ -1,20 +1,37 @@
-"use client"
-import React,{useEffect, useState} from 'react'
-import { Container,Grid,Typography,Button,Box,Tab,Tabs,Card,CardContent} from '@mui/material'
+"use client";
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Grid,
+  Typography,
+  Button,
+  Box,
+  Tab,
+  Tabs,
+  Card,
+  CardContent,
+} from "@mui/material";
 import styled from "@emotion/styled";
-import { colors } from '@/components/Constants/colors';
-import AddIcon from '@mui/icons-material/Add';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import Discovery from "../../components/Search/Discovery"
-import PrimeArticle from "../../components/Search/PrimeArticle"
+import { colors } from "@/components/Constants/colors";
+import AddIcon from "@mui/icons-material/Add";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import Discovery from "../../components/Search/Discovery";
+import PrimeArticle from "../../components/Search/PrimeArticle";
 import Times from "../../components/Search/Times";
 import Ipo from "../../components/Search/Ipo";
 import Pulse from "../../components/Search/Pulse";
-import { getCompanyDataApi } from '../Redux/Slices/searchSlice';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import {
+  getCompanyDataApi,
+  getDiscoveryDataApi,
+  getTimesDataApi,
+  getPrimeDataApi,
+  getIpoDataApi,
+  getPulseDataApi,
+} from "../Redux/Slices/searchSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -29,23 +46,19 @@ const StyledTypography1 = styled(Typography)`
   }
 `;
 
-
-
 const StyledTypography3 = styled(Typography)`
   font-size: 16px;
   line-height: 19px;
 `;
 
-
 const StyledButton = styled(Button)`
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
- 
+
   padding: 8px 16px;
   text-transform: none;
   border-color: ${colors.themeGreen};
- 
 `;
 
 const CustomTabs = styled(Tabs)`
@@ -71,9 +84,9 @@ const CustomTab = styled(Tab)`
   margin-right: 15px;
   font-size: 20px;
   font-weight: 600;
-  line-height:24px;
+  line-height: 24px;
   padding: 6px 10px;
-  color:#BAC1CC;
+  color: #bac1cc;
   white-space: nowrap;
 
   &:hover {
@@ -85,23 +98,44 @@ const CustomTab = styled(Tab)`
   }
 `;
 const SearchHome = () => {
-   const [selectedTab,setSelectedTab] = useState(0)
-    const company_summary= useSelector((store) => store.search.companySummary);
-    
-   const dispatch= useDispatch();
-   const searchParams = useSearchParams();
-     const q = searchParams.get("q");
+  const [selectedTab, setSelectedTab] = useState(0);
+  const company_summary = useSelector((store) => store.search.companySummary);
+  const { discoveryData, timesData, pulseData, ipoData, primeData } =
+    useSelector((store) => store.search);
+  const dispatch = useDispatch();
+  const searchParams = useSearchParams();
+  const q = searchParams.get("q");
 
-    const handleTabChange = (_, newValue) => {
-      setSelectedTab(newValue);
-    };
-   useEffect(()=>{
-    dispatch(getCompanyDataApi(q))
-   },[q])
+  const handleTabChange = (_, newValue) => {
+    setSelectedTab(newValue);
+  };
+  useEffect(() => {
+    dispatch(getCompanyDataApi(q));
+  }, [q]);
 
+  useEffect(() => {
+    if (company_summary) {
+      if (company_summary?.is_in_discovery) {
+        dispatch(getDiscoveryDataApi(q));
+      }
+      if (company_summary?.is_in_prime) {
+        dispatch(getPrimeDataApi(q));
+      }
+      if (company_summary?.is_in_ipo) {
+        dispatch(getIpoDataApi(q));
+      }
+      if (company_summary?.is_in_times) {
+        dispatch(getTimesDataApi(q));
+      }
+      if (company_summary?.is_in_pulse) {
+        dispatch(getPulseDataApi(q));
+      }
+    }
+  }, [company_summary]);
+ 
   return (
     <>
-          <Container>
+      <Container>
         <Grid
           container
           marginTop={{ xs: "90px", sm: "100px" }}
@@ -109,7 +143,7 @@ const SearchHome = () => {
         >
           <Grid item>
             <StyledTypography1 color={colors.navyBlue500}>
-           {company_summary?.company_name}
+              {company_summary?.company_name}
             </StyledTypography1>
           </Grid>
           <Grid item marginTop={3}>
@@ -131,7 +165,7 @@ const SearchHome = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-             {company_summary?.share_price}
+                  {company_summary?.share_price}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -147,7 +181,7 @@ const SearchHome = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-            {company_summary?.sector}
+                  {company_summary?.sector}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -163,7 +197,7 @@ const SearchHome = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-             {company_summary?.industry}
+                  {company_summary?.industry}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -179,7 +213,7 @@ const SearchHome = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-              {company_summary?.market_cap}
+                  {company_summary?.market_cap}
                 </StyledTypography3>
               </Grid>
               <Grid item>
@@ -195,69 +229,97 @@ const SearchHome = () => {
                   sx={{ fontWeight: "400" }}
                   component="span"
                 >
-              {company_summary?.ttm_pe}
+                  {company_summary?.ttm_pe}
                 </StyledTypography3>
               </Grid>
             </Grid>
           </Grid>
 
-        <Grid item>
-        <Box
-      sx={{
-        display: "flex",
-        justifyContent: "flex-end", 
-        gap: 2, 
-        padding: 2, 
-      }}
-    >
-      <StyledButton variant="outlined" startIcon={<AddIcon />} color={company_summary?.is_added_in_pulse ? colors.red500 : colors.themeGreen }>
-      {company_summary?.is_added_in_pulse ? "Remove from Pulse" : "Add to Pulse"}
-      </StyledButton>
-      <StyledButton variant="outlined" color={company_summary?.is_added_in_pulse ? colors.red500 : colors.themeGreen } startIcon={<BookmarkBorderIcon />}>
-      {company_summary?.is_added_in_watchlist ? "Remove from Watchlist" : "Add to Watchlist"}
-      </StyledButton>
-    </Box>
-        </Grid>
+          <Grid item>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: 2,
+                padding: 2,
+              }}
+            >
+              <StyledButton
+                variant="outlined"
+                startIcon={<AddIcon />}
+                sx={{
+                  color: company_summary?.is_added_in_pulse
+                    ? colors.red500
+                    : colors.themeGreen,
+                }}
+              >
+                {company_summary?.is_added_in_pulse
+                  ? "Remove from Pulse"
+                  : "Add to Pulse"}
+              </StyledButton>
+              <StyledButton
+                variant="outlined"
+                sx={{
+                  color: company_summary?.is_added_in_pulse
+                    ? colors.red500
+                    : colors.themeGreen,
+                }}
+                startIcon={<BookmarkBorderIcon />}
+              >
+                {company_summary?.is_added_in_watchlist
+                  ? "Remove from Watchlist"
+                  : "Add to Watchlist"}
+              </StyledButton>
+            </Box>
+          </Grid>
 
-      
-         <Grid item>
-         <Box >
-      {/* Tabs */}
-      <CustomTabs value={selectedTab} onChange={handleTabChange} >
-      <CustomTab label="All" />
-      {
-        company_summary?.is_in_discovery ?  <CustomTab label="Discovery" sx={{ fontWeight: "bold" }} /> : <></>
-      }
-       {
-        company_summary?.is_in_prime ?   <CustomTab label="Prime" /> : <></>
-      }
-        {
-        company_summary?.is_in_times ?   <CustomTab label="Times" /> : <></>
-      }
-        {
-        company_summary?.is_in_ipo ?   <CustomTab label="IPO" /> : <></>
-      }
-      {
-        company_summary?.is_in_pulse ?   <CustomTab label="Pulse" /> : <></>
-      }
-        
-      </CustomTabs>
+          <Grid item>
+            <Box>
+              {/* Tabs */}
+              <CustomTabs value={selectedTab} onChange={handleTabChange}>
+                <CustomTab label="All" />
+                {company_summary?.is_in_discovery ? (
+                  <CustomTab label="Discovery" sx={{ fontWeight: "bold" }} />
+                ) : (
+                  <></>
+                )}
+                {company_summary?.is_in_prime ? (
+                  <CustomTab label="Prime" />
+                ) : (
+                  <></>
+                )}
+                {company_summary?.is_in_times ? (
+                  <CustomTab label="Times" />
+                ) : (
+                  <></>
+                )}
+                {company_summary?.is_in_ipo ? <CustomTab label="IPO" /> : <></>}
+                {company_summary?.is_in_pulse ? (
+                  <CustomTab label="Pulse" />
+                ) : (
+                  <></>
+                )}
+              </CustomTabs>
+            </Box>
+          </Grid>
 
-     
-    </Box>
-         </Grid>
-    
-  {
-    selectedTab==1 ? <Discovery/> : selectedTab ==2 ? <PrimeArticle/> : selectedTab==3 ? <Times/> : selectedTab == 4 ? <Ipo/> : selectedTab == 5 ? <Pulse/> : <></>
-  }
-    
-         
-
-        
+          {selectedTab == 1 ? (
+            <Discovery data={discoveryData} />
+          ) : selectedTab == 2 ? (
+            <PrimeArticle data={primeData} />
+          ) : selectedTab == 3 ? (
+            <Times data={timesData} />
+          ) : selectedTab == 4 ? (
+            <Ipo data={ipoData} />
+          ) : selectedTab == 5 ? (
+            <Pulse data={pulseData} />
+          ) : (
+            <></>
+          )}
         </Grid>
       </Container>
     </>
-  )
-}
+  );
+};
 
 export default SearchHome;
