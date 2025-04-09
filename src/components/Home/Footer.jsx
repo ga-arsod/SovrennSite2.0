@@ -344,7 +344,7 @@ const Footer = () => {
                     lineHeight: "19px",
                   }}
                 >
-                  © 2024 by Sovrenn Financial Technologies Pvt Ltd
+                  © 2025 by Sovrenn Financial Technologies Pvt Ltd
                 </Typography>
               </Grid>
               <Grid item>
