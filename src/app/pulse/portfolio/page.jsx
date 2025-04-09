@@ -191,7 +191,7 @@ const PulseSearch = () => {
 
   const updatePortfolio = () => {
     dispatch(
-      updatePortfolioApi({ data: [...recentlyAdded, ...companies], router })
+      updatePortfolioApi({ data: [...recentlyAdded, ...companies],path:"pulse", router:router })
     );
 
     dispatch(

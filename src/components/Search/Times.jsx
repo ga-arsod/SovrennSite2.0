@@ -15,6 +15,10 @@ import styles from "../../styles/searchnews.module.css";
 import convertToHtml from "@/utils/convertToHtml";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { getTimesDataApi } from "@/app/Redux/Slices/searchSlice";
+import { useState,useEffect } from "react";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -47,7 +51,27 @@ const StyledButton2 = styled(Button)`
     color: ${colors.themeGreen};
   }
 `;
+const StyledButton1 = styled(Button)`
+  color: white;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 4px 14px;
+  border-radius: 80px;
+  background-color: ${colors.themeGreen};
+  text-transform: none;
 
+  :hover {
+    background-color: ${colors.themeButtonHover};
+  }
+  @media (max-width: 700px) {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+`;
 const CustomDivider = styled(Divider)`
   background-color: #f8f7f7;
   border-color: none;
@@ -59,17 +83,22 @@ const Times = ({ data }) => {
   const router = useRouter();
   const { timesPagination } = useSelector((store) => store.search);
   const company_summary = useSelector((store) => store.search.companySummary);
-  
+  const [page,setPage]=useState(1)
+  const dispatch=useDispatch()
+  const {pulsePagination} = useSelector((store) => store.search);
   const handleNavigation = (date) => {
     const searchQuery1 = encodeURIComponent(company_summary?.company_name || ""); 
   
     router.push(`/times?search=${searchQuery1}&date=${date.split("T")[0]}`);
   };
+  useEffect(()=>{
+   dispatch(getTimesDataApi({company_id:company_summary?._id,page:page}))
+  },[page])
   return (
-    <Box mt={2} mb={5}>
+    <Box mt={2} mb={2}>
       <StyledTypography1 color={colors.navyBlue500}>Times</StyledTypography1>
       <StyledTypography2 color={colors.navyBlue300} mt={1}>
-        {`Read the ${timesPagination?.total_documents} latest news related to KPI Green Energy Ltd.`}
+        {`Read the ${timesPagination?.total_documents} latest news related to ${company_summary?.company_name}.`}
       </StyledTypography2>
 
       {data?.map((elem, index) => {
@@ -100,12 +129,31 @@ const Times = ({ data }) => {
                 </StyledButton2>
               </Box>
               <CustomDivider sx={{ mt: 2, mb: 2 }} />
-
-              <div id={styles.MainContainer}>{convertToHtml(elem?.blocks)}</div>
+               
+               {
+                data ?  <div id={styles.MainContainer}>{convertToHtml(elem?.blocks)}</div> : <></>
+               }
+             
             </CardContent>
           </Card>
         );
       })}
+       {
+              timesPagination?.total_pages === timesPagination?.page  ? "" :
+              <Box
+              sx={{ display: "flex", justifyContent: "center" }}
+             
+              marginTop={2}
+            >
+              <StyledButton1
+                variant="contained"
+                endIcon={<ExpandMoreIcon style={{ fontSize: "24px" }} />}
+                onClick={()=>{setPage(page+1)}}
+              >
+                Load More
+              </StyledButton1>
+            </Box>
+            }
     </Box>
   );
 };

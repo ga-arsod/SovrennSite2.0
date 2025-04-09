@@ -1,6 +1,7 @@
 #MainContainer {
     width: 100%;
     padding: 14vh 10vw 20px;
+    color:#868686
 }
 
 
@@ -10,37 +11,40 @@
 }
 
 #infoText>p {
-    font-size:20px;
-    font-weight: normal;
-    line-height:24px;
+    font-weight:400;
+    font-size:16px;
+    
+    line-height:19px;
     margin: 10px 0;
-    color:#627B8F;
+    color:#868686;
     font-family: 'Inter', sans-serif;
 }
 
 #infoText>ol {
-    font-size: 22px;
-    font-weight: normal;
-    line-height:24px;
+    font-weight:400;
+    font-size:16px;
+    
+    line-height:19px;
     margin: 10px 0;
-    color:#627B8F;
+    color:#868686;
     list-style-position: outside;
     padding-left: 20px;
     font-family: 'Inter', sans-serif;
 }
 #infoText b {
-    font-size: 20px;
-    font-weight: 600;
-    line-height:24px;
+    font-weight:600;
+    font-size:16px;
+    
+    line-height:19px;
     font-family: 'Inter', sans-serif;
     
     color:#011627;
     
 }
 #infoText a {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 400;
-    line-height:24px;
+    line-height:19px;
     font-family: 'Inter', sans-serif;
     
     color:#06A77D;

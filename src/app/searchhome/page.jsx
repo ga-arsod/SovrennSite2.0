@@ -8,8 +8,7 @@ import {
   Box,
   Tab,
   Tabs,
-  Card,
-  CardContent,
+Chip
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "@/components/Constants/colors";
@@ -28,10 +27,17 @@ import {
   getIpoDataApi,
   getPulseDataApi,
 } from "../Redux/Slices/searchSlice";
+import {
+  addToWatchlistApi,
+  removeFromWatchlistApi,
+} from "../Redux/Slices/discoverySlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import Snackbar from "../../components/Snackbar/SnackBar";
+import { updatePortfolioApi } from "../Redux/Slices/pulseSlice";
+import Spinner from "@/components/Common/Spinner";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -58,7 +64,6 @@ const StyledButton = styled(Button)`
 
   padding: 8px 16px;
   text-transform: none;
-  border-color: ${colors.themeGreen};
 `;
 
 const CustomTabs = styled(Tabs)`
@@ -69,14 +74,22 @@ const CustomTabs = styled(Tabs)`
   white-space: nowrap;
 
   -webkit-overflow-scrolling: touch;
+
   &::-webkit-scrollbar {
     height: 6px;
   }
+
   &::-webkit-scrollbar-thumb {
     background-color: ${colors.grey300};
     border-radius: 3px;
   }
+
+ 
+  .MuiTabs-scrollButtons.Mui-disabled {
+    display: none;
+  }
 `;
+
 
 const CustomTab = styled(Tab)`
   text-transform: none;
@@ -97,42 +110,117 @@ const CustomTab = styled(Tab)`
     color: ${colors.themeGreen};
   }
 `;
+
+const NotCoveredChip = styled(Chip)`
+  height: 22px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height:14px;
+  background: linear-gradient(90deg, #4065ac 0%, #2b4371 100%);
+  color: white;
+
+  .MuiChip-label {
+    padding:0px 12px;
+  }
+`;
 const SearchHome = () => {
   const [selectedTab, setSelectedTab] = useState(0);
+  const [isInWatchlist, setIsInWatchlist] = useState(false);
+  const [isInPulse, setIsInPulse] = useState(false);
   const company_summary = useSelector((store) => store.search.companySummary);
-  const { discoveryData, timesData, pulseData, ipoData, primeData } =
+  const { discoveryData, timesData, pulseData, ipoData, primeData ,isDiscoveryLoading} =
     useSelector((store) => store.search);
+  const { portfolioCompanies } = useSelector((store) => store.pulse);
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
-
+  const router = useRouter();
+  const [pulseCompanies, setPulseCompanies] = useState([]);
+  const allTabs = [
+    {
+      label: "Discovery",
+      component: discoveryData ? <Discovery data={discoveryData} /> : null,
+      condition: true,
+    },
+    {
+      label: "Prime",
+      component: primeData ? <PrimeArticle data={primeData} /> : null,
+      condition: company_summary?.is_in_prime,
+    },
+    {
+      label: "Times",
+      component: timesData ? <Times data={timesData} /> : null,
+      condition: company_summary?.is_in_times,
+    },
+    {
+      label: "IPO",
+      component: ipoData ? <Ipo data={ipoData} /> : null,
+      condition: company_summary?.is_in_ipo,
+    },
+    {
+      label: "Pulse",
+      component: pulseData ? <Pulse data={pulseData} /> : null,
+      condition: company_summary?.is_in_pulse,
+    },
+  ];
+  const activeTabs = allTabs.filter(tab => tab.condition);
+  
   const handleTabChange = (_, newValue) => {
     setSelectedTab(newValue);
   };
+
+
+  const toggleWatchlist = () => {
+    setIsInWatchlist((prev) => !prev);
+  };
+  const togglePulselist = () => {
+    setIsInPulse((prev) => !prev);
+  };
+ 
   useEffect(() => {
-    dispatch(getCompanyDataApi(q));
-  }, [q]);
+    const fetchData = async () => {
+      const companyRes = await dispatch(getCompanyDataApi(q));
+  
+    
+      const companyData = companyRes?.payload;
+    
+      if (companyData.data) {
+        dispatch(getDiscoveryDataApi(q));
+  
+        if (companyData?.data?.is_in_prime) {
+          dispatch(getPrimeDataApi(q));
+        }
+        if (companyData?.data?.is_in_ipo) {
+          dispatch(getIpoDataApi(q));
+        }
+        if (companyData?.data?.is_in_times) {
+          dispatch(getTimesDataApi({company_id:q,page:1}));
+        }
+        if (companyData?.data?.is_in_pulse) {
+          dispatch(getPulseDataApi({company_id:q,page:1}));
+        }
+      }
+    };
+  
+    fetchData();
+  }, [q, dispatch]);
+  
 
   useEffect(() => {
-    if (company_summary) {
-      if (company_summary?.is_in_discovery) {
-        dispatch(getDiscoveryDataApi(q));
-      }
-      if (company_summary?.is_in_prime) {
-        dispatch(getPrimeDataApi(q));
-      }
-      if (company_summary?.is_in_ipo) {
-        dispatch(getIpoDataApi(q));
-      }
-      if (company_summary?.is_in_times) {
-        dispatch(getTimesDataApi(q));
-      }
-      if (company_summary?.is_in_pulse) {
-        dispatch(getPulseDataApi(q));
-      }
+    setIsInWatchlist(company_summary?.is_added_in_watchlist);
+    setIsInPulse(company_summary?.is_added_in_pulse)
+  }, [company_summary?.is_added_in_watchlist,company_summary?.is_added_in_pulse]);
+  
+   if (isDiscoveryLoading) {
+      return (
+        <>
+         
+          <Spinner margin={15} />
+        </>
+      );
     }
-  }, [company_summary]);
- 
+
   return (
     <>
       <Container>
@@ -141,10 +229,17 @@ const SearchHome = () => {
           marginTop={{ xs: "90px", sm: "100px" }}
           flexDirection="column"
         >
-          <Grid item>
+          <Grid>
+            <Snackbar />
+          </Grid>
+          <Grid item sx={{display:"flex",flexDirection:{xs:"column",sm:"row"},gap:{xs:1,sm:4} ,alignItems:{xs:"flex-start",sm:"center"}}}>
             <StyledTypography1 color={colors.navyBlue500}>
               {company_summary?.company_name}
             </StyledTypography1>
+            {
+              !company_summary?.has_covered ?  <NotCoveredChip label="Not Covered" /> : <></>
+            }
+           
           </Grid>
           <Grid item marginTop={3}>
             <Grid
@@ -239,83 +334,104 @@ const SearchHome = () => {
             <Box
               sx={{
                 display: "flex",
+                flexDirection:{xs:"column",sm:"row"},
                 justifyContent: "flex-end",
+                alignItems:{xs:"flex-start",sm:"cenetr"},
                 gap: 2,
-                padding: 2,
+                paddingY: 2,
               }}
             >
               <StyledButton
                 variant="outlined"
                 startIcon={<AddIcon />}
                 sx={{
-                  color: company_summary?.is_added_in_pulse
+                  color: isInPulse
                     ? colors.red500
                     : colors.themeGreen,
+                  borderColor: isInPulse
+                    ? colors.red500
+                    : colors.themeGreen,
+                  "&:hover": {
+                    borderColor: isInPulse
+                      ? colors.red500
+                      : colors.themeGreen,
+                  },
+                }}
+                onClick={() => {
+                 togglePulselist();
+
+                 !isInPulse ?
+                    dispatch(updatePortfolioApi({data:[...portfolioCompanies,{_id:company_summary?._id}],path:"search",router:router}))
+                    : dispatch(updatePortfolioApi({data:portfolioCompanies.filter(c => c._id !== company_summary?._id),path:"search",router:router}))
                 }}
               >
-                {company_summary?.is_added_in_pulse
-                  ? "Remove from Pulse"
-                  : "Add to Pulse"}
+               
+                  {isInPulse ? "Remove from Pulse" : "Add to Pulse"}
               </StyledButton>
               <StyledButton
                 variant="outlined"
                 sx={{
-                  color: company_summary?.is_added_in_pulse
+                  color:isInWatchlist
                     ? colors.red500
                     : colors.themeGreen,
+                  borderColor: isInWatchlist
+                    ? colors.red500
+                    : colors.themeGreen,
+                  "&:hover": {
+                    borderColor: isInWatchlist
+                      ? colors.red500
+                      : colors.themeGreen,
+                  },
                 }}
                 startIcon={<BookmarkBorderIcon />}
+                onClick={() => {
+                  toggleWatchlist();
+
+                  isInWatchlist
+                    ? dispatch(removeFromWatchlistApi(q))
+                    : dispatch(
+                        addToWatchlistApi({
+                          company_id: q,
+                          uptrend_potential: 0,
+                          expected_price_after_1year: 0,
+                        })
+                      );
+                }}
               >
-                {company_summary?.is_added_in_watchlist
-                  ? "Remove from Watchlist"
-                  : "Add to Watchlist"}
+                {isInWatchlist ? "Remove from watchlist" : "Add to watchlist"}
               </StyledButton>
             </Box>
           </Grid>
 
-          <Grid item>
-            <Box>
-              {/* Tabs */}
-              <CustomTabs value={selectedTab} onChange={handleTabChange}>
-                <CustomTab label="All" />
-                {company_summary?.is_in_discovery ? (
-                  <CustomTab label="Discovery" sx={{ fontWeight: "bold" }} />
-                ) : (
-                  <></>
-                )}
-                {company_summary?.is_in_prime ? (
-                  <CustomTab label="Prime" />
-                ) : (
-                  <></>
-                )}
-                {company_summary?.is_in_times ? (
-                  <CustomTab label="Times" />
-                ) : (
-                  <></>
-                )}
-                {company_summary?.is_in_ipo ? <CustomTab label="IPO" /> : <></>}
-                {company_summary?.is_in_pulse ? (
-                  <CustomTab label="Pulse" />
-                ) : (
-                  <></>
-                )}
-              </CustomTabs>
-            </Box>
-          </Grid>
+          <Grid item width="100%">
+  <Box sx={{ maxWidth: "100%", bgcolor: 'background.paper' }}>
+    <CustomTabs
+      value={selectedTab}
+      onChange={handleTabChange}
+      variant="scrollable"
+      scrollButtons="auto"
+      allowScrollButtonsMobile
+      aria-label="scrollable force tabs example"
+    >
+      <CustomTab label="All" />
+      {activeTabs.map((tab, index) => (
+        <CustomTab key={index} label={tab.label} />
+      ))}
+    </CustomTabs>
+  </Box>
+</Grid>
 
-          {selectedTab == 1 ? (
-            <Discovery data={discoveryData} />
-          ) : selectedTab == 2 ? (
-            <PrimeArticle data={primeData} />
-          ) : selectedTab == 3 ? (
-            <Times data={timesData} />
-          ) : selectedTab == 4 ? (
-            <Ipo data={ipoData} />
-          ) : selectedTab == 5 ? (
-            <Pulse data={pulseData} />
-          ) : (
-            <></>
-          )}
+
+{selectedTab === 0 ? (
+  <>
+    {activeTabs.map((tab, index) => (
+      <React.Fragment key={index}>{tab.component}</React.Fragment>
+    ))}
+  </>
+) : (
+  activeTabs[selectedTab - 1]?.component || null
+)}
+
         </Grid>
       </Container>
     </>

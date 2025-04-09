@@ -57,7 +57,7 @@ export const getPortfolioCompanies = createAsyncThunk(
 
   export const updatePortfolioApi = createAsyncThunk(
     "updatePortfolioApi",
-    async ({data,router},{dispatch}) => {
+    async ({data,path,router},{dispatch}) => {
       const response = await fetch(`${url}/user/update-portfolio?platform=website`, {
         method: "PATCH",
         headers: {
@@ -69,10 +69,23 @@ export const getPortfolioCompanies = createAsyncThunk(
           }),
             
       });
+      console.log(path,"path")
       if(response.ok)
       {
-        router.push("/pulse")
+         dispatch(
+                setSnackStatus({
+                  status: true,
+                  severity: "success",
+                  message: "Portfolio updated successfully!",
+                })
+              );
         dispatch(getPortfolioCompanies())
+        if(path=="pulse")
+        {
+          router.push("/pulse")
+        }
+       
+        
       }
       return response.json();
       
@@ -149,7 +162,7 @@ const pulseSlice = createSlice({
       });
       builder.addCase(getPortfolioCompanies.fulfilled, (state, action) => {
         state.isCompaniesLoading = false;
-        state.portfolioCompanies = action.payload.data;
+        state.portfolioCompanies = action.payload?.data;
       });
       builder.addCase(getPortfolioCompanies.rejected, (state, action) => {
         state.isError = true;

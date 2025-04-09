@@ -74,8 +74,8 @@ const StyledGrid = styled(Box)`
     justify-content: space-between;
     align-items: center;
     padding: 12px 20px;
-    position: absolute; /* Make it fixed to the bottom */
-    bottom: 20px; /* Distance from the bottom boundary */
+    position: absolute;
+    bottom: 20px; 
     left: 0;
     right: 0;
   }
@@ -175,7 +175,7 @@ const CompanyCard = ({data,slug}) => {
       <GridContainer>
         {data?.map((ele, index) => (
           <StyledGrid key={index}>
-              <Link target="_blank" href={`/discovery/${ele.slug}/${slug}`} style={{textDecoration:'none'}}>
+              <Link target="_blank" href={`/discovery/${ele.slug}`} style={{textDecoration:'none'}}>
             <Box className="content">
               <Grid container>
                 <Grid item paddingY={2} paddingX="20px" width="100%">
@@ -200,13 +200,13 @@ const CompanyCard = ({data,slug}) => {
               </Grid>
               
               <Box className="bottom-section">
-                <StyledTypography2 component="span" color={colors.themeGreen} sx={{ fontWeight: 600 }}>
-                  {`Bucket- ${ele.type}`}
-                </StyledTypography2>
-                <CustomIconButton className="icon-button">
-                  <ArrowForwardIcon fontSize="small" className="arrow-icon" sx={{ color: "#3C464F" }} />
-                </CustomIconButton>
-              </Box>
+                  <StyledTypography2 component="span" color={colors.themeGreen} sx={{ fontWeight: 600 }}>
+                    { `${ele?.total_companies} companies are in this bucket`}
+                  </StyledTypography2>
+                  <CustomIconButton className="icon-button">
+                    <ArrowForwardIcon fontSize="small" className="arrow-icon" sx={{ color: "#3C464F" }} />
+                  </CustomIconButton>
+                </Box>
             </Box>
             </Link>
           </StyledGrid>
