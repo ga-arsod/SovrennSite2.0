@@ -5,7 +5,7 @@ import {
   Box,
   Chip,
   ListSubheader,
-  Typography,
+  Typography,InputAdornment,IconButton,useMediaQuery
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import styled from "@emotion/styled";
@@ -13,10 +13,13 @@ import { colors } from "../Constants/colors";
 import {
   getWeeklyTopSearchesApi,
   getCompanySuggestionsApi,
+  deleteRecentSearchApi,
+  textSearchDataApi,
 } from "@/app/Redux/Slices/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import SearchIcon from "@mui/icons-material/Search";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -62,7 +65,7 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const NavbarSearch2 = () => {
+const NavbarSearch2 = ({handleSearchClick}) => {
   const [recentSearches, setRecentSearches] = useState([]);
   const [topSearches, setTopSearches] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -71,28 +74,40 @@ const NavbarSearch2 = () => {
   const { weeklyTopSearches, suggestedCompanies } = useSelector(
     (store) => store.search
   );
+   const isXsScreen = useMediaQuery('(max-width:1040px)'); 
+  const { isAuth } = useSelector((store) => store.auth);
 
   const handleOptionChange = (event, option) => {
-    if (option?.isSearchResult) {
-      router.push(`/searchhome?q=${option.keyword}`);
-      return;
-    }
-
-    if (option?.has_covered) {
-      router.push(`/searchhome?q=${option._id}`);
-    }
+    router.push(`/company?q=${option._id}`);
   };
 
   const handleRemoveRecent = (companyId) => {
     setRecentSearches((prev) => prev.filter((item) => item._id !== companyId));
   };
 
+  const handleClearSearch = () => {
+    setSearchTerm('');
+  };
+  
+  const handleBackClick = () => {
+    setSearchTerm('');
+    handleSearchClick();
+   
+  };
   useEffect(() => {
+    if(searchTerm=='')
     dispatch(getWeeklyTopSearchesApi());
-  }, []);
+  }, [isAuth,searchTerm]);
 
   useEffect(() => {
-    if (searchTerm !== "") dispatch(getCompanySuggestionsApi(searchTerm));
+    const delayDebounce = setTimeout(() => {
+      if (searchTerm !== "") {
+        dispatch(getCompanySuggestionsApi(searchTerm));
+      }
+    }, 300); 
+  
+    
+    return () => clearTimeout(delayDebounce);
   }, [searchTerm]);
 
   useEffect(() => {
@@ -119,16 +134,23 @@ const NavbarSearch2 = () => {
   const dummySearchOption =
     searchTerm !== "" ? [{ isSearchResult: true, keyword: searchTerm }] : [];
 
-    const allOptions = searchTerm !== ""
-    ? [...dummySearchOption, ...topSearches]
-    : [
-        ...recentSearches,
-        ...topSearches.filter(
-          (top) => !recentSearches.some((recent) => recent._id === top._id)
-        ),
-      ];
+  const allOptions =
+    searchTerm !== ""
+      ? [...dummySearchOption, ...topSearches]
+      : [
+          ...recentSearches,
+          ...topSearches.filter(
+            (top) => !recentSearches.some((recent) => recent._id === top._id)
+          ),
+        ];
 
   return (
+    <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+        {isXsScreen && (
+          <IconButton onClick={handleBackClick} sx={{ mr: 1 }}>
+            <ArrowBackIcon sx={{color:"black"}} />
+          </IconButton>
+        )}
     <Autocomplete
       sx={{
         width: { xs: "80vw", sm: "80vw", md: "350px" },
@@ -139,6 +161,7 @@ const NavbarSearch2 = () => {
       id="combo-box-demo"
       freeSolo
       disableClearable
+      inputValue={searchTerm}
       ListboxProps={{
         style: {
           padding: 0,
@@ -152,8 +175,8 @@ const NavbarSearch2 = () => {
         option.isSearchResult
           ? null
           : recentSearches.find((item) => item._id === option._id)
-          ? "Recently Searched"
-          : "This Week’s Top Searches on Sovrenn"
+          ? "Recently Searched" :
+         searchTerm=="" ? "This Week’s Top Searches on Sovrenn" : ""
       }
       getOptionLabel={(option) =>
         option.isSearchResult ? option.keyword : option.company_name
@@ -162,14 +185,33 @@ const NavbarSearch2 = () => {
         <CustomTextField
           {...params}
           placeholder="Search for a company"
+          InputProps={{
+                          ...params.InputProps,
+                          endAdornment: searchTerm ? (
+                            <InputAdornment position="end">
+                              <ClearIcon
+                                onClick={handleClearSearch}
+                                sx={{ cursor: 'pointer',fontSize:"17px" }}
+                              />
+                            </InputAdornment>
+                          ) : null,
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <SearchIcon />
+                            </InputAdornment>
+                          ),
+                        }}
           variant="outlined"
           fullWidth
+        
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       )}
       renderOption={(props, option) => {
-        const isRecentSearch = recentSearches.find((item) => item._id === option._id);
-      
+        const isRecentSearch = recentSearches.find(
+          (item) => item._id === option._id
+        );
+
         if (option.isSearchResult) {
           return (
             <Box
@@ -196,7 +238,14 @@ const NavbarSearch2 = () => {
                 <SearchIcon sx={{ fontSize: 24 }} />
                 <StyledTypography1
                   color={colors.themeGreen}
-                  sx={{ borderBottom: "1.4px solid #06A77D" }}
+                  sx={{
+                    borderBottom: "1.4px solid #06A77D",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    router.push(`/text-search?q=${searchTerm}`);
+                    dispatch(textSearchDataApi(searchTerm));
+                  }}
                 >
                   Search for Keyword
                 </StyledTypography1>
@@ -204,7 +253,7 @@ const NavbarSearch2 = () => {
             </Box>
           );
         }
-      
+
         return (
           <Box
             component="li"
@@ -223,6 +272,7 @@ const NavbarSearch2 = () => {
               <StyledTypography2
                 color={colors.navyBlue900}
                 sx={{ marginTop: 1 }}
+                onClick={() => handleOptionChange(null, option)}
               >
                 {option?.company_name}
               </StyledTypography2>
@@ -250,7 +300,7 @@ const NavbarSearch2 = () => {
                 </Box>
               )}
             </Box>
-        
+
             {/* Show ClearIcon if in recent searches */}
             {recentSearches.find((item) => item._id === option._id) && (
               <Box
@@ -270,15 +320,14 @@ const NavbarSearch2 = () => {
                   onClick={(e) => {
                     e.stopPropagation();
                     handleRemoveRecent(option._id);
+                    dispatch(deleteRecentSearchApi(option._id));
                   }}
                 />
               </Box>
             )}
           </Box>
         );
-        
       }}
-      
       renderGroup={(params) => (
         <Box key={params.key}>
           <ListSubheader
@@ -294,6 +343,7 @@ const NavbarSearch2 = () => {
         </Box>
       )}
     />
+    </div>
   );
 };
 

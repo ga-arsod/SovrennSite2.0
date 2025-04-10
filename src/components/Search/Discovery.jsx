@@ -1,10 +1,20 @@
 import React from "react";
-import { Card, CardContent, Typography, Button, Box } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Box,
+  Grid,Chip
+} from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import styles from "../../styles/searchDiscovery.module.css";
 import convertToHtml from "@/utils/convertToHtml";
 import Link from "next/link";
+import styles2 from "../../styles/CompanyResult.module.css";
+import CompanyCard from "../Cards/CompanyCard";
+import { useSelector } from "react-redux";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -30,22 +40,54 @@ const StyledButton = styled(Button)`
     outline: ${colors.themeButtonHover};
   }
 `;
+const StyledTypography2 = styled(Typography)`
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: -0.02em;
 
-const Discovery = ({data}) => {
- 
+  @media (max-width: 639px) {
+    font-size: 19px;
+    line-height: 17px;
+  }
+`;
+
+const StyledTypography3 = styled(Typography)`
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+`;
+
+
+const StyledChip = styled(Chip)`
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 14px;
+  color: ${colors.greyBlue400};
+  transition: background-color 0.3s ease;
+  font-family: Inter, sans-serif;
+  cursor: pointer;
+  &:hover {
+    background-color: #034635;
+    color: white;
+  }
+`;
+const Discovery = ({ data }) => {
+  const company_summary = useSelector((store) => store.search.companySummary);
+
   return (
-    <Box mt={2} mb={5}>
+    <Box mt={2} mb={2}>
       <StyledTypography1 color={colors.navyBlue500}>
         Discovery
       </StyledTypography1>
 
       <Card
         elevation={0}
-        sx={{ border: "1px solid #E0E0E0", borderRadius: 2,mt:2 }}
-        
+        sx={{ border: "1px solid #E0E0E0", borderRadius: 2, mt: 2 }}
       >
         <CardContent>
-          
           <Box
             display="flex"
             justifyContent="space-between"
@@ -55,22 +97,85 @@ const Discovery = ({data}) => {
               color={colors.navyBlue500}
               sx={{ fontWeight: "700" }}
             >
-            {data?.company_name}
+              {data?.company_name}
             </StyledTypography1>
-            
-            <Link href={`/discovery/${data?.discovery_buckets[0].slug}/${data?.slug}`} target="_blank">
-           
-            <StyledButton variant="contained">Read More</StyledButton>
+
+            <Link
+              href={`/discovery/${data?.discovery_buckets[0].slug}/${data?.slug}`}
+              target="_blank"
+            >
+              <StyledButton variant="contained">Read More</StyledButton>
             </Link>
           </Box>
 
-        <Box>
-          <div id={styles.MainContainer}>
-                                   {convertToHtml(data?.discovery_content)}
-                                 </div>
-        </Box>
+          <Box>
+            {company_summary?.has_covered && data ? (
+              <div id={styles.MainContainer}>
+                {convertToHtml(data?.discovery_content)}
+              </div>
+            ) : (
+              <></>
+            )}
+            {!company_summary?.has_covered && data ? (
+              <div id={styles2.infoText}>
+                {convertToHtml(data?.discovery_content)}
+              </div>
+            ) : (
+              <></>
+            )}
+          </Box>
         </CardContent>
       </Card>
+      {
+        data?.discovery_buckets.length && company_summary?.has_covered  ?  <Box sx={{ mb: 2, mt: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+           
+            flexWrap: "wrap",
+          }}
+        >
+          <StyledTypography3
+            color={colors.greyBlue500}
+            sx={{ marginRight: 1, whiteSpace: "nowrap" }}
+          >
+            Also present in buckets:
+          </StyledTypography3>
+          {data?.discovery_buckets?.map((item, index) => {
+            return (
+              <>
+                <Link href={`/discovery/${item?.slug}`}>
+                  <StyledChip
+                    label={item?.title}
+                    variant="outlined"
+                    key={index}
+                  />
+                </Link>
+              </>
+            );
+          })}
+        </Box>
+       
+     
+      </Box> : <></>
+      }
+     
+      {data &&
+      data?.discovery_buckets?.length &&
+      !company_summary?.has_covered ? (
+        <Grid container mt={2}>
+          <Grid item>
+            <StyledTypography1 color={colors.navyBlue400}>
+              Explore High Profit Growth Companies in Discovery
+            </StyledTypography1>
+            <CompanyCard data={data?.discovery_buckets} />
+          </Grid>
+        </Grid>
+      ) : (
+        <></>
+      )}
     </Box>
   );
 };

@@ -825,8 +825,8 @@ const Navbar = () => {
                  
                   <StyledGrid1>
                     <Grid item width="100%">
-                      <NavbarSearch handleSearchClick={handleSearchClick} />
-                      {/* <NavbarSearch2 handleSearchClick={handleSearchClick} /> */}
+                      {/* <NavbarSearch handleSearchClick={handleSearchClick} /> */}
+                      <NavbarSearch2 handleSearchClick={handleSearchClick} />
                     </Grid>
 
                     {!searchOpen && (
@@ -848,7 +848,8 @@ const Navbar = () => {
 
                   <Grid item sx={{padding:0}}>
                     {searchOpen && isSmallerThanMd && (
-                      <NavbarSearch handleSearchClick={handleSearchClick} />
+                      // <NavbarSearch handleSearchClick={handleSearchClick} />
+                      <NavbarSearch2 handleSearchClick={handleSearchClick} />
                     )}
 
                     {!isSmallerThanSm && (
@@ -1079,7 +1080,7 @@ const Navbar = () => {
         sx={{
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
-            top: "55px",
+            top:pathname=="/" ? "85px": "55px",
           },
         }}
       >

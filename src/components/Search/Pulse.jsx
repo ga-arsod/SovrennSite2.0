@@ -5,7 +5,13 @@ import { styled } from "@mui/material/styles";
 import AttachFileTwoToneIcon from "@mui/icons-material/AttachFileTwoTone";
 import Link from "next/link";
 import { colors } from "../Constants/colors";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import moment from "moment";
+import { useSelector } from "react-redux";
+import { useState,useEffect } from "react";
+import { getPulseDataApi } from "@/app/Redux/Slices/searchSlice";
+import { useDispatch } from "react-redux";
+
 
 const StyledTypographyFileLink = styled(Typography)`
   font-size: 14px;
@@ -46,8 +52,35 @@ const StyledTypography3 = styled(Typography)`
   font-size: 16px;
   line-height: 19px;
 `;
+const StyledButton2 = styled(Button)`
+  color: white;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 4px 14px;
+  border-radius: 80px;
+  background-color: ${colors.themeGreen};
+  text-transform: none;
 
+  :hover {
+    background-color: ${colors.themeButtonHover};
+  }
+  @media (max-width: 700px) {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+`;
 const PulseCard = ({ data }) => {
+  const [page,setPage]=useState(1)
+  const dispatch=useDispatch()
+   const company_summary = useSelector((store) => store.search.companySummary);
+    const {pulsePagination} = useSelector((store) => store.search);
+     useEffect(()=>{
+       dispatch(getPulseDataApi({company_id:company_summary?._id,page:page}))
+      },[page])
   return (
     <Box mb={5}>
       <StyledTypography1 color={colors.navyBlue500} my={2}>
@@ -92,6 +125,23 @@ const PulseCard = ({ data }) => {
           </Card>
         );
       })}
+      {
+        pulsePagination?.total_pages === pulsePagination?.page  ? "" :
+        <Box
+        sx={{ display: "flex", justifyContent: "center" }}
+       
+        marginTop={2}
+      >
+        <StyledButton2
+          variant="contained"
+          endIcon={<ExpandMoreIcon style={{ fontSize: "24px" }} />}
+          onClick={()=>{setPage(page+1)}}
+        >
+          Load More
+        </StyledButton2>
+      </Box>
+      }
+      
     </Box>
   );
 };

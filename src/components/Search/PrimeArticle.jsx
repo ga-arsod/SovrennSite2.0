@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import convertToHtml from "@/utils/convertToHtml";
-import styles from "../../styles/searchPrime.module.css"
+import styles from "../../styles/searchPrime.module.css";
 import Link from "next/link";
 
 const StyledTypography1 = styled(Typography)`
@@ -65,36 +65,39 @@ const StyledButton2 = styled(Button)`
   }
 `;
 
-const PrimeArticle = ({data}) => {
- 
+const PrimeArticle = ({ data }) => {
   return (
     <Box mt={2} mb={10}>
       <StyledTypography1 color={colors.navyBlue500}>
-       Prime Article
+        Prime Article
       </StyledTypography1>
-    
-    {
-      data?.has_pi_data ?  <Banner my={2}>
-      <StyledTypography2>
-        Exclusive Promoter Interview Available!
-      </StyledTypography2>
-      <Link href={`/prime/${data?.pi_slug}`}>
-      <StyledButton2
-        variant="outlined"
-        endIcon={
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <ArrowForwardIosIcon sx={{ fontSize: "14px" }} />
-          </Box>
-        }
-      >
-        Read Now
-      </StyledButton2>
-      </Link>
-    </Banner> : <></>
-    }
-      
 
-      <Card elevation={0} sx={{ border: "1px solid #E0E0E0", borderRadius: 2,mt:2 }}>
+      {data?.has_pi_data ? (
+        <Banner my={2}>
+          <StyledTypography2>
+            Exclusive Promoter Interview Available!
+          </StyledTypography2>
+          <Link href={`/prime/${data?.pi_slug}`}>
+            <StyledButton2
+              variant="outlined"
+              endIcon={
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <ArrowForwardIosIcon sx={{ fontSize: "14px" }} />
+                </Box>
+              }
+            >
+              Read Now
+            </StyledButton2>
+          </Link>
+        </Banner>
+      ) : (
+        <></>
+      )}
+
+      <Card
+        elevation={0}
+        sx={{ border: "1px solid #E0E0E0", borderRadius: 2, mt: 2 }}
+      >
         <CardContent>
           <Box
             display="flex"
@@ -105,18 +108,22 @@ const PrimeArticle = ({data}) => {
               color={colors.navyBlue500}
               sx={{ fontWeight: "700" }}
             >
-             {data?.company_name}
+              {data?.company_name}
             </StyledTypography1>
-            <Link href={`/prime/${data?.slug}`}>
-            <StyledButton variant="contained">Read More</StyledButton>
+            <Link href={`/prime/${data?.slug}` } target="_blank">
+              <StyledButton variant="contained">Read More</StyledButton>
             </Link>
           </Box>
 
-          <Box mt={2}>
-                     <div id={styles.MainContainer}>
-                                   {convertToHtml(data?.content)}
-                                 </div>
-                    </Box>
+          {data ? (
+            <Box mt={2}>
+              <div id={styles.MainContainer}>
+                {convertToHtml(data?.content)}
+              </div>
+            </Box>
+          ) : (
+            <></>
+          )}
         </CardContent>
       </Card>
     </Box>
