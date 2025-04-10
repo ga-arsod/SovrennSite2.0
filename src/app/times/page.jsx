@@ -208,6 +208,7 @@ const Times = () => {
       );
     else dispatch(timesArticleApi({ page: page1, data: {} }));
   }, [isAuth, dispatch]);
+  
   useEffect(() => {
     if (!isTimesArticleLoading) {
       setGroupedArticles(groupArticlesByDate(timesArticle));

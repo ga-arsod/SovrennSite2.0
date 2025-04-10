@@ -420,6 +420,7 @@ import { useRouter } from "next/navigation";
 import Snackbar from "../../components/Snackbar/SnackBar";
 import { updatePortfolioApi } from "../Redux/Slices/pulseSlice";
 import Spinner from "@/components/Common/Spinner";
+import LoginModal from "../../components/Modal/LoginModal";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -511,6 +512,7 @@ const SearchHome = () => {
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [isInPulse, setIsInPulse] = useState(false);
   const company_summary = useSelector((store) => store.search.companySummary);
+  const {isAuth} = useSelector((store) => store.auth);
   const { discoveryData, timesData, pulseData, ipoData, primeData ,isDiscoveryLoading} =
     useSelector((store) => store.search);
   const { portfolioCompanies } = useSelector((store) => store.pulse);
@@ -519,6 +521,7 @@ const SearchHome = () => {
   const q = searchParams.get("q");
   const router = useRouter();
   const [pulseCompanies, setPulseCompanies] = useState([]);
+   const [isOpen, setIsOpen] = useState(false);
   const allTabs = [
     {
       label: "Discovery",
@@ -552,7 +555,9 @@ const SearchHome = () => {
     setSelectedTab(newValue);
   };
 
-
+const handleClose=()=>{
+  setIsOpen(false)
+}
   const toggleWatchlist = () => {
     setIsInWatchlist((prev) => !prev);
   };
@@ -594,6 +599,16 @@ const SearchHome = () => {
     setIsInPulse(company_summary?.is_added_in_pulse)
   }, [company_summary?.is_added_in_watchlist,company_summary?.is_added_in_pulse]);
   
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      document.title = `${company_summary?.company_name}`;
+     
+      
+    }
+  }, []);
+
+   
+
    if (isDiscoveryLoading) {
       return (
         <>
@@ -603,8 +618,10 @@ const SearchHome = () => {
       );
     }
 
+    
   return (
     <>
+      <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <Container>
         <Grid
           container
@@ -740,11 +757,18 @@ const SearchHome = () => {
                   },
                 }}
                 onClick={() => {
-                 togglePulselist();
+                  if(!isAuth)
+                  {
+                    setIsOpen(true)
+                  }
+                  else{
+                    togglePulselist();
 
                  !isInPulse ?
                     dispatch(updatePortfolioApi({data:[...portfolioCompanies,{_id:company_summary?._id}],path:"search",router:router}))
                     : dispatch(updatePortfolioApi({data:portfolioCompanies.filter(c => c._id !== company_summary?._id),path:"search",router:router}))
+                  }
+                
                 }}
               >
                
@@ -767,17 +791,24 @@ const SearchHome = () => {
                 }}
                 startIcon={<BookmarkBorderIcon />}
                 onClick={() => {
-                  toggleWatchlist();
+                  if(!isAuth)
+                  {
+                    setIsOpen(true)
+                  }
+                  else{
+                    toggleWatchlist();
 
-                  isInWatchlist
-                    ? dispatch(removeFromWatchlistApi(q))
-                    : dispatch(
-                        addToWatchlistApi({
-                          company_id: q,
-                          uptrend_potential: 0,
-                          expected_price_after_1year: 0,
-                        })
-                      );
+                    isInWatchlist
+                      ? dispatch(removeFromWatchlistApi(q))
+                      : dispatch(
+                          addToWatchlistApi({
+                            company_id: q,
+                            uptrend_potential: 0,
+                            expected_price_after_1year: 0,
+                          })
+                        );
+                  }
+                 
                 }}
               >
                 {isInWatchlist ? "Remove from watchlist" : "Add to watchlist"}

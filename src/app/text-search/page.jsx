@@ -170,6 +170,7 @@ import { useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import EmptySearch from "../../components/Search/EmptySearch";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -231,6 +232,16 @@ const SearchResults = () => {
 
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+
+  useEffect(() => {
+      if (typeof window !== "undefined") {
+        document.title = `Search for companies`;
+        const link = document.querySelector("link[rel='canonical']");
+        if (link) {
+          link.href = `https://www.sovrenn.com/filing`;
+        }
+      }
+    }, []);
 
   const highlightText = (text, keyword) => {
     if (!keyword) return text;
