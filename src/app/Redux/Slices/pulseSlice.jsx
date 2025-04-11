@@ -69,7 +69,7 @@ export const getPortfolioCompanies = createAsyncThunk(
           }),
             
       });
-      console.log(path,"path")
+   
       if(response.ok)
       {
          dispatch(
