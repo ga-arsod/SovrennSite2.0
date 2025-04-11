@@ -201,7 +201,7 @@ const CompanyCard = ({data,slug}) => {
               
               <Box className="bottom-section">
                   <StyledTypography2 component="span" color={colors.themeGreen} sx={{ fontWeight: 600 }}>
-                    { `${ele?.total_companies} companies are in this bucket`}
+                    { `${ele?.total_companies} ${ele?.total_companies<2 ? "company" : "companies"} ${ele?.total_companies<2 ? "is" : "are"} in this bucket`}
                   </StyledTypography2>
                   <CustomIconButton className="icon-button">
                     <ArrowForwardIcon fontSize="small" className="arrow-icon" sx={{ color: "#3C464F" }} />

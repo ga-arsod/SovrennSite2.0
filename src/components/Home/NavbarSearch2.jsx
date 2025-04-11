@@ -47,7 +47,7 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
     },
     "& .MuiInputBase-input": {
       padding: "7px 8px",
-      fontSize: "14px",
+      fontSize: "16px",
       color: "black",
       "&::placeholder": {
         fontSize: "11.5px",

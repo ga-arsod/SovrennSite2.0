@@ -91,10 +91,10 @@ const StyledAutocomplete = styled(Autocomplete)`
     font-size: 16px;
     color: #344054;
     border-radius: 8px;
-    padding: 3px; /* Remove default padding */
+    padding: 3px; 
   }
   & .MuiAutocomplete-clearIndicator {
-    color: #d0d5dd !important; /* Ensures color is applied */
+    color: #d0d5dd !important; 
   }
 
   & .MuiOutlinedInput-notchedOutline {
@@ -245,7 +245,7 @@ const SelfHelpForm = ({ selectedChip,setCompanyId }) => {
     const data = await res.json();
 
     if (res.ok && searchText.length !== 0) {
-      setSearchResults(data.companies);
+      setSearchResults(data.data);
       return;
     }
 
@@ -363,7 +363,7 @@ const SelfHelpForm = ({ selectedChip,setCompanyId }) => {
       >
         <Grid item xs={12} sm={6} marginTop={2}>
           <StyledTypography1 marginBottom={3}>Company Data</StyledTypography1>
-          {fieldOptions[selectedForm].companyData.map((field, index) => (
+          {fieldOptions[selectedForm]?.companyData.map((field, index) => (
             <Box key={index} marginTop={3}>
               <StyledInputLabel htmlFor={field.name}>
                 {field.label}
@@ -376,7 +376,7 @@ const SelfHelpForm = ({ selectedChip,setCompanyId }) => {
                   onInputChange={(event, newInputValue) => {
                     setSearchText(newInputValue); 
                   }}
-                  options={searchResults}
+                  options={searchResults || []}
                   onChange={(props, option) => {
                     setCompanyId(option._id)
                     setInputData({
@@ -402,7 +402,7 @@ const SelfHelpForm = ({ selectedChip,setCompanyId }) => {
                       }}
                     />
                   )}
-                  getOptionLabel={(option) => option.company_name || ""}
+                  getOptionLabel={(option) => option?.company_name || ""}
                   renderOption={(props, option) => (
                     <li key={option._id || option.company_name} {...props}>
                       {option.company_name}
@@ -426,7 +426,7 @@ const SelfHelpForm = ({ selectedChip,setCompanyId }) => {
 
         <Grid item xs={12} sm={6} marginTop={2}>
           <StyledTypography1 marginBottom={3}>{`${selectedChip} Data`}</StyledTypography1>
-          {fieldOptions[selectedForm].orderData.map((field, index) => (
+          {fieldOptions[selectedForm]?.orderData.map((field, index) => (
             <Box key={index} marginTop={3}>
               <StyledInputLabel htmlFor={field.name}>
                 {field.label}

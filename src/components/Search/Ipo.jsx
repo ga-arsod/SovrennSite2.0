@@ -46,7 +46,7 @@ const StyledTypography2 = styled(Typography)`
 
 const IpoCard = ({ data }) => {
   const company_summary = useSelector((store) => store.search.companySummary);
-  console.log(data,"data")
+ 
   return (
     <Box>
       <StyledTypography2 color={colors.navyBlue500} my={2}>

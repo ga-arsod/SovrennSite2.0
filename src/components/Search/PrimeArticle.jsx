@@ -66,6 +66,7 @@ const StyledButton2 = styled(Button)`
 `;
 
 const PrimeArticle = ({ data }) => {
+ 
   return (
     <Box mt={2} mb={10}>
       <StyledTypography1 color={colors.navyBlue500}>

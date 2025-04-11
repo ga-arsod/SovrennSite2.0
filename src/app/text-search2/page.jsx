@@ -99,7 +99,7 @@ const SearchResults = () => {
   };
 
   if (!textSearchData?.length) return <EmptySearch />;
-console.log(textSearchData,"text search")
+
   return (
     <Container>
       <Box marginTop="90px" mb={5}>
