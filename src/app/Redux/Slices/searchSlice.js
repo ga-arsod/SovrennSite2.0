@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice ,rejectWithValue} from "@reduxjs/toolkit";
+
 import { setSnackStatus } from "./snackbarSlice";
 const url = process.env.NEXT_PUBLIC_API_URL;
 import { startLoading,stopLoading } from "./loadingSlice";
@@ -69,14 +70,27 @@ export const textSearchDataApi = createAsyncThunk(
 
 export const getCompanySuggestionsApi = createAsyncThunk(
   "getCompanySuggestions",
-  async (q) => {
-    const response = await fetch(`${url}/company/suggest?q=${q}`, {
-      method: "GET",
-    });
+  async (q, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${url}/company/suggest?q=${q}`, {
+        method: "GET",
+      });
 
-    return response.json();
+      if (!response.ok) {
+       
+        const errorData = await response.json();
+        return rejectWithValue(errorData.message || "Something went wrong");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+     
+      return rejectWithValue(error.message || "Network error");
+    }
   }
 );
+
 
 export const getCompanyDataApi = createAsyncThunk(
   "getCompanyDataApi",

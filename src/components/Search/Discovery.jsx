@@ -5,7 +5,7 @@ import {
   Typography,
   Button,
   Box,
-  Grid,Chip
+  Grid,Chip,useMediaQuery,useTheme
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
@@ -75,6 +75,8 @@ const StyledChip = styled(Chip)`
   }
 `;
 const Discovery = ({ data }) => {
+  const theme = useTheme();
+const isXs = useMediaQuery(theme.breakpoints.down("sm"));
   const company_summary = useSelector((store) => store.search.companySummary);
 
   return (
@@ -83,49 +85,46 @@ const Discovery = ({ data }) => {
         Discovery
       </StyledTypography1>
 
-      <Card
-        elevation={0}
-        sx={{ border: "1px solid #E0E0E0", borderRadius: 2, mt: 2 }}
-      >
-        <CardContent>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <StyledTypography1
-              color={colors.navyBlue500}
-              sx={{ fontWeight: "700" }}
-            >
-              {data?.company_name}
-            </StyledTypography1>
+      <Card elevation={0} sx={{ border: "1px solid #E0E0E0", borderRadius: 2, mt: 2 }}>
+  <CardContent>
+    <Box display="flex" justifyContent="space-between" alignItems="center">
+      <StyledTypography1 color={colors.navyBlue500} sx={{ fontWeight: "700" }}>
+        {data?.company_name}
+      </StyledTypography1>
 
-            <Link
-              href={`/discovery/${data?.discovery_buckets[0].slug}/${data?.slug}`}
-              target="_blank"
-            >
-              <StyledButton variant="contained">Read More</StyledButton>
-            </Link>
-          </Box>
+      {!isXs && (
+        <Link href={`/discovery/${data?.discovery_buckets[0].slug}/${data?.slug}`} target="_blank">
+          <StyledButton variant="contained">Read More</StyledButton>
+        </Link>
+      )}
+    </Box>
 
-          <Box>
-            {company_summary?.has_covered && data ? (
-              <div id={styles.MainContainer}>
-                {convertToHtml(data?.discovery_content)}
-              </div>
-            ) : (
-              <></>
-            )}
-            {!company_summary?.has_covered && data ? (
-              <div id={styles2.infoText}>
-                {convertToHtml(data?.discovery_content)}
-              </div>
-            ) : (
-              <></>
-            )}
-          </Box>
-        </CardContent>
-      </Card>
+    <Box>
+      {company_summary?.has_covered && data ? (
+        <div id={styles.MainContainer}>
+          {convertToHtml(data?.discovery_content)}
+        </div>
+      ) : (
+        !company_summary?.has_covered && data && (
+          <div id={styles2.infoText}>
+            {convertToHtml(data?.discovery_content)}
+          </div>
+        )
+      )}
+    </Box>
+
+    {isXs && (
+      <Box mt={2} display="flex" justifyContent="flex-end">
+        <Link href={`/discovery/${data?.discovery_buckets[0].slug}/${data?.slug}`} target="_blank">
+          <StyledButton variant="contained" >
+            Read More
+          </StyledButton>
+        </Link>
+      </Box>
+    )}
+  </CardContent>
+</Card>
+
       {
         data?.discovery_buckets.length && company_summary?.has_covered  ?  <Box sx={{ mb: 2, mt: 3 }}>
         <Box

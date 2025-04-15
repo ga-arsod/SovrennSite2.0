@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useEffect, useState } from "react";
 import {
@@ -9,7 +8,7 @@ import {
   Box,
   Tab,
   Tabs,
-Chip
+  Chip,
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "@/components/Constants/colors";
@@ -86,12 +85,10 @@ const CustomTabs = styled(Tabs)`
     border-radius: 3px;
   }
 
- 
   .MuiTabs-scrollButtons.Mui-disabled {
     display: none;
   }
 `;
-
 
 const CustomTab = styled(Tab)`
   text-transform: none;
@@ -118,12 +115,12 @@ const NotCoveredChip = styled(Chip)`
   border-radius: 16px;
   font-size: 12px;
   font-weight: 600;
-  line-height:14px;
+  line-height: 14px;
   background: linear-gradient(90deg, #4065ac 0%, #2b4371 100%);
   color: white;
 
   .MuiChip-label {
-    padding:0px 12px;
+    padding: 0px 12px;
   }
 `;
 const SearchHome = () => {
@@ -131,16 +128,22 @@ const SearchHome = () => {
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [isInPulse, setIsInPulse] = useState(false);
   const company_summary = useSelector((store) => store.search.companySummary);
-  const {isAuth} = useSelector((store) => store.auth);
-  const { discoveryData, timesData, pulseData, ipoData, primeData ,isDiscoveryLoading} =
-    useSelector((store) => store.search);
+  const { isAuth } = useSelector((store) => store.auth);
+  const {
+    discoveryData,
+    timesData,
+    pulseData,
+    ipoData,
+    primeData,
+    isDiscoveryLoading,
+  } = useSelector((store) => store.search);
   const { portfolioCompanies } = useSelector((store) => store.pulse);
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
   const router = useRouter();
   const [pulseCompanies, setPulseCompanies] = useState([]);
-   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const allTabs = [
     {
       label: "Discovery",
@@ -168,32 +171,31 @@ const SearchHome = () => {
       condition: company_summary?.is_in_pulse,
     },
   ];
-  const activeTabs = allTabs.filter(tab => tab.condition);
-  
+  const activeTabs = allTabs.filter((tab) => tab.condition);
+
   const handleTabChange = (_, newValue) => {
     setSelectedTab(newValue);
   };
 
-const handleClose=()=>{
-  setIsOpen(false)
-}
+  const handleClose = () => {
+    setIsOpen(false);
+  };
   const toggleWatchlist = () => {
     setIsInWatchlist((prev) => !prev);
   };
   const togglePulselist = () => {
     setIsInPulse((prev) => !prev);
   };
- 
+
   useEffect(() => {
     const fetchData = async () => {
       const companyRes = await dispatch(getCompanyDataApi(q));
-  
-    
+
       const companyData = companyRes?.payload;
-    
+
       if (companyData.data) {
         dispatch(getDiscoveryDataApi(q));
-  
+
         if (companyData?.data?.is_in_prime) {
           dispatch(getPrimeDataApi(q));
         }
@@ -201,278 +203,303 @@ const handleClose=()=>{
           dispatch(getIpoDataApi(q));
         }
         if (companyData?.data?.is_in_times) {
-          dispatch(getTimesDataApi({company_id:q,page:1}));
+          dispatch(getTimesDataApi({ company_id: q, page: 1 }));
         }
         if (companyData?.data?.is_in_pulse) {
-          dispatch(getPulseDataApi({company_id:q,page:1}));
+          dispatch(getPulseDataApi({ company_id: q, page: 1 }));
         }
       }
     };
-  
+
     fetchData();
   }, [q, dispatch]);
-  
 
   useEffect(() => {
     setIsInWatchlist(company_summary?.is_added_in_watchlist);
-    setIsInPulse(company_summary?.is_added_in_pulse)
-  }, [company_summary?.is_added_in_watchlist,company_summary?.is_added_in_pulse]);
-  
+    setIsInPulse(company_summary?.is_added_in_pulse);
+  }, [
+    company_summary?.is_added_in_watchlist,
+    company_summary?.is_added_in_pulse,
+  ]);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       document.title = `${company_summary?.company_name}`;
-     
-      
     }
-  }, [discoveryData,primeData,timesData,pulseData,ipoData]);
+  }, [discoveryData, primeData, timesData, pulseData, ipoData]);
 
-   
+  if (isDiscoveryLoading) {
+    return (
+      <>
+        <Spinner margin={15} />
+      </>
+    );
+  }
 
-   if (isDiscoveryLoading) {
-      return (
-        <>
-         
-          <Spinner margin={15} />
-        </>
-      );
-    }
-
-    
   return (
     <>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <Container>
-        <Grid
-          container
-          marginTop={{ xs: "90px", sm: "100px" }}
-          flexDirection="column"
+        <Box
+          sx={{
+            height: "100vh",
+            overflow: "auto",
+            scrollbarWidth: "none", 
+            "&::-webkit-scrollbar": {
+              display: "none", 
+            },
+          }}
         >
-          <Grid>
-            <Snackbar />
-          </Grid>
-          <Grid item sx={{display:"flex",flexDirection:{xs:"column",sm:"row"},gap:{xs:1,sm:4} ,alignItems:{xs:"flex-start",sm:"center"}}}>
-            <StyledTypography1 color={colors.navyBlue500}>
-              {company_summary?.company_name}
-            </StyledTypography1>
-            {
-              !company_summary?.has_covered ?  <NotCoveredChip label="Not Covered" /> : <></>
-            }
+        
+          <Snackbar />
+
+          
+          <Grid
+            container
+            marginTop={{ xs: "90px", sm: "100px" }}
+            flexDirection="column"
            
-          </Grid>
-          <Grid item marginTop={3}>
-            <Grid
-              container
-              spacing={{ xs: 2, md: 4 }}
-              direction={{ xs: "column", sm: "row" }}
-            >
-              <Grid item>
-                <StyledTypography3
-                  color={colors.navyBlue500}
-                  sx={{ fontWeight: "600" }}
-                  component="span"
-                >
-                  {`Prev Close: `}
-                </StyledTypography3>
-                <StyledTypography3
-                  color={colors.greyBlue500}
-                  sx={{ fontWeight: "400" }}
-                  component="span"
-                >
-                  {company_summary?.share_price}
-                </StyledTypography3>
-              </Grid>
-              <Grid item>
-                <StyledTypography3
-                  color={colors.navyBlue500}
-                  sx={{ fontWeight: "600" }}
-                  component="span"
-                >
-                  {`Sector: `}
-                </StyledTypography3>
-                <StyledTypography3
-                  color={colors.greyBlue500}
-                  sx={{ fontWeight: "400" }}
-                  component="span"
-                >
-                  {company_summary?.sector}
-                </StyledTypography3>
-              </Grid>
-              <Grid item>
-                <StyledTypography3
-                  color={colors.navyBlue500}
-                  sx={{ fontWeight: "600" }}
-                  component="span"
-                >
-                  {`Industry: `}
-                </StyledTypography3>
-                <StyledTypography3
-                  color={colors.greyBlue500}
-                  sx={{ fontWeight: "400" }}
-                  component="span"
-                >
-                  {company_summary?.industry}
-                </StyledTypography3>
-              </Grid>
-              <Grid item>
-                <StyledTypography3
-                  color={colors.navyBlue500}
-                  sx={{ fontWeight: "600" }}
-                  component="span"
-                >
-                  {`Market Cap: `}
-                </StyledTypography3>
-                <StyledTypography3
-                  color={colors.greyBlue500}
-                  sx={{ fontWeight: "400" }}
-                  component="span"
-                >
-                  {company_summary?.market_cap}
-                </StyledTypography3>
-              </Grid>
-              <Grid item>
-                <StyledTypography3
-                  color={colors.navyBlue500}
-                  sx={{ fontWeight: "600" }}
-                  component="span"
-                >
-                  {`TTM PE: `}
-                </StyledTypography3>
-                <StyledTypography3
-                  color={colors.greyBlue500}
-                  sx={{ fontWeight: "400" }}
-                  component="span"
-                >
-                  {company_summary?.ttm_pe}
-                </StyledTypography3>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection:{xs:"column",sm:"row"},
-                justifyContent: "flex-end",
-                alignItems:{xs:"flex-start",sm:"cenetr"},
-                gap: 2,
-                paddingY: 2,
-              }}
-            >
-              <StyledButton
-                variant="outlined"
-                startIcon={<AddIcon />}
+          >
+          
+            <Grid item>
+              <Grid
                 sx={{
-                  color: isInPulse
-                    ? colors.red500
-                    : colors.themeGreen,
-                  borderColor: isInPulse
-                    ? colors.red500
-                    : colors.themeGreen,
-                  "&:hover": {
-                    borderColor: isInPulse
-                      ? colors.red500
-                      : colors.themeGreen,
-                  },
-                }}
-                onClick={() => {
-                  if(!isAuth)
-                  {
-                    setIsOpen(true)
-                  }
-                  else{
-                    togglePulselist();
-
-                 !isInPulse ?
-                    dispatch(updatePortfolioApi({data:[...portfolioCompanies,{_id:company_summary?._id}],path:"search",router:router}))
-                    : dispatch(updatePortfolioApi({data:portfolioCompanies.filter(c => c._id !== company_summary?._id),path:"search",router:router}))
-                  }
-                
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: { xs: 1, sm: 4 },
+                  alignItems: { xs: "flex-start", sm: "center" },
                 }}
               >
-               
-                  {isInPulse ? "Remove from Pulse" : "Add to Pulse"}
-              </StyledButton>
-              <StyledButton
-                variant="outlined"
+                <StyledTypography1 color={colors.navyBlue500}>
+                  {company_summary?.company_name}
+                </StyledTypography1>
+                {!company_summary?.has_covered && (
+                  <NotCoveredChip label="Not Covered" />
+                )}
+              </Grid>
+            </Grid>
+
+            {/* Summary Data */}
+            <Grid item marginTop={3}>
+              <Grid
+                container
+                spacing={{ xs: 2, md: 4 }}
+                direction={{ xs: "column", sm: "row" }}
+              >
+                <Grid item>
+                  <StyledTypography3
+                    color={colors.navyBlue500}
+                    sx={{ fontWeight: "600" }}
+                    component="span"
+                  >
+                    Prev Close:{" "}
+                  </StyledTypography3>
+                  <StyledTypography3
+                    color={colors.greyBlue500}
+                    sx={{ fontWeight: "400" }}
+                    component="span"
+                  >
+                    {company_summary?.share_price}
+                  </StyledTypography3>
+                </Grid>
+                <Grid item>
+                  <StyledTypography3
+                    color={colors.navyBlue500}
+                    sx={{ fontWeight: "600" }}
+                    component="span"
+                  >
+                    Sector:{" "}
+                  </StyledTypography3>
+                  <StyledTypography3
+                    color={colors.greyBlue500}
+                    sx={{ fontWeight: "400" }}
+                    component="span"
+                  >
+                    {company_summary?.sector}
+                  </StyledTypography3>
+                </Grid>
+                <Grid item>
+                  <StyledTypography3
+                    color={colors.navyBlue500}
+                    sx={{ fontWeight: "600" }}
+                    component="span"
+                  >
+                    Industry:{" "}
+                  </StyledTypography3>
+                  <StyledTypography3
+                    color={colors.greyBlue500}
+                    sx={{ fontWeight: "400" }}
+                    component="span"
+                  >
+                    {company_summary?.industry}
+                  </StyledTypography3>
+                </Grid>
+                <Grid item>
+                  <StyledTypography3
+                    color={colors.navyBlue500}
+                    sx={{ fontWeight: "600" }}
+                    component="span"
+                  >
+                    Market Cap:{" "}
+                  </StyledTypography3>
+                  <StyledTypography3
+                    color={colors.greyBlue500}
+                    sx={{ fontWeight: "400" }}
+                    component="span"
+                  >
+                    {company_summary?.market_cap}
+                  </StyledTypography3>
+                </Grid>
+                <Grid item>
+                  <StyledTypography3
+                    color={colors.navyBlue500}
+                    sx={{ fontWeight: "600" }}
+                    component="span"
+                  >
+                    TTM PE:{" "}
+                  </StyledTypography3>
+                  <StyledTypography3
+                    color={colors.greyBlue500}
+                    sx={{ fontWeight: "400" }}
+                    component="span"
+                  >
+                    {company_summary?.ttm_pe}
+                  </StyledTypography3>
+                </Grid>
+              </Grid>
+            </Grid>
+
+           
+            <Grid item marginTop={2}>
+              <Box
                 sx={{
-                  color:isInWatchlist
-                    ? colors.red500
-                    : colors.themeGreen,
-                  borderColor: isInWatchlist
-                    ? colors.red500
-                    : colors.themeGreen,
-                  "&:hover": {
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  justifyContent: "flex-end",
+                  alignItems: { xs: "flex-start", sm: "center" },
+                  gap: 2,
+                  paddingY: 2,
+                }}
+              >
+                <StyledButton
+                  variant="outlined"
+                  startIcon={<AddIcon />}
+                  sx={{
+                    color: isInPulse ? colors.red500 : colors.themeGreen,
+                    borderColor: isInPulse ? colors.red500 : colors.themeGreen,
+                    "&:hover": {
+                      borderColor: isInPulse
+                        ? colors.red500
+                        : colors.themeGreen,
+                    },
+                  }}
+                  onClick={() => {
+                    if (!isAuth) {
+                      setIsOpen(true);
+                    } else {
+                      togglePulselist();
+                      !isInPulse
+                        ? dispatch(
+                            updatePortfolioApi({
+                              data: [
+                                ...portfolioCompanies,
+                                { _id: company_summary?._id },
+                              ],
+                              path: "search",
+                              router,
+                            })
+                          )
+                        : dispatch(
+                            updatePortfolioApi({
+                              data: portfolioCompanies.filter(
+                                (c) => c._id !== company_summary?._id
+                              ),
+                              path: "search",
+                              router,
+                            })
+                          );
+                    }
+                  }}
+                >
+                  {isInPulse ? "Remove from Pulse" : "Add to Pulse"}
+                </StyledButton>
+
+                <StyledButton
+                  variant="outlined"
+                  sx={{
+                    color: isInWatchlist ? colors.red500 : colors.themeGreen,
                     borderColor: isInWatchlist
                       ? colors.red500
                       : colors.themeGreen,
-                  },
-                }}
-                startIcon={<BookmarkBorderIcon />}
-                onClick={() => {
-                  if(!isAuth)
-                  {
-                    setIsOpen(true)
-                  }
-                  else{
-                    toggleWatchlist();
-
-                    isInWatchlist
-                      ? dispatch(removeFromWatchlistApi(q))
-                      : dispatch(
-                          addToWatchlistApi({
-                            company_id: q,
-                            uptrend_potential: 0,
-                            expected_price_after_1year: 0,
-                          })
-                        );
-                  }
-                 
-                }}
-              >
-                {isInWatchlist ? "Remove from watchlist" : "Add to watchlist"}
-              </StyledButton>
-            </Box>
+                    "&:hover": {
+                      borderColor: isInWatchlist
+                        ? colors.red500
+                        : colors.themeGreen,
+                    },
+                  }}
+                  startIcon={<BookmarkBorderIcon />}
+                  onClick={() => {
+                    if (!isAuth) {
+                      setIsOpen(true);
+                    } else {
+                      toggleWatchlist();
+                      isInWatchlist
+                        ? dispatch(removeFromWatchlistApi(q))
+                        : dispatch(
+                            addToWatchlistApi({
+                              company_id: q,
+                              uptrend_potential: 0,
+                              expected_price_after_1year: 0,
+                            })
+                          );
+                    }
+                  }}
+                >
+                  {isInWatchlist ? "Remove from watchlist" : "Add to watchlist"}
+                </StyledButton>
+              </Box>
+            </Grid>
           </Grid>
 
-         
-  
-  
-    <Box sx={{ maxWidth: "100%",position:"sticky",top:"80px"}}>
-      <CustomTabs
-        value={selectedTab}
-        onChange={handleTabChange}
-        variant="scrollable"
-        scrollButtons="auto"
-        allowScrollButtonsMobile
-        aria-label="scrollable force tabs example"
-      >
-        <CustomTab label="All" />
-        {activeTabs.map((tab, index) => (
-          <CustomTab key={index} label={tab.label} />
-        ))}
-      </CustomTabs>
-    </Box>
-    
+          <Box
+            sx={{
+              position: "sticky",
+              top: "55px",
+              zIndex: 101,
+              bgcolor: "white",
+              paddingY:1
+            }}
+          >
+            <CustomTabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              variant="scrollable"
+              scrollButtons="auto"
+              allowScrollButtonsMobile
+              aria-label="scrollable force tabs example"
+            >
+              <CustomTab label="All" />
+              {activeTabs.map((tab, index) => (
+                <CustomTab key={index} label={tab.label} />
+              ))}
+            </CustomTabs>
+          </Box>
 
-
-
-{selectedTab === 0 ? (
-  <>
-    {activeTabs.map((tab, index) => (
-      <React.Fragment key={index}>{tab.component}</React.Fragment>
-    ))}
-  </>
-) : (
-  activeTabs[selectedTab - 1]?.component || null
-)}
-
-
-        </Grid>
+          <Box sx={{ paddingY: 2 }}>
+            {selectedTab === 0 ? (
+              <>
+                {activeTabs.map((tab, index) => (
+                  <React.Fragment key={index}>{tab.component}</React.Fragment>
+                ))}
+              </>
+            ) : (
+              activeTabs[selectedTab - 1]?.component || null
+            )}
+          </Box>
+        </Box>
       </Container>
     </>
   );
 };
 
 export default SearchHome;
-

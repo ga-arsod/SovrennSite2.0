@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect ,useRef} from "react";
 import {
   Autocomplete,
   TextField,
@@ -71,6 +71,8 @@ const NavbarSearch2 = ({handleSearchClick}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const dispatch = useDispatch();
+  const lastCalled = useRef(0);
+
   const { weeklyTopSearches, suggestedCompanies } = useSelector(
     (store) => store.search
   );
@@ -100,14 +102,13 @@ const NavbarSearch2 = ({handleSearchClick}) => {
   }, [isAuth,searchTerm]);
 
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      if (searchTerm !== "") {
-        dispatch(getCompanySuggestionsApi(searchTerm));
-      }
-    }, 300); 
-  
-    
-    return () => clearTimeout(delayDebounce);
+    const throttleDelay = 300; 
+
+    const now = Date.now();
+    if (searchTerm !== "" && now - lastCalled.current > throttleDelay) {
+      dispatch(getCompanySuggestionsApi(searchTerm));
+      lastCalled.current = now;
+    }
   }, [searchTerm]);
 
   useEffect(() => {
@@ -132,17 +133,22 @@ const NavbarSearch2 = ({handleSearchClick}) => {
   }, [searchTerm, suggestedCompanies]);
 
   const dummySearchOption =
-    searchTerm !== "" ? [{ isSearchResult: true, keyword: searchTerm }] : [];
+  searchTerm !== "" ? [{ isSearchResult: true, keyword: searchTerm }] : [];
 
-  const allOptions =
-    searchTerm !== ""
-      ? [...dummySearchOption, ...topSearches]
-      : [
-          ...recentSearches,
-          ...topSearches.filter(
-            (top) => !recentSearches.some((recent) => recent._id === top._id)
-          ),
-        ];
+const noResultOption = suggestedCompanies.length === 0 && searchTerm !== "" 
+  ? [{ isNoResult: true }] 
+  : [];
+
+const allOptions =
+  searchTerm !== ""
+    ? [...dummySearchOption, ...topSearches, ...noResultOption]
+    : [
+        ...recentSearches,
+        ...topSearches.filter(
+          (top) => !recentSearches.some((recent) => recent._id === top._id)
+        ),
+      ];
+
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
@@ -160,6 +166,7 @@ const NavbarSearch2 = ({handleSearchClick}) => {
       disablePortal
       id="combo-box-demo"
       freeSolo
+    
       disableClearable
       inputValue={searchTerm}
       ListboxProps={{
@@ -171,6 +178,7 @@ const NavbarSearch2 = ({handleSearchClick}) => {
       }}
       options={allOptions}
       onChange={handleOptionChange}
+      filterOptions={(options) => options}
       groupBy={(option) =>
         option.isSearchResult
           ? null
@@ -253,7 +261,25 @@ const NavbarSearch2 = ({handleSearchClick}) => {
             </Box>
           );
         }
-
+        if (option.isNoResult) {
+          return (
+            <Box
+              sx={{
+                display: "flex",
+               
+                alignItems: "center",
+                width: "100%",
+                p: 1.5,
+              }}
+            >
+              <StyledTypography2 color={colors.navyBlue500}>
+                No result found.
+              </StyledTypography2>
+            </Box>
+          );
+        }
+        
+      
         return (
           <Box
             component="li"
@@ -276,7 +302,7 @@ const NavbarSearch2 = ({handleSearchClick}) => {
               >
                 {option?.company_name}
               </StyledTypography2>
-              {recentSearches.find((item) => item._id === option._id) ? null : (
+              {recentSearches.find((item) => item._id === option._id) && searchTerm==""  ? null : (
                 <Box mt={1} display="flex" gap={1}>
                   {option?.data_available?.map((tag, idx) => (
                     <Chip
@@ -302,7 +328,7 @@ const NavbarSearch2 = ({handleSearchClick}) => {
             </Box>
 
             {/* Show ClearIcon if in recent searches */}
-            {recentSearches.find((item) => item._id === option._id) && (
+            {recentSearches.find((item) => item._id === option._id) && searchTerm=="" && (
               <Box
                 sx={{
                   display: "flex",
@@ -330,7 +356,8 @@ const NavbarSearch2 = ({handleSearchClick}) => {
       }}
       renderGroup={(params) => (
         <Box key={params.key}>
-          <ListSubheader
+          {
+            searchTerm=="" &&  <ListSubheader
             sx={{
               fontSize: "12px",
               fontWeight: "bold",
@@ -339,6 +366,8 @@ const NavbarSearch2 = ({handleSearchClick}) => {
           >
             {params.group}
           </ListSubheader>
+          }
+         
           {params.children}
         </Box>
       )}
