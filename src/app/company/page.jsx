@@ -188,8 +188,10 @@ const SearchHome = () => {
     setIsInPulse((prev) => !prev);
   };
 
+
   useEffect(() => {
     const fetchData = async () => {
+      dispatch(resetSearchState());
       const companyRes = await dispatch(getCompanyDataApi(q));
 
       const companyData = companyRes?.payload;
@@ -215,6 +217,34 @@ const SearchHome = () => {
 
     fetchData();
   }, [q, dispatch]);
+
+  // useEffect(() => {
+  //   if (q) {
+  //     dispatch(getCompanyDataApi(q));
+  //   };
+
+  // }, [q]);
+
+  // useEffect(() => {
+  //   if (company_summary) {
+  //     if (!discoveryData) {
+  //       dispatch(getDiscoveryDataApi(q));
+  //     }
+
+  //     if (company_summary?.is_in_prime && !primeData) {
+  //       dispatch(getPrimeDataApi(q));
+  //     }
+  //     if (company_summary?.is_in_ipo && !ipoData) {
+  //       dispatch(getIpoDataApi(q));
+  //     }
+  //     if (company_summary?.is_in_times && !timesData) {
+  //       dispatch(getTimesDataApi({ company_id: q, page: 1 }));
+  //     }
+  //     if (company_summary?.is_in_pulse && !pulseData) {
+  //       dispatch(getPulseDataApi({ company_id: q, page: 1 }));
+  //     }
+  //   };
+  // }, [company_summary]);
 
   useEffect(() => {
     setIsInWatchlist(company_summary?.is_added_in_watchlist);

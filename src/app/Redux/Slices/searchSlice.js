@@ -189,6 +189,9 @@ export const getPulseDataApi = createAsyncThunk(
 const searchSlice = createSlice({
   name: "search",
   initialState,
+  reducers: {
+    resetSearchState: () => initialState,
+  },
 
   extraReducers: (builder) => {
     builder.addCase(getWeeklyTopSearchesApi.fulfilled, (state, action) => {
@@ -247,4 +250,5 @@ const searchSlice = createSlice({
   },
 });
 
+export const { resetSearchState } = searchSlice.actions;
 export default searchSlice.reducer;
