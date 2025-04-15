@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, Typography, Button, Box } from "@mui/material";
+import { Card, CardContent, Typography, Button, Box,useTheme,useMediaQuery } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
 import { styled } from "@mui/material/styles";
 import AttachFileTwoToneIcon from "@mui/icons-material/AttachFileTwoTone";
@@ -76,6 +76,8 @@ const StyledButton2 = styled(Button)`
 const PulseCard = ({ data }) => {
   const [page,setPage]=useState(1)
   const dispatch=useDispatch()
+   const theme = useTheme();
+    const isXs = useMediaQuery(theme.breakpoints.down("sm"));
    const company_summary = useSelector((store) => store.search.companySummary);
     const {pulsePagination} = useSelector((store) => store.search);
      useEffect(()=>{
@@ -105,7 +107,26 @@ const PulseCard = ({ data }) => {
                   {moment(elem?.news_date).format("LT")}
                 </StyledTypography2>
 
-                <Link
+                {
+                  !isXs && <Link
+                  href={elem?.file_url}
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  <FileLinkButton startIcon={<AttachFileTwoToneIcon />}>
+                    <StyledTypographyFileLink  sx={{ color: "inherit" }}>
+                      File Link
+                    </StyledTypographyFileLink>
+                  </FileLinkButton>
+                </Link>}
+              </Box>
+
+              <StyledTypography3 color={colors.neutral800} mt={2}>
+                {elem?.ai_summary}
+              </StyledTypography3>
+               {isXs && (
+                         <Box mt={2} display="flex" justifyContent="flex-end">
+                             <Link
                   href={elem?.file_url}
                   target="_blank"
                   style={{ textDecoration: "none" }}
@@ -116,11 +137,8 @@ const PulseCard = ({ data }) => {
                     </StyledTypographyFileLink>
                   </FileLinkButton>
                 </Link>
-              </Box>
-
-              <StyledTypography3 color={colors.neutral800} mt={2}>
-                {elem?.ai_summary}
-              </StyledTypography3>
+                          </Box>
+                        )}
             </CardContent>
           </Card>
         );

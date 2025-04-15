@@ -1,5 +1,13 @@
 import React from "react";
-import { Card, CardContent, Typography, Button, Box } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Box,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -24,7 +32,6 @@ const StyledTypography2 = styled(Typography)`
 const Banner = styled(Box)`
   background: linear-gradient(45deg, #0c4340 0%, #06a77d 100%);
   box-shadow: 0px 2px 6px 0px #0000000a;
-
   padding: 24px 16px;
   border-radius: 8px;
   display: flex;
@@ -66,14 +73,16 @@ const StyledButton2 = styled(Button)`
 `;
 
 const PrimeArticle = ({ data }) => {
- 
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Box mt={2} mb={10}>
       <StyledTypography1 color={colors.navyBlue500}>
         Prime Article
       </StyledTypography1>
 
-      {data?.has_pi_data ? (
+      {data?.has_pi_data && (
         <Banner my={2}>
           <StyledTypography2>
             Exclusive Promoter Interview Available!
@@ -91,8 +100,6 @@ const PrimeArticle = ({ data }) => {
             </StyledButton2>
           </Link>
         </Banner>
-      ) : (
-        <></>
       )}
 
       <Card
@@ -100,10 +107,12 @@ const PrimeArticle = ({ data }) => {
         sx={{ border: "1px solid #E0E0E0", borderRadius: 2, mt: 2 }}
       >
         <CardContent>
+        
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
+            flexWrap="wrap"
           >
             <StyledTypography1
               color={colors.navyBlue500}
@@ -111,19 +120,32 @@ const PrimeArticle = ({ data }) => {
             >
               {data?.company_name}
             </StyledTypography1>
-            <Link href={`/prime/${data?.slug}` } target="_blank">
-              <StyledButton variant="contained">Read More</StyledButton>
-            </Link>
+
+            {!isXs && (
+               <Box mt={2}>
+              <Link href={`/prime/${data?.slug}`} target="_blank">
+                <StyledButton variant="contained">Read More</StyledButton>
+              </Link>
+              </Box>
+            )}
           </Box>
 
-          {data ? (
+       
+          {data && (
             <Box mt={2}>
-              <div id={styles.MainContainer}>
-                {convertToHtml(data?.content)}
-              </div>
+              <div id={styles.MainContainer}>{convertToHtml(data?.content)}</div>
             </Box>
-          ) : (
-            <></>
+          )}
+
+        
+          {isXs && (
+           <Box mt={2} display="flex" justifyContent="flex-end">
+              <Link href={`/prime/${data?.slug}`} target="_blank">
+                <StyledButton variant="contained" >
+                  Read More
+                </StyledButton>
+              </Link>
+            </Box>
           )}
         </CardContent>
       </Card>
