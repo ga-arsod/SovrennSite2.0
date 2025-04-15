@@ -188,31 +188,30 @@ const SearchHome = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const companyRes = await dispatch(getCompanyDataApi(q));
-
-      const companyData = companyRes?.payload;
-
-      if (companyData.data) {
-        dispatch(getDiscoveryDataApi(q));
-
-        if (companyData?.data?.is_in_prime) {
-          dispatch(getPrimeDataApi(q));
-        }
-        if (companyData?.data?.is_in_ipo) {
-          dispatch(getIpoDataApi(q));
-        }
-        if (companyData?.data?.is_in_times) {
-          dispatch(getTimesDataApi({ company_id: q, page: 1 }));
-        }
-        if (companyData?.data?.is_in_pulse) {
-          dispatch(getPulseDataApi({ company_id: q, page: 1 }));
-        }
-      }
+    if (q) {
+      dispatch(getCompanyDataApi(q));
     };
 
-    fetchData();
-  }, [q, dispatch]);
+  }, [q]);
+
+  useEffect(() => {
+    if (company_summary) {
+      dispatch(getDiscoveryDataApi(q));
+
+      if (company_summary?.is_in_prime) {
+        dispatch(getPrimeDataApi(q));
+      }
+      if (company_summary?.is_in_ipo) {
+        dispatch(getIpoDataApi(q));
+      }
+      if (company_summary?.is_in_times) {
+        dispatch(getTimesDataApi({ company_id: q, page: 1 }));
+      }
+      if (company_summary?.is_in_pulse) {
+        dispatch(getPulseDataApi({ company_id: q, page: 1 }));
+      }
+    };
+  }, [company_summary]);
 
   useEffect(() => {
     setIsInWatchlist(company_summary?.is_added_in_watchlist);
@@ -244,23 +243,23 @@ const SearchHome = () => {
           sx={{
             height: "100vh",
             overflow: "auto",
-            scrollbarWidth: "none", 
+            scrollbarWidth: "none",
             "&::-webkit-scrollbar": {
-              display: "none", 
+              display: "none",
             },
           }}
         >
-        
+
           <Snackbar />
 
-          
+
           <Grid
             container
             marginTop={{ xs: "90px", sm: "100px" }}
             flexDirection="column"
-           
+
           >
-          
+
             <Grid item>
               <Grid
                 sx={{
@@ -369,7 +368,7 @@ const SearchHome = () => {
               </Grid>
             </Grid>
 
-           
+
             <Grid item marginTop={2}>
               <Box
                 sx={{
@@ -400,24 +399,24 @@ const SearchHome = () => {
                       togglePulselist();
                       !isInPulse
                         ? dispatch(
-                            updatePortfolioApi({
-                              data: [
-                                ...portfolioCompanies,
-                                { _id: company_summary?._id },
-                              ],
-                              path: "search",
-                              router,
-                            })
-                          )
+                          updatePortfolioApi({
+                            data: [
+                              ...portfolioCompanies,
+                              { _id: company_summary?._id },
+                            ],
+                            path: "search",
+                            router,
+                          })
+                        )
                         : dispatch(
-                            updatePortfolioApi({
-                              data: portfolioCompanies.filter(
-                                (c) => c._id !== company_summary?._id
-                              ),
-                              path: "search",
-                              router,
-                            })
-                          );
+                          updatePortfolioApi({
+                            data: portfolioCompanies.filter(
+                              (c) => c._id !== company_summary?._id
+                            ),
+                            path: "search",
+                            router,
+                          })
+                        );
                     }
                   }}
                 >
@@ -446,12 +445,12 @@ const SearchHome = () => {
                       isInWatchlist
                         ? dispatch(removeFromWatchlistApi(q))
                         : dispatch(
-                            addToWatchlistApi({
-                              company_id: q,
-                              uptrend_potential: 0,
-                              expected_price_after_1year: 0,
-                            })
-                          );
+                          addToWatchlistApi({
+                            company_id: q,
+                            uptrend_potential: 0,
+                            expected_price_after_1year: 0,
+                          })
+                        );
                     }
                   }}
                 >
@@ -467,7 +466,7 @@ const SearchHome = () => {
               top: "55px",
               zIndex: 101,
               bgcolor: "white",
-              paddingY:1
+              paddingY: 1
             }}
           >
             <CustomTabs
