@@ -26,6 +26,7 @@ import {
   getPrimeDataApi,
   getIpoDataApi,
   getPulseDataApi,
+  resetSearchState,
 } from "../Redux/Slices/searchSlice";
 import {
   addToWatchlistApi,
@@ -188,30 +189,32 @@ const SearchHome = () => {
   };
 
   useEffect(() => {
-    if (q) {
-      dispatch(getCompanyDataApi(q));
+    const fetchData = async () => {
+      const companyRes = await dispatch(getCompanyDataApi(q));
+
+      const companyData = companyRes?.payload;
+
+      if (companyData.data) {
+        dispatch(getDiscoveryDataApi(q));
+
+        if (companyData?.data?.is_in_prime) {
+          dispatch(getPrimeDataApi(q));
+        }
+        if (companyData?.data?.is_in_ipo) {
+          dispatch(getIpoDataApi(q));
+        }
+        if (companyData?.data?.is_in_times) {
+          dispatch(getTimesDataApi({ company_id: q, page: 1 }));
+        }
+        if (companyData?.data?.is_in_pulse) {
+          dispatch(getPulseDataApi({ company_id: q, page: 1 }));
+        }
+      }
     };
 
-  }, [q]);
 
-  useEffect(() => {
-    if (company_summary) {
-      dispatch(getDiscoveryDataApi(q));
-
-      if (company_summary?.is_in_prime) {
-        dispatch(getPrimeDataApi(q));
-      }
-      if (company_summary?.is_in_ipo) {
-        dispatch(getIpoDataApi(q));
-      }
-      if (company_summary?.is_in_times) {
-        dispatch(getTimesDataApi({ company_id: q, page: 1 }));
-      }
-      if (company_summary?.is_in_pulse) {
-        dispatch(getPulseDataApi({ company_id: q, page: 1 }));
-      }
-    };
-  }, [company_summary]);
+    fetchData();
+  }, [q, dispatch]);
 
   useEffect(() => {
     setIsInWatchlist(company_summary?.is_added_in_watchlist);
@@ -225,7 +228,7 @@ const SearchHome = () => {
     if (typeof window !== "undefined") {
       document.title = `${company_summary?.company_name}`;
     }
-  }, [discoveryData, primeData, timesData, pulseData, ipoData]);
+  }, [company_summary]);
 
   if (isDiscoveryLoading) {
     return (

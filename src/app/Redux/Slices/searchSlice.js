@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice ,rejectWithValue} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, rejectWithValue } from "@reduxjs/toolkit";
 
 import { setSnackStatus } from "./snackbarSlice";
 const url = process.env.NEXT_PUBLIC_API_URL;
-import { startLoading,stopLoading } from "./loadingSlice";
+import { startLoading, stopLoading } from "./loadingSlice";
 
 
 
@@ -17,7 +17,7 @@ const initialState = {
   primeData: null,
   timesPagination: null,
   textSearchData: null,
-  isDiscoveryLoading:false,
+  isDiscoveryLoading: true,
 };
 
 export const getWeeklyTopSearchesApi = createAsyncThunk(
@@ -77,7 +77,7 @@ export const getCompanySuggestionsApi = createAsyncThunk(
       });
 
       if (!response.ok) {
-       
+
         const errorData = await response.json();
         return rejectWithValue(errorData.message || "Something went wrong");
       }
@@ -85,7 +85,7 @@ export const getCompanySuggestionsApi = createAsyncThunk(
       const data = await response.json();
       return data;
     } catch (error) {
-     
+
       return rejectWithValue(error.message || "Network error");
     }
   }
@@ -205,16 +205,16 @@ const searchSlice = createSlice({
     });
     builder.addCase(getDiscoveryDataApi.fulfilled, (state, action) => {
       state.discoveryData = action.payload?.data;
-      state.isDiscoveryLoading =false;
+      state.isDiscoveryLoading = false;
     });
-    
+
     builder.addCase(getDiscoveryDataApi.rejected, (state, action) => {
       state.discoveryData = action.payload?.data;
-      state.isDiscoveryLoading =false;
+      state.isDiscoveryLoading = false;
     });
     builder.addCase(getPrimeDataApi.fulfilled, (state, action) => {
       state.primeData = action.payload?.data;
-      state.isDiscoveryLoading =false;
+      state.isDiscoveryLoading = false;
     });
     builder.addCase(getTimesDataApi.fulfilled, (state, action) => {
       const { page } = action.meta.arg;
