@@ -172,7 +172,7 @@ const SearchHome = () => {
     },
   ];
   const activeTabs = allTabs.filter((tab) => tab.condition);
-  console.log(primeData, "prime data");
+  
   const handleTabChange = (_, newValue) => {
     setSelectedTab(newValue);
   };
