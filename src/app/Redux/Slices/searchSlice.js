@@ -216,8 +216,8 @@ const searchSlice = createSlice({
       state.isDiscoveryLoading = false;
     });
     builder.addCase(getPrimeDataApi.fulfilled, (state, action) => {
-      state.primeData = action.payload?.data;
-      state.isDiscoveryLoading = false;
+      state.primeData = action?.payload?.data;
+      state.isDiscoveryLoading =false;
     });
     builder.addCase(getTimesDataApi.fulfilled, (state, action) => {
       const { page } = action.meta.arg;

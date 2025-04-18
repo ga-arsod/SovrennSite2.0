@@ -92,12 +92,12 @@ const Discovery = ({ data }) => {
               {data?.company_name}
             </StyledTypography1>
 
-            {!isXs && (
-              <Link href={`/discovery/${data?.discovery_buckets[0].slug}/${data?.slug}`} target="_blank">
-                <StyledButton variant="contained">Read More</StyledButton>
-              </Link>
-            )}
-          </Box>
+      {!isXs && company_summary?.has_covered && (
+        <Link href={`/discovery/${data?.discovery_buckets[0]?.slug}/${data?.slug}`} target="_blank">
+          <StyledButton variant="contained">Read More</StyledButton>
+        </Link>
+      )}
+    </Box>
 
           <Box>
             {company_summary?.has_covered && data ? (
@@ -113,20 +113,20 @@ const Discovery = ({ data }) => {
             )}
           </Box>
 
-          {isXs && (
-            <Box mt={2} display="flex" justifyContent="flex-end">
-              <Link href={`/discovery/${data?.discovery_buckets[0].slug}/${data?.slug}`} target="_blank">
-                <StyledButton variant="contained" >
-                  Read More
-                </StyledButton>
-              </Link>
-            </Box>
-          )}
-        </CardContent>
-      </Card>
+    {isXs && company_summary?.has_covered && (
+      <Box mt={2} display="flex" justifyContent="flex-end">
+        <Link href={`/discovery/${data?.discovery_buckets[0]?.slug}/${data?.slug}`} target="_blank">
+          <StyledButton variant="contained" >
+            Read More
+          </StyledButton>
+        </Link>
+      </Box>
+    )}
+  </CardContent>
+</Card>
 
       {
-        data?.discovery_buckets.length && company_summary?.has_covered ? <Box sx={{ mb: 2, mt: 3 }}>
+        data?.discovery_buckets?.length && company_summary?.has_covered ? <Box sx={{ mb: 2, mt: 3 }}>
           <Box
             sx={{
               display: "flex",
