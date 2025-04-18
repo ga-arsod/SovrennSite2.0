@@ -5,7 +5,7 @@ import {
   Typography,
   Button,
   Box,
-  Grid,Chip,useMediaQuery,useTheme
+  Grid, Chip, useMediaQuery, useTheme
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
@@ -76,7 +76,7 @@ const StyledChip = styled(Chip)`
 `;
 const Discovery = ({ data }) => {
   const theme = useTheme();
-const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
   const company_summary = useSelector((store) => store.search.companySummary);
 
   return (
@@ -86,11 +86,11 @@ const isXs = useMediaQuery(theme.breakpoints.down("sm"));
       </StyledTypography1>
 
       <Card elevation={0} sx={{ border: "1px solid #E0E0E0", borderRadius: 2, mt: 2 }}>
-  <CardContent>
-    <Box display="flex" justifyContent="space-between" alignItems="center">
-      <StyledTypography1 color={colors.navyBlue500} sx={{ fontWeight: "700" }}>
-        {data?.company_name}
-      </StyledTypography1>
+        <CardContent>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <StyledTypography1 color={colors.navyBlue500} sx={{ fontWeight: "700" }}>
+              {data?.company_name}
+            </StyledTypography1>
 
       {!isXs && company_summary?.has_covered && (
         <Link href={`/discovery/${data?.discovery_buckets[0]?.slug}/${data?.slug}`} target="_blank">
@@ -99,19 +99,19 @@ const isXs = useMediaQuery(theme.breakpoints.down("sm"));
       )}
     </Box>
 
-    <Box>
-      {company_summary?.has_covered && data ? (
-        <div id={styles.MainContainer}>
-          {convertToHtml(data?.discovery_content)}
-        </div>
-      ) : (
-        !company_summary?.has_covered && data && (
-          <div id={styles2.infoText}>
-            {convertToHtml(data?.discovery_content)}
-          </div>
-        )
-      )}
-    </Box>
+          <Box>
+            {company_summary?.has_covered && data ? (
+              <div id={styles.MainContainer}>
+                {convertToHtml(data?.discovery_content)}
+              </div>
+            ) : (
+              !company_summary?.has_covered && data && (
+                <div id={styles2.infoText}>
+                  {convertToHtml(data?.discovery_content)}
+                </div>
+              )
+            )}
+          </Box>
 
     {isXs && company_summary?.has_covered && (
       <Box mt={2} display="flex" justifyContent="flex-end">
@@ -126,44 +126,44 @@ const isXs = useMediaQuery(theme.breakpoints.down("sm"));
 </Card>
 
       {
-        data?.discovery_buckets.length && company_summary?.has_covered  ?  <Box sx={{ mb: 2, mt: 3 }}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-           
-            flexWrap: "wrap",
-          }}
-        >
-          <StyledTypography3
-            color={colors.greyBlue500}
-            sx={{ marginRight: 1, whiteSpace: "nowrap" }}
+        data?.discovery_buckets?.length && company_summary?.has_covered ? <Box sx={{ mb: 2, mt: 3 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+
+              flexWrap: "wrap",
+            }}
           >
-            Also present in buckets:
-          </StyledTypography3>
-          {data?.discovery_buckets?.map((item, index) => {
-            return (
-              <>
-                <Link href={`/discovery/${item?.slug}`}>
-                  <StyledChip
-                    label={item?.title}
-                    variant="outlined"
-                    key={index}
-                  />
-                </Link>
-              </>
-            );
-          })}
-        </Box>
-       
-     
-      </Box> : <></>
+            <StyledTypography3
+              color={colors.greyBlue500}
+              sx={{ marginRight: 1, whiteSpace: "nowrap" }}
+            >
+              Also present in buckets:
+            </StyledTypography3>
+            {data?.discovery_buckets?.map((item, index) => {
+              return (
+                <>
+                  <Link href={`/discovery/${item?.slug}`} key={index}>
+                    <StyledChip
+                      label={item?.title}
+                      variant="outlined"
+                      key={index}
+                    />
+                  </Link>
+                </>
+              );
+            })}
+          </Box>
+
+
+        </Box> : <></>
       }
-     
+
       {data &&
-      data?.discovery_buckets?.length &&
-      !company_summary?.has_covered ? (
+        data?.discovery_buckets?.length &&
+        !company_summary?.has_covered ? (
         <Grid container mt={2}>
           <Grid item>
             <StyledTypography1 color={colors.navyBlue400}>

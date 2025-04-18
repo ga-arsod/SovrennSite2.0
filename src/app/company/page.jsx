@@ -26,6 +26,7 @@ import {
   getPrimeDataApi,
   getIpoDataApi,
   getPulseDataApi,
+  resetSearchState,
 } from "../Redux/Slices/searchSlice";
 import {
   addToWatchlistApi,
@@ -187,8 +188,10 @@ const SearchHome = () => {
     setIsInPulse((prev) => !prev);
   };
 
+
   useEffect(() => {
     const fetchData = async () => {
+      dispatch(resetSearchState());
       const companyRes = await dispatch(getCompanyDataApi(q));
 
       const companyData = companyRes?.payload;
@@ -211,8 +214,37 @@ const SearchHome = () => {
       }
     };
 
+
     fetchData();
   }, [q, dispatch]);
+
+  // useEffect(() => {
+  //   if (q) {
+  //     dispatch(getCompanyDataApi(q));
+  //   };
+
+  // }, [q]);
+
+  // useEffect(() => {
+  //   if (company_summary) {
+  //     if (!discoveryData) {
+  //       dispatch(getDiscoveryDataApi(q));
+  //     }
+
+  //     if (company_summary?.is_in_prime && !primeData) {
+  //       dispatch(getPrimeDataApi(q));
+  //     }
+  //     if (company_summary?.is_in_ipo && !ipoData) {
+  //       dispatch(getIpoDataApi(q));
+  //     }
+  //     if (company_summary?.is_in_times && !timesData) {
+  //       dispatch(getTimesDataApi({ company_id: q, page: 1 }));
+  //     }
+  //     if (company_summary?.is_in_pulse && !pulseData) {
+  //       dispatch(getPulseDataApi({ company_id: q, page: 1 }));
+  //     }
+  //   };
+  // }, [company_summary]);
 
   useEffect(() => {
     setIsInWatchlist(company_summary?.is_added_in_watchlist);
@@ -226,7 +258,7 @@ const SearchHome = () => {
     if (typeof window !== "undefined") {
       document.title = `${company_summary?.company_name}`;
     }
-  }, [discoveryData, primeData, timesData, pulseData, ipoData]);
+  }, [company_summary]);
 
   if (isDiscoveryLoading) {
     return (
@@ -386,24 +418,24 @@ const SearchHome = () => {
                       togglePulselist();
                       !isInPulse
                         ? dispatch(
-                            updatePortfolioApi({
-                              data: [
-                                ...portfolioCompanies,
-                                { _id: company_summary?._id },
-                              ],
-                              path: "search",
-                              router,
-                            })
-                          )
+                          updatePortfolioApi({
+                            data: [
+                              ...portfolioCompanies,
+                              { _id: company_summary?._id },
+                            ],
+                            path: "search",
+                            router,
+                          })
+                        )
                         : dispatch(
-                            updatePortfolioApi({
-                              data: portfolioCompanies.filter(
-                                (c) => c._id !== company_summary?._id
-                              ),
-                              path: "search",
-                              router,
-                            })
-                          );
+                          updatePortfolioApi({
+                            data: portfolioCompanies.filter(
+                              (c) => c._id !== company_summary?._id
+                            ),
+                            path: "search",
+                            router,
+                          })
+                        );
                     }
                   }}
                 >
@@ -432,12 +464,12 @@ const SearchHome = () => {
                       isInWatchlist
                         ? dispatch(removeFromWatchlistApi(q))
                         : dispatch(
-                            addToWatchlistApi({
-                              company_id: q,
-                              uptrend_potential: 0,
-                              expected_price_after_1year: 0,
-                            })
-                          );
+                          addToWatchlistApi({
+                            company_id: q,
+                            uptrend_potential: 0,
+                            expected_price_after_1year: 0,
+                          })
+                        );
                     }
                   }}
                 >

@@ -87,7 +87,7 @@ const PrimeArticle = ({ data }) => {
           <StyledTypography2>
             Exclusive Promoter Interview Available!
           </StyledTypography2>
-          <Link href={`/prime/${data?.pi_slug}`}>
+          <Link href={`/prime/${data?.pi_slug}?s=promoter_interview`} target="_blank">
             <StyledButton2
               variant="outlined"
               endIcon={
@@ -102,12 +102,12 @@ const PrimeArticle = ({ data }) => {
         </Banner>
       )}
 
-      <Card
+      {data?.content && (<Card
         elevation={0}
         sx={{ border: "1px solid #E0E0E0", borderRadius: 2, mt: 2 }}
       >
         <CardContent>
-        
+
           <Box
             display="flex"
             justifyContent="space-between"
@@ -122,24 +122,20 @@ const PrimeArticle = ({ data }) => {
             </StyledTypography1>
 
             {!isXs && (
-               <Box mt={2}>
-              <Link href={`/prime/${data?.slug}`} target="_blank">
-                <StyledButton variant="contained">Read More</StyledButton>
-              </Link>
+              <Box mt={2}>
+                <Link href={`/prime/${data?.slug}`} target="_blank">
+                  <StyledButton variant="contained">Read More</StyledButton>
+                </Link>
               </Box>
             )}
           </Box>
 
-       
-          {data && (
-            <Box mt={2}>
-              <div id={styles.MainContainer}>{convertToHtml(data?.content)}</div>
-            </Box>
-          )}
+          <Box mt={2}>
+            <div id={styles.MainContainer}>{convertToHtml(data?.content)}</div>
+          </Box>
 
-        
           {isXs && (
-           <Box mt={2} display="flex" justifyContent="flex-end">
+            <Box mt={2} display="flex" justifyContent="flex-end">
               <Link href={`/prime/${data?.slug}`} target="_blank">
                 <StyledButton variant="contained" >
                   Read More
@@ -148,7 +144,7 @@ const PrimeArticle = ({ data }) => {
             </Box>
           )}
         </CardContent>
-      </Card>
+      </Card>)}
     </Box>
   );
 };
