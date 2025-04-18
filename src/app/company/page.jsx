@@ -172,7 +172,7 @@ const SearchHome = () => {
     },
   ];
   const activeTabs = allTabs.filter((tab) => tab.condition);
-
+  console.log(primeData, "prime data");
   const handleTabChange = (_, newValue) => {
     setSelectedTab(newValue);
   };
@@ -240,27 +240,14 @@ const SearchHome = () => {
     <>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />
       <Container>
-        <Box
-          sx={{
-            height: "100vh",
-            overflow: "auto",
-            scrollbarWidth: "none", 
-            "&::-webkit-scrollbar": {
-              display: "none", 
-            },
-          }}
-        >
-        
+        <Box>
           <Snackbar />
 
-          
           <Grid
             container
             marginTop={{ xs: "90px", sm: "100px" }}
             flexDirection="column"
-           
           >
-          
             <Grid item>
               <Grid
                 sx={{
@@ -369,7 +356,6 @@ const SearchHome = () => {
               </Grid>
             </Grid>
 
-           
             <Grid item marginTop={2}>
               <Box
                 sx={{
@@ -464,10 +450,10 @@ const SearchHome = () => {
           <Box
             sx={{
               position: "sticky",
-              top: "55px",
+              top: "85px",
               zIndex: 101,
               bgcolor: "white",
-              paddingY:1
+              paddingY: 1,
             }}
           >
             <CustomTabs
@@ -489,7 +475,7 @@ const SearchHome = () => {
             {selectedTab === 0 ? (
               <>
                 {activeTabs.map((tab, index) => (
-                  <React.Fragment key={index}>{tab.component}</React.Fragment>
+                  <React.Fragment key={index}>{tab?.component}</React.Fragment>
                 ))}
               </>
             ) : (

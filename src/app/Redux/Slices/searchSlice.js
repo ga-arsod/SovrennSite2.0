@@ -212,8 +212,8 @@ const searchSlice = createSlice({
       state.discoveryData = action.payload?.data;
       state.isDiscoveryLoading =false;
     });
-    builder.addCase(getPrimeDataApi.rejected, (state, action) => {
-      state.primeData = action.payload?.data;
+    builder.addCase(getPrimeDataApi.fulfilled, (state, action) => {
+      state.primeData = action?.payload?.data;
       state.isDiscoveryLoading =false;
     });
     builder.addCase(getTimesDataApi.fulfilled, (state, action) => {

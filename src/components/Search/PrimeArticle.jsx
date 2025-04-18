@@ -75,9 +75,9 @@ const StyledButton2 = styled(Button)`
 const PrimeArticle = ({ data }) => {
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
-
+  
   return (
-    <Box mt={2} mb={10}>
+    <Box mt={2} mb={2}>
       <StyledTypography1 color={colors.navyBlue500}>
         Prime Article
       </StyledTypography1>

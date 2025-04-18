@@ -92,8 +92,8 @@ const isXs = useMediaQuery(theme.breakpoints.down("sm"));
         {data?.company_name}
       </StyledTypography1>
 
-      {!isXs && (
-        <Link href={`/discovery/${data?.discovery_buckets[0].slug}/${data?.slug}`} target="_blank">
+      {!isXs && company_summary?.has_covered && (
+        <Link href={`/discovery/${data?.discovery_buckets[0]?.slug}/${data?.slug}`} target="_blank">
           <StyledButton variant="contained">Read More</StyledButton>
         </Link>
       )}
@@ -113,9 +113,9 @@ const isXs = useMediaQuery(theme.breakpoints.down("sm"));
       )}
     </Box>
 
-    {isXs && (
+    {isXs && company_summary?.has_covered && (
       <Box mt={2} display="flex" justifyContent="flex-end">
-        <Link href={`/discovery/${data?.discovery_buckets[0].slug}/${data?.slug}`} target="_blank">
+        <Link href={`/discovery/${data?.discovery_buckets[0]?.slug}/${data?.slug}`} target="_blank">
           <StyledButton variant="contained" >
             Read More
           </StyledButton>
