@@ -23,6 +23,19 @@ export default function RootLayout({ children }) {
     logPageView();
   }, []);
 
+  
+  useEffect(() => {
+    let metaTag = document.querySelector("meta[name='viewport']");
+    if (!metaTag) {
+      metaTag = document.createElement("meta");
+      metaTag.name = "viewport";
+      metaTag.content = "width=device-width, initial-scale=1.0";
+      document.head.appendChild(metaTag);
+    } else {
+      metaTag.content = "width=device-width, initial-scale=1.0";
+    }
+  }, []);
+
   return (
     <>
       <Script

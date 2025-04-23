@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect } from "react";
 import MainPoster from "@/components/Home/MainPoster";
 import UserCount from "@/components/Home/UserCount";
@@ -19,11 +19,12 @@ import { useDispatch } from "react-redux";
 import { userDetailsApi } from "./Redux/Slices/authSlice";
 
 const Home = () => {
-  const { isAuth ,userDetails} = useSelector((store) => store.auth);
-  const dispatch=useDispatch()
+  const { isAuth, userDetails } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const title = "Information platform to discover the best MicroCap stocks to buy in India";
+    const title =
+      "Information platform to discover the best MicroCap stocks to buy in India";
     const description =
       "Sovrenn: Information platform to discover the best MicroCap stocks to buy in India. We teach investing and provide high quality and timely information to our readers which empowers them to take smart investment decisions";
     const imageUrl =
@@ -58,7 +59,9 @@ const Home = () => {
       }
 
       // Set OG description
-      let metaDescriptionOg = document.querySelector("meta[property='og:description']");
+      let metaDescriptionOg = document.querySelector(
+        "meta[property='og:description']"
+      );
       if (metaDescriptionOg) {
         metaDescriptionOg.setAttribute("content", description);
       } else {
@@ -103,9 +106,6 @@ const Home = () => {
     }
   }, []);
 
-  
- 
- 
   return (
     <>
       {/* <SaleBanner /> */}

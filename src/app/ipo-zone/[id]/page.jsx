@@ -48,25 +48,7 @@ const IpoArticles = () => {
     }
   }, [ipoArticle, id]);
 
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.ctrlKey && (event.key === "p" || event.key === "P")) {
-        event.preventDefault();
-      }
-    };
-
-    const handleContextMenu = (event) => {
-      event.preventDefault();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("contextmenu", handleContextMenu);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("contextmenu", handleContextMenu);
-    };
-  }, []);
+  
 
   if (isIpoArticleLoading) {
     return (

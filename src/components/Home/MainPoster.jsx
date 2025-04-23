@@ -16,6 +16,7 @@ import moment from "moment";
 import PaymentButton from "../Common/PaymentButton";
 import LoginModal from "../Modal/LoginModal";
 import Snackbar from "../Snackbar/SnackBar";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const headingsArray = [
   {
@@ -218,6 +219,16 @@ const MainPoster = () => {
   const handleClose=()=>{
     setIsOpen(false)
   }
+
+  const handleClick = (e) => {
+    e.preventDefault();
+
+    if (isAuth) {
+      router.push('/test-your-investing-knowledge'); 
+    } else {
+      setIsOpen(true) 
+    }
+  };
   useEffect(() => {
     const timer = setTimeout(() => {
       setAnimate(true);
@@ -231,7 +242,7 @@ const MainPoster = () => {
   }, []);
   return (
     <>
-   
+   <LoginModal isOpen={isOpen} handleClose={handleClose} />
     <Box
       width="100vw"
       sx={{
@@ -432,6 +443,52 @@ const MainPoster = () => {
                   ""
                 )}
               </Grid>
+              <Box
+   
+      mt={1.5}
+     onClick={handleClick}
+      sx={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: { xs: 'center', md: 'flex-start' }, 
+        color: colors.themeGreen,
+        textDecoration: 'none',
+        cursor: 'pointer',
+        width: '100%', 
+        flexWrap: 'wrap',
+
+       
+        '@media (max-width:600px)': {
+          justifyContent: 'center',
+        },
+      }}
+    >
+      <Box
+      
+        sx={{
+          position: 'relative',
+          fontWeight: 'bold',
+          fontSize: {xs:"12px",sm:"18px"},
+          lineHeight: {xs:"14px",sm:"21px"},
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            left: 0,
+            bottom: 0,
+            bottom: -1,
+            height: '1px',
+            width: '100%',
+            backgroundColor: colors.themeGreen,
+            transition: 'transform 0.3s ease',
+          },
+         
+        }}
+      >
+        Test Your Investing Knowledge in 3 mins for Free
+      </Box>
+      <ArrowForwardIcon sx={{ ml: 1, fontSize:{xs:14,sm:21}}} />
+    </Box>
+
             </Grid>
           </SlideInLeftBox>
         </Grid>
@@ -605,6 +662,7 @@ const MainPoster = () => {
           </SlideInBottomBox>
         </Grid>
       </Grid>
+     
     </Box>
     </>
   );

@@ -2,10 +2,10 @@
 import { Box, Typography, Button, Card, CardContent, Grid } from "@mui/material";
 import Image from "next/image";
 import styled from "@emotion/styled";
-import { colors } from "../Constants/colors"; // Define your colors here
+import { colors } from "../Constants/colors"; 
 import { DoneOutlined } from "@mui/icons-material";
+import Link from "next/link";
 
-// Styled Components
 const StyledTypography1 = styled(Typography)`
   font-weight: 700;
   font-size: 28px;
@@ -88,11 +88,11 @@ const InvestmentCards = () => {
             boxShadow: "none",
           }}
         >
-          {/* Image Section - Ensuring visibility on xs */}
+         
           <Box
             sx={{
               flex: 1,
-              minHeight: { xs: "250px",sm: "500px", md: "100%" }, // Ensures visibility on xs
+              minHeight: { xs: "250px",sm: "500px", md: "100%" }, 
               position: "relative",
             }}
           >
@@ -104,7 +104,7 @@ const InvestmentCards = () => {
             />
           </Box>
 
-          {/* Content Section */}
+      
           <CardContent
             sx={{
               flex: 1,
@@ -147,14 +147,16 @@ const InvestmentCards = () => {
                 </Typography>
               </Box>
             ))}
-
-            <StyledButton1 sx={{ mt: 3 }}>Upgrade to Sovren</StyledButton1>
+            <Link href="/pricing">
+          
+            <StyledButton1 fullWidth sx={{ mt: 3 }}>Upgrade to Sovrenn</StyledButton1>
+            </Link>
           </CardContent>
         </Card>
       </Grid>
 
       {/* 1-on-1 Mentorship Section */}
-      <Grid item xs={12} sm={10} paddingX={2}>
+      {/* <Grid item xs={12} sm={10} paddingX={2}>
         <Card
           sx={{
             display: "flex",
@@ -165,7 +167,7 @@ const InvestmentCards = () => {
             boxShadow: "none",
           }}
         >
-          {/* Content Section */}
+         
           <CardContent
             sx={{
               flex: 1,
@@ -221,11 +223,11 @@ const InvestmentCards = () => {
             <StyledButton1 sx={{ mt: 3 }}>Request a Mentor Now</StyledButton1>
           </CardContent>
 
-          {/* Image Section - Ensuring visibility on xs */}
+          
           <Box
             sx={{
               flex: 1,
-              minHeight: { xs: "250px",sm: "500px", md: "100%" }, // Ensures visibility on xs
+              minHeight: { xs: "250px",sm: "500px", md: "100%" },
               position: "relative",
             }}
           >
@@ -237,7 +239,7 @@ const InvestmentCards = () => {
             />
           </Box>
         </Card>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };

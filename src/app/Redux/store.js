@@ -21,12 +21,13 @@ import planReducer from "./Slices/PlanSlice";
 import examReducer from "./Slices/examSlice";
 import filingReducer from "./Slices/filingSlice";
 import searchReducer from "./Slices/searchSlice";
-import loadingReducer from "./Slices/loadingSlice"
+import loadingReducer from "./Slices/loadingSlice";
+import investingReducer from "./Slices/investingSlice"
 
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['payment','exam'],
+  blacklist: ['payment','exam','investing'],
 };
 
 
@@ -50,7 +51,8 @@ const appReducer = combineReducers({
   exam:examReducer,
   filing:filingReducer,
   search:searchReducer,
-  loading:loadingReducer
+  loading:loadingReducer,
+  investing:investingReducer
 });
 
 
