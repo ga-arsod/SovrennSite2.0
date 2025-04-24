@@ -60,8 +60,6 @@ const InvestingKnowledgeTest = () => {
         <></>
       )}
 
-      {/* <TestPerformance/>
-   <Information/> */}
     </>
   );
 };

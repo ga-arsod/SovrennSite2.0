@@ -92,11 +92,11 @@ const Discovery = ({ data }) => {
               {data?.company_name}
             </StyledTypography1>
 
-      {!isXs && company_summary?.has_covered && (
+      {/* {!isXs && company_summary?.has_covered && (
         <Link href={`/discovery/${data?.discovery_buckets[0]?.slug}/${data?.slug}`} target="_blank">
           <StyledButton variant="contained">Read More</StyledButton>
         </Link>
-      )}
+      )} */}
     </Box>
 
           <Box>
@@ -113,8 +113,8 @@ const Discovery = ({ data }) => {
             )}
           </Box>
 
-    {isXs && company_summary?.has_covered && (
-      <Box mt={2} display="flex" justifyContent="flex-end">
+    { company_summary?.has_covered && (
+      <Box mt={2} display="flex" justifyContent={{xs:"flex-end",sm:"center"}}>
         <Link href={`/discovery/${data?.discovery_buckets[0]?.slug}/${data?.slug}`} target="_blank">
           <StyledButton variant="contained" >
             Read More
