@@ -73,7 +73,7 @@ const TestPerformance = () => {
   
   return (
     <>
-      <ShareKnowledgeScore open={open} handleClose={handleClose} />
+       <ShareKnowledgeScore open={open} handleClose={handleClose} />
       <Container>
         <Grid
           container
