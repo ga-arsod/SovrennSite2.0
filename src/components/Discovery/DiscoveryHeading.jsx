@@ -45,7 +45,7 @@ const DiscoveryHeading = ({headingObject}) => {
   const handleBackClick = () => {
     router.back();  
   };
-  
+ 
   return (
     <>
       <Box sx={{ marginTop: "54px" }} marginBottom={{ xs: 3, sm: "14px" }}>

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { startLoading, stopLoading } from "./loadingSlice";
 const url = process.env.NEXT_PUBLIC_API_URL;
 
 const initialState = {
@@ -68,20 +69,35 @@ export const pastWinnersApi = createAsyncThunk("pastWinnersApi", async () => {
   });
   return response.json();
 });
-export const submitExamApi = createAsyncThunk("submitExamApi", async (data) => {
-  
-  const response = await fetch(`${url}/exam-results/submit`, {
-    method: "POST",
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      difficulty_level:"BEGINNER",...data
-    }),
-  });
-  return response.json();
-});
+
+export const submitExamApi = createAsyncThunk(
+  "submitExamApi",
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(startLoading());
+
+      const response = await fetch(`${url}/exam-results/submit`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          difficulty_level: "BEGINNER",
+          ...data,
+        }),
+      });
+
+      const resData = await response.json();
+      return resData;
+    } catch (err) {
+      return rejectWithValue(err);
+    } finally {
+      dispatch(stopLoading());
+    }
+  }
+);
+
 
 export const getExamCertificate = createAsyncThunk("getExamCertificate", async (data) => {
   

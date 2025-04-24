@@ -486,6 +486,7 @@ const SearchHome = () => {
               zIndex: 101,
               bgcolor: "white",
               paddingY: 1,
+             
             }}
           >
             <CustomTabs
