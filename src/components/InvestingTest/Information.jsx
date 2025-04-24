@@ -114,7 +114,7 @@ const InvestmentCards = () => {
             }}
           >
             <StyledTypography1>
-              Boost Your Investing Game with Sovren!
+              Boost Your Investing Game with Sovrenn!
             </StyledTypography1>
 
             {features.map((feature, index) => (
