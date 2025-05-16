@@ -193,7 +193,7 @@ const Details = () => {
   });
  
 
-  // Separate state for display name
+  
   const [displayName, setDisplayName] = useState(
     userDetails
       ? `${userDetails?.first_name} ${userDetails?.last_name}`

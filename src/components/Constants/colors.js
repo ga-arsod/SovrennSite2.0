@@ -19,6 +19,7 @@ export const colors={
     greyBlue600:'#597082',
     greyBlue700:'#465766',
     greyBlue800:'#36444f',
+    grey400:'#4F4F4F',
     greyBlue900:'#29343c',
     navyBlue500:'#011627',
     navyBlue600:'#011423',

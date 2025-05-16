@@ -16,6 +16,22 @@ const initialState = {
     udf2:'',
     hash:'',
   },
+  mentorshipPaymentData: {
+    key: process.env.NEXT_PUBLIC_PAYMENT_KEY || '',
+    txnid: '',
+    amount: '',
+    productinfo: '',
+    firstname: '',
+    email: '',
+    phone: '',
+    surl: `${url}/mentor-batches/enroll`,
+    furl: `${url}/mentor-batches/enroll`,
+    udf1:'',
+    udf2:'',
+    udf3:'website',
+    hash:'',
+   
+  }
   
 };
 
@@ -37,12 +53,17 @@ export const generateHashApi = createAsyncThunk(
   }
 );
 
+
+
 const paymentSlice = createSlice({
   name: 'payment',
   initialState,
   reducers: {
     setPaymentData: (state, action) => {
       state.paymentData = { ...state.paymentData, ...action.payload };
+    },
+    setMentorshipPaymentData: (state, action) => {
+      state.mentorshipPaymentData = { ...state.mentorshipPaymentData, ...action.payload };
     },
   },
   extraReducers: (builder) => {
@@ -59,9 +80,10 @@ const paymentSlice = createSlice({
        
         state.error = action.error.message;
       });
+    
   },
 });
 
-export const { setPaymentData } = paymentSlice.actions;
+export const { setPaymentData, setMentorshipPaymentData } = paymentSlice.actions;
 
 export default paymentSlice.reducer;

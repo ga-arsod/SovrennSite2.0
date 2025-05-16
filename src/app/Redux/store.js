@@ -23,6 +23,7 @@ import filingReducer from "./Slices/filingSlice";
 import searchReducer from "./Slices/searchSlice";
 import loadingReducer from "./Slices/loadingSlice";
 import investingReducer from "./Slices/investingSlice"
+import mentorshipReducer from "./Slices/mentorshipSlice"
 
 const persistConfig = {
   key: 'root',
@@ -52,7 +53,8 @@ const appReducer = combineReducers({
   filing:filingReducer,
   search:searchReducer,
   loading:loadingReducer,
-  investing:investingReducer
+  investing:investingReducer,
+  mentorship:mentorshipReducer
 });
 
 
