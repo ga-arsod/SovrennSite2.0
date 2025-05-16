@@ -14,9 +14,7 @@ import { colors } from "../Constants/colors";
 import { usePathname } from "next/navigation";
 import { educationFaqArray, faqDescription } from "@/utils/Data";
 import { Fade } from "@mui/material";
-import { faqApi } from "@/app/Redux/Slices/homeSlice";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+
 
 const StyledTypography1 = styled(Typography)`
   font-weight: 600;
@@ -87,12 +85,12 @@ const FadeInBox = styled(Box)(({ theme }) => ({
 }));
 
 
-const Faq = () => {
-  const dispatch=useDispatch();
-  const faqData = useSelector((store) => store.home.faqsArray);
+const Faq = ({data}) => {
+ 
+  
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(null);
-  const {isAuth} = useSelector((store) => store.auth);
+
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : null);
@@ -137,9 +135,7 @@ const Faq = () => {
       }
     };
   }, []);
-useEffect(()=>{
-  dispatch(faqApi())
-},[isAuth])
+
   return (
     <Box
       width="100%"
@@ -181,7 +177,7 @@ useEffect(()=>{
             >
               {pathname === "/"
                 ? faqDescription.home
-                : faqDescription.education}
+                :""}
             </StyledTypography2>
           </FadeInBox>
         </Grid>
@@ -196,7 +192,7 @@ useEffect(()=>{
               sx={{ opacity: inView ? 1 : 0 }}
             >
               <Grid item paddingX={{ xs: 2 }}>
-                {(pathname === "/" ? faqData : educationFaqArray)?.map(
+                {data?.map(
                   (faq, index) => (
                     <>
                       <StyledAccordion
@@ -237,9 +233,7 @@ useEffect(()=>{
                         </StyledAccordionDetails>
                       </StyledAccordion>
                       {index !==
-                        (pathname === "/"
-                          ? faqData.length
-                          : educationFaqArray.length) -
+                        (data.length) -
                           1 && <HorizontalLine />}
                     </>
                   )

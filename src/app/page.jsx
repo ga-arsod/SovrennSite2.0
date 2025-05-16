@@ -11,16 +11,18 @@ import Faq from "@/components/Home/Faq";
 import AppInfo from "@/components/Home/AppInfo";
 import TrialCard from "@/components/Cards/TrialCard";
 import Updates from "@/components/Home/Updates";
-import { auth } from "@/auth";
-import SaleBanner from "../components/SaleBanner/SaleBanner";
+
 import { useSelector } from "react-redux";
-import { commonPricingApi } from "./Redux/Slices/PlanSlice";
+
 import { useDispatch } from "react-redux";
-import { userDetailsApi } from "./Redux/Slices/authSlice";
+
+import { faqApi } from "./Redux/Slices/homeSlice";
+
 
 const Home = () => {
   const { isAuth, userDetails } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
+  const faqData = useSelector((store) => store.home.faqsArray);
 
   useEffect(() => {
     const title =
@@ -105,7 +107,9 @@ const Home = () => {
       }
     }
   }, []);
-
+useEffect(()=>{
+  dispatch(faqApi())
+},[isAuth])
   return (
     <>
       {/* <SaleBanner /> */}
@@ -117,7 +121,7 @@ const Home = () => {
       <CustomerVerdict />
       <FoundersInfo />
       <PlanInfo />
-      <Faq />
+      <Faq data={faqData} />
       <AppInfo />
       <TrialCard />
     </>

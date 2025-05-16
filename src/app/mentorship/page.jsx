@@ -9,12 +9,15 @@ import { useSelector } from 'react-redux'
 import Spinner from '@/components/Common/Spinner'
 import { useSearchParams } from "next/navigation";
 import MentorshipModal from "../../components/Modal/MentorshipModal"
-const page = () => {
+import Faq from '@/components/Home/Faq'
+
+const Mentorship = () => {
   const dispatch= useDispatch();
     const {isMentorshipInfoLoading,mentorshipInfo } = useSelector((store) => store.mentorship);
     const searchParams = useSearchParams();
   const paymentStatus = searchParams.get("payment_status");
   const [open,setOpen]=useState(paymentStatus=="success" ? true :false)
+
   useEffect(()=>{
     dispatch(mentorshipInfoApi())
   },[])
@@ -28,8 +31,9 @@ const page = () => {
     <LandingSection data={mentorshipInfo}/>
     <TimelineSection data={mentorshipInfo?.timeline}/>
     <Program data={mentorshipInfo?.why_join}/>
+    <Faq data={mentorshipInfo?.faqs}/>
     </>
   )
 }
 
-export default page
+export default Mentorship
