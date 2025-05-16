@@ -14,9 +14,10 @@ import { dashboardInfoApi } from '@/app/Redux/Slices/mentorshipSlice';
 const Dashboard = () => {
     const dispatch= useDispatch()
     const {isDashboardInfoLoading,dashboardInfo } = useSelector((store) => store.mentorship);
-
+    const {userDetails } = useSelector((store) => store.auth);
+    
     useEffect(()=>{
-        dispatch(dashboardInfoApi())
+        dispatch(dashboardInfoApi(userDetails?._id))
     },[])
 
     if(isDashboardInfoLoading)
