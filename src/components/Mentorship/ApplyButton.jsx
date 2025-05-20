@@ -102,6 +102,6 @@ const ApplyButton = () => {
 
     </>
   )
-});
+};
 
 export default React.memo(ApplyButton);
