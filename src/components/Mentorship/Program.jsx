@@ -44,10 +44,6 @@ const StyledLink = styled(Link)`
   text-underline-offset: 2px;
 `;
 
-
-
-
-
 export default function Program({data}) {
     
   return (

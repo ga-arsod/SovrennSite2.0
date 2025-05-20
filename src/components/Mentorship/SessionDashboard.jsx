@@ -76,7 +76,7 @@ export default function SessionDashboard({ data }) {
     const secs = seconds % 60;
     return `${mins}m ${secs}s`;
   };
-  console.log(selectedVideoUrl, "url");
+
   return (
     <Box
       sx={{
@@ -129,7 +129,7 @@ export default function SessionDashboard({ data }) {
 
               <Grid container>
                 {data?.progress?.completed_sessions ==
-                data?.progress?.total_sessions ? (
+                  data?.progress?.total_sessions ? (
                   <Grid item>
                     <Box
                       sx={{
@@ -411,7 +411,7 @@ export default function SessionDashboard({ data }) {
           </Grid>
         </Grid>
         <Grid container>
-          <CommunityCertificateSection  certificate={data?.certificate} whatsapp={data?.whatsapp}/>
+          <CommunityCertificateSection certificate={data?.certificate} whatsapp={data?.whatsapp} />
         </Grid>
       </Box>
     </Box>
