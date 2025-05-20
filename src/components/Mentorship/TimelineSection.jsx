@@ -5,6 +5,7 @@ import Image from "next/image";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import DetailedTimelineModal from "../Mentorship/DetailedTimelineModal";
+import { useState } from "react";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 18px;
@@ -29,30 +30,11 @@ const StyledTypography2 = styled(Typography)`
   }
 `;
 const TimelineSection = ({data}) => {
-  const items = [
-    {
-      image: "/mentorship-timeline-image1.png",
-
-      description:
-        "4 Expert Teaching Sessions – Basics of investing, understanding market trends, how to use Sovrenn for building wealth, etc.",
-    },
-    {
-      image: "/mentorship-timeline-image2.png",
-
-      description:
-        " 4 Live Doubt-Clearing Sessions – Get personalized guidance.",
-    },
-    {
-      image: "/mentorship-timeline-image3.png",
-
-      description:
-        "WhatsApp/Community Group Access – Stay connected and get extra insights.",
-    },
-  ];
+ const [timelineOpen,setTimelineOpen]=useState(false)
 
   return (
     <>
-      {/* <DetailedTimelineModal/> */}
+      <DetailedTimelineModal timelineOpen={timelineOpen} setTimelineOpen={setTimelineOpen} data={data?.detailed_timeline}/>
       <Box
         sx={{
           backgroundImage: `url('/rectangle.png')`,
@@ -68,7 +50,7 @@ const TimelineSection = ({data}) => {
                {data?.header}
               </StyledTypography2>
 
-              {data?.details?.map((item, i) => {
+              {data?.details?.map((item, i,arr) => {
                 const isEven = i % 2 === 0;
                 return (
                   <Box key={i}>
@@ -111,7 +93,7 @@ const TimelineSection = ({data}) => {
                       </Grid>
                     </Grid>
 
-                    {i !== items.length - 1 && (
+                    {i !== arr.length - 1 && (
                       <Divider
                         sx={{
                           my: 1,
@@ -125,20 +107,23 @@ const TimelineSection = ({data}) => {
               })}
 
               <Box textAlign="center" mt={3}>
-                <Link
-                  href="#"
-                  underline="always"
-                  sx={{
-                    fontFamily: "Arial, sans-serif",
-                    fontWeight: 700,
-                    fontSize: "19px",
-                    lineHeight: "23px",
-                    color: colors.themeGreen,
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  View Detailed Timeline &gt;
-                </Link>
+              <Typography
+  component="span"
+  sx={{
+    fontFamily: "Arial, sans-serif",
+    fontWeight: 700,
+    fontSize: "19px",
+    lineHeight: "23px",
+    color: colors.themeGreen,
+    letterSpacing: "-0.02em",
+    textDecoration: "underline", 
+    cursor: "pointer",
+  }}
+  onClick={() => setTimelineOpen(true)}
+>
+  View Detailed Timeline &gt;
+</Typography>
+
               </Box>
             </Grid>
           </Grid>

@@ -29,7 +29,8 @@ const payuUrl = process.env.NEXT_PUBLIC_PAYU_URL;
 const ApplyButton = () => {
     const dispatch=useDispatch()
     const [isOpen, setIsOpen] = useState(false);
-    const { mentorshipInfo,mentorshipPaymentData } = useSelector((store) => store.mentorship);
+    const { mentorshipInfo } = useSelector((store) => store.mentorship);
+    const {mentorshipPaymentData } = useSelector((store) => store.payment);
     const { isAuth,userDetails } = useSelector((store) => store.auth);
       const handleClose=()=>{
         setIsOpen(false)
@@ -65,7 +66,7 @@ const ApplyButton = () => {
             }
           }
         };
-        
+        console.log(mentorshipPaymentData,"data")
   return (
     <>
      <LoginModal isOpen={isOpen} handleClose={handleClose} />

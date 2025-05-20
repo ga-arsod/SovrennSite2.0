@@ -45,6 +45,7 @@ export const generateHashApi = createAsyncThunk(
        },
       body: JSON.stringify(paymentDetails),
     });
+  
     if (!response.ok) {
       throw new Error('Failed to generate hash');
     }
