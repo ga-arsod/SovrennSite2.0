@@ -27,7 +27,7 @@ const StyledButton1 = styled(Button)`
 
 const payuUrl = process.env.NEXT_PUBLIC_PAYU_URL;
 
-const ApplyButton = React.memo(() => {
+const ApplyButton = () => {
   const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false);
   const { mentorshipInfo } = useSelector((store) => store.mentorship);
