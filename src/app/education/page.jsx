@@ -6,6 +6,7 @@ import AppInfo from "@/components/Home/AppInfo";
 import EducationTrialCard from "../../components/Cards/EducationTrialCard";
 import FoundersInfo from "@/components/Home/FoundersInfo";
 import TrialCard from "@/components/Cards/TrialCard";
+import MentorshipPromo from "../../components/Mentorship/MentorshipPromo"
 
 const Education = () => {
   useEffect(() => {
@@ -65,6 +66,7 @@ const Education = () => {
       <MainHeading />
       <TutorialSection />
       <FoundersInfo />
+      {/* <MentorshipPromo/> */}
       <AppInfo />
       <TrialCard />
     </>

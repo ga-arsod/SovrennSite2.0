@@ -21,6 +21,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import styled from "@emotion/styled";
 import { colors } from "../Constants/colors";
 import Image from "next/image";
+import moment from 'moment';
 
 const StyledTypography1 = styled(Typography)`
   font-size: 19px;
@@ -82,11 +83,12 @@ export default function SessionDashboard({ data }) {
       sx={{
         bgcolor: "#E6E8E9",
         py: 4,
+        px:2,
         display: "flex",
         justifyContent: "center",
       }}
     >
-      <Box bgcolor="white" padding="40px" width="80%" borderRadius="8px">
+      <Box bgcolor="white" paddingY={{xs:2.5,sm:5}} paddingX={{xs:1.5,sm:5}} width={{xs:"100%",sm:"85%"}} borderRadius="8px">
         <Grid container spacing={3} justifyContent="center">
           <Grid item xs={12} md={5}>
             <Card
@@ -99,7 +101,7 @@ export default function SessionDashboard({ data }) {
                 flexDirection: "column",
                 justifyContent: "space-between",
                 boxShadow: "none",
-                position: "relative", // Needed for absolute positioning of the badge
+                position: "relative", 
               }}
             >
               {data?.upcoming_session?.is_live && (
@@ -303,7 +305,7 @@ export default function SessionDashboard({ data }) {
                           flexDirection: "column",
                         }}
                       >
-                        {/* Close Button */}
+                      
                         <IconButton
                           onClick={() => setSelectedVideoUrl(null)}
                           sx={{
@@ -318,7 +320,7 @@ export default function SessionDashboard({ data }) {
                           ✕
                         </IconButton>
 
-                        {/* Video Player */}
+                      
                         <Box
                           sx={{
                             width: "90%",
@@ -380,13 +382,13 @@ export default function SessionDashboard({ data }) {
                               primary={
                                 <>
                                   <StyledTypography5 color={colors.neutral700}>
-                                    {session.title}
+                                    {moment(session?.date).format("Do MMM YY")}
                                   </StyledTypography5>
                                   <StyledTypography2
                                     color={colors.neutral900}
                                     my={0.5}
                                   >
-                                    {session.title}
+                                    {session?.title}
                                   </StyledTypography2>
                                 </>
                               }
@@ -399,7 +401,7 @@ export default function SessionDashboard({ data }) {
                           </ListItem>
                         </Box>
 
-                        {index < previousSessions.length - 1 && (
+                        {index < previousSessions?.length - 1 && (
                           <Divider sx={{ my: 0, borderColor: "#F4F3F3" }} />
                         )}
                       </React.Fragment>

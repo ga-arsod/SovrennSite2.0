@@ -25,18 +25,32 @@ const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   line-height: 23px;
   letter-spacing: -0.02em;
+  @media (max-width: 639px) {
+    font-size: 14px;
+ letter-spacing: 0em;
+    line-height: 17px;
+  }
 `;
 const StyledTypography2 = styled(Typography)`
   font-size: 23px;
   font-weight: 600;
   line-height: 28px;
   letter-spacing: -0.02em;
+   @media (max-width: 639px) {
+    font-size: 14px;
+ letter-spacing: 0em;
+    line-height: 17px;
+  }
 `;
 const StyledTypography3 = styled(Typography)`
   font-size: 20px;
   font-weight: 400;
   line-height: 24px;
+  @media (max-width: 639px) {
+    font-size: 14px;
  
+    line-height: 17px;
+  }
 `;
 
 export default function ProgressCard({data}) {
@@ -44,25 +58,25 @@ export default function ProgressCard({data}) {
   const getFirstInitial = (name) => name.trim().charAt(0).toUpperCase();
   
   return (
-    <Grid container bgcolor="E6E8E9" marginTop="60px" justifyContent="center">
+    <Grid container bgcolor="E6E8E9" marginTop="56px" justifyContent="center" px={2}>
       <Box
         sx={{
-          width: '80%',
+          width:{xs:"100%",sm:"85%"},
           display: 'flex',
           flexDirection: { xs: 'column', sm: 'row' },
           justifyContent: 'space-between',
           alignItems: 'flex-start',
           backgroundColor: '#ffffff',
-          borderRadius: '16px',
+          borderRadius: '8px',
           mt: 4,
           p: 2,
           gap: 2,
         }}
       >
-        {/* Left Side */}
+       
         <Box sx={{ flex: 1 }}>
           <Stack direction="row" spacing={2} alignItems="center">
-            <Avatar sx={{ bgcolor: '#001B33', width: 60, height: 60 }}>{getFirstInitial(userDetails?.first_name)}</Avatar>
+            <Avatar sx={{ bgcolor: '#001B33', width:{xs:36,sm:60}, height:{xs:36,sm:60} }}>{getFirstInitial(userDetails?.first_name)}</Avatar>
             <Box>
               <StyledTypography1  color={colors.navyBlue300} mb={0.5}>
                {data?.header?.text}
@@ -77,7 +91,7 @@ export default function ProgressCard({data}) {
           </Stack>
         </Box>
 
-        {/* Right Side */}
+       
         <Box
           sx={{
             flex: 1,
@@ -86,7 +100,7 @@ export default function ProgressCard({data}) {
           }}
         >
           <Box textAlign="left">
-            <StyledTypography1 color={colors.neutral900} display="flex" alignItems="center" mb="20px">
+            <StyledTypography1 color={colors.neutral900} display="flex" alignItems="center" mb={{xs:"12px",sm:'20px'}}>
               <AccessTimeFilledIcon sx={{ fontSize: 16, mr: '4px' }} />
              {data?.progress?.title}
             </StyledTypography1>
