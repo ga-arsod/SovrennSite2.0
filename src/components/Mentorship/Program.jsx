@@ -24,11 +24,7 @@ const StyledTypography1 = styled(Typography)`
   font-weight: 600;
   line-height: 23px;
   letter-spacing: -0.02em;
-  @media (max-width: 639px) {
-    font-size: 16px;
-
-    line-height: 19px;
-  }
+ 
 `;
 const StyledTypography2 = styled(Typography)`
   font-size: 16px;

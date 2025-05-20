@@ -13,6 +13,11 @@ import { useSelector } from "react-redux";
 import Image from "next/image";
 import { colors } from "../Constants/colors";
 import Link from "next/link";
+import LoginModal from "../Modal/LoginModal";
+import { useDispatch } from "react-redux";
+import { generateHashApi } from "@/app/Redux/Slices/paymentSlice";
+import { useState } from "react";
+import {setMentorshipPaymentData } from "@/app/Redux/Slices/paymentSlice";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 34px;
@@ -86,9 +91,53 @@ const StyledButton2 = styled(Button)`
     line-height: 22px;
   }
 `;
+const payuUrl = process.env.NEXT_PUBLIC_PAYU_URL;
+
 export default function MentorshipPromo() {
+    const dispatch=useDispatch();
   const { mentorshipInfo } = useSelector((store) => store.mentorship);
+   const { paymentData } = useSelector((store) => store.payment);
+    const { isAuth, userDetails } = useSelector((store) => store.auth);
+    const [isOpen, setIsOpen] = useState(false);
+    const handleClose = () => {
+        setIsOpen(false)
+      }
+
+  const handleButtonClick = async (e) => {
+      e.preventDefault();
+  
+      if (!isAuth) {
+        setIsOpen(true);
+      } else {
+        const data = {
+          txnid: Date.now(),
+          amount: mentorshipInfo?.course?.info?.offer_price,
+          productinfo: "request_mentor",
+          firstname: userDetails?.first_name,
+          email: userDetails?.email,
+          udf1: userDetails?._id,
+          udf2: mentorshipInfo?.batch_id,
+          udf3: "website"
+        };
+  
+        dispatch(
+          setMentorshipPaymentData({
+            ...data,
+            phone: userDetails?.phone_number,
+            state: userDetails?.state,
+          })
+        );
+  
+  
+        const result = await dispatch(generateHashApi(data));
+        if (result.meta.requestStatus === "fulfilled") {
+          document.getElementById("paymentForm").submit();
+        }
+      }
+    };
   return (
+    <>
+      <LoginModal isOpen={isOpen} handleClose={handleClose} />
     <Box
       sx={{
         px: { xs: 2, md: 4 },
@@ -226,13 +275,38 @@ export default function MentorshipPromo() {
                     </StyledButton1>
                   </Link>
                 </Box>
+                <form
+        id="paymentForm"
+        action={payuUrl}
+        method="post"
 
-                <StyledButton2 fullWidth>Request a mentor Now</StyledButton2>
+      >
+        <input type="hidden" name="key" value={paymentData?.key} />
+        <input type="hidden" name="txnid" value={paymentData?.txnid} />
+        <input
+          type="hidden"
+          name="productinfo"
+          value={paymentData?.productinfo}
+        />
+        <input type="hidden" name="amount" value={paymentData?.amount} />
+        <input type="hidden" name="email" value={paymentData?.email} />
+        <input type="hidden" name="firstname" value={paymentData?.firstname} />
+        <input type="hidden" name="phone" value={paymentData?.phone} />
+        <input type="hidden" name="surl" value={paymentData?.surl} />
+        <input type="hidden" name="furl" value={paymentData?.furl} />
+        <input type="hidden" name="udf1" value={paymentData?.udf1} />
+        <input type="hidden" name="udf2" value={paymentData?.udf2} />
+        <input type="hidden" name="udf3" value={paymentData?.udf3} />
+        <input type="hidden" name="hash" value={paymentData?.hash} />
+
+      </form>
+                <StyledButton2 fullWidth onClick={handleButtonClick}>Request a mentor Now</StyledButton2>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </Card>
     </Box>
+    </>
   );
 }

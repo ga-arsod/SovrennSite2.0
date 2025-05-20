@@ -38,6 +38,9 @@ export const mentorshipTermAndConditionsApi = createAsyncThunk(
   
         const response = await fetch(`${url}/mentor-batches/info`, {
           method: "GET",
+          headers: { 
+            Authorization: "Bearer " + localStorage.getItem("token"),
+           },
         });
   
         const resData = await response.json();
@@ -51,11 +54,11 @@ export const mentorshipTermAndConditionsApi = createAsyncThunk(
   );
   export const dashboardInfoApi = createAsyncThunk(
     "dashboardInfoApi",
-    async (user_id, { dispatch, rejectWithValue }) => {
+    async (batch_id, { dispatch, rejectWithValue }) => {
       try {
         dispatch(startLoading());
   
-        const response = await fetch(`${url}/mentor-batches/details/${user_id}`, {
+        const response = await fetch(`${url}/mentor-batches/details/${batch_id}`, {
           method: "GET",
           headers: { 'Content-Type': 'text/plain',
             Authorization: "Bearer " + localStorage.getItem("token"),
