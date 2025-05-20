@@ -25,7 +25,7 @@ const StyledTypography2 = styled(Typography)`
   letter-spacing: -0.02em;
   @media (max-width: 639px) {
     font-size: 16px;
-
+     letter-spacing: -0.02em;
     line-height: 19px;
   }
 `;

@@ -66,7 +66,7 @@ const Education = () => {
       <MainHeading />
       <TutorialSection />
       <FoundersInfo />
-      {/* <MentorshipPromo/> */}
+      <MentorshipPromo/>
       <AppInfo />
       <TrialCard />
     </>
