@@ -104,6 +104,7 @@ const PaymentModal = ({ isPaymentOpen, handlePaymentClose }) => {
   const { isAuth, userDetails } = useSelector((store) => store.auth);
   const { paymentData } = useSelector((store) => store.payment);
 const { commonPrice } = useSelector((store) => store.plan);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 

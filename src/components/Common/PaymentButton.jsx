@@ -64,7 +64,7 @@ const PaymentButton = () => {
     } else {
       const data = {
         txnid: Date.now(),
-        amount: commonPrice?.full_access,
+        amount: 1,
         productinfo: "full-access",
         firstname: userDetails?.first_name,
         email: userDetails?.email,

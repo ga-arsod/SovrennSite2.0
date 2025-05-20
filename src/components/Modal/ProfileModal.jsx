@@ -15,7 +15,6 @@ import { colors } from "../Constants/colors";
 import { resetPasswordApi, togglePasswordModal } from "@/app/Redux/Slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-
 const StyledTypography2 = styled(Typography)`
   font-size: 28px;
   font-weight: 600;
