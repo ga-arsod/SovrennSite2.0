@@ -24,7 +24,7 @@ const Dashboard = () => {
         dispatch(mentorshipInfoApi())
       else
         dispatch(dashboardInfoApi(mentorshipInfo?.batch_id))
-    },[mentorshipInfo])
+    },[mentorshipInfo,isAuth])
 
   
 

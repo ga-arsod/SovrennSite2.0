@@ -15,6 +15,9 @@ const Mentorship = () => {
   const { isMentorshipInfoLoading, mentorshipInfo } = useSelector(
     (store) => store.mentorship
   );
+  const { isAuth } = useSelector(
+    (store) => store.auth
+  );
   const searchParams = useSearchParams();
  
   const paymentStatus = searchParams.get("payment_status");
@@ -22,7 +25,7 @@ const Mentorship = () => {
 
   useEffect(() => {
     dispatch(mentorshipInfoApi());
-  }, []);
+  }, [isAuth]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
