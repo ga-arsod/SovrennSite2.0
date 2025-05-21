@@ -9,21 +9,30 @@ import SessionDashboard from '../../../components/Mentorship/SessionDashboard'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import Spinner from '@/components/Common/Spinner'
-import { dashboardInfoApi } from '@/app/Redux/Slices/mentorshipSlice';
-
+import { dashboardInfoApi, mentorshipInfoApi } from '@/app/Redux/Slices/mentorshipSlice';
+import NoLogin from '@/components/Auth/NoLogin';
 
 const Dashboard = () => {
     const dispatch= useDispatch()
     const {isDashboardInfoLoading,dashboardInfo,mentorshipInfo } = useSelector((store) => store.mentorship);
-    const {userDetails } = useSelector((store) => store.auth);
+    const {userDetails,isAuth } = useSelector((store) => store.auth);
 
     useEffect(()=>{
+      if(mentorshipInfo?.batch_id==null)
+        dispatch(mentorshipInfoApi())
+      else
         dispatch(dashboardInfoApi(mentorshipInfo?.batch_id))
-    },[])
+    },[mentorshipInfo])
+
+  
+
+    if (!isAuth) {
+        return <NoLogin />;
+      }
 
     if(isDashboardInfoLoading)
     return <Spinner margin={15}/>
-
+console.log(mentorshipInfo,"mentorshipInfo")
   return (
     <>
     

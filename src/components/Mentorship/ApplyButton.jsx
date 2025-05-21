@@ -98,7 +98,11 @@ const ApplyButton = () => {
         <input type="hidden" name="hash" value={paymentData?.hash} />
 
       </form>
-      <StyledButton1 mb={5} disabled={!mentorshipInfo?.button_details?.allow_payment} onClick={handleButtonClick}>{mentorshipInfo?.button_details?.text}</StyledButton1>
+      {
+        mentorshipInfo?.button_details?.allow_payment ?  <StyledButton1 mb={5} disabled={!mentorshipInfo?.button_details?.allow_payment} onClick={handleButtonClick}>{mentorshipInfo?.button_details?.text}</StyledButton1>
+        : <></>
+      }
+     
 
     </>
   )
