@@ -196,6 +196,7 @@ const Navbar = () => {
   const isSmallerThanSm = useMediaQuery(theme.breakpoints.down("sm"));
   const isGeaterThanSm = useMediaQuery(theme.breakpoints.up("sm"));
   const { isAuth, user, userDetails } = useSelector((store) => store.auth);
+  const { mentorshipInfo } = useSelector((store) => store.mentorship);
   const router = useRouter();
   const pathname = usePathname();
   const isXsOrSm = useMediaQuery((theme) => theme.breakpoints.down("sm"));
@@ -286,7 +287,17 @@ const Navbar = () => {
     )
    })
     
-   
+   const allow_payment = mentorshipInfo?.button_details?.allow_payment; 
+
+   const utilitiesMenu = [
+     { name: "Knowledge", link: "/knowledge" },
+     { name: "Self Help", link: "/self-help" },
+     { name: "Exam", link: "/exam" },
+     { name: "Recent Filing", link: "/filing" },
+     ...(!allow_payment
+       ? [{ name: "Mentor Dashboard", link: "/mentorship/dashboard" }]
+       : [])
+   ];
 
   return (
     <>
@@ -655,150 +666,51 @@ const Navbar = () => {
                             },
                           }}
                         >
-                          <Link
-                            href="/knowledge"
-                            style={{ textDecoration: "none" }}
-                          >
-                            <MenuItem
-                              disableRipple
-                              sx={{
-                                padding: "12px 16px",
-                                "&:hover .menu-text": {
-                                  color: colors.themeGreen,
-                                },
-                                backgroundColor: "transparent !important",
-                                "&:hover": {
-                                  backgroundColor: "transparent !important",
-                                },
-                                "&.Mui-focusVisible": {
-                                  backgroundColor: "transparent",
-                                },
-                                "&.Mui-selected": {
-                                  backgroundColor: "transparent",
-                                },
-                              }}
-                            >
-                              <Typography
-                                className="menu-text"
-                                color={colors.navyBlue900}
-                                sx={{
-                                  fontWeight: "600",
-                                  fontSize: "14px",
-                                  lineHeight: "17px",
-                                }}
+                          {
+                            utilitiesMenu?.map((item,index)=>{
+                              return(
+                                <Link
+                                href={item?.link}
+                                style={{ textDecoration: "none" }}
+                                key={index}
                               >
-                                Knowledge
-                              </Typography>
-                            </MenuItem>
-                          </Link>
-                          <Link
-                            href="/self-help"
-                            style={{ textDecoration: "none" }}
-                          >
-                            <MenuItem
-                              disableRipple
-                              sx={{
-                                padding: "12px 16px",
-                                "&:hover .menu-text": {
-                                  color: colors.themeGreen,
-                                },
-                                backgroundColor: "transparent !important",
-                                "&:hover": {
-                                  backgroundColor: "transparent !important",
-                                },
-                                "&.Mui-focusVisible": {
-                                  backgroundColor: "transparent",
-                                },
-                                "&.Mui-selected": {
-                                  backgroundColor: "transparent",
-                                },
-                              }}
-                            >
-                              <Typography
-                                className="menu-text"
-                                color={colors.navyBlue900}
-                                sx={{
-                                  fontWeight: "600",
-                                  fontSize: "14px",
-                                  lineHeight: "17px",
-                                }}
-                              >
-                                Self Help
-                              </Typography>
-                            </MenuItem>
-                          </Link>
-                          <Link
-                            href="/exam"
-                            style={{ textDecoration: "none" }}
-                          >
-                            <MenuItem
-                              disableRipple
-                              sx={{
-                                padding: "12px 16px",
-                                "&:hover .menu-text": {
-                                  color: colors.themeGreen,
-                                },
-                                backgroundColor: "transparent !important",
-                                "&:hover": {
-                                  backgroundColor: "transparent !important",
-                                },
-                                "&.Mui-focusVisible": {
-                                  backgroundColor: "transparent",
-                                },
-                                "&.Mui-selected": {
-                                  backgroundColor: "transparent",
-                                },
-                              }}
-                            >
-                              <Typography
-                                className="menu-text"
-                                color={colors.navyBlue900}
-                                sx={{
-                                  fontWeight: "600",
-                                  fontSize: "14px",
-                                  lineHeight: "17px",
-                                }}
-                              >
-                                Exam
-                              </Typography>
-                            </MenuItem>
-                          </Link>
-                          <Link
-                            href="/filing"
-                            style={{ textDecoration: "none" }}
-                          >
-                            <MenuItem
-                              disableRipple
-                              sx={{
-                                padding: "12px 16px",
-                                "&:hover .menu-text": {
-                                  color: colors.themeGreen,
-                                },
-                                backgroundColor: "transparent !important",
-                                "&:hover": {
-                                  backgroundColor: "transparent !important",
-                                },
-                                "&.Mui-focusVisible": {
-                                  backgroundColor: "transparent",
-                                },
-                                "&.Mui-selected": {
-                                  backgroundColor: "transparent",
-                                },
-                              }}
-                            >
-                              <Typography
-                                className="menu-text"
-                                color={colors.navyBlue900}
-                                sx={{
-                                  fontWeight: "600",
-                                  fontSize: "14px",
-                                  lineHeight: "17px",
-                                }}
-                              >
-                              Recent Filing
-                              </Typography>
-                            </MenuItem>
-                          </Link>
+                                <MenuItem
+                                  disableRipple
+                                  sx={{
+                                    padding: "12px 16px",
+                                    "&:hover .menu-text": {
+                                      color: colors.themeGreen,
+                                    },
+                                    backgroundColor: "transparent !important",
+                                    "&:hover": {
+                                      backgroundColor: "transparent !important",
+                                    },
+                                    "&.Mui-focusVisible": {
+                                      backgroundColor: "transparent",
+                                    },
+                                    "&.Mui-selected": {
+                                      backgroundColor: "transparent",
+                                    },
+                                  }}
+                                >
+                                  <Typography
+                                    className="menu-text"
+                                    color={colors.navyBlue900}
+                                    sx={{
+                                      fontWeight: "600",
+                                      fontSize: "14px",
+                                      lineHeight: "17px",
+                                    }}
+                                  >
+                                   {item?.name}
+                                  </Typography>
+                                </MenuItem>
+                              </Link>
+                              )
+                            })
+                          }
+                          
+                        
                         </Menu>
                       </ListItem>
                     </List>

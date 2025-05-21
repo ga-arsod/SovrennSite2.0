@@ -199,6 +199,7 @@ const Faq = ({data}) => {
                         key={index}
                         expanded={expanded === `panel${index}`}
                         onChange={handleChange(`panel${index}`)}
+                       
                       >
                         <StyledAccordionSummary
                           expandIcon={

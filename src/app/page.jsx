@@ -11,7 +11,7 @@ import Faq from "@/components/Home/Faq";
 import AppInfo from "@/components/Home/AppInfo";
 import TrialCard from "@/components/Cards/TrialCard";
 import Updates from "@/components/Home/Updates";
-
+import MentorshipPromo from "@/components/Mentorship/MentorshipPromo";
 import { useSelector } from "react-redux";
 
 import { useDispatch } from "react-redux";
@@ -118,6 +118,7 @@ useEffect(()=>{
       <UserCount />
       <Information />
       <Offer />
+      <MentorshipPromo/>
       <CustomerVerdict />
       <FoundersInfo />
       <PlanInfo />

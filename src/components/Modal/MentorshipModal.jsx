@@ -77,14 +77,14 @@ const StyledBox = styled(Box)`
   justify-content: center;
 `;
 
-const MentorshipModal = ({ isOpen, setIsOpen }) => {
+const MentorshipModal = ({ open, setOpen }) => {
   const router = useRouter();
   const handleClose = () => {
-    setIsOpen(false);
+    setOpen(false);
   };
   return (
     <Modal
-      open={isOpen}
+      open={open}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
