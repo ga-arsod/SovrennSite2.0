@@ -65,7 +65,7 @@ const StyledButton1 = styled(Button)`
     background-color: ${colors.themeGreen};
   }
 `;
-export default function SessionDashboard({ data }) {
+export default function SessionDashboard({ data ,setTimelineOpen}) {
   const previousSessions = Array(6).fill({
     title: "5th Jun - First Doubt Session",
     subtitle: "We discussed about the investing basics with real life",
@@ -218,6 +218,7 @@ export default function SessionDashboard({ data }) {
                         textDecorationColor: colors.themeGreen,
                         textUnderlineOffset: "3px",
                       }}
+                      onClick={()=>{setTimelineOpen(true)}}
                     >
                       View Detailed Timeline &gt;
                     </StyledTypography1>
