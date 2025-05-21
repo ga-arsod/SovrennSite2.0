@@ -46,7 +46,6 @@ const StyledTypography2 = styled(Typography)`
 const TimelineRow = ({ date, event, index }) => (
   <Grid
     container
-    gap={{ xs: 3, sm: 5 }}
     alignItems="center"
     paddingY={1.5}
     paddingX={2}
@@ -56,28 +55,26 @@ const TimelineRow = ({ date, event, index }) => (
       marginY: 0.5,
     }}
   >
-    <Grid item>
-      <StyledTypography2 color={colors.neutral900}>{date}</StyledTypography2>
+    <Grid item xs={5} sm={3}>
+      <StyledTypography2
+        color={colors.neutral900}
+        sx={{ whiteSpace: "nowrap" }}
+      >
+        {date}
+      </StyledTypography2>
     </Grid>
-    <Grid item>
-      <StyledTypography2 color={colors.neutral900}>{event}</StyledTypography2>
+    <Grid item xs={7} sm={9}>
+      <StyledTypography2 color={colors.neutral900}>
+        {event}
+      </StyledTypography2>
     </Grid>
   </Grid>
 );
 
+
+
 const DetailedTimelineModal = ({timelineOpen,setTimelineOpen,data}) => {
-  const timelineData = [
-    { date: "2nd Jun", event: "Basics of investing" },
-    { date: "7th Jun", event: "1st Doubt clearing session" },
-    { date: "10th Jun", event: "Advanced strategies" },
-    { date: "14th Jun", event: "2nd Doubt clearing session" },
-    { date: "18th Jun", event: "Mock trading" },
-    { date: "22nd Jun", event: "Market psychology" },
-    { date: "25th Jun", event: "Final Q&A" },
-    { date: "28th Jun", event: "Certificate issued" },
-    { date: "30th Jun", event: "Bonus session" },
-    
-  ];
+  
 const handleClose=()=>{
   setTimelineOpen(false)
 }

@@ -8,6 +8,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useEffect } from "react";
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
 import Image from "next/image";
@@ -19,6 +20,7 @@ import { generateHashApi } from "@/app/Redux/Slices/paymentSlice";
 import { useState } from "react";
 import { setMentorshipPaymentData } from "@/app/Redux/Slices/paymentSlice";
 import { useRouter } from "next/navigation";
+import { mentorshipInfoApi } from "@/app/Redux/Slices/mentorshipSlice";
 
 const StyledTypography1 = styled(Typography)`
   font-size: 34px;
@@ -135,6 +137,11 @@ export default function MentorshipPromo() {
       }
     }
   };
+  useEffect(()=>{
+    if(!mentorshipInfo)
+  dispatch(mentorshipInfoApi())
+  },[isAuth])
+
   return (
     <>
       <LoginModal isOpen={isOpen} handleClose={handleClose} />
@@ -183,8 +190,8 @@ export default function MentorshipPromo() {
       overflow: "hidden",
       height: {
       
-        xs: 375, // height for small screens
-        md: 600, // default (auto-adjusts to image)
+        xs: 375, 
+        md: 600, 
       },
     }}
   >
@@ -196,7 +203,7 @@ export default function MentorshipPromo() {
       style={{
         width: "100%",
         height: "100%",
-        objectFit: "cover", // ensure image scales nicely
+        objectFit: "cover",
       }}
     />
   </Box>
@@ -273,7 +280,7 @@ export default function MentorshipPromo() {
                   sx={{
                     display: "flex",
                     flexDirection: { xs: "column", sm: "row" },
-                    gap: 2,
+                    gap: 0.5,
                     width: "100%",
                   }}
                 >
