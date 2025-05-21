@@ -27,13 +27,13 @@ const Mentorship = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       
-      console.log("PAYMENT STATUS FROM URL:", paymentStatus); 
+    
       if (paymentStatus === "success") {
         setOpen(true);
       }
     }
   }, [searchParams]);
-  console.log(open,"open")
+  
 
   if (isMentorshipInfoLoading) return <Spinner margin={15} />;
 
