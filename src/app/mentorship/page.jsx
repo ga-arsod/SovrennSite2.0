@@ -19,24 +19,32 @@ const Mentorship = () => {
     (store) => store.auth
   );
   const searchParams = useSearchParams();
- 
+
   const paymentStatus = searchParams.get("payment_status");
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     dispatch(mentorshipInfoApi());
+
+    return () => {
+
+    };
   }, [isAuth]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      
-    
+
+
       if (paymentStatus === "success") {
         setOpen(true);
       }
-    }
+    };
+
+    return () => {
+
+    };
   }, [searchParams]);
-  
+
 
   if (isMentorshipInfoLoading) return <Spinner margin={15} />;
 
