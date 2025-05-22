@@ -261,6 +261,10 @@ export const navItems = [
     link: "/filing",
     description:""
   },
+  {
+    name: "Mentor Dashboard",
+    link: "/mentorship/dashboard",
+  },
 ];
 
 export const landingPageArray = [

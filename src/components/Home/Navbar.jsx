@@ -276,6 +276,7 @@ const Navbar = () => {
           elem.name !== "Knowledge" &&
           elem.name !== "Self Help" &&
           elem.name!== "Exam" && elem.name!== "Recent Filing"
+          && elem.name !== "Mentor Dashboard"
          
       )
     : navItems;

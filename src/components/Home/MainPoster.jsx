@@ -443,7 +443,7 @@ const MainPoster = () => {
                   ""
                 )}
               </Grid>
-              <Box
+              {/* <Box
    
       mt={1.5}
      onClick={handleClick}
@@ -487,7 +487,7 @@ const MainPoster = () => {
         Test Your Investing Knowledge in 3 mins for Free
       </Box>
       <ArrowForwardIcon sx={{ ml: 1, fontSize:{xs:14,sm:21}}} />
-    </Box>
+    </Box> */}
 
             </Grid>
           </SlideInLeftBox>
