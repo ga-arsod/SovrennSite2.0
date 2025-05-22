@@ -25,17 +25,10 @@ const MentorshipTNdC = () => {
     }
   }, []);
 
+  
   useEffect(() => {
-    dispatch(mentorshipTermAndConditionsApi());
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      dispatch(resetMentorshipState());
-      const data = await dispatch(mentorshipTermAndConditionsApi());
-    };
-
-    fetchData();
+  
+    dispatch(mentorshipTermAndConditionsApi()); 
   }, [dispatch]);
 
   if (isTermAndConditionsLoading) return <Spinner margin={15} />;
