@@ -26,7 +26,17 @@ const Dashboard = () => {
         dispatch(dashboardInfoApi(mentorshipInfo?.batch_id))
     },[mentorshipInfo,isAuth])
 
-  
+  //Meta data
+     useEffect(() => {
+        if (typeof window !== "undefined") {
+          document.title = `Mentorship dashboard`;
+          const link = document.querySelector("link[rel='canonical']");
+          if (link) {
+            link.href = `https://www.sovrenn.com/mentorship/dashboard`;
+          }
+        }
+        dispatch(mentorshipTermAndConditionsApi()); 
+      }, []);
 
     if (!isAuth) {
         return <NoLogin />;
