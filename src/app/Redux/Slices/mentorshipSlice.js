@@ -92,9 +92,9 @@ export const dashboardInfoApi = createAsyncThunk(
 const mentorshipSlice = createSlice({
   name: "mentorship",
   initialState,
-    reducers: {
-      resetMentorshipState: () => initialState,
-    },
+  reducers: {
+    resetMentorshipState: () => initialState,
+  },
 
   extraReducers: (builder) => {
     builder.addCase(mentorshipTermAndConditionsApi.pending, (state, action) => {

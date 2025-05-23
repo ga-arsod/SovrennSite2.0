@@ -23,17 +23,17 @@ const MentorshipTNdC = () => {
         link.href = `https://www.sovrenn.com/mentorship`;
       }
     }
-    dispatch(mentorshipTermAndConditionsApi()); 
+
+    dispatch(mentorshipTermAndConditionsApi());
+
   }, []);
 
-  
- 
 
   if (isTermAndConditionsLoading) return <Spinner margin={15} />;
 
   return (
     <>
-       {termAndConditions?.length ? <div id={styles.MainContainer}>{convertToHtml(termAndConditions)}</div> : ""}
+      {termAndConditions?.length ? <div id={styles.MainContainer}>{convertToHtml(termAndConditions)}</div> : ""}
     </>
   );
 };

@@ -23,6 +23,10 @@ const Mentorship = () => {
 
   useEffect(() => {
     dispatch(mentorshipInfoApi());
+
+    return () => {
+
+    };
   }, [isAuth]);
 
   useEffect(() => {
@@ -30,7 +34,11 @@ const Mentorship = () => {
       if (paymentStatus === "success") {
         setOpen(true);
       }
-    }
+    };
+
+    return () => {
+
+    };
   }, [searchParams]);
 
   // Mentorship page meta data
