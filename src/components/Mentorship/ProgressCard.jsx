@@ -82,10 +82,10 @@ export default function ProgressCard({data}) {
                {data?.header?.text}
               </StyledTypography1>
               <StyledTypography2 color={colors.navyBlue500}>
-                Mentorship Dashboard -{' '}
-                <Box component="span" sx={{ color: colors.themeGreen, fontWeight: 600 }}>
+                Mentorship Dashboard
+                {/* <Box component="span" sx={{ color: colors.themeGreen, fontWeight: 600 }}>
                   BMPO01
-                </Box>
+                </Box> */}
               </StyledTypography2>
             </Box>
           </Stack>

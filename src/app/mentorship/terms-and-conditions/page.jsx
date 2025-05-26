@@ -20,29 +20,20 @@ const MentorshipTNdC = () => {
       document.title = `Mentorship - Terms & Conditions`;
       const link = document.querySelector("link[rel='canonical']");
       if (link) {
-        link.href = `https://www.sovrenn.com/exam`;
+        link.href = `https://www.sovrenn.com/mentorship`;
       }
     }
-  }, []);
 
-  useEffect(() => {
     dispatch(mentorshipTermAndConditionsApi());
+
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      dispatch(resetMentorshipState());
-      const data = await dispatch(mentorshipTermAndConditionsApi());
-    };
-
-    fetchData();
-  }, [dispatch]);
 
   if (isTermAndConditionsLoading) return <Spinner margin={15} />;
 
   return (
     <>
-      <div id={styles.MainContainer}>{convertToHtml(termAndConditions)}</div>
+      {termAndConditions?.length ? <div id={styles.MainContainer}>{convertToHtml(termAndConditions)}</div> : ""}
     </>
   );
 };
