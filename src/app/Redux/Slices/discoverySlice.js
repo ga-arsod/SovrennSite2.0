@@ -45,7 +45,7 @@ const initialState = {
 export const bucketsApiCall = createAsyncThunk(
   "bucketsApiCallData",
   async () => {
-    const response = await fetch(`${url}/buckets/list?platform=website`, {
+    const response = await fetch(`${url}/buckets/data?platform=website`, {
       method: "GET",
     });
     return response.json();

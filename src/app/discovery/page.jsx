@@ -26,8 +26,8 @@ const Discovery = () => {
   const { userDetails, isAuth } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
-  const { functional, sectoral, important } = useSelector(
-    (store) => store.discovery.buckets
+  const { buckets } = useSelector(
+    (store) => store.discovery
   );
   const myBuckets = useSelector((store) => store.discovery.myBuckets);
 
@@ -36,7 +36,7 @@ const Discovery = () => {
       document.title = "Loading Stock Discovery...";
       setIsMetaLoading(true);
 
-    
+
       document
         .querySelector('meta[name="description"]')
         ?.setAttribute(
@@ -114,17 +114,18 @@ const Discovery = () => {
           userDetails?.subscriptions?.includes("life") ||
           userDetails?.subscriptions?.includes("basket") ||
           userDetails?.subscriptions?.includes("trial")) &&
-        myBuckets?.length &&
-        isAuth ? (
+          myBuckets?.length &&
+          isAuth ? (
           <CustomDiscoveryCard title="My Buckets" data={myBuckets} />
         ) : (
           <></>
         )}
 
-        <DiscoveryCard title="Functional" data={functional} />
-        <DiscoveryCard title="Sectoral" data={sectoral} />
+        {buckets?.map((ele, ind) => {
 
-        <DiscoveryCard title="Important Buckets" data={important} />
+          return <DiscoveryCard title={ele.type} data={ele.list} />
+        })}
+        
         <ScrollCircle />
       </Container>
     </>
