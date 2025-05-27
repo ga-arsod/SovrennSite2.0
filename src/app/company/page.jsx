@@ -483,7 +483,7 @@ const SearchHome = () => {
           <Box
             sx={{
               position: "sticky",
-              top: "64px",
+              top:{xs:"55px",sm:'60px'},
               zIndex: 1016677666666,
               bgcolor: "white",
               paddingY: 1,
