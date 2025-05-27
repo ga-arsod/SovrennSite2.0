@@ -123,9 +123,9 @@ const Discovery = () => {
 
         {buckets?.map((ele, ind) => {
 
-          return <DiscoveryCard title={ele.type} data={ele.list} />
+          return <DiscoveryCard title={ele.type} data={ele.list} key={ind + 1} />
         })}
-        
+
         <ScrollCircle />
       </Container>
     </>
