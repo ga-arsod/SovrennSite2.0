@@ -103,6 +103,7 @@ const Discovery = () => {
       </>
     );
   }
+  console.log(buckets,"buckets")
   return (
     <>
       <Container>
@@ -121,7 +122,7 @@ const Discovery = () => {
           <></>
         )}
 
-        {buckets?.map((ele, ind) => {
+        { buckets?.length && buckets?.map((ele, ind) => {
 
           return <DiscoveryCard title={ele.type} data={ele.list} key={ind + 1} />
         })}

@@ -75,14 +75,23 @@ export default function RootLayout({ children }) {
 
 function AppLayout({ children }) {
   const  isLoading  = useSelector((state) => state.loading);
- 
+  const  {loadingStarted} = useSelector((state) => state.loading);
+ console.log(isLoading,"loading")
   return (
     <html lang="en">
       <body className={inter.className}>
+      <div style={{
+    height: "100vh",
+    overflowY: "auto",
+    overflowX: "hidden", 
+    maxWidth: "100vw", 
+  }}>
         <NavbarStrip />
         <Navbar />
         {children}
-        {!isLoading?.count && <Footer />}
+        {loadingStarted && !isLoading?.count === 0 && <Footer />}
+
+        </div>
       </body>
     </html>
   );

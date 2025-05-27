@@ -139,6 +139,7 @@ const SearchHome = () => {
     isDiscoveryLoading,
   } = useSelector((store) => store.search);
   const { portfolioCompanies } = useSelector((store) => store.pulse);
+   const  isLoading  = useSelector((state) => state.loading);
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
@@ -196,7 +197,7 @@ const SearchHome = () => {
 
       const companyData = companyRes?.payload;
 
-      if (companyData.data) {
+      if (companyData?.data) {
         dispatch(getDiscoveryDataApi(q));
 
         if (companyData?.data?.is_in_prime) {
@@ -482,8 +483,8 @@ const SearchHome = () => {
           <Box
             sx={{
               position: "sticky",
-              top: "85px",
-              zIndex: 101,
+              top: "64px",
+              zIndex: 1016677666666,
               bgcolor: "white",
               paddingY: 1,
              

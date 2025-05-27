@@ -305,6 +305,7 @@ const Navbar = () => {
    
   
       <AppBar
+      
         sx={{
           backgroundColor: "#F4F6F8",
           boxShadow: "none",
