@@ -288,14 +288,14 @@ const Navbar = () => {
     )
    })
     
-   const allow_payment = mentorshipInfo?.button_details?.allow_payment; 
+   const show_mentorship_dashboard = userDetails?.has_joined_mentor_batch?.batch_id; 
 
    const utilitiesMenu = [
      { name: "Knowledge", link: "/knowledge" },
      { name: "Self Help", link: "/self-help" },
      { name: "Exam", link: "/exam" },
      { name: "Recent Filing", link: "/filing" },
-     ...(!allow_payment
+     ...(show_mentorship_dashboard
        ? [{ name: "Mentor Dashboard", link: "/mentorship/dashboard" }]
        : [])
    ];
@@ -305,6 +305,7 @@ const Navbar = () => {
    
   
       <AppBar
+      
         sx={{
           backgroundColor: "#F4F6F8",
           boxShadow: "none",

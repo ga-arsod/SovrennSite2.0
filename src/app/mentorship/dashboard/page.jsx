@@ -13,6 +13,7 @@ import { dashboardInfoApi, mentorshipInfoApi } from '@/app/Redux/Slices/mentorsh
 import NoLogin from '@/components/Auth/NoLogin';
 import DetailedTimelineModal from '@/components/Mentorship/DetailedTimelineModal';
 
+
 const Dashboard = () => {
   const dispatch = useDispatch()
   const { isDashboardInfoLoading, dashboardInfo, mentorshipInfo } = useSelector((store) => store.mentorship);
@@ -35,7 +36,7 @@ const Dashboard = () => {
             link.href = `https://www.sovrenn.com/mentorship/dashboard`;
           }
         }
-        dispatch(mentorshipTermAndConditionsApi()); 
+      
       }, []);
 
 
