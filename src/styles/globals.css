@@ -27,10 +27,11 @@
 html, body {
   overflow-x: hidden; /* This hides the horizontal scrollbar */
   overflow-y: auto; /* This ensures vertical scrolling is possible */
-  padding-right:0px
+  padding-right:0px;
+ 
 }
 body {
- 
+  font-family: 'DM Sans', sans-serif;
   width:100vw;
   padding-right:0px;
   color: rgb(var(--foreground-rgb));

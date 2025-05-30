@@ -1,7 +1,8 @@
 #newsMainContainer {
     padding-top: 10px;
     margin-top: 12vh;
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
+    color: #000910;
 }
 
 #newsMainContainer>h1 {
@@ -19,7 +20,8 @@
     display: flex;
     padding: 20px 6vw;
     position: relative;
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
+    color: #000910;
 }
 
 #leftContainer {
@@ -30,7 +32,8 @@
     position: sticky;
     align-self: flex-start;
     top: 14vh;
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
+    color: #000910;
 }
 
 .filterHeadDiv {
@@ -38,7 +41,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 15px 15px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .filterTitleDiv {
@@ -48,12 +51,12 @@
     align-items: center;
     margin-right: 5px;
     
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .filterHeadDiv>h2 {
     font-size: larger;
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .filterHeadDiv>button,
@@ -65,7 +68,7 @@
     height: 25px;
     border-radius: 5px;
     cursor: pointer;
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .filterTitleDiv>button {
@@ -82,28 +85,28 @@
     flex-direction: column;
     gap: 20px;
     margin-left: 20px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
 
 }
 
 .newsDiv {
     display: flex;
     flex-direction: column;
-    font-family: 'Inter', sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
-.newsCard {
-    font-family: 'Inter', sans-serif;
-}
+
 .newsCard {
     padding: 10px 20px;
     margin-bottom: 20px;
     border-radius: 10px;
-    font-family: 'Inter', sans-serif;
-    border: 1px solid #96A7B4
+    font-family: 'DM Sans', sans-serif !important;
+    border: 1px solid #96A7B4;
+    color: #000910;
 }
 
 .newsCard>a {
     text-decoration: none;
+    color: #06A77D;
     
 }
 
@@ -117,6 +120,7 @@
 
 .newsCard>p {
     margin: 0 0 10px;
+    font-family: 'DM Sans', sans-serif !important;
    
 }
 
