@@ -125,7 +125,7 @@ useEffect(()=>{
       <Faq data={faqData} />
       <AppInfo />
       <TrialCard />
-      <Footer/>
+    
     </>
   );
 };
