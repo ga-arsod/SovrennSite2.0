@@ -207,6 +207,7 @@ const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [anchorEl2, setAnchorEl2] = useState(null);
   const open2 = Boolean(anchorEl2);
+   const show_mentorship_dashboard = userDetails?.has_joined_mentor_batch?.batch_id; 
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -279,7 +280,9 @@ const Navbar = () => {
           && elem.name !== "Mentor Dashboard"
          
       )
-    : navItems;
+    : (!isGreaterThanMd  && !show_mentorship_dashboard) ? navItems.filter((elem) => {
+  return elem.name !== "Mentor Dashboard";
+}) : navItems;
 
    const filteredNavItems2 = filteredNavItems.filter((elem,index)=>{
     return (
@@ -288,7 +291,7 @@ const Navbar = () => {
     )
    })
     
-   const show_mentorship_dashboard = userDetails?.has_joined_mentor_batch?.batch_id; 
+  
 
    const utilitiesMenu = [
      { name: "Knowledge", link: "/knowledge" },
