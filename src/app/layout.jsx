@@ -1,7 +1,8 @@
 "use client";
 import { useEffect } from "react";
-import { Inter } from "next/font/google";
+import { useRef } from "react";
 import "../styles/globals.css";
+import { DM_Sans } from "next/font/google";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "@/theme/theme";
 import Navbar from "@/components/Home/Navbar";
@@ -12,9 +13,10 @@ import Script from "next/script";
 import { logPageView } from "../components/GoogleAnalytics/Google-analytics";
 import { useSelector } from "react-redux";
 
-const inter = Inter({
-  weight: ["200"],
-  style: ["normal"],
+
+const dmSans = DM_Sans({
+  weight: ["400", "500","600", "700"], 
+  style: ["normal", "italic"],   
   subsets: ["latin"],
 });
 
@@ -23,7 +25,7 @@ export default function RootLayout({ children }) {
     logPageView();
   }, []);
 
-  
+ 
   useEffect(() => {
     let metaTag = document.querySelector("meta[name='viewport']");
     if (!metaTag) {
@@ -35,6 +37,8 @@ export default function RootLayout({ children }) {
       metaTag.content = "width=device-width, initial-scale=1.0";
     }
   }, []);
+
+ 
 
   return (
     <>
@@ -76,10 +80,16 @@ export default function RootLayout({ children }) {
 function AppLayout({ children }) {
   const  isLoading  = useSelector((state) => state.loading);
   const  {loadingStarted} = useSelector((state) => state.loading);
- console.log(isLoading,"loading")
+   const hasLoadedOnce = useRef(false);
+
+ useEffect(() => {
+  if (isLoading?.count > 0) {
+    hasLoadedOnce.current = true;
+  }
+}, [isLoading?.count]);
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={dmSans.className}>
       <div style={{
     height: "100vh",
     overflowY: "auto",
@@ -89,7 +99,7 @@ function AppLayout({ children }) {
         <NavbarStrip />
         <Navbar />
         {children}
-        {loadingStarted && !isLoading?.count === 0 && <Footer />}
+      {hasLoadedOnce.current && isLoading?.count === 0 ? <Footer /> : null}
 
         </div>
       </body>

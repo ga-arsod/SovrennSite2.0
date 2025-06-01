@@ -12,7 +12,22 @@ export const theme=createTheme({
           },
     },
     typography:{
-        fontFamily: 'Inter, sans-serif',
+      fontFamily: "'DM Sans', sans-serif",
+        h1: {
+          fontWeight: 700,
+          letterSpacing: '-0.02em',
+          lineHeight: 1.2,
+          fontSize: '2rem', 
+          '@media (min-width:600px)': {
+            fontSize: '2.5rem',
+          },
+          '@media (min-width:900px)': {
+            fontSize: '3rem',
+          },
+          '@media (min-width:1200px)': {
+            fontSize: '3.5rem',
+          },
+        },
         
     },
    

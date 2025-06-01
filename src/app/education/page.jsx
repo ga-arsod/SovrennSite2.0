@@ -67,8 +67,8 @@ const Education = () => {
       <TutorialSection />
       <FoundersInfo />
       <MentorshipPromo/>
-      <AppInfo />
-      <TrialCard />
+       <AppInfo />
+      <TrialCard /> 
     </>
   );
 };
