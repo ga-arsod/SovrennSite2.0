@@ -207,7 +207,7 @@ const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [anchorEl2, setAnchorEl2] = useState(null);
   const open2 = Boolean(anchorEl2);
-   const show_mentorship_dashboard = userDetails?.has_joined_mentor_batch?.batch_id; 
+   const show_mentorship_dashboard = userDetails?.has_joined_mentor_batch; 
 
   const [activeTab, setActiveTab] = useState(0);
 
