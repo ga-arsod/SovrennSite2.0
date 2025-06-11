@@ -5,10 +5,10 @@ const convertToHTML = (blocks) => {
         switch (block.type) {
             case 'table':
                 return (
-                    <table key={index}>
+                    block?.data?.content?.length ? <table key={index}>
                         <thead>
                             <tr>
-                                {block.data.content[0].map((header, headerIndex) => (
+                                {block?.data?.content[0].map((header, headerIndex) => (
                                     <th key={headerIndex}>{renderTableCell(header)}</th>
                                 ))}
                             </tr>
@@ -23,6 +23,8 @@ const convertToHTML = (blocks) => {
                             ))}
                         </tbody>
                     </table>
+                        :
+                        ''
                 );
 
             case 'header':
